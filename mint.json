@@ -138,5 +138,10 @@
     "discord": "https://www.flipt.io/discord",
     "github": "https://github.com/flipt-io/flipt"
   },
-  "backgroundImage": "/background.png"
+  "backgroundImage": "/background.png",
+  "analytics": {
+    "ga4": {
+      "measurementId": "G-BL9SGQPLKM"
+    }
+  }
 }
