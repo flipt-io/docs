@@ -5,7 +5,7 @@
     "dark": "/logo/dark-logo.svg"
   },
   "api": {
-    "baseUrl": "http://localhost:8080",
+    "baseUrl": "https://try.flipt.io",
     "auth": {
       "method": "bearer"
     }
