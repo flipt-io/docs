@@ -14,7 +14,7 @@ Docker installation is required on the host, see the
 
 ### Run the image
 
-```bash
+```console
 docker run -d \
     -p 8080:8080 \
     -p 9000:9000 \
@@ -39,10 +39,10 @@ The Flipt container uses host mounted volumes to persist data:
 
 This allows data to persist between Docker container restarts.
 
-caution
-
-If you don't use mounted volumes to persist your data, your data will be lost
-when the container exits!
+<Warning>
+  If you don't use mounted volumes to persist your data, your data will be lost
+  when the container exits!
+</Warning>
 
 After starting the container you can visit http://0.0.0.0:8080 to view the
 application.
@@ -69,7 +69,7 @@ Helm's [documentation](https://helm.sh/docs/) to get started.
 
 Once Helm is set up properly, add the Flipt Helm repo as follows:
 
-```bash
+```console
 helm repo add flipt https://helm.flipt.io
 ```
 
@@ -77,7 +77,7 @@ helm repo add flipt https://helm.flipt.io
 
 You can install the Flipt Helm chart with the following command:
 
-```bash
+```console
 helm install flipt flipt/flipt
 ```
 
@@ -89,7 +89,7 @@ You can always download the latest release archive of Flipt from the
 Download to an accessible location on your host and un-zip with the following
 commands (requires [jq](https://stedolan.github.io/jq/)):
 
-```bash
+```console
 $ export FLIPT_VERSION=$(curl --silent "https://api.github.com/repos/flipt-io/flipt/releases/latest" | jq '.tag_name?' | tr -d '"' | tr -d 'v')
 $ curl -L "https://github.com/flipt-io/flipt/releases/download/v${FLIPT_VERSION}/flipt_${FLIPT_VERSION}_linux_x86_64.tar.gz" -o flipt.tar.gz && \
     tar -xvf flipt.tar.gz && \
@@ -106,7 +106,7 @@ README, LICENSE, and CHANGELOG files.
 
 Run the Flipt binary with:
 
-```bash
+```console
 ./flipt --config PATH_TO_YOUR_CONFIG
 ```
 

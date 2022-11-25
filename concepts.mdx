@@ -119,12 +119,12 @@ against your segments and flags. We call this an `entity` in the Flipt
 ecosystem. More often than not this will be a user, but we didn't want to make
 any assumptions on how your application works, which is why `entity` was chosen.
 
-<Tip>
+<Info>
 **entity**
 
 what you want to test against in your application
 
-</Tip>
+</Info>
 
 For Flipt to successfully determine which _bucket_ your entities fall into, it
 must have a way to uniquely identify them. This is the `entityId` and it is a
@@ -146,13 +146,13 @@ The final piece of the puzzle is context. Context allows Flipt to determine
 which segment your entity falls into by comparing it to all of the possible
 constraints that you defined.
 
-<Tip>
+<Info>
 **context**
 
 metadata associated with your entity, used to determine which if any segments
 that entity is a member of
 
-</Tip>
+</Info>
 
 Examples of context could include:
 

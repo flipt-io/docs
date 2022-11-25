@@ -1,0 +1,102 @@
+---
+title: Authentication
+description: This document describes how to enable and use authentication with Flipt.
+---
+
+# Authentication
+
+Flipt supports the ability to secure its core API routes.
+
+<Info>
+Flipt authentication is **disabled** (not required) by default.
+
+Head to the [Configuration: Authentication](/configuration#authentication) section to enable it.
+
+</Info>
+
+Once enabled, all routes beneath the following API prefixes will require a [client token](#client-tokens) in order to authenticate requests:
+
+- `/api/v1/`
+- `/auth/v1/`
+
+### Client Tokens
+
+Client tokens are the core credential required to authenticate a request.
+Tokens themselves are acquired via [authentication methods](#authentication-methods).
+
+Flipt will ultimately support multiple authentication methods, however only the [token](#token) authentication method is supported as of now.
+
+Once a client token has been acquired, it can be supplied via request metadata dependent on the protocol ([HTTP](#http) or [gRPC](#grpc)).
+
+#### HTTP
+
+For HTTP the `Authorization: Bearer <client-token>` header is used to present the client token.
+
+**Example:**
+
+```console
+GET /api/v1/flags HTTP/1.1
+...
+Authorization: Bearer gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpofNCNnc=
+...
+```
+
+#### gRPC
+
+For gRPC we use the [Metadata](https://grpc.io/docs/what-is-grpc/core-concepts/#metadata) functionality similarly to HTTP Headers.
+The lower-case `authorization` metadata key should be supplied with a single string `Bearer <client-token>` to any RPC calls.
+
+**Example (in Go):**
+
+The following example authenticates a single gRPC client request:
+
+```go
+ctx := metadata.AppendToOutgoingContext(ctx, "authorization", "Bearer gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpofNCNnc=")
+
+flag, err := flipt.GetFlags(ctx, &flipt.GetFlagRequest{
+  Key: flagKey,
+})
+```
+
+This subsequent example demonstrates using a client unary interceptor, which authenticates all outgoing requests:
+
+```go
+func AuthUnaryClientInterceptor(optFuncs ...CallOption) grpc.UnaryClientInterceptor {
+    return func(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+        ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "Bearer gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpofNCNnc=")
+        return invoker(ctx, method, req, reply, cc, opts...)
+	}
+}
+```
+
+### Authentication Methods
+
+<Note>
+  See [Configuration: Authentication
+  Methods](/configuration#authentication-methods) for details on how to
+  configure the various authentication methods.
+</Note>
+
+#### Token
+
+<Tip>
+  When `token` method is enabled and no tokens exist in the backing store, an
+  initial token is created and logged in Flipt's server output.
+</Tip>
+
+The `token` authentication method supports statically creating authentication tokens.
+
+Once enabled, the `/auth/v1/method/token` API prefix is mounted to Flipt's API.
+This section of the API supports the creation of static tokens.
+
+##### Example: Token Creation
+
+The following `curl` command creates a static token with no expiration.
+Given authentication is set to `required` then a prior client token will be required to perform this action.
+
+```console
+curl -X POST localhost:8080/auth/v1/method/token \
+    -H 'Authorization: Bearer gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpofNCNnc=' \
+    -H 'Content-Type: application/json' \
+    --data '{"name":"access_all_areas","description":"keys to the castle"}'
+```
