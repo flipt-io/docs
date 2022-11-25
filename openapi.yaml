@@ -85,7 +85,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Authauthentication"
       security: *ref_0
-  /api/v1/segments/{segmentKey}/constraints/:
+  /api/v1/segments/{segmentKey}/constraints:
     post:
       operationId: Constraints.create
       tags:
@@ -155,7 +155,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/ConstraintsconstraintUpdateRequest"
-  /api/v1/flags/{flagKey}/rules/{ruleId}/distributions/:
+  /api/v1/flags/{flagKey}/rules/{ruleId}/distributions:
     post:
       operationId: Distributions.create
       tags:
@@ -646,7 +646,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/SegmentssegmentUpdateRequest"
-  /api/v1/flags/{flagKey}/variants/:
+  /api/v1/flags/{flagKey}/variants:
     post:
       operationId: Variants.create
       tags:

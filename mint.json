@@ -96,7 +96,7 @@
       "group": "Flags",
       "pages": [
         "reference/flags/list-flags",
-        "reference/flags/create-flags",
+        "reference/flags/create-flag",
         "reference/flags/get-flag",
         "reference/flags/delete-flag",
         "reference/flags/update-flag"
