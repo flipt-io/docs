@@ -1,0 +1,142 @@
+{
+  "name": "Flipt",
+  "logo": {
+    "light": "/logo/light-logo.svg",
+    "dark": "/logo/dark-logo.svg"
+  },
+  "api": {
+    "baseUrl": "http://localhost:8080",
+    "auth": {
+      "method": "bearer"
+    }
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#7C3AED",
+    "light": "#BA97F5",
+    "dark": "#4F3292",
+    "ultraLight": "#E5D8FB",
+    "ultraDark": "#212A36",
+    "background": {
+      "dark": "#121212"
+    },
+    "anchors": {
+      "from": "#5b21b6",
+      "to": "#a21caf"
+    }
+  },
+  "topbarCtaButton": {
+    "type": "github",
+    "url": "https://github.com/flipt-io/flipt"
+  },
+  "anchors": [
+    {
+      "name": "API Reference",
+      "icon": "square-terminal",
+      "url": "reference"
+    },
+    {
+      "name": "Blog",
+      "icon": "newspaper",
+      "url": "https://www.flipt.io/blog"
+    },
+    {
+      "name": "Community",
+      "icon": "discord",
+      "url": "https://discord.com/invite/kRhEqG2TEZ"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Home",
+      "pages": [
+        "introduction",
+        "use_cases",
+        "concepts",
+        "installation",
+        "integration",
+        "configuration",
+        "architecture"
+      ]
+    },
+    {
+      "group": "Authentication",
+      "pages": [
+        "reference/authentication/list-tokens",
+        "reference/authentication/get-token",
+        "reference/authentication/delete-token",
+        "reference/authentication/create-token",
+        "reference/authentication/get-self"
+      ]
+    },
+    {
+      "group": "Constraints",
+      "pages": [
+        "reference/constraints/create-constraint",
+        "reference/constraints/delete-constraint",
+        "reference/constraints/update-constraint"
+      ]
+    },
+    {
+      "group": "Distributions",
+      "pages": [
+        "reference/distributions/create-distribution",
+        "reference/distributions/delete-distribution",
+        "reference/distributions/update-distribution"
+      ]
+    },
+    {
+      "group": "Evaluation",
+      "pages": [
+        "reference/evaluate/batch-evaluate",
+        "reference/evaluate/evaluate"
+      ]
+    },
+    {
+      "group": "Flags",
+      "pages": [
+        "reference/flags/list-flags",
+        "reference/flags/create-flags",
+        "reference/flags/get-flag",
+        "reference/flags/delete-flag",
+        "reference/flags/update-flag"
+      ]
+    },
+    {
+      "group": "Rules",
+      "pages": [
+        "reference/rules/list-rules",
+        "reference/rules/create-rule",
+        "reference/rules/order-rules",
+        "reference/rules/get-rule",
+        "reference/rules/delete-rule",
+        "reference/rules/update-rule"
+      ]
+    },
+    {
+      "group": "Segments",
+      "pages": [
+        "reference/segments/list-segment",
+        "reference/segments/create-segment",
+        "reference/segments/get-segment",
+        "reference/segments/delete-segment",
+        "reference/segments/update-segment"
+      ]
+    },
+    {
+      "group": "Variants",
+      "pages": [
+        "reference/variants/create-variant",
+        "reference/variants/delete-variant",
+        "reference/variants/update-variant"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "website": "https://www.flipt.io/",
+    "twitter": "https://twitter.com/flipt_io",
+    "discord": "https://discord.com/invite/kRhEqG2TEZ",
+    "github": "https://github.com/flipt-io/flipt"
+  },
+  "backgroundImage": "/background.png"
+}
