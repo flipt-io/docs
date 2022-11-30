@@ -94,10 +94,12 @@ These properties are as follows:
 
 ### Authentication
 
-| Property                             | Description                                             | Default | Since   |
-| ------------------------------------ | ------------------------------------------------------- | ------- | ------- |
-| authentication.required              | Enable or disable authentication validation on requests | false   | v1.15.0 |
-| authentication.methods.token.enabled | Enable static token creation                            | false   | v1.15.0 |
+| Property                                          | Description                                             | Default | Since   |
+| ------------------------------------------------- | ------------------------------------------------------- | ------- | ------- |
+| authentication.required                           | Enable or disable authentication validation on requests | false   | v1.15.0 |
+| authentication.methods.token.enabled              | Enable static token creation                            | false   | v1.15.0 |
+| authentication.methods.token.cleanup.interval     | Interval between deletion of expired tokens             | 1h      | v1.16.0 |
+| authentication.methods.token.cleanup.grace_period | How expired a token can become before it is deleteable  | 30m     | v1.16.0 |
 
 ## Deprecations
 
@@ -451,6 +453,30 @@ Beneath the `authentication` section of the configuration file is the `methods` 
 Each key beneath this section is a particular authentication method.
 These methods are disabled (`enabled: false`) by default.
 Enabling and configuring a method allows for different ways to establish client token credentials within Flipt.
+
+#### Cleanup
+
+Each authentication method contains a nested `cleanup` configuration object.
+This object configures the periodic deletion of _expired_ authentications created with the associated method.
+
+```yaml
+authentication:
+  <method>:
+    cleanup:
+      interval: 10m
+      grace_period: 24h
+```
+
+The cleanup object currently contains two keys `interval` and `grace_period`.
+The `interval` is used to configured how frequently a delete _expired_ tokens is performed.
+Whereas, `grace_period` is used to ensure that _expired_ tokens are preserved for at-least this configured duration.
+
+This allows you to keep authentications around for auditing purposes after expiration.
+Expired tokens are instances where the `expires_at` timestamp occurs before the current time.
+The grace period is added onto this timestamp as a predicated, when the delete operation is made.
+
+Tokens, when presented as a credential to the API, which have expired (`expires_at` is before `now()`) will begin immediately failing authentication.
+The `grace_period` is simply for the cleanup process.
 
 #### Token
 
