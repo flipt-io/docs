@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.1.2
+  version: 0.1.3
 paths:
   /auth/v1/tokens:
     get:
@@ -549,17 +549,17 @@ paths:
       parameters:
         - name: limit
           in: query
-          required: true
+          required: false
           schema:
             type: integer
         - name: offset
           in: query
-          required: true
+          required: false
           schema:
             type: integer
         - name: pageToken
           in: query
-          required: true
+          required: false
           schema:
             type: string
       responses:
@@ -793,9 +793,6 @@ components:
           type: string
         totalCount:
           type: integer
-      required:
-        - nextPageToken
-        - totalCount
     ConstraintsconstraintComparisonType:
       type: string
       enum:
