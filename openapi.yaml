@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.1.1
+  version: 0.1.2
 paths:
   /auth/v1/tokens:
     get:
@@ -1009,10 +1009,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Flagsflag"
+        nextPageToken:
+          type: string
+        totalCount:
+          type: integer
       required:
         - flags
-      allOf:
-        - $ref: "#/components/schemas/CommonsPageable"
+        - nextPageToken
+        - totalCount
     Flagsflag:
       type: object
       properties:
@@ -1144,10 +1148,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Segmentssegment"
+        nextPageToken:
+          type: string
+        totalCount:
+          type: integer
       required:
         - segments
-      allOf:
-        - $ref: "#/components/schemas/CommonsPageable"
+        - nextPageToken
+        - totalCount
     Segmentssegment:
       type: object
       properties:
