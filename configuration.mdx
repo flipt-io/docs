@@ -29,7 +29,7 @@ These properties are as follows:
 | ---------------------- | --------------------------------------------------------------------------------------- | ------------------- | ------- |
 | log.level              | Level at which messages are logged (trace, debug, info, warn, error, fatal, panic)      | info                |         |
 | log.grpc_level         | Level at which gRPC messages are logged (trace, debug, info, warn, error, fatal, panic) | error               | v1.12.0 |
-| log.file               | File to log to instead of STDOUT                                                        | v0.10.0             |         |
+| log.file               | File to log to instead of STDOUT                                                        |                     | v0.10.0 |
 | log.encoding           | Encoding to use for logging (json, console)                                             | console             | v1.12.0 |
 | ui.enabled             | Enable UI and API docs                                                                  | true                |         |
 | cors.enabled           | Enable CORS support                                                                     | false               | v0.7.0  |
@@ -81,12 +81,12 @@ These properties are as follows:
 | Property             | Description                                                                               | Default                      | Since   |
 | -------------------- | ----------------------------------------------------------------------------------------- | ---------------------------- | ------- |
 | db.url               | URL to access Flipt database                                                              | file:/var/opt/flipt/flipt.db |         |
-| db.protocol          | Protocol (Sqlite, MySQL, Postgres, CockroachDB) for Flipt database (URL takes precedence) | v0.18.0                      |         |
-| db.host              | Host to access Flipt database (URL takes precedence)                                      | v0.18.0                      |         |
-| db.port              | Port to access Flipt database (URL takes precedence)                                      | v0.18.0                      |         |
-| db.name              | Name of Flipt database (URL takes precedence)                                             | v0.18.0                      |         |
-| db.user              | User to access Flipt database (URL takes precedence)                                      | v0.18.0                      |         |
-| db.password          | Password to access Flipt database (URL takes precedence)                                  | v0.18.0                      |         |
+| db.protocol          | Protocol (Sqlite, MySQL, Postgres, CockroachDB) for Flipt database (URL takes precedence) |                              | v0.18.0 |
+| db.host              | Host to access Flipt database (URL takes precedence)                                      |                              | v0.18.0 |
+| db.port              | Port to access Flipt database (URL takes precedence)                                      |                              | v0.18.0 |
+| db.name              | Name of Flipt database (URL takes precedence)                                             |                              | v0.18.0 |
+| db.user              | User to access Flipt database (URL takes precedence)                                      |                              | v0.18.0 |
+| db.password          | Password to access Flipt database (URL takes precedence)                                  |                              | v0.18.0 |
 | db.max_idle_conn     | The maximum number of connections in the idle connection pool                             | 2                            | v0.17.0 |
 | db.max_open_conn     | The maximum number of open connections to the database                                    | unlimited                    | v0.17.0 |
 | db.conn_max_lifetime | Sets the maximum amount of time in which a connection can be reused                       | unlimited                    | v0.17.0 |
