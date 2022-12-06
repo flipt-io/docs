@@ -53,29 +53,6 @@ These properties are as follows:
 | server.cert_file  | Path to the certificate file (if protocol is set to https)     |         | v0.8.0 |
 | server.cert_key   | Path to the certificate key file (if protocol is set to https) |         | v0.8.0 |
 
-### Cache
-
-| Property      | Description                                             | Default | Since   |
-| ------------- | ------------------------------------------------------- | ------- | ------- |
-| cache.enabled | Enable caching of data                                  | false   | v1.10.0 |
-| cache.ttl     | Time to live for cached data                            | 60s     | v1.10.0 |
-| cache.backend | The backend to use for caching (options: memory, redis) | memory  | v1.10.0 |
-
-#### Memory Cache
-
-| Property                       | Description                                                          | Default | Since   |
-| ------------------------------ | -------------------------------------------------------------------- | ------- | ------- |
-| cache.memory.eviction_interval | Interval at which expired items are evicted from the in-memory cache | 5m      | v0.12.0 |
-
-#### Redis Cache
-
-| Property             | Description                           | Default   | Since   |
-| -------------------- | ------------------------------------- | --------- | ------- |
-| cache.redis.host     | Host to access the Redis database     | localhost | v1.10.0 |
-| cache.redis.port     | Port to access the Redis database     | 6379      | v1.10.0 |
-| cache.redis.db       | Redis database to use                 | 0         | v1.10.0 |
-| cache.redis.password | Password to access the Redis database |           | v1.10.0 |
-
 ### Database
 
 | Property             | Description                                                                               | Default                      | Since   |
@@ -100,6 +77,29 @@ These properties are as follows:
 | authentication.methods.token.enabled              | Enable static token creation                            | false   | v1.15.0 |
 | authentication.methods.token.cleanup.interval     | Interval between deletion of expired tokens             | 1h      | v1.16.0 |
 | authentication.methods.token.cleanup.grace_period | How expired a token can become before it is deleteable  | 30m     | v1.16.0 |
+
+### Cache
+
+| Property      | Description                                             | Default | Since   |
+| ------------- | ------------------------------------------------------- | ------- | ------- |
+| cache.enabled | Enable caching of data                                  | false   | v1.10.0 |
+| cache.ttl     | Time to live for cached data                            | 60s     | v1.10.0 |
+| cache.backend | The backend to use for caching (options: memory, redis) | memory  | v1.10.0 |
+
+#### Memory Cache
+
+| Property                       | Description                                                          | Default | Since   |
+| ------------------------------ | -------------------------------------------------------------------- | ------- | ------- |
+| cache.memory.eviction_interval | Interval at which expired items are evicted from the in-memory cache | 5m      | v0.12.0 |
+
+#### Redis Cache
+
+| Property             | Description                           | Default   | Since   |
+| -------------------- | ------------------------------------- | --------- | ------- |
+| cache.redis.host     | Host to access the Redis database     | localhost | v1.10.0 |
+| cache.redis.port     | Port to access the Redis database     | 6379      | v1.10.0 |
+| cache.redis.db       | Redis database to use                 | 0         | v1.10.0 |
+| cache.redis.password | Password to access the Redis database |           | v1.10.0 |
 
 ## Deprecations
 
