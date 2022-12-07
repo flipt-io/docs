@@ -1,13 +1,14 @@
 on:
+  push:
   workflow_dispatch:
 
 permissions:
   contents: write
   pull-requests: write
 
-name: proto-upgrade
+name: Update OpenAPI Definition
 jobs:
-  proto-upgrade:
+  update-openapi:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
