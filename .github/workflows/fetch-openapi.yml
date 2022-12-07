@@ -27,6 +27,9 @@ jobs:
           tag="${{ steps.fetch_tag.outputs.tag }}"
           curl -q "https://raw.githubusercontent.com/flipt-io/flipt-openapi/${tag}/openapi.yml" 2>/dev/null > openapi.yaml
 
+      - name: Re-write OpenAPI Server
+        run: yq e '.servers[0].url = "https://try.flipt.io"' -i openapi.yaml
+
       - name: Open PR
         env:
           GIT_AUTHOR_NAME: flipt-bot
