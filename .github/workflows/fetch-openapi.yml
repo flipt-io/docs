@@ -1,0 +1,48 @@
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+name: Update OpenAPI Definition
+jobs:
+  update-openapi:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Fetch Latest OpenAPI Release Tag
+        id: fetch_tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(gh release view -R flipt-io/flipt-openapi --json tagName | jq -r .tagName)
+          echo "tag=${tag}" >> $GITHUB_OUTPUT
+     
+      - name: Fetch Latest OpenAPI Definition for Tag
+        id: fetch_openapi
+        run: |
+          tag="${{ steps.fetch_tag.outputs.tag }}"
+          curl -q "https://raw.githubusercontent.com/flipt-io/flipt-openapi/${tag}/openapi.yml" 2>/dev/null > openapi.yaml
+
+      - name: Re-write OpenAPI Server
+        run: yq e '.servers[0].url = "https://try.flipt.io"' -i openapi.yaml
+
+      - name: Open PR
+        env:
+          GIT_AUTHOR_NAME: flipt-bot
+          GIT_AUTHOR_EMAIL: dev@flipt.io
+          GIT_COMMITTER_NAME: flipt-bot
+          GIT_COMMITTER_EMAIL: dev@flipt.io
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${{ steps.fetch_tag.outputs.tag }}"
+          git checkout -b "update/${tag}"
+          git add openapi.yaml
+          git commit -m "feat: update openapi definition for version ${tag}"
+          git push origin "update/${tag}"
+          gh pr create --title "feat: update openapi definition for version ${tag}" \
+            --body "Upgrading OpenAPI definition for flipt-openapi release [${tag}](https://github.com/flipt-io/flipt-openapi/releases/tag/${tag})."
+
