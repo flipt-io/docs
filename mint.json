@@ -61,6 +61,10 @@
       ]
     },
     {
+      "group": "Overview",
+      "pages": ["reference/overview"]
+    },
+    {
       "group": "Authentication",
       "pages": [
         "reference/authentication/list-tokens",
