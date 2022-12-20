@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.1.4
+  version: 0.1.5
 paths:
   /auth/v1/tokens:
     get:
@@ -951,7 +951,7 @@ components:
           format: double
         attachment:
           type: string
-        reasons:
+        reason:
           $ref: '#/components/schemas/EvaluateevaluationReason'
       required:
         - requestId
@@ -964,7 +964,7 @@ components:
         - value
         - requestDurationMillis
         - attachment
-        - reasons
+        - reason
     EvaluateevaluationReason:
       type: string
       enum:
