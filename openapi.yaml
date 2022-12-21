@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.1.5
+  version: 0.1.6
 paths:
   /auth/v1/tokens:
     get:
@@ -766,19 +766,6 @@ components:
       required:
         - authentications
         - nextPageToken
-    AuthauthenticationTokenCreateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        expiresAt:
-          type: string
-          format: date-time
-      required:
-        - name
-        - description
     AuthauthenticationToken:
       type: object
       properties:
@@ -804,21 +791,6 @@ components:
         - NUMBER_COMPARISON_TYPE
         - BOOLEAN_COMPARISON_TYPE
       description: The default is UNKNOWN_COMPARISON_TYPE
-    ConstraintsconstraintCreateRequest:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ConstraintsconstraintComparisonType'
-        property:
-          type: string
-        operator:
-          type: string
-        value:
-          type: string
-      required:
-        - type
-        - property
-        - operator
     Constraintsconstraint:
       type: object
       properties:
@@ -849,21 +821,6 @@ components:
         - value
         - createdAt
         - updatedAt
-    ConstraintsconstraintUpdateRequest:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ConstraintsconstraintComparisonType'
-        property:
-          type: string
-        operator:
-          type: string
-        value:
-          type: string
-      required:
-        - type
-        - property
-        - operator
     Distributionsdistribution:
       type: object
       properties:
@@ -889,28 +846,6 @@ components:
         - rollout
         - createdAt
         - updatedAt
-    DistributionsdistributionCreateRequest:
-      type: object
-      properties:
-        variantId:
-          type: string
-        rollout:
-          type: number
-          format: double
-      required:
-        - variantId
-        - rollout
-    DistributionsdistributionUpdateRequest:
-      type: object
-      properties:
-        variantId:
-          type: string
-        rollout:
-          type: number
-          format: double
-      required:
-        - variantId
-        - rollout
     EvaluateevaluationRequest:
       type: object
       properties:
@@ -921,7 +856,9 @@ components:
         entityId:
           type: string
         context:
-          type: string
+          type: object
+          additionalProperties:
+            type: string
       required:
         - flagKey
         - entityId
@@ -934,7 +871,9 @@ components:
         entityId:
           type: string
         requestContext:
-          type: string
+          type: object
+          additionalProperties:
+            type: string
         match:
           type: boolean
         flagKey:
@@ -973,19 +912,6 @@ components:
         - FLAG_NOT_FOUND_EVALUATION_REASON
         - MATCH_EVALUATION_REASON
         - ERROR_EVALUATION_REASON
-    EvaluatebatchEvaluationRequest:
-      type: object
-      properties:
-        requestId:
-          type: string
-        requests:
-          type: array
-          items:
-            $ref: '#/components/schemas/EvaluateevaluationRequest'
-        excludeNotFound:
-          type: boolean
-      required:
-        - requests
     EvaluatebatchEvaluationResponse:
       type: object
       properties:
@@ -1046,31 +972,6 @@ components:
         - createdAt
         - updatedAt
         - variants
-    FlagsflagCreateRequest:
-      type: object
-      properties:
-        key:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        enabled:
-          type: boolean
-      required:
-        - key
-        - name
-    FlagsflagUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        enabled:
-          type: boolean
-      required:
-        - name
     RulesruleList:
       type: object
       properties:
@@ -1115,32 +1016,6 @@ components:
         - rank
         - createdAt
         - updatedAt
-    RulesruleCreateRequest:
-      type: object
-      properties:
-        segmentKey:
-          type: string
-        rank:
-          type: integer
-      required:
-        - segmentKey
-        - rank
-    RulesruleOrder:
-      type: object
-      properties:
-        ruleIds:
-          type: array
-          items:
-            type: string
-      required:
-        - ruleIds
-    RulesruleUpdateRequest:
-      type: object
-      properties:
-        segmentKey:
-          type: string
-      required:
-        - segmentKey
     SegmentssegmentList:
       type: object
       properties:
@@ -1190,35 +1065,6 @@ components:
       enum:
         - ALL_MATCH_TYPE
         - ANY_MATCH_TYPE
-    SegmentssegmentCreateRequest:
-      type: object
-      properties:
-        key:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        matchType:
-          $ref: '#/components/schemas/SegmentssegmentMatchType'
-      required:
-        - key
-        - name
-        - description
-        - matchType
-    SegmentssegmentUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        matchType:
-          $ref: '#/components/schemas/SegmentssegmentMatchType'
-      required:
-        - name
-        - description
-        - matchType
     Variantsvariant:
       type: object
       properties:
@@ -1249,6 +1095,164 @@ components:
         - createdAt
         - updatedAt
         - attachment
+    AuthauthenticationTokenCreateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+      required:
+        - name
+        - description
+    ConstraintsconstraintCreateRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ConstraintsconstraintComparisonType'
+        property:
+          type: string
+        operator:
+          type: string
+        value:
+          type: string
+      required:
+        - type
+        - property
+        - operator
+    ConstraintsconstraintUpdateRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ConstraintsconstraintComparisonType'
+        property:
+          type: string
+        operator:
+          type: string
+        value:
+          type: string
+      required:
+        - type
+        - property
+        - operator
+    DistributionsdistributionCreateRequest:
+      type: object
+      properties:
+        variantId:
+          type: string
+        rollout:
+          type: number
+          format: double
+      required:
+        - variantId
+        - rollout
+    DistributionsdistributionUpdateRequest:
+      type: object
+      properties:
+        variantId:
+          type: string
+        rollout:
+          type: number
+          format: double
+      required:
+        - variantId
+        - rollout
+    EvaluatebatchEvaluationRequest:
+      type: object
+      properties:
+        requestId:
+          type: string
+        requests:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluateevaluationRequest'
+        excludeNotFound:
+          type: boolean
+      required:
+        - requests
+    FlagsflagCreateRequest:
+      type: object
+      properties:
+        key:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        enabled:
+          type: boolean
+      required:
+        - key
+        - name
+    FlagsflagUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        enabled:
+          type: boolean
+      required:
+        - name
+    RulesruleCreateRequest:
+      type: object
+      properties:
+        segmentKey:
+          type: string
+        rank:
+          type: integer
+      required:
+        - segmentKey
+        - rank
+    RulesruleOrder:
+      type: object
+      properties:
+        ruleIds:
+          type: array
+          items:
+            type: string
+      required:
+        - ruleIds
+    RulesruleUpdateRequest:
+      type: object
+      properties:
+        segmentKey:
+          type: string
+      required:
+        - segmentKey
+    SegmentssegmentCreateRequest:
+      type: object
+      properties:
+        key:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        matchType:
+          $ref: '#/components/schemas/SegmentssegmentMatchType'
+      required:
+        - key
+        - name
+        - description
+        - matchType
+    SegmentssegmentUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        matchType:
+          $ref: '#/components/schemas/SegmentssegmentMatchType'
+      required:
+        - name
+        - description
+        - matchType
     VariantsvariantCreateRequest:
       type: object
       properties:
