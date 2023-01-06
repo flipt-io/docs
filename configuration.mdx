@@ -238,8 +238,16 @@ If running Flipt via Docker, you can run the migrations in a separate container
 before starting Flipt by running:
 
 ```yaml
-docker run -it flipt/flipt:latest /bin/sh -c './flipt migrate'
+docker run -it -v $HOME/flipt:/var/opt/flipt flipt/flipt:latest /bin/sh -c './flipt migrate'
 ```
+
+<Note>
+  `$HOME/flipt` is just used as an example, you can use any directory you would
+  like on the host.
+</Note>
+
+If you don't use mounted volumes to persist your data, your data will be lost
+when the migration container exits, having no effect on your Flipt instance!
 
 ## Import/Export
 
