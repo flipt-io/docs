@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.1.6
+  version: 0.1.7
 paths:
   /auth/v1/tokens:
     get:
@@ -84,7 +84,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AuthauthenticationTokenCreateRequest'
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                expiresAt:
+                  type: string
+                  format: date-time
+              required:
+                - name
+                - description
   /api/v1/segments/{segmentKey}/constraints:
     post:
       operationId: Constraints.create
@@ -109,7 +120,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConstraintsconstraintCreateRequest'
+              type: object
+              properties:
+                type:
+                  $ref: '#/components/schemas/ConstraintsconstraintComparisonType'
+                property:
+                  type: string
+                operator:
+                  type: string
+                value:
+                  type: string
+              required:
+                - type
+                - property
+                - operator
   /api/v1/segments/{segmentKey}/constraints/{id}:
     delete:
       operationId: Constraints.delete
@@ -154,7 +178,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConstraintsconstraintUpdateRequest'
+              type: object
+              properties:
+                type:
+                  $ref: '#/components/schemas/ConstraintsconstraintComparisonType'
+                property:
+                  type: string
+                operator:
+                  type: string
+                value:
+                  type: string
+              required:
+                - type
+                - property
+                - operator
   /api/v1/flags/{flagKey}/rules/{ruleId}/distributions:
     post:
       operationId: Distributions.create
@@ -184,7 +221,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DistributionsdistributionCreateRequest'
+              type: object
+              properties:
+                variantId:
+                  type: string
+                rollout:
+                  type: number
+                  format: double
+              required:
+                - variantId
+                - rollout
   /api/v1/flags/{flagKey}/rules/{ruleId}/distributions/{id}:
     delete:
       operationId: Distributions.delete
@@ -248,7 +294,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DistributionsdistributionUpdateRequest'
+              type: object
+              properties:
+                variantId:
+                  type: string
+                rollout:
+                  type: number
+                  format: double
+              required:
+                - variantId
+                - rollout
   /api/v1/evaluate:
     post:
       operationId: Evaluation.evaluate
@@ -288,7 +343,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EvaluatebatchEvaluationRequest'
+              type: object
+              properties:
+                requestId:
+                  type: string
+                requests:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/EvaluateevaluationRequest'
+                excludeNotFound:
+                  type: boolean
+              required:
+                - requests
   /api/v1/flags:
     get:
       operationId: Flags.list
@@ -336,7 +402,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FlagsflagCreateRequest'
+              type: object
+              properties:
+                key:
+                  type: string
+                name:
+                  type: string
+                description:
+                  type: string
+                enabled:
+                  type: boolean
+              required:
+                - key
+                - name
   /api/v1/flags/{key}:
     get:
       operationId: Flags.get
@@ -393,7 +471,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FlagsflagUpdateRequest'
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                enabled:
+                  type: boolean
+              required:
+                - name
   /api/v1/flags/{flagKey}/rules:
     get:
       operationId: Rules.list
@@ -451,7 +538,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RulesruleCreateRequest'
+              type: object
+              properties:
+                segmentKey:
+                  type: string
+                rank:
+                  type: integer
+              required:
+                - segmentKey
+                - rank
   /api/v1/flags/{flagKey}/rules/order:
     put:
       operationId: Rules.order
@@ -472,7 +567,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RulesruleOrder'
+              type: object
+              properties:
+                ruleIds:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - ruleIds
   /api/v1/flags/{flagKey}/rules/{id}:
     get:
       operationId: Rules.get
@@ -540,7 +642,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RulesruleUpdateRequest'
+              type: object
+              properties:
+                segmentKey:
+                  type: string
+              required:
+                - segmentKey
   /api/v1/segments:
     get:
       operationId: Segments.list
@@ -588,7 +695,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SegmentssegmentCreateRequest'
+              type: object
+              properties:
+                key:
+                  type: string
+                name:
+                  type: string
+                description:
+                  type: string
+                matchType:
+                  $ref: '#/components/schemas/SegmentssegmentMatchType'
+              required:
+                - key
+                - name
+                - description
+                - matchType
   /api/v1/segments/{key}:
     get:
       operationId: Segments.get
@@ -645,7 +766,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SegmentssegmentUpdateRequest'
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                matchType:
+                  $ref: '#/components/schemas/SegmentssegmentMatchType'
+              required:
+                - name
+                - description
+                - matchType
   /api/v1/flags/{flagKey}/variants:
     post:
       operationId: Variants.create
@@ -670,7 +802,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VariantsvariantCreateRequest'
+              type: object
+              properties:
+                key:
+                  type: string
+                name:
+                  type: string
+                description:
+                  type: string
+                attachment:
+                  type: string
+              required:
+                - key
   /api/v1/flags/{flagKey}/variants/{id}:
     delete:
       operationId: Variants.delete
@@ -719,7 +862,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VariantsvariantUpdateRequest'
+              type: object
+              properties:
+                key:
+                  type: string
+                name:
+                  type: string
+                description:
+                  type: string
+                attachment:
+                  type: string
+              required:
+                - key
 components:
   schemas:
     AuthauthenticationMethod:
@@ -1095,190 +1249,6 @@ components:
         - createdAt
         - updatedAt
         - attachment
-    AuthauthenticationTokenCreateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        expiresAt:
-          type: string
-          format: date-time
-      required:
-        - name
-        - description
-    ConstraintsconstraintCreateRequest:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ConstraintsconstraintComparisonType'
-        property:
-          type: string
-        operator:
-          type: string
-        value:
-          type: string
-      required:
-        - type
-        - property
-        - operator
-    ConstraintsconstraintUpdateRequest:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ConstraintsconstraintComparisonType'
-        property:
-          type: string
-        operator:
-          type: string
-        value:
-          type: string
-      required:
-        - type
-        - property
-        - operator
-    DistributionsdistributionCreateRequest:
-      type: object
-      properties:
-        variantId:
-          type: string
-        rollout:
-          type: number
-          format: double
-      required:
-        - variantId
-        - rollout
-    DistributionsdistributionUpdateRequest:
-      type: object
-      properties:
-        variantId:
-          type: string
-        rollout:
-          type: number
-          format: double
-      required:
-        - variantId
-        - rollout
-    EvaluatebatchEvaluationRequest:
-      type: object
-      properties:
-        requestId:
-          type: string
-        requests:
-          type: array
-          items:
-            $ref: '#/components/schemas/EvaluateevaluationRequest'
-        excludeNotFound:
-          type: boolean
-      required:
-        - requests
-    FlagsflagCreateRequest:
-      type: object
-      properties:
-        key:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        enabled:
-          type: boolean
-      required:
-        - key
-        - name
-    FlagsflagUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        enabled:
-          type: boolean
-      required:
-        - name
-    RulesruleCreateRequest:
-      type: object
-      properties:
-        segmentKey:
-          type: string
-        rank:
-          type: integer
-      required:
-        - segmentKey
-        - rank
-    RulesruleOrder:
-      type: object
-      properties:
-        ruleIds:
-          type: array
-          items:
-            type: string
-      required:
-        - ruleIds
-    RulesruleUpdateRequest:
-      type: object
-      properties:
-        segmentKey:
-          type: string
-      required:
-        - segmentKey
-    SegmentssegmentCreateRequest:
-      type: object
-      properties:
-        key:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        matchType:
-          $ref: '#/components/schemas/SegmentssegmentMatchType'
-      required:
-        - key
-        - name
-        - description
-        - matchType
-    SegmentssegmentUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        matchType:
-          $ref: '#/components/schemas/SegmentssegmentMatchType'
-      required:
-        - name
-        - description
-        - matchType
-    VariantsvariantCreateRequest:
-      type: object
-      properties:
-        key:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        attachment:
-          type: string
-      required:
-        - key
-    VariantsvariantUpdateRequest:
-      type: object
-      properties:
-        key:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        attachment:
-          type: string
-      required:
-        - key
   securitySchemes:
     BearerAuth:
       type: http
