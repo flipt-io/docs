@@ -48,7 +48,7 @@ A guide to using the UI for the first time can be found in the
 
 ## Database
 
-Flipt can be run with either SQLite, Postgres, or MySQL databases. The
+Flipt can be run with either SQLite, Postgres, MySQL, or CockroachDB databases. The
 [Configuration](/configuration) documentation shows how to enable each database.
 
 ## Technologies
@@ -58,11 +58,8 @@ Flipt is built using several amazing open source technologies including:
 - [Go Programming Language](https://golang.org/)
 - [gRPC](https://grpc.io/)
 - [gRPC Gateway](https://github.com/grpc-ecosystem/grpc-gateway/)
-- [Vue.js](https://vuejs.org/)
-- [Bulma](https://bulma.io/)
-- [Buefy](https://buefy.org/documentation/)
-
-A brief description of why each technology was chosen is below.
+- [ReactJS](https://reactjs.org/)
+- [TailwindCSS](https://tailwindcss.com/)
 
 ### Go
 
@@ -102,27 +99,3 @@ This means that the REST API follows the same codepaths as the gRPC service that
 Flipt implements, allowing for reduced bugs and a simpler architecture.
 
 The Flipt UI is also built on top of the REST API provided by gRPC gateway.
-
-### Vue.js
-
-[Vue.js](https://vuejs.org/) is a minimal, modern and performant JavaScript
-framework that makes it easy to implement reactive frontend applications such as
-the Flipt UI. Vue.js was chosen because of it's rich ecosystem as well as ease
-of use to get started.
-
-The Flipt UI is a Single Page Application (SPA) written in JavaScript using
-Vue.js, that communicates with with the Flipt backend over the Flipt REST API.
-This means that the UI uses the same API that end clients do, meaning that
-anything you can do with the Flipt API, you can do in the UI and vice versa.
-
-### Bulma
-
-[Bulma](https://bulma.io/) is a free, open source CSS framework based on
-Flexbox. It makes it easy to create nice looking user interfaces with minimal
-CSS.
-
-### Buefy
-
-[Buefy](https://buefy.org/documentation/) creates lightweight UI components for
-Vue.js based on Bulma. The Flipt UI was built using several Buefy components
-that greatly enhanced the speed of development.
