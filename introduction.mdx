@@ -35,9 +35,7 @@ To create a flag:
 4. Click `Enabled` so the flag will be enabled once created.
 5. Click `Create`.
 
-!["Create Flag"](/images/00_create_flag-7f73300fe4ea293c7a8178195dab4ac2.png)
-
-You should see the message `Flag created!`.
+!["Create Flag"](/images/getting_started/create_flag.png)
 
 ### Create Variants
 
@@ -46,14 +44,12 @@ you define.
 
 To create a variant:
 
-1. On the Flag Details page for the new flag you created, click `New Variant`.
+1. On the Flag Details page for the new flag you created, click `Add Variant`.
 2. Populate the details of the variant as shown.
-3. Click `Add Variant`.
+3. Click `Create`.
 4. Create one more variant populating the information as you wish.
 
-!["Create Variant"](/images/01_create_variant-62ed2db0355f0aca50b5aeeacad36f61.png)
-
-You should see the message `Variant added!`.
+!["Create Variant"](/images/getting_started/create_variant.png)
 
 Click `Flags` in the navigation menu and you should now see your newly created
 flag in the list.
@@ -69,14 +65,12 @@ Segments are used to split your user base into subsets.
 
 To create a segment:
 
-1. From the main page click `Segments`.
+1. From the navigation click `Segments`.
 2. Click `New Segment`.
 3. Populate the details of the segment as shown.
 4. Click `Create`.
 
-!["Create Segment"](/images/02_create_segment-b276e53db39b863f719ae2daa2f8c940.png)
-
-You should see the message `Segment created!`.
+!["Create Segment"](/images/getting_started/create_segment.png)
 
 ### Create a Constraint
 
@@ -90,87 +84,73 @@ Constraints are used to target a specific segment.
 To create a constraint:
 
 1. On the Segment Details page for the new segment you created, click
-   `New Constraint`.
+   `Add Constraint`.
 2. Populate the details of the constraint as shown.
-3. Click `Add Constraint`.
+3. Click `Create`.
 
-!["Create Constraint"](/images/03_create_constraint-1c7f95f07e6e745d5bcca26afa4a371a.png)
-
-You should see the message `Constraint added!`.
+!["Create Constraint"](/images/getting_started/create_constraint.png)
 
 Click `Segments` in the navigation menu and you should now see your newly
 created segment in the list.
 
 ## Rules and Distributions
 
-Finally we'll create a rule and set of distributions for your flag and variants.
-Rules and distributions allow you to define which variant gets returned when you
+Finally we'll create a rule defining a distribution for your flag and variants.
+Rules allow you to define which variant gets returned when you
 evaluate a specific flag that falls into a given segment.
 
-To create a rule and distribution:
+### Create a Rule
+
+To create a rule:
 
 1. Go back to the flag you created at the beginning.
-2. Click `Targeting`.
-3. Click `New Rule`.
-4. Under `Segment:` choose the segment you created earlier.
-5. Under `Then serve:` choose `A Percentage Rollout`.
+2. Click `Evaluation`.
+3. Click `Add Rule`.
+4. Next to `Segment` choose or search for the segment you created earlier.
+5. Next to `Type` choose `Multi-Variant`.
 6. You should see your two variants that you created earlier, with a percentage
-   of 50% each next to them.
-7. Click `Add Rule`.
+   of `50%` each.
+7. Click `Create`.
 
-!["Create Rule"](/images/04_create_rule-a3ea6bb1f1ef526b80ae94370d924821.png)
-
-You should see the message `Rule added!`. You just created your first rule and
-distribution.
+!["Create"](/images/getting_started/create_rule.png)
 
 A distribution is a way of assigning a percentage for which entities evaluated
 get a specific variant. The higher the percentage assigned, the more likely it
 is that any entity will get that specific variant.
 
 <Note>
-  You could just as easily have picked a single variant instead of `A Percentage
-  Rollout` when setting up your rule. This would effectively mean you have a
-  single distribution, a variant with 100% chance of being returned.
+  You could just as easily have picked `Single Variant` instead of
+  `Multi-Variant` when setting up your rule. This would effectively mean you
+  have a single distribution, a variant with `100%` chance of being returned.
 </Note>
 
-## Evaluation and Debug console
+## Evaluation Console
 
 After creating the above flag, segment and targeting rule, you're now ready to
 test how this would work in your application.
 
-Fortunately the Flipt UI contains a Debug Console to allow you to experiment
-with different evaluation requests to see how they would be evaluated.
+The Flipt UI contains an Evaluation Console to allow you to experiment
+with different requests to see how they would be evaluated.
 
 The main ideas behind how evaluation works is described in more detail in the
-[Concepts](/concepts) documentation.
+[Concepts](/concepts#evaluation) documentation.
 
 To test evaluation:
 
-1. Navigate to the `Targeting` section for your flag that you created above.
-2. Scroll down to the `Debug Console` section and click into the left pane where
-   you will see a JSON payload. This represents the body of the request that
-   will be evaluated.
-3. Notice the `flagKey` matches the `key` field of your flag.
-4. Notice that `entityId` is pre-populated with a random UUID. This represents
+1. Navigate to the `Console` page from the main navigation.
+2. Select or search for the flag you created earlier.
+3. Notice that the `Entity ID` field is pre-populated with a random UUID. This represents
    the ID that you would use to uniquely identify entities (ex: users) that you
    want to test against your flags.
-5. Note that the `context` object is pre-populated as well. This corresponds to
-   the properties that will be evaluated to determine if your request matches
-   any constraints of your segments.
-6. Update the `context` object as shown.
-7. Click `Debug`.
-8. Note the `Response` pane to the right has been populated with the evaluation
+4. Update the `Request Context` field as shown with valid JSON.
+5. Click `Evaluate`.
+6. Note tje pane to the right has been populated with the evaluation
    response from the server, informing you that this request would match your
    segment that you created earlier, and return one of the variants defined.
-9. Experiment with different values for the `context` and `entityId` fields.
+7. Experiment with different values for the `Request Context` and `Entity ID` fields.
 
-!["Debug Console"](/images/05_debug_console-890c2a713fea07fb51d41c3f4c8f531e.png)
+!["Evaluation Console"](/images/getting_started/evaluation_console.png)
 
-<Note>
-  You can click `Reset` to populate a new example request in the `Request` pane.
-  This will also generate a fresh UUID for the `entityId` field.
-</Note>
-
-That's it! You're now ready to integrate Flipt into your application and start
+That's it! You're now ready to integrate Flipt into your applications and start
 defining your own flags and segments that will enable you to seamlessly rollout
 new features to your users while reducing risk.

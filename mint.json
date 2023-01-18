@@ -51,7 +51,6 @@
       "group": "Home",
       "pages": [
         "introduction",
-        "use_cases",
         "concepts",
         "installation",
         "integration",
