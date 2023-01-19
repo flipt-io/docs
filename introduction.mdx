@@ -3,10 +3,9 @@ title: Getting Started
 description: This document describes how to get started with Flipt.
 ---
 
-Once you have your application integrated with the Flipt backend, it's time to
-create some flags to evaluate. This document will walk you through creating your
-first flag, segment, set of rules and finally using the debug console to
-evaluate everything.
+This document will walk you through creating your
+first flag, segment, set of rules, and finally using the evaluation console to
+mimic an evaluation request from your applications.
 
 For more information on any of the concepts described here, please see the
 [Concepts](/concepts) documentation.
@@ -144,7 +143,7 @@ To test evaluation:
    want to test against your flags.
 4. Update the `Request Context` field as shown with valid JSON.
 5. Click `Evaluate`.
-6. Note tje pane to the right has been populated with the evaluation
+6. Note the pane to the right has been populated with the evaluation
    response from the server, informing you that this request would match your
    segment that you created earlier, and return one of the variants defined.
 7. Experiment with different values for the `Request Context` and `Entity ID` fields.
