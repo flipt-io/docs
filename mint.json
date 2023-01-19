@@ -54,9 +54,24 @@
         "concepts",
         "installation",
         "integration",
-        "configuration",
-        "authentication",
         "architecture"
+      ]
+    },
+    {
+      "group": "Configuration",
+      "pages": [
+        "configuration/overview",
+        "configuration/storage",
+        "configuration/authentication",
+        "configuration/observability"
+      ]
+    },
+    {
+      "group": "Authentication",
+      "pages": [
+        "authentication/overview",
+        "authentication/methods",
+        "authentication/using-tokens"
       ]
     },
     {
@@ -64,7 +79,7 @@
       "pages": ["reference/overview"]
     },
     {
-      "group": "Authentication",
+      "group": "API Authentication",
       "pages": [
         "reference/authentication/list-tokens",
         "reference/authentication/get-token",
