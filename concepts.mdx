@@ -11,7 +11,7 @@ Flags are the basic unit in the Flipt ecosystem. Flags represent experiments or
 features that you want to be able to enable or disable for users of your
 applications.
 
-For example, a flag named `new-contact-page`, could be used to determine whether
+For example, a flag named `new-contact-page` could be used to determine whether
 or not a given user sees the latest version of a contact us page that you are
 working on when they visit your homepage.
 
@@ -23,8 +23,8 @@ more elaborate use cases.
 ## Variants
 
 Variants are options for flags. For example, if you have a flag `colorscheme`
-that determines which main colors your users see when they log in to your
-application, then possible variants could be include `blue`, `green` or `red`.
+that determines which main colors your users see when they login to your
+application, then possible variants could include `blue`, `green` or `red`.
 
 Variants can also have JSON attachments as of
 [v1.6.1](https://github.com/flipt-io/flipt/releases/tag/v1.6.1).
@@ -74,7 +74,7 @@ Rules allow you to tie your flags, variants and segments together by specifying
 which segments are targeted by which variants.
 
 Rules can be as simple as `IF IN segment THEN RETURN variant_a` or they can be
-more rich by using distribution logic to rollout features on a percent basis.
+richer by using distribution logic to roll out features on a percent basis.
 
 Continuing our previous example, we may want to return the flag variant `blue`
 for all entities in the `new-users` segment. This would be configured like so:
@@ -89,7 +89,7 @@ for all entities in the `new-users` segment. This would be configured like so:
 
 ## Distributions
 
-Distributions allow you to rollout different variants of your flag to
+Distributions allow you to roll out different variants of your flag to
 percentages of your user base based on your rules.
 
 Let's say that instead of always showing the `blue` variant to your `new-users`
@@ -99,13 +99,13 @@ to the remaining **60%**. You would accomplish this using rules with distributio
 ![Distributions Example](/images/concepts/distributions.png)
 
 This is an extremely powerful feature of Flipt that can help you seamlessly
-deploy new features of your applications to your users while also limiting reach
+deploy new features of your applications to your users while also limiting the reach
 of potential bugs.
 
 ## Evaluation
 
 Evaluation is the process of sending requests to the Flipt server to process and
-determine if that request matches any of your segments, and if so which variant
+determine if that request matches any of your segments and if so which variant
 to return.
 
 In the above example involving colors, evaluation is where you send information
@@ -119,7 +119,7 @@ about your current user to determine if they are a `new-user`, and which color
 Evaluation works by uniquely identifying each _thing_ that you want to compare
 against your segments and flags. We call this an `entity` in the Flipt
 ecosystem. More often than not this will be a user, but we didn't want to make
-any assumptions on how your application works, which is why `entity` was chosen.
+any assumptions about how your application works, which is why `entity` was chosen.
 
 <Info>
 **entity**
@@ -136,11 +136,11 @@ It could be a:
 
 - email address
 - userID
-- ip address
+- IP address
 - physical address
 - etc
 
-Anything that is unique enough for your application and it's requirements.
+Anything that is unique enough for your application and its requirements.
 
 ### Context
 
@@ -151,7 +151,7 @@ constraints that you defined.
 <Info>
 **context**
 
-metadata associated with your entity, used to determine which if any segments
+metadata associated with your entity used to determine which if any segments
 that entity is a member of
 
 </Info>
@@ -167,7 +167,7 @@ Think of these as pieces of information that are usually not unique, but that
 can be used to split your entities into your segments.
 
 You can include as much or as little context for each entity as you want,
-however the more context that you provide, the more likely it is that a entity
+however, the more context that you provide, the more likely it is that an entity
 will match one of your segments.
 
 In Flipt, `context` is a simple map of key-value pairs where the key is the
