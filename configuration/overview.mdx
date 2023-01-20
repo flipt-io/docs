@@ -83,29 +83,29 @@ These properties are as follows:
 | authentication.required               | Enable or disable authentication validation on requests       | false   | v1.15.0 |
 | authentication.session.domain         | Public domain on which Flipt instance is hosted               |         | v1.17.0 |
 | authentication.session.secure         | Configures the `Secure` property on created session cookies   | false   | v1.17.0 |
-| authentication.session.state_lifetime | Configures the lifetime of state parameters during oauth flow | 10m     | v1.17.0 |
-| authentication.session.state_lifetime | Configures the lifetime of state parameters during oauth flow | 10m     | v1.17.0 |
+| authentication.session.token_lifetime | Configures the lifetime of the session token (login duration) | 24h     | v1.17.0 |
+| authentication.session.state_lifetime | Configures the lifetime of state parameters during OAuth flow | 10m     | v1.17.0 |
 | authentication.session.csrf.key       | Secret credential used to sign CSRF prevention tokens         |         | v1.17.0 |
 
 #### Authentication Methods: Token
 
-| Property                                          | Description                                            | Default | Since   |
-| --------------------------------------------------| -------------------------------------------------------| ------- | ------- |
-| authentication.methods.token.enabled              | Enable static token creation                           | false   | v1.15.0 |
-| authentication.methods.token.cleanup.interval     | Interval between deletion of expired tokens            | 1h      | v1.16.0 |
-| authentication.methods.token.cleanup.grace_period | How expired a token can become before it is deleteable | 30m     | v1.16.0 |
+| Property                                          | Description                                                    | Default | Since   |
+| ------------------------------------------------- | -------------------------------------------------------------- | ------- | ------- |
+| authentication.methods.token.enabled              | Enable static token creation                                   | false   | v1.15.0 |
+| authentication.methods.token.cleanup.interval     | Interval between deletion of expired tokens                    | 1h      | v1.16.0 |
+| authentication.methods.token.cleanup.grace_period | How long an expired token can exist until considered deletable | 30m     | v1.16.0 |
 
 #### Authentication Methods: OIDC
 
-| Property                                                          | Description                                                   | Default | Since   |
-| ----------------------------------------------------------------- | ------------------------------------------------------------- | ------- | ------- |
-| authentication.methods.oidc.enabled                               | Enable OIDC authentication                                    | false   | v1.17.0 |
-| authentication.methods.oidc.cleanup.interval                      | Interval between deletion of expired tokens                   | 1h      | v1.17.0 |
-| authentication.methods.oidc.cleanup.grace_period                  | How expired a token can become before it is deleteable        | 30m     | v1.17.0 |
-| authentication.methods.oidc.providers.[provider].issuer_url       | Provider specific OIDC issuer URL (see your providers docs)   |         | v1.17.0 |
-| authentication.methods.oidc.providers.[provider].client_id        | Provider specific OIDC client ID (see your providers docs)    |         | v1.17.0 |
-| authentication.methods.oidc.providers.[provider].client_token     | Provider specific OIDC client token (see your providers docs) |         | v1.17.0 |
-| authentication.methods.oidc.providers.[provider].redirect_address | Public URL on which this Flipt instance is reachable          |         | v1.17.0 |
+| Property                                                          | Description                                                    | Default | Since   |
+| ----------------------------------------------------------------- | -------------------------------------------------------------- | ------- | ------- |
+| authentication.methods.oidc.enabled                               | Enable OIDC authentication                                     | false   | v1.17.0 |
+| authentication.methods.oidc.cleanup.interval                      | Interval between deletion of expired tokens                    | 1h      | v1.17.0 |
+| authentication.methods.oidc.cleanup.grace_period                  | How long an expired token can exist until considered deletable | 30m     | v1.17.0 |
+| authentication.methods.oidc.providers.[provider].issuer_url       | Provider specific OIDC issuer URL (see your providers docs)    |         | v1.17.0 |
+| authentication.methods.oidc.providers.[provider].client_id        | Provider specific OIDC client ID (see your providers docs)     |         | v1.17.0 |
+| authentication.methods.oidc.providers.[provider].client_token     | Provider specific OIDC client token (see your providers docs)  |         | v1.17.0 |
+| authentication.methods.oidc.providers.[provider].redirect_address | Public URL on which this Flipt instance is reachable           |         | v1.17.0 |
 
 ### Cache
 

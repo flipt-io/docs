@@ -1,6 +1,6 @@
 ---
 title: Using Client Tokens
-description: This document explains how handle client tokens via both HTTP and gRPC.
+description: This document explains how to handle client tokens via both HTTP and gRPC.
 ---
 
 ## HTTP
@@ -10,7 +10,7 @@ The choice allows us to support two different types of workload.
 
 ### 1. `Authorization` Header
 
-For application to Flipt communication over HTTP, the `Authorization` header is most appropriate.
+For applications that communicate with Flipt over HTTP, the `Authorization` header is most appropriate.
 It must be provided in the form `Authorization: Bearer <client_token>`.
 
 The following examples illustrate this in the context of various programming languages:
@@ -104,7 +104,7 @@ In a browser context this means subsequent API calls will be automatically authe
 
 ## gRPC
 
-For gRPC we use the [Metadata](https://grpc.io/docs/what-is-grpc/core-concepts/#metadata) functionality similarly to HTTP Headers.
+For gRPC we use the [Metadata](https://grpc.io/docs/what-is-grpc/core-concepts/#metadata) functionality similar to HTTP Headers.
 The lower-case `authorization` metadata key should be supplied with a single string `Bearer <client-token>` to any RPC calls.
 
 ### Example
