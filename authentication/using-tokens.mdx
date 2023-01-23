@@ -22,22 +22,22 @@ import (
   "net/http"
 )
 
-func main() {
-req := http.NewRequest("GET", "https://flipt.your.instance/api/v1/flags", nil)
-req.Header.Set("Authorization", "Bearer gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpofNCNnc=")
+  func main() {
+  req := http.NewRequest("GET", "https://flipt.your.instance/api/v1/flags", nil)
+  req.Header.Set("Authorization", "Bearer gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpofNCNnc=")
 
-resp, err := http.Do(req)
-// ...
+  resp, err := http.Do(req)
+  // ...
 }
 
-````
+```
 
 ```typescript client.ts
 import fetch from 'node-fetch';
 
 const headers = { 'Authorization': 'Bearer gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpofNCNnc=' }
 const response = await fetch('https://flipt.your.instance/api/v1/flags', { headers: headers })
-````
+```
 
 ```python client.py
 import requests
@@ -70,24 +70,25 @@ import (
 )
 
 func main() {
-req := http.NewRequest("GET", "https://flipt.your.instance/api/v1/flags", nil)
-req.AddCookie(&http.Cookie{
-Name: "flipt_client_token",
-Value: "gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpofNCNnc=",
-})
+  req := http.NewRequest("GET", "https://flipt.your.instance/api/v1/flags", nil)
+  req.AddCookie(&http.Cookie{
+    Name: "flipt_client_token",
+    Value: "gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpofNCNnc=",
+    }
+  )
 
-resp, err := http.Do(req)
-// ...
+  resp, err := http.Do(req)
+  // ...
 }
 
-````
+```
 
 ```typescript client.ts
 import fetch from 'node-fetch';
 
 const headers = { 'Cookie': 'flipt_client_token=gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpofNCNnc=' }
 const response = await fetch('https://flipt.your.instance/api/v1/flags', { headers: headers })
-````
+```
 
 ```python client.py
 import requests
