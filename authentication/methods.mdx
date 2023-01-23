@@ -43,10 +43,11 @@ The rest of this information is mostly academic.
 It is mainly useful if you want to build your own browser application using cookie authentication or understand Flipt's OIDC flow at a lower level.
 
 Head over to [OIDC Configuration](/configuration/authentication#method-oidc) documentation to learn how to configure your provider(s).
+
 </Note>
 
-The `OIDC` authentication method is primarily designed to support browser based authentication.
-However, it can be manually invoked if such a usecase presents itself.
+The `OIDC` authentication method is primarily designed to support browser-based authentication.
+However, it can be manually invoked if such a use case presents itself.
 
 Once enabled, the `/auth/v1/method/oidc` API prefix is mounted to Flipt's API.
 This section of the API supports a generic OAuth 2.0 with OIDC flow.
@@ -54,7 +55,7 @@ This section of the API supports a generic OAuth 2.0 with OIDC flow.
 Flipt's configuration can be defined with multiple simultaneous OIDC providers.
 An operator of Flipt chooses a name for each provider and then configures the relevant secrets necessary to authenticate with an OIDC client.
 
-There are many OIDC providers out there. For example, we have test Flipt with:
+There are many OIDC providers out there. For example, we have tested Flipt with:
 
 - Google
 - Auth0
@@ -62,7 +63,7 @@ There are many OIDC providers out there. For example, we have test Flipt with:
 - Dex
 
 Each provider has their own way of establishing clients and acquiring the relevant credentials.
-You can find futher documentation on leveraging providers like these in our [OIDC Configuration](/configuration/authentication#method-oidc) documentation.
+You can find further documentation on leveraging providers like these in our [OIDC Configuration](/configuration/authentication#method-oidc) documentation.
 
 For illustration purposes, let us say we have configured a single provider with `Dex` and named it `dex` (lowercase) in our provider configuration.
 
@@ -75,4 +76,3 @@ These two endpoints are necessary to support the different legs of the OAuth/OID
 The first can be requested to obtain an authorization URL directed at the configured instance of Dex.
 The latter is the destination that Dex will redirect the client back to.
 When using HTTP, this callback endpoint will establish the `flipt_client_token` and return it via the `Set-Cookie` response header.
-

@@ -125,8 +125,8 @@ collisions occur during the import.
 
 <Warning>
   Be careful when using the `--drop` flag as it will immediately drop all of
-  your data and there is no undo. It is recommend to first backup you database
-  before running this command just to be safe.
+  your data and there is no undo. It is recommended to first backup your
+  database before running this command just to be safe.
 </Warning>
 
 ### Export
@@ -166,14 +166,14 @@ several orders of magnitude.
 
 <Warning>
   Enabling in-memory caching when running more than one instance of Flipt is not
-  advised as it may lead to unpredictable results. It is recommened to use Redis
-  instead if you are running more than one instance of Flipt.
+  advised as it may lead to unpredictable results. It is recommended to use
+  Redis instead if you are running more than one instance of Flipt.
 </Warning>
 
 Caching works as follows:
 
 - All flag reads and evaluation requests go through the cache
-- Flag cache entries are purged whenever a write to a flag or it's variants
+- Flag cache entries are purged whenever a write to a flag or its variants
   occur or the TTL expires
 - Evaluation cache entries are purged after the TTL expires only
 - A cache miss will fetch the item from the database and add the item to the
@@ -212,5 +212,3 @@ cache:
   memory:
     eviction_interval: 2m # expired items will be evicted from the cache every 2 minutes
 ```
-
-
