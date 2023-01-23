@@ -8,7 +8,8 @@ description: This document describes how to configure Flipt's authentication mec
 <Warning>
 Once authentication has been set to `required: true` all API routes will require a client token to be present.
 
-The UI will require a session compatible authentication method (e.g. [OIDC](#OIDC)) be enabled.
+The UI will require a session-compatible authentication method (e.g. [OIDC](#OIDC)) to be enabled.
+
 </Warning>
 
 Flipt supports the ability to secure its core API routes by setting the `required` field to `true` on the `authentication` configuration object.
@@ -24,7 +25,7 @@ See the [Authentication: Overview](/authentication/overview) documentation for m
 
 ### Session
 
-This section contains common properties for establishing browser sessions via a "session compatible" authentication method. Session compatible methods enable support for login in the UI. The methods below state whether or not they are session compatible (e.g. [OIDC](#method-oidc) is session compatible).
+This section contains common properties for establishing browser sessions via a "session compatible" authentication method. Session-compatible methods enable support for login in the UI. The methods below state whether or not they are session compatible (e.g. [OIDC](#method-oidc) is session compatible).
 
 In order to establish a browser session over HTTP (via a `Cookie` header) some configuration is required.
 
@@ -41,15 +42,16 @@ When a "session compatible" authentication method is enabled the `domain` proper
 It should be configured with the public domain your Flipt instance is hosted on.
 The other properties are not required to be explicitly configured.
 
-In order to best secure your instance of Flipt, we that advise you run Flipt with `secure: true`.
-This will require you expose Flipt over HTTPS.
-Additionally, we advise you configure a `csrf.key` with a 32 or 64 byte random string of data.
+To best secure your instance of Flipt, we advise that you run Flipt with `secure: true`.
+This will require you to expose Flipt over HTTPS.
+Additionally, we advise that you configure a `csrf.key` with a 32 or 64-byte random string of data.
 
 <Card title="Using openssl to generate a 64-byte CSRF key" icon="lightbulb">
 
 ```
 openssl rand -base64 64
 ```
+
 </Card>
 
 ### Methods
@@ -76,9 +78,7 @@ Further explanation for using this method can be found in the [Authentication: T
 
 #### Method: OIDC
 
-<Note>
-This is a `session compatible` authentication method.
-</Note>
+<Note>This is a `session compatible` authentication method.</Note>
 
 The `oidc` method provides the ability to establish client tokens via OAuth 2.0 with OIDC flow.
 Once enabled and configured properly, the UI will automatically leverage it and present any configured providers as login options.
@@ -126,7 +126,7 @@ client_id: "CyJcdvQMadOjSEx7ArArom0ytrbIHWd2Fb3N59oh8NQ="
 client_token: "WGgJmfQqN7cf17dFyZKXDL5S445/qhp+hfDAC0Mnl7oBrxgdAgiMyuwCkPiwfgQy"
 ```
 
-We could create a provider defintion in our configuration like so:
+We could create a provider definition in our configuration like so:
 
 ```yaml config.yaml
 authentication:
@@ -145,7 +145,9 @@ authentication:
 ```
 
 <Info>
-Additional `scopes` such as `profile` are not 100% necessary, however, adding them will result in Flipt being able to identify more details about your users such as personalized greeting messages and user profile pictures in the UI.
+  Additional `scopes` such as `profile` are not 100% necessary, however, adding
+  them will result in Flipt being able to identify more details about your users
+  such as personalized greeting messages and user profile pictures in the UI.
 </Info>
 
 Once this configuration has been enabled a `Login with Google` option will be presented in the UI.
@@ -153,9 +155,10 @@ Clicking this button will navigate the user to a Google consent screen.
 Once the user has authenticated with Google, they will be redirected to the address defined in the `redirect_address` section of the provider configuration.
 
 <Tip>
-Google's consent screen can be configured to only accept accounts who are within your Google Workspace organization.
+Google's consent screen can be configured to only accept accounts that are within your Google Workspace organization.
 
-Other providers have similar mechanisms for attentuating who can leverage this authentication flow.
+Other providers have similar mechanisms for attenuating who can leverage this authentication flow.
+
 </Tip>
 
 #### Common Properties: Cleanup
@@ -177,9 +180,9 @@ Whereas, `grace_period` is used to ensure that _expired_ tokens are preserved fo
 
 This allows you to keep authentications around for auditing purposes after expiration.
 Expired tokens are instances where the `expires_at` timestamp occurs before the current time.
-The grace period is added onto this timestamp as a predicate, when the delete operation is made.
+The grace period is added onto this timestamp as a predicate when the delete operation is made.
 
-Tokens, when presented as a credential to the API, which have expired (`expires_at` is before `now()`) will begin immediately failing authentication.
+Tokens that have expired (`expires_at` is before `now()`) will begin immediately failing authentication when presented as a credential to the API.
 The `grace_period` is simply for the cleanup process.
 
 ### Reverse Proxy

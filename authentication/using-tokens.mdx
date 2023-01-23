@@ -5,8 +5,8 @@ description: This document explains how to handle client tokens via both HTTP an
 
 ## HTTP
 
-There are two different valid ways to present a client token via a HTTP requests.
-The choice allows us to support two different types of workload.
+There are two different valid ways to present a client token via HTTP requests.
+The choice allows us to support two different types of workloads.
 
 ### 1. `Authorization` Header
 
@@ -22,13 +22,14 @@ import (
   "net/http"
 )
 
-func main() {
+  func main() {
   req := http.NewRequest("GET", "https://flipt.your.instance/api/v1/flags", nil)
   req.Header.Set("Authorization", "Bearer gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpofNCNnc=")
 
   resp, err := http.Do(req)
   // ...
 }
+
 ```
 
 ```typescript client.ts
@@ -48,15 +49,18 @@ def doRequest():
 
   return
 ```
+
 </CodeGroup>
 
 ### 2. `Cookie` Header
 
 <Warning>
-Please enable [CSRF](/configuration/authentication#session) provention in your Flipt configuration when using a "session compatible" authentication method and `Cookie` based authentication in the browser.
+  Please enable [CSRF](/configuration/authentication#session) prevention in your
+  Flipt configuration when using a "session compatible" authentication method
+  and `Cookie` based authentication in the browser.
 </Warning>
 
-For browser based applications (e.g. Flipt's own user interface) we support supplying a client token via a particular `Cookie` called `flipt_client_token`.
+For browser-based applications (e.g. Flipt's own user interface) we support supplying a client token via a particular `Cookie` called `flipt_client_token`.
 
 <CodeGroup>
 ```go client.go
@@ -68,13 +72,15 @@ import (
 func main() {
   req := http.NewRequest("GET", "https://flipt.your.instance/api/v1/flags", nil)
   req.AddCookie(&http.Cookie{
-    Name:  "flipt_client_token",
+    Name: "flipt_client_token",
     Value: "gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpofNCNnc=",
-  })
+    }
+  )
 
   resp, err := http.Do(req)
   // ...
 }
+
 ```
 
 ```typescript client.ts
@@ -94,13 +100,14 @@ def doRequest():
 
   return
 ```
+
 </CodeGroup>
 
 This allows for stateful browser sessions to be established.
 
-When using a "session compatible" authentication method (e.g. [OIDC](/authentication/methods#oidc)), Flipt will automatically established this cookie via a `Set-Cookie` response header during the authentication method exchange.
+When using a "session compatible" authentication method (e.g. [OIDC](/authentication/methods#oidc)), Flipt will automatically establish this cookie via a `Set-Cookie` response header during the authentication method exchange.
 
-In a browser context this means subsequent API calls will be automatically authenticated given the API requests are invoked with credentials included (cookies are enabled). Flipt's own UI leverages this mechanism for it's login functionality.
+In a browser context this means subsequent API calls will be automatically authenticated given the API requests are invoked with credentials included (cookies are enabled). Flipt's UI leverages this mechanism for its login functionality.
 
 ## gRPC
 
