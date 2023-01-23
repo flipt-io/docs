@@ -15,11 +15,11 @@ For more information on any of the concepts described here, please see the
 Before getting started, make sure the Flipt server is up and running on your
 host on your chosen ports. See [Installation](/installation) for more.
 
-In this example we'll use the default location of http://localhost:8080.
+In this example, we'll use the default location of http://localhost:8080.
 
 ## Flags and Variants
 
-First we'll create a flag and variants that we will use to evaluate against.
+First, we'll create a flag and variants that we will use to evaluate against.
 
 ### Create a Flag
 
@@ -55,7 +55,7 @@ flag in the list.
 
 ## Segments and Constraints
 
-Next we'll create a segment with a constraint that will be used to determine the
+Next, we'll create a segment with a constraint that will be used to determine the
 reach of your flag.
 
 ### Create a Segment
@@ -94,7 +94,7 @@ created segment in the list.
 
 ## Rules and Distributions
 
-Finally we'll create a rule defining a distribution for your flag and variants.
+Finally, we'll create a rule defining a distribution for your flag and variants.
 Rules allow you to define which variant gets returned when you
 evaluate a specific flag that falls into a given segment.
 
@@ -107,7 +107,7 @@ To create a rule:
 3. Click `Add Rule`.
 4. Next to `Segment` choose or search for the segment you created earlier.
 5. Next to `Type` choose `Multi-Variant`.
-6. You should see your two variants that you created earlier, with a percentage
+6. You should see the two variants that you created earlier, with a percentage
    of `50%` each.
 7. Click `Create`.
 
@@ -131,7 +131,7 @@ test how this would work in your application.
 The Flipt UI contains an Evaluation Console to allow you to experiment
 with different requests to see how they would be evaluated.
 
-The main ideas behind how evaluation works is described in more detail in the
+The main ideas behind how evaluation works are described in more detail in the
 [Concepts](/concepts#evaluation) documentation.
 
 To test evaluation:
@@ -144,12 +144,12 @@ To test evaluation:
 4. Update the `Request Context` field as shown with valid JSON.
 5. Click `Evaluate`.
 6. Note the pane to the right has been populated with the evaluation
-   response from the server, informing you that this request would match your
+   response from the server, informing you that this request would match the
    segment that you created earlier, and return one of the variants defined.
 7. Experiment with different values for the `Request Context` and `Entity ID` fields.
 
 !["Evaluation Console"](/images/getting_started/evaluation_console.png)
 
 That's it! You're now ready to integrate Flipt into your applications and start
-defining your own flags and segments that will enable you to seamlessly rollout
+defining your flags and segments that will enable you to seamlessly rollout
 new features to your users while reducing risk.

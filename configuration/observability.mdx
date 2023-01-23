@@ -1,0 +1,81 @@
+---
+title: Observability
+description: This document describes how to configure Flipt's telemetry outputs.
+---
+
+## Telemetry
+
+Flipt developers rely on anonymous usage data to help prioritize new features
+and improve the product. The information collected is completely anonymous,
+never shared with external entities, and you can opt-out at any time.
+
+### What Kind of Data is Collected?
+
+- Flipt version
+
+You can view the full schema of the telemetry data on
+[GitHub](https://github.com/flipt-io/flipt/blob/05b85f6ec704d9eac850984c16d9bc3d15dbdb6c/internal/telemetry/telemetry.go#L26-L30).
+
+We use [Segment](https://segment.com) to collect the data. Only the creator of
+Flipt has access to the data.
+
+### How to Disable Telemetry
+
+There are multiple ways in which you can disable telemetry collection:
+
+#### Configuration File
+
+```yaml
+meta:
+  telemetry_enabled: false
+```
+
+#### Environment Variable
+
+```yaml
+export FLIPT_TELEMETRY_ENABLED=false
+```
+
+## Metrics
+
+Flipt exposes [Prometheus](https://prometheus.io/) metrics at the `/metrics`
+HTTP endpoint. To see which metrics are currently supported, point your browser
+to `FLIPT_HOST/metrics` (ex: `localhost:8080/metrics`).
+
+You should see a bunch of metrics being recorded such as:
+
+```yaml
+flipt_cache_hit_total{cache="memory",type="flag"} 1
+flipt_cache_miss_total{cache="memory",type="flag"} 1
+---
+go_gc_duration_seconds{quantile="0"} 8.641e-06
+go_gc_duration_seconds{quantile="0.25"} 2.499e-05
+go_gc_duration_seconds{quantile="0.5"} 3.5359e-05
+go_gc_duration_seconds{quantile="0.75"} 6.6594e-05
+go_gc_duration_seconds{quantile="1"} 0.00026651 go_gc_duration_seconds_sum
+0.000402094 go_gc_duration_seconds_count 5
+```
+
+There is an
+[example](https://github.com/flipt-io/flipt/tree/main/examples/prometheus)
+provided in the GitHub repository showing how to set up Flipt with Prometheus.
+
+### Dashboards
+
+![Grafana Dashboard](/images/configuration/grafana_flag_dashboard.png)
+
+We have created a set of [Grafana](https://grafana.com/) dashboards that you can use to visualize the metrics collected by Flipt, including both server health and flag evaluation metrics.
+
+You can find the dashboards in our [grafana-dashboards](https://github.com/flipt-io/grafana-dashboards) repository.
+
+## Tracing
+
+Flipt supports distributed tracing via the
+[OpenTracing](https://opentracing.io/) protocol and
+[Jaeger](https://www.jaegertracing.io/) library. Enable tracing via the
+configuration values described above and point Flipt to your Jaeger host to
+record spans.
+
+There is an
+[example](https://github.com/flipt-io/flipt/tree/main/examples/tracing) provided
+in the GitHub repository showing how to set up Flipt with Jaeger.

@@ -23,7 +23,7 @@ Service is served on `9000` by default.
 
 ## Backend
 
-The Flipt Backend service is the main entrypoint to the application and
+The Flipt Backend service is the main entry point to the application and
 implements all of the business logic for Flipt. This is what users of the gRPC
 client SDKs will communicate with, allowing for fast, efficient communication
 with your applications.
@@ -38,7 +38,7 @@ SDKs allow.
 
 ### Web UI
 
-The Flipt Web UI is a modern, minimalist UI to allow you to easily setup and
+The Flipt Web UI is a modern, minimalist UI to allow you to easily set up and
 monitor your feature flags and experiments. It's served as a JavaScript Single
 Page Application (SPA) and communicates with the Flipt Backend Service through
 the REST API.
@@ -53,7 +53,7 @@ Flipt can be run with either SQLite, Postgres, MySQL, or CockroachDB databases. 
 
 ## Technologies
 
-Flipt is built using several amazing open source technologies including:
+Flipt is built using several amazing open-source technologies including:
 
 - [Go Programming Language](https://golang.org/)
 - [gRPC](https://grpc.io/)
@@ -68,7 +68,7 @@ From the [Go](https://golang.org/) documentation:
 > Go makes it easy to build simple, reliable and efficient software.
 
 These are all goals that Flipt also aspires to. Flipt was written in Go mainly
-because of it's ability to produce bulletproof systems software as as single
+because of its ability to produce bulletproof systems software as a single
 binary for multiple architectures.
 
 This allows Flipt to easily be deployed in almost any environment since it's as
@@ -76,7 +76,7 @@ simple as copying a compiled binary.
 
 ### GRPC
 
-[gRPC](https://grpc.io/) is a high performance, open source RPC framework
+[gRPC](https://grpc.io/) is a high-performance, open-source RPC framework
 created by Google. gRPC allows Flipt to be performant by eliminating much of the
 overhead incurred by using standard HTTP for communication.
 
@@ -86,7 +86,7 @@ different languages from a single
 file.
 
 This allows you easily integrate your services with Flipt regardless of the
-language they are written in.
+language that they are written in.
 
 ### GRPC Gateway
 
@@ -95,7 +95,7 @@ While awesome, gRPC might not be for everyone.
 reverse-proxy server which translates a RESTful JSON API into gRPC. This allows
 Flipt to implement a REST API as well as the gRPC API described above.
 
-This means that the REST API follows the same codepaths as the gRPC service that
+This means that the REST API follows the same code paths as the gRPC service that
 Flipt implements, allowing for reduced bugs and a simpler architecture.
 
 The Flipt UI is also built on top of the REST API provided by gRPC gateway.
