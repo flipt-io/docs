@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.1.7
+  version: 0.1.8
 paths:
   /auth/v1/tokens:
     get:
@@ -65,6 +65,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/Authauthentication'
       security: *ref_0
+  /auth/v1/self/expire:
+    put:
+      operationId: Authentication.expireSelf
+      tags:
+        - Authentication
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                expiresAt:
+                  type: string
+                  format: date-time
   /auth/v1/method/token:
     post:
       operationId: Authentication.createToken
@@ -881,6 +901,7 @@ components:
       enum:
         - METHOD_NONE
         - METHOD_TOKEN
+        - METHOD_OIDC
       description: The default is METHOD_NONE
     Authauthentication:
       type: object
