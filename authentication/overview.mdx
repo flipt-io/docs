@@ -28,16 +28,17 @@ The following URLs are not protected by authentication:
 They are currently unprotected to support backwards compatibility.
 We're exploring ways to support protecting these endpoints going forward.
 For now, we recommened excluding these API prefixes from your load-balancer.
+
 </Warning>
 
 ### Client Tokens
 
 Client tokens are the core credential required to authenticate a request.
-Tokens themselves are acquired via [authentication methods](#authentication-methods).
+Tokens themselves are acquired via [authentication methods](/authentication/methods).
 
 Flipt currently supports two authentication methods for acquiring credentials:
 
-1. [Token](/authentication/methods/#token)
+1. [Static Token](/authentication/methods/#static-token)
 2. [OIDC](/authentication/methods/#oidc)
 
 Once a `client token` has been acquired, it can be supplied via request metadata dependent on the protocol. Both HTTP and gRPC examples can be found on the [Using Client Tokens](/authentication/using-tokens) page.
