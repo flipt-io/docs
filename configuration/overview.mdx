@@ -39,6 +39,9 @@ These properties are as follows:
 | log.grpc_level         | Level at which gRPC messages are logged (trace, debug, info, warn, error, fatal, panic) | error               | v1.12.0 |
 | log.file               | File to log to instead of STDOUT                                                        |                     | v0.10.0 |
 | log.encoding           | Encoding to use for logging (json, console)                                             | console             | v1.12.0 |
+| log.keys.time          | Structured logging key used when outputting log timestamp                               | T                   | v1.19.0 |
+| log.keys.level         | Structured logging key used when outputting log level                                   | L                   | v1.19.0 |
+| log.keys.message       | Structured logging key used when outputting log message                                 | M                   | v1.19.0 |
 | ui.enabled             | Enable UI and API docs                                                                  | true                |         |
 | cors.enabled           | Enable CORS support                                                                     | false               | v0.7.0  |
 | cors.allowed_origins   | Sets Access-Control-Allow-Origin header on server                                       | "\*" (all domains)  | v0.7.0  |
