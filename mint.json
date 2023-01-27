@@ -85,7 +85,8 @@
         "reference/authentication/get-token",
         "reference/authentication/delete-token",
         "reference/authentication/create-token",
-        "reference/authentication/get-self"
+        "reference/authentication/get-self",
+        "reference/authentication/expire-self"
       ]
     },
     {
