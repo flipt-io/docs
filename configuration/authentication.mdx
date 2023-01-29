@@ -3,8 +3,6 @@ title: Authentication
 description: This document describes how to configure Flipt's authentication mechanisms.
 ---
 
-## Authentication
-
 <Warning>
 Once authentication has been set to `required: true` all API routes will require a client token to be present.
 
@@ -23,7 +21,7 @@ When authentication is set to `required`, the API will ensure valid credentials 
 
 See the [Authentication: Overview](/authentication/overview) documentation for more details on Flipt's API authentication handling.
 
-### Session
+## Session
 
 This section contains common properties for establishing browser sessions via a "session compatible" authentication method. Session-compatible methods enable support for login in the UI. The methods below state whether or not they are session compatible (e.g. [OIDC](#method-oidc) is session compatible).
 
@@ -54,13 +52,13 @@ openssl rand -base64 64
 
 </Card>
 
-### Methods
+## Methods
 
 Each key within the `methods` section is a particular authentication method.
 These methods are disabled (`enabled: false`) by default.
 Enabling and configuring a method allows for different ways to establish client token credentials within Flipt.
 
-#### Method: Static Token
+### Method: Static Token
 
 The `token` method provides the ability to create client tokens statically, with optional expiry constraints.
 
@@ -76,7 +74,7 @@ Once enabled, static tokens can be created via the [CreateToken](/reference/auth
 
 Further explanation for using this method can be found in the [Authentication: Static Token](/authentication/methods#static-token) documentation.
 
-#### Method: OIDC
+### Method: OIDC
 
 <Note>This is a `session compatible` authentication method.</Note>
 
@@ -111,13 +109,53 @@ Flipt has been tested with each of the following providers:
 - [Auth0](https://auth0.com/docs/get-started/applications/application-settings)
 - [Gitlab](https://docs.gitlab.com/ee/integration/openid_connect_provider.html)
 - [Dex](https://dexidp.io/docs/openid-connect/)
+- [Okta](https://developer.okta.com/docs/concepts/oauth-openid/#oauth-2-0)
 
 Though the intention is that it should work with other OIDC providers, these are just the handful the Flipt team has validated.
 
 Following any of the links above should take you to the relevant documentation for each of these providers' OIDC client setups.
 You can use the credentials and client configuration obtained using those steps as configuration for your Flipt instance.
 
-**Example: OIDC with Google**
+#### Callback URL
+
+When configuring your OIDC provider, you will need to provide a callback URL for the provider to redirect back to Flipt after a successful login.
+
+The callback URL will be in the form of `https://your.flipt.instance.url.com/auth/v1/method/oidc/{provider}/callback`.
+
+You can find the callback URL for each provider that you configure in your Flipt instance by querying the API.
+
+```bash
+curl --request GET \
+  --url https://your.flipt.instance.url.com/auth/v1/method \
+  --header 'Accept: application/json'
+
+
+{
+	"methods": [
+		{
+			"method": "METHOD_TOKEN",
+			"enabled": true,
+			"sessionCompatible": false,
+			"metadata": null
+		},
+		{
+			"method": "METHOD_OIDC",
+			"enabled": true,
+			"sessionCompatible": true,
+			"metadata": {
+				"providers": {
+					"google": {
+						"authorize_url": "/auth/v1/method/oidc/google/authorize",
+						"callback_url": "/auth/v1/method/oidc/google/callback"
+					}
+				}
+			}
+		}
+	]
+}
+```
+
+#### Example: OIDC with Google
 
 Given we're running our instance of Flipt on the public internet at `https://flipt.myorg.com`.
 
@@ -146,11 +184,14 @@ authentication:
             - profile
 ```
 
-<Info>
-  Additional `scopes` such as `profile` are not 100% necessary, however, adding
-  them will result in Flipt being able to identify more details about your users
-  such as personalized greeting messages and user profile pictures in the UI.
-</Info>
+<Note>
+  The callback URL for this provider would be
+  `https://flipt.myorg.com/auth/v1/method/oidc/google/callback`.
+</Note>
+
+Additional `scopes` such as `profile` are not 100% necessary, however, adding
+them will result in Flipt being able to identify more details about your users
+such as personalized greeting messages and user profile pictures in the UI.
 
 Once this configuration has been enabled a `Login with Google` option will be presented in the UI.
 Clicking this button will navigate the user to a Google consent screen.
@@ -163,7 +204,7 @@ Other providers have similar mechanisms for attenuating who can leverage this au
 
 </Tip>
 
-#### Common Properties: Cleanup
+### Common Properties: Cleanup
 
 Each authentication method contains a nested `cleanup` configuration object.
 This object configures the periodic deletion of _expired_ authentications created with the associated method.
@@ -187,14 +228,7 @@ The grace period is added onto this timestamp as a predicate when the delete ope
 Tokens that have expired (`expires_at` is before `now()`) will begin immediately failing authentication when presented as a credential to the API.
 The `grace_period` is simply for the cleanup process.
 
-### Reverse Proxy
+## Reverse Proxy
 
 It is possible to secure Flipt simply by running it behind a reverse proxy in your own trusted environment.
 An example of this can be found in the core Flipt repository [here](https://github.com/flipt-io/flipt/tree/main/examples/auth).
-
-## Authorization
-
-Currently, Flipt only supports authentication without any extended authorization capabilities.
-Authorization is something we're actively exploring and we will update this section as we settle on a design.
-
-We would appreciate your input into designing authorization. Head over to [our discord](https://flipt.io/discord) and let us know what you need from Flipt.

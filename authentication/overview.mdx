@@ -31,7 +31,7 @@ For now, we recommened excluding these API prefixes from your load-balancer.
 
 </Warning>
 
-### Client Tokens
+## Client Tokens
 
 Client tokens are the core credential required to authenticate a request.
 Tokens themselves are acquired via [authentication methods](/authentication/methods).
@@ -42,3 +42,10 @@ Flipt currently supports two authentication methods for acquiring credentials:
 2. [OIDC](/authentication/methods/#oidc)
 
 Once a `client token` has been acquired, it can be supplied via request metadata dependent on the protocol. Both HTTP and gRPC examples can be found on the [Using Client Tokens](/authentication/using-tokens) page.
+
+## Authorization
+
+Currently, Flipt only supports authentication without any extended authorization capabilities.
+Authorization is something we're actively exploring and we will update this section as we settle on a design.
+
+We would appreciate your input into designing authorization. Head over to [our discord](https://flipt.io/discord) and let us know what you need from Flipt.
