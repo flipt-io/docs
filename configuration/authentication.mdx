@@ -128,30 +128,31 @@ You can find the callback URL for each provider that you configure in your Flipt
 curl --request GET \
   --url https://your.flipt.instance.url.com/auth/v1/method \
   --header 'Accept: application/json'
+```
 
-
+```json
 {
-	"methods": [
-		{
-			"method": "METHOD_TOKEN",
-			"enabled": true,
-			"sessionCompatible": false,
-			"metadata": null
-		},
-		{
-			"method": "METHOD_OIDC",
-			"enabled": true,
-			"sessionCompatible": true,
-			"metadata": {
-				"providers": {
-					"google": {
-						"authorize_url": "/auth/v1/method/oidc/google/authorize",
-						"callback_url": "/auth/v1/method/oidc/google/callback"
-					}
-				}
-			}
-		}
-	]
+  "methods": [
+    {
+      "method": "METHOD_TOKEN",
+      "enabled": true,
+      "sessionCompatible": false,
+      "metadata": null
+    },
+    {
+      "method": "METHOD_OIDC",
+      "enabled": true,
+      "sessionCompatible": true,
+      "metadata": {
+        "providers": {
+          "google": {
+            "authorize_url": "/auth/v1/method/oidc/google/authorize",
+            "callback_url": "/auth/v1/method/oidc/google/callback"
+          }
+        }
+      }
+    }
+  ]
 }
 ```
 
