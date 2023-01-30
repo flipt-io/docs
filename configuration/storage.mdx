@@ -5,13 +5,10 @@ description: This document describes how to configure Flipt's storage backend me
 
 ## Databases
 
-Flipt supports [SQLite](https://www.sqlite.org/index.html),
-[Postgres](https://www.postgresql.org/),
-[CockroachDB](https://www.cockroachlabs.com/) and
+Flipt supports [SQLite](https://www.sqlite.org/index.html), [Postgres](https://www.postgresql.org/), [CockroachDB](https://www.cockroachlabs.com/) and
 [MySQL](https://dev.mysql.com/) databases.
 
-SQLite is enabled by default for simplicity, however you should use Postgres,
-MySQL, or CockroachDB if you intend to run multiple copies of Flipt in a high
+SQLite is enabled by default for simplicity, however you should use Postgres, MySQL, or CockroachDB if you intend to run multiple copies of Flipt in a high
 availability configuration.
 
 The database connection can be configured as follows:
@@ -181,7 +178,7 @@ Caching works as follows:
 - A cache hit will simply return the item from the cache, not interacting with
   the database
 
-See the [Cache](#cache) section for how to configure caching.
+See the [Cache](/configuration/overview#cache) section for how to configure caching.
 
 ### Expiration/Eviction
 
