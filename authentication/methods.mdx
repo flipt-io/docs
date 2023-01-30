@@ -9,7 +9,7 @@ description: This document describes the various supported authentication method
   configure the various authentication methods.
 </Note>
 
-#### Static Token
+## Static Token
 
 <Tip>
   When `token` method is enabled and no static tokens exist in the backing
@@ -21,7 +21,7 @@ The `token` authentication method supports statically creating authentication to
 Once enabled, the `/auth/v1/method/token` API prefix is mounted to Flipt's API.
 This section of the API supports the creation of static tokens.
 
-**Example: Token Creation**
+### Example: Token Creation
 
 The following `curl` command creates a static token with no expiration.
 Given authentication is set to `required` then a prior client token will be required to perform this action.
@@ -33,7 +33,7 @@ curl -X POST localhost:8080/auth/v1/method/token \
     --data '{"name":"access_all_areas","description":"keys to the castle"}'
 ```
 
-#### OpenID Connect
+## OpenID Connect
 
 [OpenID Connect](https://openid.net/connect/) (OIDC) is a simple identity layer on top of the OAuth 2.0 protocol. It allows Clients to verify the identity of the End-User based on the authentication performed by an Authorization Server, as well as to obtain basic profile information about the End-User in an interoperable and REST-like manner.
 
