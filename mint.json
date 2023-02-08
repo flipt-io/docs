@@ -53,8 +53,7 @@
         "introduction",
         "concepts",
         "installation",
-        "integration",
-        "architecture"
+        "integration"
       ]
     },
     {
@@ -72,6 +71,13 @@
         "authentication/overview",
         "authentication/methods",
         "authentication/using-tokens"
+      ]
+    },
+    {
+      "group": "Operations",
+      "pages": [
+        "operations/architecture",
+        "operations/deployment"
       ]
     },
     {
