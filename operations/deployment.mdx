@@ -1,0 +1,92 @@
+---
+title: Deployment
+description: Details on various ways to deploy Flipt.
+---
+
+Flipt is built and delivered as a single standalone Linux binary.
+Head to the [Installation](/installation) section for more details.
+
+Running Flipt with the default configuration is a great way to get to grips with using it.
+However, the default settings have limitations, which might make it impractical in a production environment.
+This guide will explore some Flipt deployment configurations for increased scalability and reliability.
+
+## The Defaults
+
+By default, Flipt can only run as a single instance process backed by SQLite. Additionally, all API interactions go directly to this database.
+
+<Frame>
+<div className="block dark:hidden">
+  ![Flipt single replica deployment](images/operations/flipt-simple-deployment-light.svg)
+</div>
+
+<div className="hidden dark:block">
+  ![Flipt single replica deployment](images/operations/flipt-simple-deployment-dark.svg)
+</div>
+</Frame>
+
+However, Flipt can be run in front of an externally managed relational database (e.g. Postgres, MySQL or CockroachDB), allowing operators to run multiple instances. Caching can also be configured: both in-memory or shared via a distributed solution such as Redis. Enabling caching will reduce the number of interactions required on the database, making reads significantly faster.
+
+<Frame>
+<div className="block dark:hidden">
+  ![Flipt multiple instance configuration diagram](/images/operations/flipt-multi-replica-light.svg)
+</div>
+
+<div className="hidden dark:block">
+  ![Flipt multiple instance configuration diagram](/images/operations/flipt-multi-replica-dark.svg)
+</div>
+</Frame>
+
+## Horizontal Scalability
+
+As mentioned, Flipt runs on top of SQLite by default. SQLite is an embedded relational database, backed by a single file on disk. Access to the database is limited to a single writing process on the same machine.
+Using SQLite in this way means Flipt can only be run as a single instance.
+
+In many scenarios, it is advantageous to run multiple instances of a service like Flipt. Doing so can provide redundancy during critical failures. It also allows an operator to scale the number of instances to meet throughput demands.
+
+An externally hosted relational database is required to scale Flipt horizontally (run multiple instances with a shared backend). Postgres, MySQL and CockroachDB are the currently supported relational backends. Check out [Configuration: Storage](/configuration/storage) for more details on how to configure Flipt's available storage backends.
+
+Once configured with one of these databases, you can run multiple instances safely. Flipt takes care of schema management and some state management operations (e.g. automated deletion of expired API client tokens).
+
+<Note>
+To run multiple instances of Flipt you will need to do so behind a load-balancer. Nginx, Caddy and Envoy are examples of suitable load-balancer choices.
+</Note>
+
+## Caching
+
+Flipt supports both in-memory caching and the ability to use an external system such as Redis.
+Caching allows Flipt to reuse computed results made in a short period. This reduces the number of requests to the backing database and minimises waste caused by excess evaluation.
+
+In-memory caching can be enabled via the “caching” section of the configuration file and requires no external dependencies.
+
+<Info>Details on these configuration options can be found in the [Configuration: Cache](/configuration/overview#cache) section.</Info>
+
+However, there is a limitation when multiple instances of Flipt are run in parallel.
+Since each instance of Flipt has an isolated in-memory cache, the benefits diminish the more instances of Flipt you run.
+
+Using a remote system such as Redis to store the cache data, the same cache instance between multiple Flipt replicas can be shared. A single (logical) shared instance of Redis is required to see the benefits of this kind of caching.
+
+Redis is currently the only backend we support for caching purposes. We are considering adding more viable options (such as Memcache) in the future.
+
+## Further Considerations
+
+Flipt primarily relies on the backing database to achieve scalability. It offers caching to minimize the dependence on the backing store and avoid re-work. However, attention should be paid to the health and performance of the backing database and the interactions between Flipt and storage.
+
+Feature flag systems are primarily read-often and written infrequently. This allows some affordance to how such a system can be deployed and operated. When deployed against a remote database, Flipt operates as a stateless system, allowing operators to deploy multiple instances of Flipt in various configurations. A more advanced deployment scenario might see Flipt run in two alternate tiers, one for servicing your application's flag evaluations (read-tier) and another for the Flipt dashboard and making flag state changes (write-tier).
+
+This has the potential for multiple benefits:
+
+- Failures in either read or write tiers can be isolated from one another. A failure in the tier serving the dashboard wouldn’t necessarily affect flag evaluations.
+- Reads could be configured with access to the cache, where writes could be isolated from the caching tier.  This may have benefits to the number of connections required on your caching layer.
+- Reads could be deployed in front of read-only replicas of a database, with the write-tier connecting directly to the primary, allowing more potential for scale in the database layer.
+
+<Frame>
+<div className="block dark:hidden">
+  ![Flipt separate read/write tier deployment configuration](images/operations/flipt-complex-deployment-light.svg)
+</div>
+
+<div className="hidden dark:block">
+  ![Flipt separate read/write tier deployment configuration](images/operations/flipt-complex-deployment-dark.svg)
+</div>
+</Frame>
+
+Flipt ships with metrics, logging and tracing around both behaviour and system performance metrics. These pieces of telemetry can be useful for understanding the constraints within your setup of Flipt. We recommend reading the observability section of the configuration documentation to understand more about how to extract these measurements.

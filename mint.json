@@ -53,8 +53,14 @@
         "introduction",
         "concepts",
         "installation",
-        "integration",
-        "architecture"
+        "integration"
+      ]
+    },
+    {
+      "group": "Operations",
+      "pages": [
+        "operations/architecture",
+        "operations/deployment"
       ]
     },
     {
