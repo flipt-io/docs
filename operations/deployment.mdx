@@ -24,7 +24,7 @@ By default, Flipt runs as a single instance process backed by SQLite. Additional
 </div>
 </Frame>
 
-However, Flipt can be run in front of an externally managed relational database (e.g. Postgres, MySQL or CockroachDB), allowing operators to run multiple instances. Caching can also be configured: both in-memory or shared via a distributed solution such as Redis. Enabling caching will reduce the number of interactions required on the database, making reads significantly faster.
+However, Flipt can be run in front of an externally managed relational database (e.g. PostgreSQL, MySQL or CockroachDB), allowing operators to run multiple instances. Caching can also be configured: both in-memory or shared via a distributed solution such as Redis. Enabling caching will reduce the number of interactions required on the database, making reads significantly faster.
 
 <Frame>
 <div className="block dark:hidden">
@@ -43,7 +43,7 @@ Using SQLite in this way means Flipt can only be run as a single instance.
 
 In many scenarios, it is advantageous to run multiple instances of a service like Flipt. Doing so can provide redundancy during critical failures. It also allows an operator to scale the number of instances to meet throughput demands.
 
-An externally hosted relational database is required to scale Flipt horizontally (run multiple instances with a shared backend). Postgres, MySQL and CockroachDB are the currently supported relational backends. Check out [Configuration: Storage](/configuration/storage) for more details on how to configure Flipt's available storage backends.
+An externally hosted relational database is required to scale Flipt horizontally (run multiple instances with a shared backend). PostgreSQL, MySQL and CockroachDB are the currently supported relational backends. Check out [Configuration: Storage](/configuration/storage) for more details on how to configure Flipt's available storage backends.
 
 Once configured with one of these databases, you can run multiple instances safely. Flipt takes care of schema management and some state management operations (e.g. automated deletion of expired API client tokens).
 
