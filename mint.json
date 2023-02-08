@@ -57,13 +57,6 @@
       ]
     },
     {
-      "group": "Operations",
-      "pages": [
-        "operations/architecture",
-        "operations/deployment"
-      ]
-    },
-    {
       "group": "Configuration",
       "pages": [
         "configuration/overview",
@@ -78,6 +71,13 @@
         "authentication/overview",
         "authentication/methods",
         "authentication/using-tokens"
+      ]
+    },
+    {
+      "group": "Operations",
+      "pages": [
+        "operations/architecture",
+        "operations/deployment"
       ]
     },
     {
