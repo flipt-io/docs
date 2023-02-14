@@ -72,10 +72,12 @@ You can find the dashboards in our [grafana-dashboards](https://github.com/flipt
 
 Flipt supports distributed tracing via the [OpenTelemetry](https://opentelemetry.io/) project.
 
-Currently, we only support [Jaeger](https://www.jaegertracing.io/) as a tracing backend, however we are working on supporting others such as [Zipkin](https://zipkin.io/) and [OTLP](https://opentelemetry.io/docs/reference/specification/protocol/).
+Currently, we support the following tracing backends:
 
-### Jaeger
+- [Jaeger](https://www.jaegertracing.io/)
+- [Zipkin](https://zipkin.io/)
+- [OTLP](https://opentelemetry.io/docs/reference/specification/protocol/).
 
-Enable tracing via the values described in the [Tracing configuration](/configuration/overview#tracing) and point Flipt to your Jaeger host to record and export spans.
+Enable tracing via the values described in the [Tracing configuration](/configuration/overview#tracing) and point Flipt to your configured collector to record spans.
 
-There is an [example](https://github.com/flipt-io/flipt/tree/main/examples/tracing) provided in the GitHub repository showing how to set up Flipt with Jaeger.
+There are [examples](https://github.com/flipt-io/flipt/tree/main/examples/tracing) provided in the main GitHub repository showing how to set up Flipt with each of the supported tracing backends.

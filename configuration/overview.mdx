@@ -63,11 +63,29 @@ These properties are as follows:
 
 ### Tracing
 
-| Property               | Description                              | Default   | Since   |
-| ---------------------- | ---------------------------------------- | --------- | ------- |
-| tracing.jaeger.enabled | Enable tracing support with Jaeger       | false     | v0.17.0 |
-| tracing.jaeger.host    | The UDP host destination to report spans | localhost | v0.17.0 |
-| tracing.jaeger.port    | The UDP port destination to report spans | 6831      | v0.17.0 |
+| Property         | Description                                | Default | Since   |
+| ---------------- | ------------------------------------------ | ------- | ------- |
+| tracing.enabled  | Enable tracing support                     | false   | v1.18.2 |
+| tracing.exporter | The exporter to use (jaeger, zipkin, otlp) | jaeger  | v1.18.2 |
+
+#### Tracing: Jaeger
+
+| Property            | Description                              | Default   | Since   |
+| ------------------- | ---------------------------------------- | --------- | ------- |
+| tracing.jaeger.host | The UDP host destination to report spans | localhost | v0.17.0 |
+| tracing.jaeger.port | The UDP port destination to report spans | 6831      | v0.17.0 |
+
+#### Tracing: Zipkin
+
+| Property                | Description                             | Default                            | Since   |
+| ----------------------- | --------------------------------------- | ---------------------------------- | ------- |
+| tracing.zipkin.endpoint | The Zipkin API endpoint to report spans | http://localhost:9411/api/v2/spans | v1.18.2 |
+
+#### Tracing: OTLP
+
+| Property              | Description                    | Default        | Since   |
+| --------------------- | ------------------------------ | -------------- | ------- |
+| tracing.otlp.endpoint | The OTLP GRPC reciever address | localhost:4317 | v1.18.2 |
 
 ### Database
 
@@ -123,13 +141,13 @@ These properties are as follows:
 | cache.ttl     | Time to live for cached data                            | 60s     | v1.10.0 |
 | cache.backend | The backend to use for caching (options: memory, redis) | memory  | v1.10.0 |
 
-#### Memory Cache
+#### Cache: Memory
 
 | Property                       | Description                                                          | Default | Since   |
 | ------------------------------ | -------------------------------------------------------------------- | ------- | ------- |
 | cache.memory.eviction_interval | Interval at which expired items are evicted from the in-memory cache | 5m      | v0.12.0 |
 
-#### Redis Cache
+#### Cache: Redis
 
 | Property             | Description                           | Default   | Since   |
 | -------------------- | ------------------------------------- | --------- | ------- |
