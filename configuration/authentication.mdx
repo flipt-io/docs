@@ -91,7 +91,7 @@ authentication:
         some_provider: # insert your provider name here
           issuer_url: "https://some.oidc.issuer.com"
           client_id: "some_client_identifier"
-          client_token: "some_client_secret_credential"
+          client_secret: "some_client_secret_credential"
           redirect_address: "https://your.flipt.instance.url.com"
           scopes:
             - email
@@ -164,7 +164,7 @@ Using Google as an example and the documentation linked above, we obtained the f
 
 ```yaml
 client_id: "CyJcdvQMadOjSEx7ArArom0ytrbIHWd2Fb3N59oh8NQ="
-client_token: "WGgJmfQqN7cf17dFyZKXDL5S445/qhp+hfDAC0Mnl7oBrxgdAgiMyuwCkPiwfgQy"
+client_secret: "WGgJmfQqN7cf17dFyZKXDL5S445/qhp+hfDAC0Mnl7oBrxgdAgiMyuwCkPiwfgQy"
 ```
 
 We could create a provider definition in our configuration like so:
@@ -178,7 +178,7 @@ authentication:
         google:
           issuer_url: "https://accounts.google.com"
           client_id: "CyJcdvQMadOjSEx7ArArom0ytrbIHWd2Fb3N59oh8NQ="
-          client_token: "WGgJmfQqN7cf17dFyZKXDL5S445/qhp+hfDAC0Mnl7oBrxgdAgiMyuwCkPiwfgQy"
+          client_secret: "WGgJmfQqN7cf17dFyZKXDL5S445/qhp+hfDAC0Mnl7oBrxgdAgiMyuwCkPiwfgQy"
           redirect_address: "https://flipt.myorg.com"
           scopes:
             - email
