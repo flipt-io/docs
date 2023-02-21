@@ -94,13 +94,12 @@ This allows services deployed into the same Kubernetes cluster as Flipt to autom
 
 ![Kubernetes Authentication Flow](/images/authentication/kubernetes.svg)
 
-When enabled (to enable this method see our [Configuration: Method Kubernetes](/configuration/authentication#method-kubernetes) documentation) a service deployed within Kubernetes can read their service account token from local disk and invoke the verify service account operation on the API.
-Given the service-account is deemed valid for the surrounding cluster this operation will return a valid client token with a matching expiration as the service account.
+When enabled (see our [Configuration: Method Kubernetes](/configuration/authentication#method-kubernetes) documentation) a service deployed within Kubernetes can read their service account token from local disk and invoke the verify service account operation on the API.
+Given the service account is deemed valid for the surrounding cluster this operation will return a valid Flipt client token with a matching expiration as the service account.
 If your Kubernetes environment has short-lived service account tokens, care will be needed to periodically request a new client token using a newly issued service account token.
 
 <Tip>
-Kubernetes refreshes service account tokens locally.
-All that is required is to read the token from the disk again.
+Kubernetes refreshes service account tokens locally, all that is required is to read the token from the disk again.
 </Tip>
 
 The client token produced can be used in subsequent API requests with the rest of the Flipt API to gain authenticated access.
