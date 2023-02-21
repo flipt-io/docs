@@ -79,3 +79,116 @@ These two endpoints are necessary to support the different legs of the OAuth/OID
 The first can be requested to obtain an authorization URL directed at the configured instance of Dex.
 The latter is the destination that Dex will redirect the client back to.
 When using HTTP, this callback endpoint will establish the `flipt_client_token` and return it via the `Set-Cookie` response header.
+
+## Kubernetes
+
+<Note>
+This method is designed for automatically authenticating applications with Flipt.
+
+We are actively designing and developing client-side implementations to leverage this method seemlessly.
+However, for now the API must be managed manually by your implementation.
+</Note>
+
+The `kubernetes` authentication method supports the ability to exchange [Kubernetes service account](https://kubernetes.io/docs/concepts/security/service-accounts) tokens with Flipt for client tokens.
+This allows services deployed into the same Kubernetes cluster as Flipt to automatically gain authenticated access to the Flipt API without additional management of static cient tokens.
+
+![Kubernetes Authentication Flow](/images/authentication/kubernetes.svg)
+
+When enabled (to enable this method see our [Configuration: Method Kubernetes](/configuration/authentication#method-kubernetes) documentation) a service deployed within Kubernetes can read their service account token from disk and invoke the verify service account operation on the API.
+Given the service account is deemed valid for the surrounding cluster this operation will return a valid client token with a matching expiration as the service account.
+If your Kubernetes environment has short-lived service account tokens, care will be needed to periodically request a new client token using a newly issued service account token.
+
+<Tip>
+Kubernetes refreshes service account tokens locally.
+All that is required is to read the token from disk again to get the new one.
+</Tip>
+
+The client token produced can be used in subsequent API requests with the rest of the Flipt API to gain authenticated access.
+
+### Via the API
+
+The following can be issued from inside a pod with a valid service account token in the default location for Kubernetes.
+It assumes that Flipt is reachable and deployed in the same cluster with a service name of `flipt`.
+
+<CodeGroup>
+```bash client-token.sh
+# assumes both curl and jq are installed
+curl -s -X POST http://flipt:8080/auth/v1/method/kubernetes/serviceaccount \
+  --data "{\"service_account_token\":\"$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)\"}" | \
+  jq .
+{
+  "clientToken": "pKkaEik40Nu4lJ7O37l92MNyyD38U8UlaagSmAfJoS0=",
+  "authentication": {
+    "id": "f191babc-57b8-4856-89b1-f324941403d7",
+    "method": "METHOD_KUBERNETES",
+    "expiresAt": "2024-02-20T13:39:14Z",
+    "createdAt": "2023-02-20T14:11:28.962841Z",
+    "updatedAt": "2023-02-20T14:11:28.962841Z",
+    "metadata": {
+      "io.flipt.auth.k8s.namespace": "default",
+      "io.flipt.auth.k8s.pod.name": "someservice-586bfb5b6b-fmh8g",
+      "io.flipt.auth.k8s.pod.uid": "b5217947-aeac-4b35-afd3-23f50d63eae9",
+      "io.flipt.auth.k8s.serviceaccount.name": "default",
+      "io.flipt.auth.k8s.serviceaccount.uid": "8aeb28ad-66f0-4884-bafc-e606e5eda149"
+    }
+  }
+}
+```
+
+```go client_http.go
+package client
+
+import (
+	"fmt"
+  "encoding/json"
+	"net/http"
+	"os"
+)
+
+type Response struct {
+	ClientToken    string `json:"clientToken"`
+	Authentication struct {
+		ExpiresAt time.Time `json:"expiresAt"`
+	} `json:"authentication"`
+}
+
+func getClientToken(ctx context.Context) (*Response, error) {
+	saToken, err := os.ReadFile("/var/run/secrets/kubernetes.io/serviceaccount/token")
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequestWithContext(
+		ctx,
+		http.MethodPost,
+		"http://flipt:8080/auth/v1/method/kubernetes/serviceaccount",
+		map[string]string{
+			"service_account_token": saToken,
+		})
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.Status != http.StatusOK {
+		return nil, fmt.Errorf("unexpected status code: %q", resp.Status)
+	}
+
+	response := &Response{}
+	if err := json.NewDecoder(resp.Body).Decode(response); err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+```
+</CodeGroup>
+
+The client token found in the body of the response can be used in the authentication bearer header, as outlined in [Using Client Tokens](/authentication/using-tokens).
+The expiration can be used to schedule when to next request a new client token.

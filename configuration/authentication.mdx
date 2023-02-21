@@ -202,8 +202,26 @@ Once the user has authenticated with Google, they will be redirected to the addr
 Google's consent screen can be configured to only accept accounts that are within your Google Workspace organization.
 
 Other providers have similar mechanisms for attenuating who can leverage this authentication flow.
-
 </Tip>
+
+### Method: Kubernetes
+
+The `kubernetes` method provides the ability to exchange Kubernetes service account tokens for client tokens.
+
+```yaml config.yaml
+authentication:
+  methods:
+    kubernetes:
+      cleanup: # (see "Common Properties: Cleanup" below)
+      enabled: true
+      discovery_url: https://kubernetes.default.svc.cluster.local
+      ca_path: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      service_account_token_path: /var/run/secrets/kubernetes.io/serviceaccount/token
+```
+
+Once enabled, client tokens can be retrieved by sending a Kubernetes pod's service account token to the [VerifyServiceAccount](/reference/authentication/kubernetes-verify-service-account) operation in the API.
+
+Further explanation for using this method can be found in the [Authentication: Kubernetes](/authentication/methods#kubernetes) documentation.
 
 ### Common Properties: Cleanup
 
