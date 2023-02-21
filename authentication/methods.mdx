@@ -85,22 +85,22 @@ When using HTTP, this callback endpoint will establish the `flipt_client_token` 
 <Note>
 This method is designed for automatically authenticating applications with Flipt.
 
-We are actively designing and developing client-side implementations to leverage this method seemlessly.
-However, for now the API must be managed manually by your implementation.
+We are actively designing and developing client-side implementations to leverage this method seamlessly.
+However, for now, the API must be managed manually by your implementation.
 </Note>
 
 The `kubernetes` authentication method supports the ability to exchange [Kubernetes service account](https://kubernetes.io/docs/concepts/security/service-accounts) tokens with Flipt for client tokens.
-This allows services deployed into the same Kubernetes cluster as Flipt to automatically gain authenticated access to the Flipt API without additional management of static cient tokens.
+This allows services deployed into the same Kubernetes cluster as Flipt to automatically gain authenticated access to the Flipt API without additional management of static client tokens.
 
 ![Kubernetes Authentication Flow](/images/authentication/kubernetes.svg)
 
-When enabled (to enable this method see our [Configuration: Method Kubernetes](/configuration/authentication#method-kubernetes) documentation) a service deployed within Kubernetes can read their service account token from disk and invoke the verify service account operation on the API.
-Given the service account is deemed valid for the surrounding cluster this operation will return a valid client token with a matching expiration as the service account.
+When enabled (to enable this method see our [Configuration: Method Kubernetes](/configuration/authentication#method-kubernetes) documentation) a service deployed within Kubernetes can read their service account token from local disk and invoke the verify service account operation on the API.
+Given the service-account is deemed valid for the surrounding cluster this operation will return a valid client token with a matching expiration as the service account.
 If your Kubernetes environment has short-lived service account tokens, care will be needed to periodically request a new client token using a newly issued service account token.
 
 <Tip>
 Kubernetes refreshes service account tokens locally.
-All that is required is to read the token from disk again to get the new one.
+All that is required is to read the token from the disk again.
 </Tip>
 
 The client token produced can be used in subsequent API requests with the rest of the Flipt API to gain authenticated access.
