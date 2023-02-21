@@ -16,9 +16,11 @@ The `token` authentication method supports statically creating authentication to
 Once enabled, the `/auth/v1/method/token` API prefix is mounted to Flipt's API.
 This section of the API supports the creation of static tokens.
 
+### Token Management
+
 Tokens can be created and deleted via either the UI or API.
 
-### API
+#### API
 
 The following `curl` command creates a static token with no expiration.
 Given authentication is set to `required` then a prior client token will be required to perform this action.
@@ -30,7 +32,7 @@ curl -X POST localhost:8080/auth/v1/method/token \
     --data '{"name":"access_all_areas","description":"keys to the castle"}'
 ```
 
-### UI
+#### UI
 
 As of version 1.19.0, the UI also supports the creation and deletion of tokens. To access this functionality, navigate to `Settings` from the main menu and see the 'Static Tokens' section.
 
