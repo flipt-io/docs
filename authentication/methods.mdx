@@ -11,17 +11,16 @@ description: This document describes the various supported authentication method
 
 ## Static Token
 
-<Tip>
-  When `token` method is enabled and no static tokens exist in the backing
-  store, an initial token is created and logged in Flipt's server output.
-</Tip>
-
 The `token` authentication method supports statically creating authentication tokens.
 
 Once enabled, the `/auth/v1/method/token` API prefix is mounted to Flipt's API.
 This section of the API supports the creation of static tokens.
 
-### Example: Token Creation
+### Token Management
+
+Tokens can be created and deleted via either the UI or API.
+
+#### API
 
 The following `curl` command creates a static token with no expiration.
 Given authentication is set to `required` then a prior client token will be required to perform this action.
@@ -32,6 +31,32 @@ curl -X POST localhost:8080/auth/v1/method/token \
     -H 'Content-Type: application/json' \
     --data '{"name":"access_all_areas","description":"keys to the castle"}'
 ```
+
+#### UI
+
+As of version 1.19.0, the UI also supports the creation and deletion of tokens. To access this functionality, navigate to `Settings` from the main menu and see the 'Static Tokens' section.
+
+![Create Token UI](/images/authentication/create-token.png)
+
+### Bootstrapping
+
+On first startup, Flipt will automatically create a random static token with the name `initial_bootstrap_token` if one does not already exist and if `token` authentication is enabled.
+
+![Bootstrap Token](/images/authentication/bootstrap-token.png)
+
+This token is intended to be used to create additional tokens to then be used for subsequent API requests. By default it has no expiration date, therefore it is recommended that this token be deleted once the initial bootstrapping is complete.
+
+This token is output to the Flipt logs on startup and can be found by searching for `client_token` in the logs:
+
+```console
+INFO	access token created	{"server": "grpc", "client_token": "jWLUy8ChnVDs-Llgyj7cMIzB0PfplwbBy-B27a0p23I="}
+```
+
+This initial bootstrap process can also be configured to use a known token by setting the `bootstrap.token` value in the configuration file. This is useful if you want to prevent having to search the logs after startup or if Flipt is deployed in an automated fashion, for example if you are using a configuration management tool.
+
+The bootstrap token can also be configured to have an expiration date by setting the `bootstrap.expiration` value in the configuration file. This is useful if you want to ensure that the bootstrap token is only valid for a short period of time before automatically expiring.
+
+See the [Configuration: Method Token](/configuration/overview#authentication-methods-token) documentation for more details.
 
 ## OpenID Connect
 
@@ -87,6 +112,7 @@ This method is designed for automatically authenticating applications with Flipt
 
 We are actively designing and developing client-side implementations to leverage this method seamlessly.
 However, for now, the API must be managed manually by your implementation.
+
 </Note>
 
 The `kubernetes` authentication method supports the ability to exchange [Kubernetes service account](https://kubernetes.io/docs/concepts/security/service-accounts) tokens with Flipt for client tokens.
@@ -99,7 +125,8 @@ Given the service account is deemed valid for the surrounding cluster this opera
 If your Kubernetes environment has short-lived service account tokens, care will be needed to periodically request a new client token using a newly issued service account token.
 
 <Tip>
-Kubernetes refreshes service account tokens locally, all that is required is to read the token from the disk again.
+  Kubernetes refreshes service account tokens locally, all that is required is
+  to read the token from the disk again.
 </Tip>
 
 The client token produced can be used in subsequent API requests with the rest of the Flipt API to gain authenticated access.
@@ -187,6 +214,7 @@ func getClientToken(ctx context.Context) (*Response, error) {
 	return response, nil
 }
 ```
+
 </CodeGroup>
 
 The client token found in the body of the response can be used in the authentication bearer header, as outlined in [Using Client Tokens](/authentication/using-tokens).

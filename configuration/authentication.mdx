@@ -66,8 +66,9 @@ The `token` method provides the ability to create client tokens statically, with
 authentication:
   methods:
     token:
-      cleanup: # (see "Common Properties: Cleanup" below)
       enabled: true
+      bootstrap:
+        expiration: 24h
 ```
 
 Once enabled, static tokens can be created via the [CreateToken](/reference/authentication/create-token) operation in the API.
@@ -85,7 +86,6 @@ Once enabled and configured properly, the UI will automatically leverage it and 
 authentication:
   methods:
     oidc:
-      cleanup: # (see "Common Properties: Cleanup" below)
       enabled: true
       providers:
         some_provider: # insert your provider name here
@@ -202,6 +202,7 @@ Once the user has authenticated with Google, they will be redirected to the addr
 Google's consent screen can be configured to only accept accounts that are within your Google Workspace organization.
 
 Other providers have similar mechanisms for attenuating who can leverage this authentication flow.
+
 </Tip>
 
 ### Method: Kubernetes

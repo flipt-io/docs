@@ -115,11 +115,13 @@ These properties are as follows:
 
 #### Authentication Methods: Token
 
-| Property                                          | Description                                                    | Default | Since   |
-| ------------------------------------------------- | -------------------------------------------------------------- | ------- | ------- |
-| authentication.methods.token.enabled              | Enable static token creation                                   | false   | v1.15.0 |
-| authentication.methods.token.cleanup.interval     | Interval between deletion of expired tokens                    | 1h      | v1.16.0 |
-| authentication.methods.token.cleanup.grace_period | How long an expired token can exist until considered deletable | 30m     | v1.16.0 |
+| Property                                          | Description                                                      | Default | Since   |
+| ------------------------------------------------- | ---------------------------------------------------------------- | ------- | ------- |
+| authentication.methods.token.enabled              | Enable static token creation                                     | false   | v1.15.0 |
+| authentication.methods.token.cleanup.interval     | Interval between deletion of expired tokens                      | 1h      | v1.16.0 |
+| authentication.methods.token.cleanup.grace_period | How long an expired token can exist until considered deletable   | 30m     | v1.16.0 |
+| authentication.methods.token.bootstrap.token      | The static token to use for bootstrapping                        |         | v1.19.0 |
+| authentication.methods.token.bootstrap.expiration | How long after creation until the static bootstrap token expires |         | v1.19.0 |
 
 #### Authentication Methods: OIDC
 
@@ -136,7 +138,7 @@ These properties are as follows:
 #### Authentication Methods: Kubernetes
 
 | Property                                                     | Description                                                    | Default                                              | Since   |
-| ------------------------------------------------------------ | -------------------------------------------------------------- | -------                                              | ------- |
+| ------------------------------------------------------------ | -------------------------------------------------------------- | ---------------------------------------------------- | ------- |
 | authentication.methods.kubernetes.enabled                    | Enable Kubernetes service account token authentication         | false                                                | v1.19.0 |
 | authentication.methods.kubernetes.cleanup.interval           | Interval between deletion of expired tokens                    | 1h                                                   | v1.19.0 |
 | authentication.methods.kubernetes.cleanup.grace_period       | How long an expired token can exist until considered deletable | 30m                                                  | v1.19.0 |
