@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.1.8
+  version: 0.1.9
 paths:
   /auth/v1/tokens:
     get:
@@ -85,11 +85,11 @@ paths:
                 expiresAt:
                   type: string
                   format: date-time
-  /auth/v1/method/token:
+  /auth/v1/method/token/:
     post:
-      operationId: Authentication.createToken
+      operationId: AuthenticationMethodToken.createToken
       tags:
-        - Authentication
+        - AuthenticationMethodToken
       parameters: []
       responses:
         '200':
@@ -116,6 +116,81 @@ paths:
               required:
                 - name
                 - description
+  /auth/v1/method/oidc/{provider}/authorize:
+    get:
+      operationId: AuthenticationMethodOIDC.authorizeURL
+      tags:
+        - AuthenticationMethodOIDC
+      parameters:
+        - name: provider
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: state
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthoidcAuthorizeURLResponse'
+  /auth/v1/method/oidc/{provider}/callback:
+    get:
+      operationId: AuthenticationMethodOIDC.callback
+      tags:
+        - AuthenticationMethodOIDC
+      parameters:
+        - name: provider
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: state
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthoidcCallbackResponse'
+  /auth/v1/method/kubernetes/serviceaccount:
+    post:
+      operationId: AuthenticationMethodKubernetes.verifyServiceAccount
+      tags:
+        - AuthenticationMethodKubernetes
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthauthenticationToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                serviceAccountToken:
+                  type: string
+              required:
+                - serviceAccountToken
   /api/v1/segments/{segmentKey}/constraints:
     post:
       operationId: Constraints.create
@@ -950,6 +1025,20 @@ components:
           $ref: '#/components/schemas/Authauthentication'
       required:
         - clientToken
+        - authentication
+    AuthoidcAuthorizeURLResponse:
+      type: object
+      properties:
+        authorizeUrl:
+          type: string
+      required:
+        - authorizeUrl
+    AuthoidcCallbackResponse:
+      type: object
+      properties:
+        authentication:
+          $ref: '#/components/schemas/Authauthentication'
+      required:
         - authentication
     CommonsPageable:
       type: object
