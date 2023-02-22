@@ -133,6 +133,17 @@ These properties are as follows:
 | authentication.methods.oidc.providers.[provider].client_secret    | Provider specific OIDC client secret (see your providers docs) |         | v1.17.0 |
 | authentication.methods.oidc.providers.[provider].redirect_address | Public URL on which this Flipt instance is reachable           |         | v1.17.0 |
 
+#### Authentication Methods: Kubernetes
+
+| Property                                                     | Description                                                    | Default                                              | Since   |
+| ------------------------------------------------------------ | -------------------------------------------------------------- | -------                                              | ------- |
+| authentication.methods.kubernetes.enabled                    | Enable Kubernetes service account token authentication         | false                                                | v1.19.0 |
+| authentication.methods.kubernetes.cleanup.interval           | Interval between deletion of expired tokens                    | 1h                                                   | v1.19.0 |
+| authentication.methods.kubernetes.cleanup.grace_period       | How long an expired token can exist until considered deletable | 30m                                                  | v1.19.0 |
+| authentication.methods.kubernetes.discovery_url              | Kubernetes API server URL for OIDC configuration discovery     | https://kubernetes.default.svc.cluster.local         | v1.19.0 |
+| authentication.methods.kubernetes.ca_path                    | Kubernetes API CA certification path                           | /var/run/secrets/kubernetes.io/serviceaccount/ca.crt | v1.19.0 |
+| authentication.methods.kubernetes.service_account_token_path | Path to Flipts service account token                           | /var/run/secrets/kubernetes.io/serviceaccount/token  | v1.19.0 |
+
 ### Cache
 
 | Property      | Description                                             | Default | Since   |
