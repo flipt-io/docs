@@ -92,7 +92,10 @@
         "reference/authentication/delete-token",
         "reference/authentication/create-token",
         "reference/authentication/get-self",
-        "reference/authentication/expire-self"
+        "reference/authentication/expire-self",
+        "reference/authentication/oidc-authorize",
+        "reference/authentication/oidc-callback",
+        "reference/authentication/kubernetes-verify-service-account"
       ]
     },
     {
