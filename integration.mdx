@@ -12,8 +12,16 @@ would like to be able to use with Flipt.
 
 There are two ways to communicate with the Flipt server:
 
-1. GRPC
-2. REST API
+1. GRPC API
+1. REST API
+
+We have also developed several clients in various languages for easier integration.
+
+## GRPC + REST SDKs
+
+These SDKs support both Flipt's gRPC and HTTP RPC APIs:
+
+- [Go](https://github.com/flipt-io/flipt/tree/main/sdk/go)
 
 ## GRPC Clients
 
@@ -102,9 +110,10 @@ The latest version of the REST API is fully documented using the [OpenAPI v3 spe
 
 Official Flipt REST clients are currently available in the following languages:
 
+- [Go](https://github.com/flipt-io/flipt/tree/main/sdk/go)
 - [Node.js/TypeScript](https://github.com/flipt-io/flipt-node)
 - [Java](https://github.com/flipt-io/flipt-java)
-- [Rust](https://github.com/flipt-io/flipt-rust) (beta)
+- [Rust](https://github.com/flipt-io/flipt-rust)
 
 ### Generate
 
@@ -114,8 +123,7 @@ While generating clients is outside of the scope of this documentation, an examp
 
 #### Java Example
 
-1. Install
-   [`openapi-generator`](https://openapi-generator.tech/docs/installation)
+1. Install [`openapi-generator`](https://openapi-generator.tech/docs/installation)
 2. Generate using `openapi-generator-cli` to desired location:
 
 ```
