@@ -84,7 +84,7 @@ There are [examples](https://github.com/flipt-io/flipt/tree/main/examples/tracin
 
 ## Audit Events
 
-Starting from `v1.21.0`, Flipt will support sending audit events to configured sinks. The audit events will have the following payload as of `v0.1`:
+Starting from `v1.21.0`, Flipt supports sending audit events to configured sinks. Audit events have the following structure:
 
 ```json
 {
@@ -105,13 +105,13 @@ Starting from `v1.21.0`, Flipt will support sending audit events to configured s
 }
 ```
 
-- `version`: describes the version of the audit event structure. We do not expect too many changes to the structure of the audit event
-- `metadata`: has information concerning the `type` and `action` taken with some identity metadata, `ip` and optional `author` if the server can find that information out
-- `payload`: is the actual payload used to interact with the `Flipt` server for certain auditable events
+- `version` : describes the version of the audit event structure. We do not expect too many changes to the structure of the audit event
+- `metadata`: information concerning the `type` and `action` taken with some identity metadata, `ip` and optional `author` if applicable
+- `payload` : the actual payload used to interact with the `Flipt` server for certain auditable events
 
 
 Currently, we support the following sinks for audit events:
 
-- Log File: the audit events will be JSON encoded, with new line delimination
+- Log File: the audit events are JSON encoded and new-line delimited
 
 You can find [examples]() on the main GitHub repository on how to enable audit events, and how to tune configuration for it.
