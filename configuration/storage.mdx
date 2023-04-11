@@ -98,6 +98,18 @@ when the migration container exits, having no effect on your Flipt instance!
 Flipt supports importing and exporting your feature flag data since
 [v0.13.0](https://github.com/flipt-io/flipt/releases/tag/v0.13.0).
 
+Prior to Flipt [v1.20.0](https://github.com/flipt-io/flipt/releases/tag/v1.20.0) `import` and `export` ran directly against the backing database.
+Since `v1.20.0` you can now alternatively perform these operations through Flipt's API.
+Both `flipt import` and `flipt export` support the `--address` and `--token` flags to enable this behaviour.
+
+```
+flipt import --address http://flipt.my.org --token static-api-token
+
+flipt export --address grpc://flipt.my.org:9000
+```
+
+Both `HTTP` and `gRPC` are supported by the `--address` flag.
+
 ### Import
 
 To import previously exported Flipt data, use the `flipt import` command. You
@@ -114,6 +126,20 @@ argument:
 
 ```yaml
 flipt import flipt.yaml
+```
+
+By default, Flipt will import into the `default` namespace.
+Use the flag `--namespace` to import into a different namespace.
+
+```yaml
+flipt import --namespace production flipt.yaml
+```
+
+A namespace must exist before your import into it.
+For convenience, you can supply `--create-namespace` in order for Flipt to automatically create the namespace if it does not already exist.
+
+```yaml
+flipt import --namespace production --create-namespace flipt.yaml
 ```
 
 This command supports the `--drop` flag that will drop all of the data in your
@@ -153,6 +179,13 @@ flags:
 
 ```yaml
 flipt export -o flipt.yaml
+```
+
+By default, Flipt will export from the `default` namespace.
+Use the flag `--namespace` to export from a different namespace.
+
+```yaml
+flipt export --namespace production
 ```
 
 ## Caching
