@@ -81,3 +81,37 @@ Currently, we support the following tracing backends:
 Enable tracing via the values described in the [Tracing configuration](/configuration/overview#tracing) and point Flipt to your configured collector to record spans.
 
 There are [examples](https://github.com/flipt-io/flipt/tree/main/examples/tracing) provided in the main GitHub repository showing how to set up Flipt with each of the supported tracing backends.
+
+## Audit Events
+
+Starting from `v1.21.0`, Flipt will support sending audit events to configured sinks. The audit events will have the following payload as of `v0.1`:
+
+```json
+{
+  "version": "v0.1",
+  "metadata": {
+    "type": "flag",
+    "action": "created",
+    "ip": "127.0.0.1",
+    "author": "joe@example.com"
+  },
+  "payload": {
+    "description": "audit events feature",
+    "enabled": true,
+    "key": "my-audit-event",
+    "name": "myauditevent",
+    "namespace_key": "default"
+  }
+}
+```
+
+- `version`: describes the version of the audit event structure. We do not expect too many changes to the structure of the audit event
+- `metadata`: has information concerning the `type` and `action` taken with some identity metadata, `ip` and optional `author` if the server can find that information out
+- `payload`: is the actual payload used to interact with the `Flipt` server for certain auditable events
+
+
+Currently, we support the following sinks for audit events:
+
+- Log File: the audit events will be JSON encoded, with new line delimination
+
+You can find [examples]() on the main GitHub repository on how to enable audit events, and how to tune configuration for it.
