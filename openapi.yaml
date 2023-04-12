@@ -1,95 +1,13 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.1.9
+  version: 0.2.0
 paths:
-  /auth/v1/tokens:
-    get:
-      operationId: Authentication.listTokens
-      tags:
-        - Authentication
-      parameters: []
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthauthenticationList'
-      security: &ref_0
-        - BearerAuth: []
-  /auth/v1/tokens/{id}:
-    get:
-      operationId: Authentication.getToken
-      tags:
-        - Authentication
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Authauthentication'
-      security: *ref_0
-    delete:
-      operationId: Authentication.deleteToken
-      tags:
-        - Authentication
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: ''
-      security: *ref_0
-  /auth/v1/self:
-    get:
-      operationId: Authentication.getSelf
-      tags:
-        - Authentication
-      parameters: []
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Authauthentication'
-      security: *ref_0
-  /auth/v1/self/expire:
-    put:
-      operationId: Authentication.expireSelf
-      tags:
-        - Authentication
-      parameters: []
-      responses:
-        '204':
-          description: ''
-      security: *ref_0
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                expiresAt:
-                  type: string
-                  format: date-time
-  /auth/v1/method/token/:
+  /auth/v1/method/kubernetes/serviceaccount:
     post:
-      operationId: AuthenticationMethodToken.createToken
+      operationId: AuthMethodK8SService.verifyServiceAccount
       tags:
-        - AuthenticationMethodToken
+        - AuthMethodK8SService
       parameters: []
       responses:
         '200':
@@ -98,7 +16,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthauthenticationToken'
-      security: *ref_0
       requestBody:
         required: true
         content:
@@ -106,21 +23,15 @@ paths:
             schema:
               type: object
               properties:
-                name:
+                serviceAccountToken:
                   type: string
-                description:
-                  type: string
-                expiresAt:
-                  type: string
-                  format: date-time
               required:
-                - name
-                - description
+                - serviceAccountToken
   /auth/v1/method/oidc/{provider}/authorize:
     get:
-      operationId: AuthenticationMethodOIDC.authorizeURL
+      operationId: AuthMethodOidcService.authorizeURL
       tags:
-        - AuthenticationMethodOIDC
+        - AuthMethodOidcService
       parameters:
         - name: provider
           in: path
@@ -138,12 +49,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthoidcAuthorizeURLResponse'
+                $ref: '#/components/schemas/AuthMethodOidcoidcAuthorizeURLResponse'
   /auth/v1/method/oidc/{provider}/callback:
     get:
-      operationId: AuthenticationMethodOIDC.callback
+      operationId: AuthMethodOidcService.callback
       tags:
-        - AuthenticationMethodOIDC
+        - AuthMethodOidcService
       parameters:
         - name: provider
           in: path
@@ -166,12 +77,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthoidcCallbackResponse'
-  /auth/v1/method/kubernetes/serviceaccount:
+                $ref: '#/components/schemas/AuthMethodOidcoidcCallbackResponse'
+  /auth/v1/method/token:
     post:
-      operationId: AuthenticationMethodKubernetes.verifyServiceAccount
+      operationId: AuthMethodTokenService.createToken
       tags:
-        - AuthenticationMethodKubernetes
+        - AuthMethodTokenService
       parameters: []
       responses:
         '200':
@@ -180,6 +91,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthauthenticationToken'
+      security: &ref_0
+        - BearerAuth: []
       requestBody:
         required: true
         content:
@@ -187,16 +100,108 @@ paths:
             schema:
               type: object
               properties:
-                serviceAccountToken:
+                name:
                   type: string
+                description:
+                  type: string
+                expiresAt:
+                  type: string
+                  format: date-time
               required:
-                - serviceAccountToken
-  /api/v1/segments/{segmentKey}/constraints:
-    post:
-      operationId: Constraints.create
+                - name
+                - description
+  /auth/v1/tokens:
+    get:
+      operationId: AuthService.listTokens
       tags:
-        - Constraints
+        - AuthService
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthauthenticationList'
+      security: *ref_0
+  /auth/v1/tokens/{id}:
+    get:
+      operationId: AuthService.getToken
+      tags:
+        - AuthService
       parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Authauthentication'
+      security: *ref_0
+    delete:
+      operationId: AuthService.deleteToken
+      tags:
+        - AuthService
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: ''
+      security: *ref_0
+  /auth/v1/self:
+    get:
+      operationId: AuthService.getSelf
+      tags:
+        - AuthService
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Authauthentication'
+      security: *ref_0
+  /auth/v1/self/expire:
+    put:
+      operationId: AuthService.expireSelf
+      tags:
+        - AuthService
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                expiresAt:
+                  type: string
+                  format: date-time
+  /api/v1/namespaces/{namespaceKey}/segments/{segmentKey}/constraints:
+    post:
+      operationId: ConstraintsService.create
+      tags:
+        - ConstraintsService
+      parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: segmentKey
           in: path
           required: true
@@ -215,26 +220,18 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                type:
-                  $ref: '#/components/schemas/ConstraintsconstraintComparisonType'
-                property:
-                  type: string
-                operator:
-                  type: string
-                value:
-                  type: string
-              required:
-                - type
-                - property
-                - operator
-  /api/v1/segments/{segmentKey}/constraints/{id}:
+              $ref: '#/components/schemas/ConstraintsconstraintCreateRequest'
+  /api/v1/namespaces/{namespaceKey}/segments/{segmentKey}/constraints/{id}:
     delete:
-      operationId: Constraints.delete
+      operationId: ConstraintsService.delete
       tags:
-        - Constraints
+        - ConstraintsService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: segmentKey
           in: path
           required: true
@@ -250,10 +247,15 @@ paths:
           description: ''
       security: *ref_0
     put:
-      operationId: Constraints.update
+      operationId: ConstraintsService.update
       tags:
-        - Constraints
+        - ConstraintsService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: segmentKey
           in: path
           required: true
@@ -273,26 +275,18 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                type:
-                  $ref: '#/components/schemas/ConstraintsconstraintComparisonType'
-                property:
-                  type: string
-                operator:
-                  type: string
-                value:
-                  type: string
-              required:
-                - type
-                - property
-                - operator
-  /api/v1/flags/{flagKey}/rules/{ruleId}/distributions:
+              $ref: '#/components/schemas/ConstraintsconstraintUpdateRequest'
+  /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/rules/{ruleId}/distributions:
     post:
-      operationId: Distributions.create
+      operationId: DistributionsService.create
       tags:
-        - Distributions
+        - DistributionsService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: flagKey
           in: path
           required: true
@@ -316,22 +310,18 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                variantId:
-                  type: string
-                rollout:
-                  type: number
-                  format: double
-              required:
-                - variantId
-                - rollout
-  /api/v1/flags/{flagKey}/rules/{ruleId}/distributions/{id}:
+              $ref: '#/components/schemas/DistributionsdistributionCreateRequest'
+  /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/rules/{ruleId}/distributions/{id}:
     delete:
-      operationId: Distributions.delete
+      operationId: DistributionsService.delete
       tags:
-        - Distributions
+        - DistributionsService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: flagKey
           in: path
           required: true
@@ -357,10 +347,15 @@ paths:
           description: ''
       security: *ref_0
     put:
-      operationId: Distributions.update
+      operationId: DistributionsService.update
       tags:
-        - Distributions
+        - DistributionsService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: flagKey
           in: path
           required: true
@@ -389,22 +384,18 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                variantId:
-                  type: string
-                rollout:
-                  type: number
-                  format: double
-              required:
-                - variantId
-                - rollout
-  /api/v1/evaluate:
+              $ref: '#/components/schemas/DistributionsdistributionUpdateRequest'
+  /api/v1/namespaces/{namespaceKey}/evaluate:
     post:
-      operationId: Evaluation.evaluate
+      operationId: EvaluateService.evaluate
       tags:
-        - Evaluation
-      parameters: []
+        - EvaluateService
+      parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: ''
@@ -419,12 +410,17 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/EvaluateevaluationRequest'
-  /api/v1/batch-evaluate:
+  /api/v1/namespaces/{namespaceKey}/batch-evaluate:
     post:
-      operationId: Evaluation.batchEvaluate
+      operationId: EvaluateService.batchEvaluate
       tags:
-        - Evaluation
-      parameters: []
+        - EvaluateService
+      parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: ''
@@ -438,24 +434,18 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                requestId:
-                  type: string
-                requests:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/EvaluateevaluationRequest'
-                excludeNotFound:
-                  type: boolean
-              required:
-                - requests
-  /api/v1/flags:
+              $ref: '#/components/schemas/EvaluatebatchEvaluationRequest'
+  /api/v1/namespaces/{namespaceKey}/flags:
     get:
-      operationId: Flags.list
+      operationId: FlagsService.list
       tags:
-        - Flags
+        - FlagsService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: limit
           in: query
           required: false
@@ -480,10 +470,15 @@ paths:
                 $ref: '#/components/schemas/FlagsflagList'
       security: *ref_0
     post:
-      operationId: Flags.create
+      operationId: FlagsService.create
       tags:
-        - Flags
-      parameters: []
+        - FlagsService
+      parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: ''
@@ -497,25 +492,18 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                key:
-                  type: string
-                name:
-                  type: string
-                description:
-                  type: string
-                enabled:
-                  type: boolean
-              required:
-                - key
-                - name
-  /api/v1/flags/{key}:
+              $ref: '#/components/schemas/FlagsflagCreateRequest'
+  /api/v1/namespaces/{namespaceKey}/flags/{key}:
     get:
-      operationId: Flags.get
+      operationId: FlagsService.get
       tags:
-        - Flags
+        - FlagsService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: key
           in: path
           required: true
@@ -530,10 +518,15 @@ paths:
                 $ref: '#/components/schemas/Flagsflag'
       security: *ref_0
     delete:
-      operationId: Flags.delete
+      operationId: FlagsService.delete
       tags:
-        - Flags
+        - FlagsService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: key
           in: path
           required: true
@@ -544,10 +537,15 @@ paths:
           description: ''
       security: *ref_0
     put:
-      operationId: Flags.update
+      operationId: FlagsService.update
       tags:
-        - Flags
+        - FlagsService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: key
           in: path
           required: true
@@ -566,22 +564,18 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                description:
-                  type: string
-                enabled:
-                  type: boolean
-              required:
-                - name
-  /api/v1/flags/{flagKey}/rules:
+              $ref: '#/components/schemas/FlagsflagUpdateRequest'
+  /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/rules:
     get:
-      operationId: Rules.list
+      operationId: RulesService.list
       tags:
-        - Rules
+        - RulesService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: flagKey
           in: path
           required: true
@@ -611,10 +605,15 @@ paths:
                 $ref: '#/components/schemas/RulesruleList'
       security: *ref_0
     post:
-      operationId: Rules.create
+      operationId: RulesService.create
       tags:
-        - Rules
+        - RulesService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: flagKey
           in: path
           required: true
@@ -633,21 +632,18 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                segmentKey:
-                  type: string
-                rank:
-                  type: integer
-              required:
-                - segmentKey
-                - rank
-  /api/v1/flags/{flagKey}/rules/order:
+              $ref: '#/components/schemas/RulesruleCreateRequest'
+  /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/rules/order:
     put:
-      operationId: Rules.order
+      operationId: RulesService.order
       tags:
-        - Rules
+        - RulesService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: flagKey
           in: path
           required: true
@@ -662,20 +658,18 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                ruleIds:
-                  type: array
-                  items:
-                    type: string
-              required:
-                - ruleIds
-  /api/v1/flags/{flagKey}/rules/{id}:
+              $ref: '#/components/schemas/RulesruleOrderRequest'
+  /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/rules/{id}:
     get:
-      operationId: Rules.get
+      operationId: RulesService.get
       tags:
-        - Rules
+        - RulesService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: flagKey
           in: path
           required: true
@@ -695,10 +689,15 @@ paths:
                 $ref: '#/components/schemas/Rulesrule'
       security: *ref_0
     delete:
-      operationId: Rules.delete
+      operationId: RulesService.delete
       tags:
-        - Rules
+        - RulesService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: flagKey
           in: path
           required: true
@@ -714,10 +713,15 @@ paths:
           description: ''
       security: *ref_0
     put:
-      operationId: Rules.update
+      operationId: RulesService.update
       tags:
-        - Rules
+        - RulesService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: flagKey
           in: path
           required: true
@@ -737,18 +741,18 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                segmentKey:
-                  type: string
-              required:
-                - segmentKey
-  /api/v1/segments:
+              $ref: '#/components/schemas/RulesruleUpdateRequest'
+  /api/v1/namespaces/{namespaceKey}/segments:
     get:
-      operationId: Segments.list
+      operationId: SegmentsService.list
       tags:
-        - Segments
+        - SegmentsService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: limit
           in: query
           required: false
@@ -773,10 +777,15 @@ paths:
                 $ref: '#/components/schemas/SegmentssegmentList'
       security: *ref_0
     post:
-      operationId: Segments.create
+      operationId: SegmentsService.create
       tags:
-        - Segments
-      parameters: []
+        - SegmentsService
+      parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: ''
@@ -790,27 +799,18 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                key:
-                  type: string
-                name:
-                  type: string
-                description:
-                  type: string
-                matchType:
-                  $ref: '#/components/schemas/SegmentssegmentMatchType'
-              required:
-                - key
-                - name
-                - description
-                - matchType
-  /api/v1/segments/{key}:
+              $ref: '#/components/schemas/SegmentssegmentCreateRequest'
+  /api/v1/namespaces/{namespaceKey}/segments/{key}:
     get:
-      operationId: Segments.get
+      operationId: SegmentsService.get
       tags:
-        - Segments
+        - SegmentsService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: key
           in: path
           required: true
@@ -825,10 +825,15 @@ paths:
                 $ref: '#/components/schemas/Segmentssegment'
       security: *ref_0
     delete:
-      operationId: Segments.delete
+      operationId: SegmentsService.delete
       tags:
-        - Segments
+        - SegmentsService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: key
           in: path
           required: true
@@ -839,10 +844,15 @@ paths:
           description: ''
       security: *ref_0
     put:
-      operationId: Segments.update
+      operationId: SegmentsService.update
       tags:
-        - Segments
+        - SegmentsService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: key
           in: path
           required: true
@@ -861,24 +871,18 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                description:
-                  type: string
-                matchType:
-                  $ref: '#/components/schemas/SegmentssegmentMatchType'
-              required:
-                - name
-                - description
-                - matchType
-  /api/v1/flags/{flagKey}/variants:
+              $ref: '#/components/schemas/SegmentssegmentUpdateRequest'
+  /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/variants:
     post:
-      operationId: Variants.create
+      operationId: VariantsService.create
       tags:
-        - Variants
+        - VariantsService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: flagKey
           in: path
           required: true
@@ -897,24 +901,18 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                key:
-                  type: string
-                name:
-                  type: string
-                description:
-                  type: string
-                attachment:
-                  type: string
-              required:
-                - key
-  /api/v1/flags/{flagKey}/variants/{id}:
+              $ref: '#/components/schemas/VariantsvariantCreateRequest'
+  /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/variants/{id}:
     delete:
-      operationId: Variants.delete
+      operationId: VariantsService.delete
       tags:
-        - Variants
+        - VariantsService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: flagKey
           in: path
           required: true
@@ -930,10 +928,15 @@ paths:
           description: ''
       security: *ref_0
     put:
-      operationId: Variants.update
+      operationId: VariantsService.update
       tags:
-        - Variants
+        - VariantsService
       parameters:
+        - name: namespaceKey
+          in: path
+          required: true
+          schema:
+            type: string
         - name: flagKey
           in: path
           required: true
@@ -957,26 +960,30 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                key:
-                  type: string
-                name:
-                  type: string
-                description:
-                  type: string
-                attachment:
-                  type: string
-              required:
-                - key
+              $ref: '#/components/schemas/VariantsvariantUpdateRequest'
 components:
   schemas:
+    AuthMethodOidcoidcAuthorizeURLResponse:
+      type: object
+      properties:
+        authorizeUrl:
+          type: string
+      required:
+        - authorizeUrl
+    AuthMethodOidcoidcCallbackResponse:
+      type: object
+      properties:
+        authentication:
+          $ref: '#/components/schemas/Authauthentication'
+      required:
+        - authentication
     AuthauthenticationMethod:
       type: string
       enum:
         - METHOD_NONE
         - METHOD_TOKEN
         - METHOD_OIDC
+        - METHOD_KUBERNETES
       description: The default is METHOD_NONE
     Authauthentication:
       type: object
@@ -1026,20 +1033,6 @@ components:
       required:
         - clientToken
         - authentication
-    AuthoidcAuthorizeURLResponse:
-      type: object
-      properties:
-        authorizeUrl:
-          type: string
-      required:
-        - authorizeUrl
-    AuthoidcCallbackResponse:
-      type: object
-      properties:
-        authentication:
-          $ref: '#/components/schemas/Authauthentication'
-      required:
-        - authentication
     CommonsPageable:
       type: object
       properties:
@@ -1085,6 +1078,36 @@ components:
         - value
         - createdAt
         - updatedAt
+    ConstraintsconstraintCreateRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ConstraintsconstraintComparisonType'
+        property:
+          type: string
+        operator:
+          type: string
+        value:
+          type: string
+      required:
+        - type
+        - property
+        - operator
+    ConstraintsconstraintUpdateRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ConstraintsconstraintComparisonType'
+        property:
+          type: string
+        operator:
+          type: string
+        value:
+          type: string
+      required:
+        - type
+        - property
+        - operator
     Distributionsdistribution:
       type: object
       properties:
@@ -1110,6 +1133,28 @@ components:
         - rollout
         - createdAt
         - updatedAt
+    DistributionsdistributionCreateRequest:
+      type: object
+      properties:
+        variantId:
+          type: string
+        rollout:
+          type: number
+          format: double
+      required:
+        - variantId
+        - rollout
+    DistributionsdistributionUpdateRequest:
+      type: object
+      properties:
+        variantId:
+          type: string
+        rollout:
+          type: number
+          format: double
+      required:
+        - variantId
+        - rollout
     EvaluateevaluationRequest:
       type: object
       properties:
@@ -1176,6 +1221,19 @@ components:
         - FLAG_NOT_FOUND_EVALUATION_REASON
         - MATCH_EVALUATION_REASON
         - ERROR_EVALUATION_REASON
+    EvaluatebatchEvaluationRequest:
+      type: object
+      properties:
+        requestId:
+          type: string
+        requests:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluateevaluationRequest'
+        excludeNotFound:
+          type: boolean
+      required:
+        - requests
     EvaluatebatchEvaluationResponse:
       type: object
       properties:
@@ -1236,6 +1294,31 @@ components:
         - createdAt
         - updatedAt
         - variants
+    FlagsflagCreateRequest:
+      type: object
+      properties:
+        key:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        enabled:
+          type: boolean
+      required:
+        - key
+        - name
+    FlagsflagUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        enabled:
+          type: boolean
+      required:
+        - name
     RulesruleList:
       type: object
       properties:
@@ -1280,6 +1363,32 @@ components:
         - rank
         - createdAt
         - updatedAt
+    RulesruleCreateRequest:
+      type: object
+      properties:
+        segmentKey:
+          type: string
+        rank:
+          type: integer
+      required:
+        - segmentKey
+        - rank
+    RulesruleOrderRequest:
+      type: object
+      properties:
+        ruleIds:
+          type: array
+          items:
+            type: string
+      required:
+        - ruleIds
+    RulesruleUpdateRequest:
+      type: object
+      properties:
+        segmentKey:
+          type: string
+      required:
+        - segmentKey
     SegmentssegmentList:
       type: object
       properties:
@@ -1329,6 +1438,35 @@ components:
       enum:
         - ALL_MATCH_TYPE
         - ANY_MATCH_TYPE
+    SegmentssegmentCreateRequest:
+      type: object
+      properties:
+        key:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        matchType:
+          $ref: '#/components/schemas/SegmentssegmentMatchType'
+      required:
+        - key
+        - name
+        - description
+        - matchType
+    SegmentssegmentUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        matchType:
+          $ref: '#/components/schemas/SegmentssegmentMatchType'
+      required:
+        - name
+        - description
+        - matchType
     Variantsvariant:
       type: object
       properties:
@@ -1359,6 +1497,32 @@ components:
         - createdAt
         - updatedAt
         - attachment
+    VariantsvariantCreateRequest:
+      type: object
+      properties:
+        key:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        attachment:
+          type: string
+      required:
+        - key
+    VariantsvariantUpdateRequest:
+      type: object
+      properties:
+        key:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        attachment:
+          type: string
+      required:
+        - key
   securitySchemes:
     BearerAuth:
       type: http
