@@ -10,8 +10,29 @@ The Flipt REST API can also be used with any language that can make HTTP request
 
 The latest version of the REST API is fully documented using the [OpenAPI v3 specification](https://github.com/flipt-io/flipt-openapi).
 
-There are also official client SDKs for JavaScript, Java, and Rust:
+## Backward Compatability
 
+We take great care to ensure that the Flipt REST API is backward compatible. This means that you can safely upgrade to a newer version of Flipt without having to change your API calls.
+
+From time to time we may need to make large changes to the API as we introduce additional features, however we will continue to make sure that we preserve backward compatability.
+
+We will describe any major changes in the section below.
+
+## API Changes
+
+### v1.20.0
+
+Version [v1.20.0](https://github.com/flipt-io/flipt/releases/tag/v1.20.0) of Flipt introduced the concept of Namespaces as root objects nested under the `/namespaces` route (ie: `/api/v1/namespace/{namespaceKey}/flags`).
+
+All previous endpoints without the `/namespaces` prefix still work as before (ie: `/api/v1/flags`), they simply resolve to using the **default** namespace.
+
+See the [Concepts: Namespaces](/concepts#namespaces) section for more infomation.
+
+## SDKs
+
+There are official REST client SDKs for Go, JavaScript, Java, and Rust:
+
+- [flipt-go](https://github.com/flipt-io/flipt/tree/main/sdk/go)
 - [flipt-node](https://github.com/flipt-io/flipt-node)
 - [flipt-java](https://github.com/flipt-io/flipt-java)
 - [flipt-rust](https://github.com/flipt-io/flipt-rust) 
