@@ -1,6 +1,5 @@
 {
   "name": "Flipt",
-  "versions": ["v1.20.0+"],
   "logo": {
     "light": "/logo/light-logo.svg",
     "dark": "/logo/dark-logo.svg"
@@ -83,11 +82,10 @@
     },
     {
       "group": "Overview",
-      "pages": ["reference/overview"],
-      "version": "v1.20.0+"
+      "pages": ["reference/overview"]
     },
     {
-      "group": "API Authentication",
+      "group": "Authentication",
       "pages": [
         "reference/authentication/list-tokens",
         "reference/authentication/get-token",
@@ -95,34 +93,23 @@
         "reference/authentication/create-token",
         "reference/authentication/get-self",
         "reference/authentication/expire-self"
-      ],
-      "version": "v1.20.0+"
-    },
-    {
-      "group": "Constraints",
-      "pages": [
-        "reference/constraints/create-constraint",
-        "reference/constraints/delete-constraint",
-        "reference/constraints/update-constraint"
-      ],
-      "version": "v1.20.0+"
-    },
-    {
-      "group": "Distributions",
-      "pages": [
-        "reference/distributions/create-distribution",
-        "reference/distributions/delete-distribution",
-        "reference/distributions/update-distribution"
-      ],
-      "version": "v1.20.0+"
+      ]
     },
     {
       "group": "Evaluation",
       "pages": [
         "reference/evaluate/batch-evaluate",
         "reference/evaluate/evaluate"
-      ],
-      "version": "v1.20.0+"
+      ]
+    },
+    {
+      "group": "Namespaces",
+      "pages": [
+        "reference/namespaces/list-namespaces",
+        "reference/namespaces/create-namespace",
+        "reference/namespaces/delete-namespace",
+        "reference/namespaces/update-namespace"
+      ]
     },
     {
       "group": "Flags",
@@ -132,8 +119,33 @@
         "reference/flags/get-flag",
         "reference/flags/delete-flag",
         "reference/flags/update-flag"
-      ],
-      "version": "v1.20.0+"
+      ]
+    },
+    {
+      "group": "Variants",
+      "pages": [
+        "reference/variants/create-variant",
+        "reference/variants/delete-variant",
+        "reference/variants/update-variant"
+      ]
+    },
+    {
+      "group": "Segments",
+      "pages": [
+        "reference/segments/list-segment",
+        "reference/segments/create-segment",
+        "reference/segments/get-segment",
+        "reference/segments/delete-segment",
+        "reference/segments/update-segment"
+      ]
+    },
+    {
+      "group": "Constraints",
+      "pages": [
+        "reference/constraints/create-constraint",
+        "reference/constraints/delete-constraint",
+        "reference/constraints/update-constraint"
+      ]
     },
     {
       "group": "Rules",
@@ -144,28 +156,15 @@
         "reference/rules/get-rule",
         "reference/rules/delete-rule",
         "reference/rules/update-rule"
-      ],
-      "version": "v1.20.0+"
+      ]
     },
     {
-      "group": "Segments",
+      "group": "Distributions",
       "pages": [
-        "reference/segments/list-segment",
-        "reference/segments/create-segment",
-        "reference/segments/get-segment",
-        "reference/segments/delete-segment",
-        "reference/segments/update-segment"
-      ],
-      "version": "v1.20.0+"
-    },
-    {
-      "group": "Variants",
-      "pages": [
-        "reference/variants/create-variant",
-        "reference/variants/delete-variant",
-        "reference/variants/update-variant"
-      ],
-      "version": "v1.20.0+"
+        "reference/distributions/create-distribution",
+        "reference/distributions/delete-distribution",
+        "reference/distributions/update-distribution"
+      ]
     }
   ],
   "footerSocials": {
