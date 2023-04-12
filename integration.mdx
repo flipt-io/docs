@@ -12,8 +12,8 @@ would like to be able to use with Flipt.
 
 There are two ways to communicate with the Flipt server:
 
-1. GRPC API
 1. REST API
+1. GRPC API
 
 We have also developed several clients in various languages for easier integration.
 
@@ -22,6 +22,40 @@ We have also developed several clients in various languages for easier integrati
 These SDKs support both Flipt's gRPC and HTTP RPC APIs:
 
 - [Go](https://github.com/flipt-io/flipt/tree/main/sdk/go)
+
+## REST API
+
+Flipt also comes equipped with a fully functional REST API. The Flipt UI is completely backed by this same API. This means that anything that can be done in the Flipt UI can also be done via the REST API.
+
+The Flipt REST API can also be used with any language that can make HTTP requests. This means that you don't need to use one of the above GRPC clients to integrate your application with Flipt.
+
+The latest version of the REST API is fully documented using the [OpenAPI v3 specification](https://github.com/flipt-io/flipt-openapi) as well as the above [API Reference](/reference/overview).
+
+## REST Clients
+
+### Official Clients
+
+Official Flipt REST clients are currently available in the following languages:
+
+- [Go](https://github.com/flipt-io/flipt/tree/main/sdk/go)
+- [Node.js/TypeScript](https://github.com/flipt-io/flipt-node)
+- [Java](https://github.com/flipt-io/flipt-java)
+- [Rust](https://github.com/flipt-io/flipt-rust)
+
+### Generate
+
+You can use [openapi-generator](https://openapi-generator.tech/) to generate client code in your preferred language from the [Flipt OpenAPI v3 specification](https://github.com/flipt-io/flipt-openapi).
+
+While generating clients is outside of the scope of this documentation, an example of generating a Java client with the `openapi-generator` is below.
+
+#### Java Example
+
+1. Install [`openapi-generator`](https://openapi-generator.tech/docs/installation)
+2. Generate using `openapi-generator-cli` to desired location:
+
+```
+openapi-generator generate -i openapi.yml -g java -o /tmp/flipt/java
+```
 
 ## GRPC Clients
 
@@ -94,40 +128,6 @@ grpc_tools_ruby_protoc -I ./rpc --ruby_out=/tmp/flipt/ruby --grpc_out=/tmp/flipt
 cd /tmp/flipt/ruby
 ls
 flipt_pb.rb          flipt_services_pb.rb
-```
-
-## REST API
-
-Flipt also comes equipped with a fully functional REST API. The Flipt UI is completely backed by this same API. This means that anything that can be done in the Flipt UI can also be done via the REST API.
-
-The Flipt REST API can also be used with any language that can make HTTP requests. This means that you don't need to use one of the above GRPC clients to integrate your application with Flipt.
-
-The latest version of the REST API is fully documented using the [OpenAPI v3 specification](https://github.com/flipt-io/flipt-openapi) as well as the above [API Reference](/reference/overview).
-
-## REST Clients
-
-### Official Clients
-
-Official Flipt REST clients are currently available in the following languages:
-
-- [Go](https://github.com/flipt-io/flipt/tree/main/sdk/go)
-- [Node.js/TypeScript](https://github.com/flipt-io/flipt-node)
-- [Java](https://github.com/flipt-io/flipt-java)
-- [Rust](https://github.com/flipt-io/flipt-rust)
-
-### Generate
-
-You can use [openapi-generator](https://openapi-generator.tech/) to generate client code in your preferred language from the [Flipt OpenAPI v3 specification](https://github.com/flipt-io/flipt-openapi).
-
-While generating clients is outside of the scope of this documentation, an example of generating a Java client with the `openapi-generator` is below.
-
-#### Java Example
-
-1. Install [`openapi-generator`](https://openapi-generator.tech/docs/installation)
-2. Generate using `openapi-generator-cli` to desired location:
-
-```
-openapi-generator generate -i openapi.yml -g java -o /tmp/flipt/java
 ```
 
 ## Third-Party Client Libraries
