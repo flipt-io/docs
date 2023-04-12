@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.2.0
+  version: 0.2.1
 paths:
   /auth/v1/method/kubernetes/serviceaccount:
     post:
@@ -565,6 +565,111 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/FlagsflagUpdateRequest'
+  /api/v1/namespaces:
+    get:
+      operationId: NamespacesService.list
+      tags:
+        - NamespacesService
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: pageToken
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NamespacesnamespaceList'
+      security: *ref_0
+    post:
+      operationId: NamespacesService.create
+      tags:
+        - NamespacesService
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Namespacesnamespace'
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NamespacesnamespaceCreateRequest'
+  /api/v1/namespaces/{key}:
+    get:
+      operationId: NamespacesService.get
+      tags:
+        - NamespacesService
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Namespacesnamespace'
+      security: *ref_0
+    delete:
+      operationId: NamespacesService.delete
+      tags:
+        - NamespacesService
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: ''
+      security: *ref_0
+    put:
+      operationId: NamespacesService.update
+      tags:
+        - NamespacesService
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Namespacesnamespace'
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NamespacesnamespaceUpdateRequest'
   /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/rules:
     get:
       operationId: RulesService.list
@@ -1317,6 +1422,66 @@ components:
           type: string
         enabled:
           type: boolean
+      required:
+        - name
+    NamespacesnamespaceList:
+      type: object
+      properties:
+        namespaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/Namespacesnamespace'
+        nextPageToken:
+          type: string
+        totalCount:
+          type: integer
+      required:
+        - namespaces
+        - nextPageToken
+        - totalCount
+    Namespacesnamespace:
+      type: object
+      properties:
+        key:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        protected:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - key
+        - name
+        - description
+        - protected
+        - createdAt
+        - updatedAt
+    NamespacesnamespaceCreateRequest:
+      type: object
+      properties:
+        key:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+      required:
+        - key
+        - name
+    NamespacesnamespaceUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
       required:
         - name
     RulesruleList:
