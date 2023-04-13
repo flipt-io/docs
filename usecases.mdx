@@ -1,0 +1,41 @@
+---
+title: Use Cases
+description: This document describes some of the use cases for Flipt and feature flags in general.
+mode: wide
+---
+
+## Enhanced Development Experience
+
+Feature flags are extremely versatile and can quickly become an important tool in a developer’s toolbox. Some of the ways they can be used to enhance the development experience include:
+
+- Enabling trunk-based development workflows
+- Testing new features internally during development before releasing them fully in production
+- Ensuring overall system safety by guarding new releases with unknown performance implications with an emergency kill switch
+- Gating certain features for different permission levels, allowing you to control who sees what
+- Enabling continuous configuration by changing values during runtime
+
+## Enabling Trunk-Based Development
+
+A common development workflow is to have a “trunk” branch that represents the latest version of your application in production. You can use feature flags to control which features are enabled on your trunk, allowing engineers to test new features without disrupting your live users.
+
+This is often preferable to branch-based deployment workflow because it’s a lot easier to manage. Feature flag-driven trunk-based development allows you to keep your code base clean and well-organized, while still enabling engineers to iterate quickly.
+
+## Testing New Features Internally
+
+Feature flags provide a powerful mechanism for testing new features internally during their development. By using feature flags, you can enable new features for specific groups of users, such as internal employees, in order to test and validate their functionality in a controlled and safe environment. This approach allows for the early detection of bugs and other issues that may not have been discovered through traditional testing methods, helping to ensure that new features are thoroughly vetted and optimized for release.
+
+## Gating Features for Different Permissions
+
+Using feature flags can be a powerful way to manage permissions and control access to new features, without requiring a full-fledged permission model in the codebase. By leveraging feature flags, you can limit access to new features by selectively enabling them for certain groups of users or under specific conditions. This allows for a more flexible and responsive approach to permissions management, without the need to hard-code complex permission logic into the codebase. Instead, the logic for enabling or disabling features can be managed remotely through the feature flags configuration, enabling rapid experimentation and iteration.
+
+## Ensuring System Safety
+
+Feature flags provide a powerful tool to mitigate the risk of code changes impacting the system's stability or negatively impacting customers. This is especially important when working on complex and large projects that are difficult to test in isolation, such as those that require updates to database schema, ETL data migrations, or running background jobs. By utilizing feature flags, you can gradually roll out code, monitor its impact, and quickly disable it if necessary.
+
+## Enabling Continuous Configuration
+
+Feature flags can be utilized for continuous configuration management. This allows for dynamic changes to be made in real-time to elements (eg: changing rate limits for service-to-service communication), without the need to update the codebase or configuration files, or deploy every time a change is required. By using feature flags, these values can be modified and managed remotely, offering greater flexibility and responsiveness.
+
+## Learn More
+
+These are just some of the many use cases for Flipt and feature flags for developers. Reach out to our team on [Discord](/discord) or [GitHub](https://github.com/flipt-io/flipt) to find out how Flipt can support your specific use case.
