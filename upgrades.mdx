@@ -1,0 +1,68 @@
+---
+title: Upgrades
+description: This document describes how to upgrade Flipt.
+---
+
+Flipt aims to provide an upgrade process which requires zero downtime with minimal steps.
+Currently, Flipt supports four relational database backends and uses a migration process to manage their schema.
+
+Each new release of Flipt, may or may not include updates to database migrations.
+The release notes on GitHub for each Flipt release should signify whether it does or not.
+
+You can find the releases and release notes on [GitHub](https://github.com/flipt-io/flipt/releases).
+
+Before upgrading your Flipt instances to a new version, you need to run the `flipt migrate` command against your database.
+The Flipt binary is self-contained and has all necessary migrations baked in.
+You should use the version of Flipt you're attempting to upgrade to. 
+
+<Note>
+If you attempt to upgrade to a new version of Flipt before running migrations, then Flipt will fail fast on startup with a message like the following.
+
+```
+migrations pending, please backup your database and run `flipt migrate`
+```
+</Note>
+
+## Upgrade Process
+
+<Warning>
+We **strongly recommend** that you perform a backup of your Flipt database before doing any migrations.
+While we strive to ensure that Flipt is error free and production ready, we cannot guarantee perfection.
+</Warning>
+
+First, run `flipt -v` to see the version you have installed locally.
+You want this to be the version you're attempting to upgrade to.
+
+```sh
+$ flipt -v
+
+ _____ _ _       _
+|  ___| (_)_ __ | |_
+| |_  | | | '_ \| __|
+|  _| | | | |_) | |_
+|_|   |_|_| .__/ \__|
+          |_|
+
+Version: 1.20.0
+Commit: 5badad98844061a15c05bd6b21accde44ea7fcb5
+Build Date: 2023-04-11T15:39:19Z
+Go Version: go1.20.3
+```
+
+Once you have identified the version you have installed is the target version you are upgrading to, you can run `flipt migrate` (In this instance I am upgrading to Flipt v1.20.0).
+
+```sh
+$ flipt migrate --config /etc/flipt/default.yml
+2023-04-13T15:35:17Z	DEBUG	using driver	{"driver": "sqlite3"}
+2023-04-13T15:35:17Z	DEBUG	migrations complete
+```
+
+Now you can update your running instance(s) of Flipt to match the same version.
+We design our migrations to be forward compatible with older Flipt server versions.
+So it is safe for you to keep running Flipt while the migrations are run and after they have finished.
+
+## Downgrade Process
+
+As mentioned, we recommend you backup your database before performing any upgrades.
+Flipt does not currently come with any built-in downgrade tooling.
+Our suggestion, if you need to revert to an previous version of Flipt, is to restore your database using a backup from when it was backing the target older version.
