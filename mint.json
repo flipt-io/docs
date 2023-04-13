@@ -8,6 +8,9 @@
     "baseUrl": "https://try.flipt.io",
     "auth": {
       "method": "bearer"
+    },
+    "playground": {
+      "mode": "simple"
     }
   },
   "favicon": "/favicon.svg",
@@ -85,33 +88,14 @@
       "pages": ["reference/overview"]
     },
     {
-      "group": "API Authentication",
+      "group": "Authentication",
       "pages": [
         "reference/authentication/list-tokens",
         "reference/authentication/get-token",
         "reference/authentication/delete-token",
         "reference/authentication/create-token",
         "reference/authentication/get-self",
-        "reference/authentication/expire-self",
-        "reference/authentication/oidc-authorize",
-        "reference/authentication/oidc-callback",
-        "reference/authentication/kubernetes-verify-service-account"
-      ]
-    },
-    {
-      "group": "Constraints",
-      "pages": [
-        "reference/constraints/create-constraint",
-        "reference/constraints/delete-constraint",
-        "reference/constraints/update-constraint"
-      ]
-    },
-    {
-      "group": "Distributions",
-      "pages": [
-        "reference/distributions/create-distribution",
-        "reference/distributions/delete-distribution",
-        "reference/distributions/update-distribution"
+        "reference/authentication/expire-self"
       ]
     },
     {
@@ -122,6 +106,16 @@
       ]
     },
     {
+      "group": "Namespaces",
+      "pages": [
+        "reference/namespaces/list-namespaces",
+        "reference/namespaces/create-namespace",
+        "reference/namespaces/get-namespace",
+        "reference/namespaces/delete-namespace",
+        "reference/namespaces/update-namespace"
+      ]
+    },
+    {
       "group": "Flags",
       "pages": [
         "reference/flags/list-flags",
@@ -129,6 +123,32 @@
         "reference/flags/get-flag",
         "reference/flags/delete-flag",
         "reference/flags/update-flag"
+      ]
+    },
+    {
+      "group": "Variants",
+      "pages": [
+        "reference/variants/create-variant",
+        "reference/variants/delete-variant",
+        "reference/variants/update-variant"
+      ]
+    },
+    {
+      "group": "Segments",
+      "pages": [
+        "reference/segments/list-segment",
+        "reference/segments/create-segment",
+        "reference/segments/get-segment",
+        "reference/segments/delete-segment",
+        "reference/segments/update-segment"
+      ]
+    },
+    {
+      "group": "Constraints",
+      "pages": [
+        "reference/constraints/create-constraint",
+        "reference/constraints/delete-constraint",
+        "reference/constraints/update-constraint"
       ]
     },
     {
@@ -143,21 +163,11 @@
       ]
     },
     {
-      "group": "Segments",
+      "group": "Distributions",
       "pages": [
-        "reference/segments/list-segment",
-        "reference/segments/create-segment",
-        "reference/segments/get-segment",
-        "reference/segments/delete-segment",
-        "reference/segments/update-segment"
-      ]
-    },
-    {
-      "group": "Variants",
-      "pages": [
-        "reference/variants/create-variant",
-        "reference/variants/delete-variant",
-        "reference/variants/update-variant"
+        "reference/distributions/create-distribution",
+        "reference/distributions/delete-distribution",
+        "reference/distributions/update-distribution"
       ]
     }
   ],
