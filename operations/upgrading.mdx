@@ -1,5 +1,5 @@
 ---
-title: Upgrades
+title: Upgrading
 description: This document describes how to upgrade Flipt.
 ---
 
@@ -11,7 +11,7 @@ The release notes on GitHub for each Flipt release should signify whether it doe
 
 You can find the releases and release notes on [GitHub](https://github.com/flipt-io/flipt/releases).
 
-Before upgrading your Flipt instances to a new version, you need to run the `flipt migrate` command against your database.
+Before upgrading your Flipt instances to a new version, you may need to run the `flipt migrate` command against your database.
 The Flipt binary is self-contained and has all necessary migrations baked in.
 You should use the version of Flipt you're attempting to upgrade to. 
 
@@ -30,7 +30,7 @@ We **strongly recommend** that you perform a backup of your Flipt database befor
 While we strive to ensure that Flipt is error free and production ready, we cannot guarantee perfection.
 </Warning>
 
-First, run `flipt -v` to see the version you have installed locally.
+First, run `flipt -v` to see the version you have installed.
 You want this to be the version you're attempting to upgrade to.
 
 ```sh
@@ -58,8 +58,7 @@ $ flipt migrate --config /etc/flipt/default.yml
 ```
 
 Now you can update your running instance(s) of Flipt to match the same version.
-We design our migrations to be forward compatible with older Flipt server versions.
-So it is safe for you to keep running Flipt while the migrations are run and after they have finished.
+We design our migrations to be forward compatible with older Flipt server versions, so it is safe for you to keep running Flipt while the migrations are run and after they have finished.
 
 ## Downgrade Process
 
