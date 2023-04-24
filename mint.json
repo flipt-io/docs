@@ -66,7 +66,8 @@
         "configuration/overview",
         "configuration/storage",
         "configuration/authentication",
-        "configuration/observability"
+        "configuration/observability",
+        "configuration/telemetry"
       ]
     },
     {
