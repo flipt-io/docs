@@ -92,8 +92,11 @@ Starting from `v1.21.0`, Flipt supports sending audit events to configured sinks
   "metadata": {
     "type": "flag",
     "action": "created",
-    "ip": "127.0.0.1",
-    "author": "joe@example.com"
+    "actor": {
+      "ip": "127.0.0.1",
+      "method": "none",
+      "email": "joe@example.com"
+    }
   },
   "payload": {
     "description": "audit events feature",
@@ -106,7 +109,7 @@ Starting from `v1.21.0`, Flipt supports sending audit events to configured sinks
 ```
 
 - `version` : describes the version of the audit event structure. We do not expect too many changes to the structure of the audit event
-- `metadata`: information concerning the `type` and `action` taken with some identity metadata, `ip` and optional `author` if applicable
+- `metadata`: information concerning the `type` and `action` taken with some identity metadata in the `actor` object
 - `payload` : the actual payload used to interact with the `Flipt` server for certain auditable events
 
 
