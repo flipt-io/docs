@@ -23,25 +23,24 @@ Here is an example of the telemetry data sent to Segment:
 
 ```json
 {
-    "version": "1.1",
-    "uuid": "1545d8a8-7a66-4d8d-a158-0a1c576c68a6",
-    "lastTimestamp": "2023-04-25T01:01:51Z",
-    "flipt": {
-        "version": "v1.20.1",
-        "storage": {
-            "database": "postgres",
-            "cache": "redis"
-        },
-        "authentication": {
-            "methods": "oidc"
-        }
+  "version": "1.1",
+  "uuid": "1545d8a8-7a66-4d8d-a158-0a1c576c68a6",
+  "lastTimestamp": "2023-04-25T01:01:51Z",
+  "flipt": {
+    "version": "v1.20.1",
+    "storage": {
+      "database": "postgres",
+      "cache": "redis"
+    },
+    "authentication": {
+      "methods": "oidc"
     }
+  }
 }
 ```
 
 You can view the full schema of the telemetry data on
 [GitHub](https://github.com/flipt-io/flipt/blob/05b85f6ec704d9eac850984c16d9bc3d15dbdb6c/internal/telemetry/telemetry.go#L26-L30).
-
 
 ### How to Disable Telemetry
 
@@ -54,8 +53,14 @@ meta:
   telemetry_enabled: false
 ```
 
-#### Environment Variable
+#### Environment Variables
 
-```yaml
+```shell
 export FLIPT_TELEMETRY_ENABLED=false
+```
+
+As of [v1.21.0](https://github.com/flipt-io/flipt/releases/tag/v1.21.0), telemetry can also be disabled by setting the [DO_NOT_TRACK](https://consoledonottrack.com/) environment variable to `true` or `1`:
+
+```shell
+export DO_NOT_TRACK=true
 ```
