@@ -11,7 +11,7 @@ never shared with external entities, and you can opt-out at any time.
 
 ### What Kind of Data is Collected?
 
-- Flipt version (ie: v1.20.0)
+- Flipt version (ie: v1.21.0)
 - Database backend (ie: Postgres)
 - Cache backend (ie: Redis)
 - Authentication methods (ie: OIDC)
@@ -27,7 +27,7 @@ Here is an example of the telemetry data sent to Segment:
   "uuid": "1545d8a8-7a66-4d8d-a158-0a1c576c68a6",
   "lastTimestamp": "2023-04-25T01:01:51Z",
   "flipt": {
-    "version": "v1.20.1",
+    "version": "v1.21.1",
     "storage": {
       "database": "postgres",
       "cache": "redis"
@@ -39,8 +39,8 @@ Here is an example of the telemetry data sent to Segment:
 }
 ```
 
-You can view the full schema of the telemetry data on
-[GitHub](https://github.com/flipt-io/flipt/blob/05b85f6ec704d9eac850984c16d9bc3d15dbdb6c/internal/telemetry/telemetry.go#L26-L30).
+You can always view the full schema of the telemetry data and see how it is collected on
+[GitHub](https://github.com/flipt-io/flipt/blob/main/internal/telemetry/telemetry.go).
 
 ### How to Disable Telemetry
 
