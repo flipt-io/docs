@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.2.2
+  version: 0.2.3
 paths:
   /auth/v1/method/kubernetes/serviceaccount:
     post:
@@ -1344,7 +1344,7 @@ components:
       properties:
         requestId:
           type: string
-        response:
+        responses:
           type: array
           items:
             $ref: '#/components/schemas/EvaluateevaluationResponse'
@@ -1353,7 +1353,7 @@ components:
           format: double
       required:
         - requestId
-        - response
+        - responses
         - requestDurationMillis
     FlagsflagList:
       type: object
