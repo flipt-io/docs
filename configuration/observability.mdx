@@ -88,14 +88,15 @@ Starting from `v1.21.0`, Flipt supports sending audit events to configured sinks
 
 ```json
 {
-  "version": "v0.1",
-  "metadata": {
+  "version": "0.1",
     "type": "flag",
     "action": "created",
-    "actor": {
-      "ip": "127.0.0.1",
-      "method": "none",
-      "email": "joe@example.com"
+    "metadata": {
+      "actor": {
+        "ip": "127.0.0.1",
+        "method": "none",
+        "email": "joe@example.com"
+      }
     }
   },
   "payload": {
@@ -108,8 +109,10 @@ Starting from `v1.21.0`, Flipt supports sending audit events to configured sinks
 }
 ```
 
-- `version` : describes the version of the audit event structure. We do not expect too many changes to the structure of the audit event
-- `metadata`: information concerning the `type` and `action` taken with some identity metadata in the `actor` object
+- `version` : the version of the audit event structure. We do not expect too many changes to the structure of the audit event
+- `type`    : the type of the entity being acted upon (flag, variant, constraint, etc.)
+- `action`  : the action taken upon the entity (created, deleted, updated, etc.)
+- `metadata`: extra information related to the audit event as a whole. The `actor` field will always be present containing some identity information of the source which initiated the audit event
 - `payload` : the actual payload used to interact with the `Flipt` server for certain auditable events
 
 Currently, we support the following sinks for audit events:
