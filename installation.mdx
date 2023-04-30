@@ -56,6 +56,19 @@ application.
   [v1.6.1](https://github.com/flipt-io/flipt/releases/tag/v1.6.1).
 </Note>
 
+#### Configuration
+
+There is a default configuration file within the image. In order to supply a custom configuration, update the `docker run` command to mount your local config into the container
+
+```console
+docker run -d \
+    -p 8080:8080 \
+    -p 9000:9000 \
+    -v $HOME/flipt:/var/opt/flipt \
+    -v $HOME/flipt/config.yaml:/etc/flipt/config.yaml \
+    flipt/flipt:latest
+```
+
 ## Kubernetes/Helm
 
 You can run Flipt in Kubernetes using the Flipt [Helm](https://helm.sh) chart.
