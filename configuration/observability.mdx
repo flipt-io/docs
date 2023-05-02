@@ -93,19 +93,18 @@ Starting from `v1.21.0`, Flipt supports sending audit events to configured sinks
   "action": "created",
   "metadata": {
     "actor": {
-      "ip": "127.0.0.1",
       "authentication": "none",
-      "email": "joe@example.com"
+      "ip": "172.17.0.1"
     }
   },
   "payload": {
-    "description": "audit events feature",
+    "description": "flipt flag",
     "enabled": true,
-    "key": "my-audit-event",
-    "name": "myauditevent",
+    "key": "flipt",
+    "name": "flipt",
     "namespace_key": "default"
   },
-  "timestamp": "1970-01-01T00:00:00-00:00"
+  "timestamp": "1970-01-01T00:00:00Z"
 }
 ```
 
