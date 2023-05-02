@@ -9,8 +9,12 @@ and configuration by using a reliable runtime.
 
 ### Prerequisites
 
-Docker installation is required on the host, see the
-[official installation docs](https://docs.docker.com/install/).
+Docker installation is required on the host, see the [official installation docs](https://docs.docker.com/install/).
+
+<Note>
+  Flipt requires Docker Engine version
+  [20.10](https://docs.docker.com/engine/release-notes/20.10/) or higher.
+</Note>
 
 ### Run the image
 
@@ -26,10 +30,10 @@ This will download the image and start a Flipt container and publish ports
 needed to access the UI and backend server. All persistent Flipt data will be
 stored in `$HOME/flipt`.
 
-<Note>
+<Info>
   `$HOME/flipt` is just used as an example, you can use any directory you would
   like on the host.
-</Note>
+</Info>
 
 The Flipt container uses host-mounted volumes to persist data:
 
@@ -52,15 +56,24 @@ application.
   [v1.6.1](https://github.com/flipt-io/flipt/releases/tag/v1.6.1).
 </Note>
 
+#### Configuration
+
+There is a default configuration file within the image. In order to supply a custom configuration, update the `docker run` command to mount your local config into the container
+
+```console
+docker run -d \
+    -p 8080:8080 \
+    -p 9000:9000 \
+    -v $HOME/flipt:/var/opt/flipt \
+    -v $HOME/flipt/config.yaml:/etc/flipt/config.yaml \
+    flipt/flipt:latest
+```
+
 ## Kubernetes/Helm
 
 You can run Flipt in Kubernetes using the Flipt [Helm](https://helm.sh) chart.
 
-<Note>
-  The Flipt Helm chart is still a work in progress. Any issues or suggestions on
-  how to improve it are welcome in the [chart
-  repository](https://github.com/flipt-io/helm-charts).
-</Note>
+Any issues or suggestions on how to improve the Flipt Helm chart are welcome in the [chart repository](https://github.com/flipt-io/helm-charts).
 
 ### Prerequisites
 

@@ -80,6 +80,20 @@ These properties are as follows:
 | tracing.jaeger.host | The UDP host destination to report spans | localhost | v0.17.0 |
 | tracing.jaeger.port | The UDP port destination to report spans | 6831      | v0.17.0 |
 
+### Audit Events
+
+| Property                 | Description                                     | Default | Since   |
+| ------------------------ | ----------------------------------------------- | ------- | ------- |
+| audit.buffer.capacity    | Max capacity of buffer to send events to sinks  | 2       | v1.21.0 |
+| audit.buffer.flushPeriod | Duration to wait before sending events to sinks | 2m      | v1.21.0 |
+
+### Audit Events: Log File
+
+| Property                 | Description                                                               | Default | Since   |
+| ------------------------ | ------------------------------------------------------------------------- | ------- | ------- |
+| audit.sinks.log.enabled  | Enable log file sink                                                      | false   | v1.21.0 |
+| audit.sinks.log.file     | File path to write audit events to. Required if log file sink is enabled |         | v1.21.0 |
+
 #### Tracing: Zipkin
 
 | Property                | Description                             | Default                            | Since   |
