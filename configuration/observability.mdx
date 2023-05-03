@@ -1,6 +1,6 @@
 ---
 title: Observability
-description: This document describes how to configure Flipt's observability mechanisms including metrics and tracing.
+description: This document describes how to configure Flipt's observability mechanisms including metrics, tracing, and auditing.
 ---
 
 ## Metrics
@@ -75,15 +75,15 @@ Starting from `v1.21.0`, Flipt supports sending audit events to configured sinks
 }
 ```
 
-- `version`  : the version of the audit event structure. We do not expect too many changes to the structure of the audit event
-- `type`     : the type of the entity being acted upon (flag, variant, constraint, etc.)
-- `action`   : the action taken upon the entity (created, deleted, updated, etc.)
+- `version` : the version of the audit event structure. We do not expect too many changes to the structure of the audit event
+- `type` : the type of the entity being acted upon (flag, variant, constraint, etc.)
+- `action` : the action taken upon the entity (created, deleted, updated, etc.)
 - `metadata` : extra information related to the audit event as a whole. The `actor` field will always be present containing some identity information of the source which initiated the audit event
-- `payload`  : the actual payload used to interact with the `Flipt` server for certain auditable events
+- `payload` : the actual payload used to interact with the `Flipt` server for certain auditable events
 - `timestamp`: the time the event was created
 
 Currently, we support the following sinks for audit events:
 
 - Log File: the audit events are JSON encoded and new-line delimited. Configuration found [here](/configuration/overview#audit-events-log-file)
 
-You can find [examples](https://github.com/flipt-io/flipt/tree/0f34a839c3e843443a8a8957cec44b928685091c/examples/audit) on the main GitHub repository on how to enable audit events, and how to tune configuration for it.
+You can find [examples](https://github.com/flipt-io/flipt/tree/main/examples/audit) in the main GitHub repository on how to enable audit events, and how to tune configuration for it.
