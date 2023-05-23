@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.2.4
+  version: 0.2.5
 paths:
   /auth/v1/method/kubernetes/serviceaccount:
     post:
@@ -1152,6 +1152,7 @@ components:
         - STRING_COMPARISON_TYPE
         - NUMBER_COMPARISON_TYPE
         - BOOLEAN_COMPARISON_TYPE
+        - DATETIME_COMPARISON_TYPE
       description: The default is UNKNOWN_COMPARISON_TYPE
     Constraintsconstraint:
       type: object
@@ -1168,6 +1169,8 @@ components:
           type: string
         value:
           type: string
+        description:
+          type: string
         createdAt:
           type: string
           format: date-time
@@ -1181,6 +1184,7 @@ components:
         - property
         - operator
         - value
+        - description
         - createdAt
         - updatedAt
     ConstraintsconstraintCreateRequest:
@@ -1193,6 +1197,8 @@ components:
         operator:
           type: string
         value:
+          type: string
+        description:
           type: string
       required:
         - type
@@ -1208,6 +1214,8 @@ components:
         operator:
           type: string
         value:
+          type: string
+        description:
           type: string
       required:
         - type
