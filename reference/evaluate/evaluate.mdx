@@ -1,3 +1,20 @@
 ---
+title: "Evaluate"
 openapi: "POST /api/v1/namespaces/{namespaceKey}/evaluate"
 ---
+
+<RequestExample>
+
+```bash
+curl --request POST \
+  --url https://try.flipt.io/api/v1/namespaces/default/evaluate \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{
+  "context": {},
+  "entityId": "<entityid>",
+  "flagKey": "<flagkey>"
+}'
+```
+
+</RequestExample>

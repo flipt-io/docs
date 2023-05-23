@@ -1,3 +1,19 @@
 ---
 openapi: "PUT /api/v1/namespaces/{namespaceKey}/segments/{segmentKey}/constraints/{id}"
 ---
+
+<RequestExample>
+
+```bash
+curl --request PUT \
+  --url https://try.flipt.io/api/v1/namespaces/default/segments/{segmentKey}/constraints/{id} \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{
+  "operator": "<operator>",
+  "property": "<property>",
+  "type": "<type>"
+}'
+```
+
+</RequestExample>
