@@ -1,5 +1,5 @@
 [*]
 indent_style = space
 
-[*.{js,ts,json,mdx}]
+[*.{js,ts,json,mdx,yml,yaml}]
 indent_size = 2

@@ -20,7 +20,7 @@ jobs:
         run: |
           tag=$(gh release view -R flipt-io/flipt-openapi --json tagName | jq -r .tagName)
           echo "tag=${tag}" >> $GITHUB_OUTPUT
-     
+
       - name: Fetch Latest OpenAPI Definition for Tag
         id: fetch_openapi
         run: |
@@ -45,4 +45,3 @@ jobs:
           git push origin "update/${tag}"
           gh pr create --title "feat: update openapi definition for version ${tag}" \
             --body "Upgrading OpenAPI definition for flipt-openapi release [${tag}](https://github.com/flipt-io/flipt-openapi/releases/tag/${tag})."
-
