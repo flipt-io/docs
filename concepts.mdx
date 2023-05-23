@@ -19,6 +19,7 @@ Another common use-case of Namespaces is to separate Flipt data by internal team
 All data created in one namespace is only accessible within that namespace, meaning Flags/Segments/etc must be created in each namespace in which they are to be used.
 
 If a namespace is not selected then the 'Default' namespace is used.
+
 </Note>
 
 ![Namespaces Settings](/images/concepts/namespaces/default.png)
@@ -89,6 +90,23 @@ to check their `finished_onboarding` property.
 ![Constraints Example](/images/concepts/constraints.png)
 
 All constraints have a _property_, _type_, _operator_ and optionally a _value_.
+
+### Constraint Types
+
+There are currently 4 constraint types:
+
+- **String** which allows you to check a string property of an entity
+- **Number** which allows you to check a number property of an entity (integer or float)
+- **Boolean** which allows you to check a boolean property of an entity such as `true` or `false`
+- **DateTime** which allows you to check a date or datetime property of an entity such as `2020-01-01` or `2020-01-01T00:00:00Z` ([RFC3339](https://datatracker.ietf.org/doc/html/rfc3339))
+
+![Constraints DateTime Type](/images/concepts/constraints/datetime.png)
+
+<Note>
+  The constraint value is represented as a string in transit and in the
+  database, however it is coerced into the appropriate type for
+  evaluation.
+</Note>
 
 ## Rules
 
