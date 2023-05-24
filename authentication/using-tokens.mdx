@@ -16,6 +16,8 @@ It must be provided in the form `Authorization: Bearer <client_token>`.
 The following examples illustrate this in the context of various programming languages:
 
 <CodeGroup>
+
+{/* prettier-ignore */}
 ```go client.go
 import (
   "context"
@@ -29,9 +31,9 @@ func main() {
   resp, err := http.Do(req)
   // ...
 }
-
 ```
 
+{/* prettier-ignore */}
 ```typescript client.ts
 import fetch from 'node-fetch';
 
@@ -39,6 +41,7 @@ const headers = { 'Authorization': 'Bearer gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpo
 const response = await fetch('https://flipt.your.instance/api/v1/flags', { headers: headers })
 ```
 
+{/* prettier-ignore */}
 ```python client.py
 import requests
 
@@ -63,6 +66,8 @@ def doRequest():
 For browser-based applications (e.g. Flipt's own user interface) we support supplying a client token via a particular `Cookie` called `flipt_client_token`.
 
 <CodeGroup>
+
+{/* prettier-ignore */}
 ```go client.go
 import (
   "context"
@@ -83,13 +88,20 @@ func main() {
 
 ```
 
+{/* prettier-ignore */}
 ```typescript client.ts
-import fetch from 'node-fetch';
+import fetch from "node-fetch";
 
-const headers = { 'Cookie': 'flipt_client_token=gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpofNCNnc=' }
-const response = await fetch('https://flipt.your.instance/api/v1/flags', { headers: headers })
+const headers = {
+  Cookie: "flipt_client_token=gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpofNCNnc=",
+};
+
+const response = await fetch("https://flipt.your.instance/api/v1/flags", {
+  headers: headers,
+});
 ```
 
+{/* prettier-ignore */}
 ```python client.py
 import requests
 

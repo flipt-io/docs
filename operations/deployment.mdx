@@ -48,7 +48,9 @@ An externally hosted relational database is required to scale Flipt horizontally
 Once configured with one of these databases, you can run multiple instances safely. Flipt takes care of schema management and some state management operations (e.g. automated deletion of expired API client tokens).
 
 <Note>
-To run multiple instances of Flipt you will need to do so behind a load-balancer. Nginx, Caddy and Envoy are examples of suitable load-balancer choices.
+  To run multiple instances of Flipt you will need to do so behind a
+  load-balancer. Nginx, Caddy and Envoy are examples of suitable load-balancer
+  choices.
 </Note>
 
 ## Caching
@@ -58,7 +60,10 @@ Caching allows Flipt to reuse computed results made in a short period. This redu
 
 In-memory caching can be enabled via the “caching” section of the configuration file and requires no external dependencies.
 
-<Info>Details on these configuration options can be found in the [Configuration: Cache](/configuration/overview#cache) section.</Info>
+<Info>
+  Details on these configuration options can be found in the [Configuration:
+  Cache](/configuration/overview#cache) section.
+</Info>
 
 However, there is a limitation when multiple instances of Flipt are run in parallel.
 Since each instance of Flipt has an isolated in-memory cache, the benefits diminish the more instances of Flipt you run.
@@ -76,7 +81,7 @@ Feature flag systems are primarily read-often and written infrequently. This all
 This has the potential for multiple benefits:
 
 - Failures in either read or write tiers can be isolated from one another. A failure in the tier serving the dashboard wouldn’t necessarily affect flag evaluations.
-- Reads could be configured with access to the cache, where writes could be isolated from the caching tier.  This may have benefits to the number of connections required on your caching layer.
+- Reads could be configured with access to the cache, where writes could be isolated from the caching tier. This may have benefits to the number of connections required on your caching layer.
 - Reads could be deployed in front of read-only replicas of a database, with the write-tier connecting directly to the primary, allowing more potential for scale in the database layer.
 
 <Frame>

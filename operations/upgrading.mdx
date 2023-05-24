@@ -13,7 +13,7 @@ You can find the releases and release notes on [GitHub](https://github.com/flipt
 
 Before upgrading your Flipt instances to a new version, you may need to run the `flipt migrate` command against your database.
 The Flipt binary is self-contained and has all necessary migrations baked in.
-You should use the version of Flipt you're attempting to upgrade to. 
+You should use the version of Flipt you're attempting to upgrade to.
 
 <Note>
 If you attempt to upgrade to a new version of Flipt before running migrations, then Flipt will fail fast on startup with a message like the following.
@@ -21,13 +21,15 @@ If you attempt to upgrade to a new version of Flipt before running migrations, t
 ```
 migrations pending, please backup your database and run `flipt migrate`
 ```
+
 </Note>
 
 ## Upgrade Process
 
 <Warning>
-We **strongly recommend** that you perform a backup of your Flipt database before doing any migrations.
-While we strive to ensure that Flipt is error free and production ready, we cannot guarantee perfection.
+  We **strongly recommend** that you perform a backup of your Flipt database
+  before doing any migrations. While we strive to ensure that Flipt is error
+  free and production ready, we cannot guarantee perfection.
 </Warning>
 
 First, run `flipt -v` to see the version you have installed.

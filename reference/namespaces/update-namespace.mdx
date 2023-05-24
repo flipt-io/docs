@@ -1,3 +1,19 @@
 ---
+title: "Update Namespace"
 openapi: "PUT /api/v1/namespaces/{key}"
 ---
+
+<RequestExample>
+
+```bash cURL
+curl --request PUT \
+  --url https://try.flipt.io/api/v1/namespaces/{key} \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{
+  "name": "<name>",
+  "description": "<description>"
+}'
+```
+
+</RequestExample>

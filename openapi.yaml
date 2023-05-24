@@ -10,12 +10,12 @@ paths:
         - AuthMethodK8SService
       parameters: []
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthauthenticationToken'
+                $ref: "#/components/schemas/AuthauthenticationToken"
       requestBody:
         required: true
         content:
@@ -44,12 +44,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthMethodOidcoidcAuthorizeURLResponse'
+                $ref: "#/components/schemas/AuthMethodOidcoidcAuthorizeURLResponse"
   /auth/v1/method/oidc/{provider}/callback:
     get:
       operationId: AuthMethodOidcService.callback
@@ -72,12 +72,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthMethodOidcoidcCallbackResponse'
+                $ref: "#/components/schemas/AuthMethodOidcoidcCallbackResponse"
   /auth/v1/method/token:
     post:
       operationId: AuthMethodTokenService.createToken
@@ -85,12 +85,12 @@ paths:
         - AuthMethodTokenService
       parameters: []
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthauthenticationToken'
+                $ref: "#/components/schemas/AuthauthenticationToken"
       security: &ref_0
         - BearerAuth: []
       requestBody:
@@ -117,12 +117,12 @@ paths:
         - AuthService
       parameters: []
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthauthenticationList'
+                $ref: "#/components/schemas/AuthauthenticationList"
       security: *ref_0
   /auth/v1/tokens/{id}:
     get:
@@ -136,12 +136,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Authauthentication'
+                $ref: "#/components/schemas/Authauthentication"
       security: *ref_0
     delete:
       operationId: AuthService.deleteToken
@@ -154,8 +154,8 @@ paths:
           schema:
             type: string
       responses:
-        '204':
-          description: ''
+        "204":
+          description: ""
       security: *ref_0
   /auth/v1/self:
     get:
@@ -164,12 +164,12 @@ paths:
         - AuthService
       parameters: []
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Authauthentication'
+                $ref: "#/components/schemas/Authauthentication"
       security: *ref_0
   /auth/v1/self/expire:
     put:
@@ -178,8 +178,8 @@ paths:
         - AuthService
       parameters: []
       responses:
-        '204':
-          description: ''
+        "204":
+          description: ""
       security: *ref_0
       requestBody:
         required: true
@@ -208,19 +208,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Constraintsconstraint'
+                $ref: "#/components/schemas/Constraintsconstraint"
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConstraintsconstraintCreateRequest'
+              $ref: "#/components/schemas/ConstraintsconstraintCreateRequest"
   /api/v1/namespaces/{namespaceKey}/segments/{segmentKey}/constraints/{id}:
     delete:
       operationId: ConstraintsService.delete
@@ -243,8 +243,8 @@ paths:
           schema:
             type: string
       responses:
-        '204':
-          description: ''
+        "204":
+          description: ""
       security: *ref_0
     put:
       operationId: ConstraintsService.update
@@ -267,15 +267,15 @@ paths:
           schema:
             type: string
       responses:
-        '204':
-          description: ''
+        "204":
+          description: ""
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConstraintsconstraintUpdateRequest'
+              $ref: "#/components/schemas/ConstraintsconstraintUpdateRequest"
   /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/rules/{ruleId}/distributions:
     post:
       operationId: DistributionsService.create
@@ -298,19 +298,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Distributionsdistribution'
+                $ref: "#/components/schemas/Distributionsdistribution"
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DistributionsdistributionCreateRequest'
+              $ref: "#/components/schemas/DistributionsdistributionCreateRequest"
   /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/rules/{ruleId}/distributions/{id}:
     delete:
       operationId: DistributionsService.delete
@@ -343,8 +343,8 @@ paths:
           schema:
             type: string
       responses:
-        '204':
-          description: ''
+        "204":
+          description: ""
       security: *ref_0
     put:
       operationId: DistributionsService.update
@@ -372,19 +372,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Distributionsdistribution'
+                $ref: "#/components/schemas/Distributionsdistribution"
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DistributionsdistributionUpdateRequest'
+              $ref: "#/components/schemas/DistributionsdistributionUpdateRequest"
   /api/v1/namespaces/{namespaceKey}/evaluate:
     post:
       operationId: EvaluateService.evaluate
@@ -397,19 +397,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EvaluateevaluationResponse'
+                $ref: "#/components/schemas/EvaluateevaluationResponse"
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EvaluateevaluationRequest'
+              $ref: "#/components/schemas/EvaluateevaluationRequest"
   /api/v1/namespaces/{namespaceKey}/batch-evaluate:
     post:
       operationId: EvaluateService.batchEvaluate
@@ -422,19 +422,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EvaluatebatchEvaluationResponse'
+                $ref: "#/components/schemas/EvaluatebatchEvaluationResponse"
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EvaluatebatchEvaluationRequest'
+              $ref: "#/components/schemas/EvaluatebatchEvaluationRequest"
   /api/v1/namespaces/{namespaceKey}/flags:
     get:
       operationId: FlagsService.list
@@ -462,12 +462,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FlagsflagList'
+                $ref: "#/components/schemas/FlagsflagList"
       security: *ref_0
     post:
       operationId: FlagsService.create
@@ -480,19 +480,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Flagsflag'
+                $ref: "#/components/schemas/Flagsflag"
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FlagsflagCreateRequest'
+              $ref: "#/components/schemas/FlagsflagCreateRequest"
   /api/v1/namespaces/{namespaceKey}/flags/{key}:
     get:
       operationId: FlagsService.get
@@ -510,12 +510,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Flagsflag'
+                $ref: "#/components/schemas/Flagsflag"
       security: *ref_0
     delete:
       operationId: FlagsService.delete
@@ -533,8 +533,8 @@ paths:
           schema:
             type: string
       responses:
-        '204':
-          description: ''
+        "204":
+          description: ""
       security: *ref_0
     put:
       operationId: FlagsService.update
@@ -552,19 +552,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Flagsflag'
+                $ref: "#/components/schemas/Flagsflag"
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FlagsflagUpdateRequest'
+              $ref: "#/components/schemas/FlagsflagUpdateRequest"
   /api/v1/namespaces:
     get:
       operationId: NamespacesService.list
@@ -587,12 +587,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NamespacesnamespaceList'
+                $ref: "#/components/schemas/NamespacesnamespaceList"
       security: *ref_0
     post:
       operationId: NamespacesService.create
@@ -600,19 +600,19 @@ paths:
         - NamespacesService
       parameters: []
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Namespacesnamespace'
+                $ref: "#/components/schemas/Namespacesnamespace"
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NamespacesnamespaceCreateRequest'
+              $ref: "#/components/schemas/NamespacesnamespaceCreateRequest"
   /api/v1/namespaces/{key}:
     get:
       operationId: NamespacesService.get
@@ -625,12 +625,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Namespacesnamespace'
+                $ref: "#/components/schemas/Namespacesnamespace"
       security: *ref_0
     delete:
       operationId: NamespacesService.delete
@@ -643,8 +643,8 @@ paths:
           schema:
             type: string
       responses:
-        '204':
-          description: ''
+        "204":
+          description: ""
       security: *ref_0
     put:
       operationId: NamespacesService.update
@@ -657,19 +657,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Namespacesnamespace'
+                $ref: "#/components/schemas/Namespacesnamespace"
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NamespacesnamespaceUpdateRequest'
+              $ref: "#/components/schemas/NamespacesnamespaceUpdateRequest"
   /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/rules:
     get:
       operationId: RulesService.list
@@ -702,12 +702,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RulesruleList'
+                $ref: "#/components/schemas/RulesruleList"
       security: *ref_0
     post:
       operationId: RulesService.create
@@ -725,19 +725,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Rulesrule'
+                $ref: "#/components/schemas/Rulesrule"
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RulesruleCreateRequest'
+              $ref: "#/components/schemas/RulesruleCreateRequest"
   /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/rules/order:
     put:
       operationId: RulesService.order
@@ -755,15 +755,15 @@ paths:
           schema:
             type: string
       responses:
-        '204':
-          description: ''
+        "204":
+          description: ""
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RulesruleOrderRequest'
+              $ref: "#/components/schemas/RulesruleOrderRequest"
   /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/rules/{id}:
     get:
       operationId: RulesService.get
@@ -786,12 +786,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Rulesrule'
+                $ref: "#/components/schemas/Rulesrule"
       security: *ref_0
     delete:
       operationId: RulesService.delete
@@ -814,8 +814,8 @@ paths:
           schema:
             type: string
       responses:
-        '204':
-          description: ''
+        "204":
+          description: ""
       security: *ref_0
     put:
       operationId: RulesService.update
@@ -838,15 +838,15 @@ paths:
           schema:
             type: string
       responses:
-        '204':
-          description: ''
+        "204":
+          description: ""
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RulesruleUpdateRequest'
+              $ref: "#/components/schemas/RulesruleUpdateRequest"
   /api/v1/namespaces/{namespaceKey}/segments:
     get:
       operationId: SegmentsService.list
@@ -874,12 +874,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SegmentssegmentList'
+                $ref: "#/components/schemas/SegmentssegmentList"
       security: *ref_0
     post:
       operationId: SegmentsService.create
@@ -892,19 +892,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Segmentssegment'
+                $ref: "#/components/schemas/Segmentssegment"
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SegmentssegmentCreateRequest'
+              $ref: "#/components/schemas/SegmentssegmentCreateRequest"
   /api/v1/namespaces/{namespaceKey}/segments/{key}:
     get:
       operationId: SegmentsService.get
@@ -922,12 +922,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Segmentssegment'
+                $ref: "#/components/schemas/Segmentssegment"
       security: *ref_0
     delete:
       operationId: SegmentsService.delete
@@ -945,8 +945,8 @@ paths:
           schema:
             type: string
       responses:
-        '204':
-          description: ''
+        "204":
+          description: ""
       security: *ref_0
     put:
       operationId: SegmentsService.update
@@ -964,19 +964,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Segmentssegment'
+                $ref: "#/components/schemas/Segmentssegment"
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SegmentssegmentUpdateRequest'
+              $ref: "#/components/schemas/SegmentssegmentUpdateRequest"
   /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/variants:
     post:
       operationId: VariantsService.create
@@ -994,19 +994,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Variantsvariant'
+                $ref: "#/components/schemas/Variantsvariant"
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VariantsvariantCreateRequest'
+              $ref: "#/components/schemas/VariantsvariantCreateRequest"
   /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/variants/{id}:
     delete:
       operationId: VariantsService.delete
@@ -1029,8 +1029,8 @@ paths:
           schema:
             type: string
       responses:
-        '204':
-          description: ''
+        "204":
+          description: ""
       security: *ref_0
     put:
       operationId: VariantsService.update
@@ -1053,19 +1053,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Variantsvariant'
+                $ref: "#/components/schemas/Variantsvariant"
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VariantsvariantUpdateRequest'
+              $ref: "#/components/schemas/VariantsvariantUpdateRequest"
 components:
   schemas:
     AuthMethodOidcoidcAuthorizeURLResponse:
@@ -1079,7 +1079,7 @@ components:
       type: object
       properties:
         authentication:
-          $ref: '#/components/schemas/Authauthentication'
+          $ref: "#/components/schemas/Authauthentication"
       required:
         - authentication
     AuthauthenticationMethod:
@@ -1096,7 +1096,7 @@ components:
         id:
           type: string
         method:
-          $ref: '#/components/schemas/AuthauthenticationMethod'
+          $ref: "#/components/schemas/AuthauthenticationMethod"
         createdAt:
           type: string
           format: date-time
@@ -1122,7 +1122,7 @@ components:
         authentications:
           type: array
           items:
-            $ref: '#/components/schemas/Authauthentication'
+            $ref: "#/components/schemas/Authauthentication"
         nextPageToken:
           type: string
       required:
@@ -1134,7 +1134,7 @@ components:
         clientToken:
           type: string
         authentication:
-          $ref: '#/components/schemas/Authauthentication'
+          $ref: "#/components/schemas/Authauthentication"
       required:
         - clientToken
         - authentication
@@ -1162,7 +1162,7 @@ components:
         segmentKey:
           type: string
         type:
-          $ref: '#/components/schemas/ConstraintsconstraintComparisonType'
+          $ref: "#/components/schemas/ConstraintsconstraintComparisonType"
         property:
           type: string
         operator:
@@ -1191,7 +1191,7 @@ components:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/ConstraintsconstraintComparisonType'
+          $ref: "#/components/schemas/ConstraintsconstraintComparisonType"
         property:
           type: string
         operator:
@@ -1208,7 +1208,7 @@ components:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/ConstraintsconstraintComparisonType'
+          $ref: "#/components/schemas/ConstraintsconstraintComparisonType"
         property:
           type: string
         operator:
@@ -1313,7 +1313,7 @@ components:
         attachment:
           type: string
         reason:
-          $ref: '#/components/schemas/EvaluateevaluationReason'
+          $ref: "#/components/schemas/EvaluateevaluationReason"
       required:
         - requestId
         - entityId
@@ -1342,7 +1342,7 @@ components:
         requests:
           type: array
           items:
-            $ref: '#/components/schemas/EvaluateevaluationRequest'
+            $ref: "#/components/schemas/EvaluateevaluationRequest"
         excludeNotFound:
           type: boolean
       required:
@@ -1355,7 +1355,7 @@ components:
         responses:
           type: array
           items:
-            $ref: '#/components/schemas/EvaluateevaluationResponse'
+            $ref: "#/components/schemas/EvaluateevaluationResponse"
         requestDurationMillis:
           type: number
           format: double
@@ -1369,7 +1369,7 @@ components:
         flags:
           type: array
           items:
-            $ref: '#/components/schemas/Flagsflag'
+            $ref: "#/components/schemas/Flagsflag"
         nextPageToken:
           type: string
         totalCount:
@@ -1398,7 +1398,7 @@ components:
         variants:
           type: array
           items:
-            $ref: '#/components/schemas/Variantsvariant'
+            $ref: "#/components/schemas/Variantsvariant"
       required:
         - key
         - name
@@ -1438,7 +1438,7 @@ components:
         namespaces:
           type: array
           items:
-            $ref: '#/components/schemas/Namespacesnamespace'
+            $ref: "#/components/schemas/Namespacesnamespace"
         nextPageToken:
           type: string
         totalCount:
@@ -1498,7 +1498,7 @@ components:
         rules:
           type: array
           items:
-            $ref: '#/components/schemas/Rulesrule'
+            $ref: "#/components/schemas/Rulesrule"
         nextPageToken:
           type: string
         totalCount:
@@ -1519,7 +1519,7 @@ components:
         distributions:
           type: array
           items:
-            $ref: '#/components/schemas/Distributionsdistribution'
+            $ref: "#/components/schemas/Distributionsdistribution"
         rank:
           type: integer
         createdAt:
@@ -1568,7 +1568,7 @@ components:
         segments:
           type: array
           items:
-            $ref: '#/components/schemas/Segmentssegment'
+            $ref: "#/components/schemas/Segmentssegment"
         nextPageToken:
           type: string
         totalCount:
@@ -1595,9 +1595,9 @@ components:
         constraints:
           type: array
           items:
-            $ref: '#/components/schemas/Constraintsconstraint'
+            $ref: "#/components/schemas/Constraintsconstraint"
         matchType:
-          $ref: '#/components/schemas/SegmentssegmentMatchType'
+          $ref: "#/components/schemas/SegmentssegmentMatchType"
       required:
         - key
         - name
@@ -1621,7 +1621,7 @@ components:
         description:
           type: string
         matchType:
-          $ref: '#/components/schemas/SegmentssegmentMatchType'
+          $ref: "#/components/schemas/SegmentssegmentMatchType"
       required:
         - key
         - name
@@ -1635,7 +1635,7 @@ components:
         description:
           type: string
         matchType:
-          $ref: '#/components/schemas/SegmentssegmentMatchType'
+          $ref: "#/components/schemas/SegmentssegmentMatchType"
       required:
         - name
         - description
