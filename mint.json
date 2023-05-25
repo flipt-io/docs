@@ -61,6 +61,12 @@
       ]
     },
     {
+      "group": "Guides",
+      "pages": [
+        "guides/experimenting-with-a-feature"
+      ]
+    },
+    {
       "group": "Configuration",
       "pages": [
         "configuration/overview",

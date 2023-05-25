@@ -1,0 +1,176 @@
+---
+title: Releasing a Feature with Flipt
+description: This guide walks through leveraging Flipt to experiment with a new feature.
+---
+
+Let's use Flipt to enable a new feature being developed on a project running live in production.
+
+By the end of this guide we will:
+
+1. Create and configure a `Flag` with a `Variant` in Flipt.
+2. Import the Go SDK into a Go project.
+3. Use the SDK to change the behaviour of an application using `Variants`.
+4. Create and configure multiple `Segments` and `Constraints` for targetting different cohorts of request.
+5. Define `Rules` to configure which `Variants` are returned for particular `Segments`.
+6. Leverage `Distributions` to enable proportional rollout of a `Variant`.
+
+## Slow is Smooth, Smooth is Fast
+
+We will use Flipt and its SDKs to support quickly and safely merging a change into a production environment.
+Then we will alter Flipts configuration to progressively enable the feature for different cohorts of user.
+The feature will be enabled in order for each of the following:
+
+1. For our own personal user.
+2. For a group of internal users.
+3. For 20% of all users.
+4. For everyone.
+
+At each state we will stop and validate that our system is behaving as we intend.
+
+### Assumptions
+
+We're going to make some assumptions about the system for the purpose of this guide.
+Firstly, we assume our product exists in production and is serving real requests.
+Our system has the concept of users and groups.
+We're going to use these concepts to target them.
+We're also assuming Flipt is deployed and reachable from the local environment at [localhost](http://localhost:8080).
+
+## Our production service and existing behaviour
+
+The following is an example of a feature implemented as a Go HTTP request handler.
+Our service returns a JSON encoded object containing predictions of the future.
+The predictions are made by querying a relational database and picking a random answer out of thin air.
+
+```go
+package service
+
+import (
+  "database/sql"
+  "encoding/json"
+  "net/http"
+)
+
+type predictor struct {
+  db *sql.DB
+}
+
+func (p predictor) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+  prediction, err := fromDatabase(r.Context(), p.db)
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+
+  if err := json.NewEncoder(w).Encode(prediction); err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+}
+```
+
+This has been working for our business, but now we want to use an external service that does a better job.
+
+## Defining a flag to alter behaviour
+
+We're going to define a multivariate feature flag called `predictionSource` with two variants.
+
+1. Navigate to the root of [Flipt UI](http://localhost:8080).
+2. Click the `(+)` symbol with the words `Create Flag` beneath it.
+3. Define the flag with a **key** of `predictionSource`.
+4. Click `Create`.
+
+Once our flag has been created we should have been navigated to the flags [landing page](http://localhost:8080/#/namespaces/default/flags/predictionsource) in Flipt.
+We will now create a Variant which represens our new codepath.
+
+1. Click the `(+)` symbol with the words `New Variant` below the `Variants` heading in this page.
+2. This should present an input modal.
+3. Enter the key for the variant `fromExternalService`.
+4. Click `Create`.
+
+![Screenshot of a feature flag with variants]()
+
+Before we move on, we're going to enable this flag.
+As we're using a multivariate flag, we're depending on the variants to change behaviour, not the enabled boolean field.
+This can always be toggled off in case of emergency to disable the flag for everyone.
+
+1. Toggle the `Enabled` property on the flag page.
+2. Click `Update`.
+
+Congratulations we have defined a multivariate flag. Now we can reference it in code.
+
+## Using Flipt's SDK to evaluate a feature Flag
+
+Now that our flag is defined we can evaluate it in our application.
+
+```go
+package service
+
+import (
+  "database/sql"
+  "encoding/json"
+  "net/http"
+)
+
+type predictor struct {
+  db *sql.DB
+  flipt *sdk.Flipt
+}
+
+func (p predictor) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+  ctx := r.Context()
+
+  response, err := p.flipt.Evaluate(ctx, &flipt.EvaluationRequest{
+    FlagKey: "predictionSource",
+    EntityID: userFromContext(ctx),
+    Context: map[string]string{
+      "user": userFromContext(ctx).
+      "group": groupFromContext(ctx).
+    },
+  })
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+
+  var prediction Prediction
+  switch response.Value {
+    case "fromExternalService"
+      prediction, err = fromExternalService(ctx)
+    default:
+      prediction, err = fromDatabase(ctx, p.db)
+  }
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+
+  if err := json.NewEncoder(w).Encode(prediction); err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+}
+```
+
+So, what's going on here?
+
+Firstly, we're using the Flipt SDK to evaluate our feature flag.
+We supply the flag key we're interested in to the evaluation request.
+
+Next, we supply the user identifier as the Flipt evaluation entity ID.
+This will allow us later on to distribute requests to a percentage of users.
+
+Additionaly, we supply a context object with both a user and group identifier based on the request.
+This will allow us to both specific users and groups in our Flipt configuration.
+
+Once we have acquired a response from Flipt switch switch on the response **value**.
+The value of an evaluation response is the matched **variant key**.
+When the variant returned is `fromExternalService` we attempt our new code path.
+Otherwise, we simply fallback to our original codepath.
+
+## Rolling out our change
+
+Our change is now safe to deploy to production. We can merge it directly into our trunk branch an ship it.
+Any response other than our new variant will cause the original code path to be invoked.
+
+Once our code is deployed, we can begin changing the targetting configuration in Flipt.
+To start with, we will attempt to enable the flag for our own internal user.
