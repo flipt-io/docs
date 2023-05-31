@@ -126,7 +126,7 @@ Run the Flipt binary with:
 As of version [v1.23](), the Flipt binary will check in a few different locations for server configuration (in order):
 
 1. `--config` flag as an override
-2. `$HOME/.flipt/config.yml`
+2. `{{ USER_CONFIG_DIR }}/flipt/config.yml` (the `USER_CONFIG_DIR` value is based on your architecture and specified [here](https://pkg.go.dev/os#UserConfigDir))
 3. `/etc/flipt/config/default.yml`
 
 See the [Configuration](/configuration) section for more details.
