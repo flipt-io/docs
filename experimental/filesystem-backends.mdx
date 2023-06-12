@@ -13,16 +13,20 @@ As always, these parameters can be expressed via environment variables or Flipt'
 
 <Tabs>
   <Tab title="Environment Variable">
+
     ```bash
     FLIPT_EXPERIMENTAL_FILESYSTEM_STORAGE_ENABLED=true
     ```
+
   </Tab>
   <Tab title="Configuration Yaml">
+
     ```yaml
     experimental:
       filesystem_storage:
         enabled: true
     ```
+
   </Tab>
 </Tabs>
 
@@ -42,13 +46,16 @@ Flipt will periodically rebuild its state from the local disk.
 
 <Tabs>
   <Tab title="Environment Variable">
+
     ```bash
     FLIPT_EXPERIMENTAL_FILESYSTEM_STORAGE_ENABLED=true
     FLIPT_STORAGE_TYPE="local"
     FLIPT_STORAGE_LOCAL_PATH="."
     ```
+
   </Tab>
   <Tab title="Configuration Yaml">
+
     ```yaml
     experimental:
       filesystem_storage:
@@ -59,6 +66,7 @@ Flipt will periodically rebuild its state from the local disk.
       local:
         path: "."
     ```
+
   </Tab>
 </Tabs>
 
@@ -67,7 +75,7 @@ Flipt will periodically rebuild its state from the local disk.
 ### `git` type
 
 The `git` type backend is used to configure a target git repository and git reference to source feature flag state from.
-The configuration contains fields for addressing the repository, configuring the target reference as well as adding authentication credentials. 
+The configuration contains fields for addressing the repository, configuring the target reference as well as adding authentication credentials.
 
 Once a target repository and reference is configured, Flipt will poll the source repository on a periodic cadence.
 This cadence is also configurable and defaults to 30 seconds.
@@ -76,6 +84,7 @@ Flipt will follow the configured reference (e.g. branch name) and keep up to dat
 
 <Tabs>
   <Tab title="Environment Variable">
+
     ```bash
     FLIPT_EXPERIMENTAL_FILESYSTEM_STORAGE_ENABLED=true
     FLIPT_STORAGE_TYPE="git"
@@ -86,8 +95,10 @@ Flipt will follow the configured reference (e.g. branch name) and keep up to dat
     FLIPT_STORAGE_GIT_AUTHENTICATION_BASIC_USERNAME=...
     FLIPT_STORAGE_GIT_AUTHENTICATION_BASIC_PASSWORD=...
     ```
+
   </Tab>
   <Tab title="Configuration Yaml">
+
     ```yaml
     experimental:
       filesystem_storage:
@@ -106,6 +117,7 @@ Flipt will follow the configured reference (e.g. branch name) and keep up to dat
           token:
             access_token: ...
     ```
+
   </Tab>
 </Tabs>
 
@@ -115,8 +127,9 @@ The `git` type backend supports both `basic` and `token` based authentication sc
 These sections are mutually exclusive. Flipt will fail to initialize with a validation error if you attempt to configure both.
 
 <Note>
-GitHub PAT (Personal Access Tokens) should be supplied using `basic` authentication as the password.
-Use your GitHub username as the `username` field.
+  GitHub PAT (Personal Access Tokens) should be supplied using `basic`
+  authentication as the password. Use your GitHub username in the `username`
+  field.
 </Note>
 
 ## Flag State Configuration
@@ -130,10 +143,10 @@ Flipts filesystem backends allow you to define feature flags alongside other con
 In order to identify which files are intended for Flipt, it uses a naming scheme to index which are flag state files.
 By default, Flipt will look for the following filename patterns when identifying files to attempt to parse as Flipt state:
 
-- **/features.yaml
-- **/features.yml
-- **/*.features.yaml 
-- **/*.features.yml 
+- `**/features.yaml`
+- `**/features.yml`
+- `**/*.features.yaml`
+- `**/*.features.yml`
 
 Meaning, any file named `features.yaml`, `features.yml` or with either extension `.features.yaml` or `.features.yml` is considered.
 This is recursively from the root of your target directory or repository.
@@ -157,8 +170,10 @@ The indexing process first matches the `include` section and then filters that s
 ### Defining Flag State
 
 <Info>
-Flipt flag state file format has been taken directly from Flipts existing [import and export](/configuration/storage#import-export) flag state format.
-You can run `flipt export` and add / commit the result to a directory or git repository to get started quickly.
+  Flipt flag state file format has been taken directly from Flipts existing
+  [import and export](/configuration/storage#import-export) flag state format.
+  You can run `flipt export` and add / commit the result to a directory or git
+  repository to get started quickly.
 </Info>
 
 ```yaml features.yaml
@@ -168,36 +183,36 @@ flags:
     name: Awesome New Feature
     enabled: true
     variants:
-    - key: enabled
-      name: Enabled
-    - key: disabled
-      name: Disabled
+      - key: enabled
+        name: Enabled
+      - key: disabled
+        name: Disabled
     rules:
-    - segment: internal-users
-      rank: 1
-      distributions:
-      - variant: enabled
-        rollout: 100
-    - segment: all-users
-      rank: 2
-      distributions:
-      - variant: enabled
-        rollout: 20
-      - variant: disabled
-        rollout: 80
+      - segment: internal-users
+        rank: 1
+        distributions:
+          - variant: enabled
+            rollout: 100
+      - segment: all-users
+        rank: 2
+        distributions:
+          - variant: enabled
+            rollout: 20
+          - variant: disabled
+            rollout: 80
 
 segments:
-- key: internal-users
-  name: Internal Users
-  constraints:
-  - type: STRING_COMPARISON_TYPE
-    property: organization
-    operator: eq
-    value: internal
-  match_type: ALL_MATCH_TYPE
-- key: all-users
-  name: All Users
-  match_type: ALL_MATCH_TYPE
+  - key: internal-users
+    name: Internal Users
+    constraints:
+      - type: STRING_COMPARISON_TYPE
+        property: organization
+        operator: eq
+        value: internal
+    match_type: ALL_MATCH_TYPE
+  - key: all-users
+    name: All Users
+    match_type: ALL_MATCH_TYPE
 ```
 
 Each file identified for use by Flipt represents the contents of a single namespace.
@@ -205,8 +220,9 @@ Multiple namespaces can be defined across multiple files.
 You can organize these files how you like in your target directory.
 
 <Tip>
-By defining different namespaces in different directories, you can leverage features such as GitHub's Codeowners.
-This gives you authorization mechanisms for managing contributions to Flipt state.
+  By defining different namespaces in different directories, you can leverage
+  features such as GitHub's Codeowners. This gives you authorization mechanisms
+  for managing contributions to Flipt state.
 </Tip>
 
 The file format currently consists of four top-level keys:
@@ -220,26 +236,29 @@ segments: [] # [Segment] list of Segment definitions
 
 #### Flags and Variants
 
-<Info>All the resources in Flipt are explained in more depth in the [Concepts](/concepts) documentation page.</Info>
+<Info>
+  All the resources in Flipt are explained in more depth in the
+  [Concepts](/concepts) documentation page.
+</Info>
 
 The flags section is where your `Flag`, `Variant` and `Rule` definitions live.
 A Flag has many variants and many rules.
 
 ```yaml
 flags:
-- key: string
-  name: string
-  description: string
-  enabled: bool
-  variants: [] # [Variant] a list of variants
-  rules: [] # [Rule] a list of rules
+  - key: string
+    name: string
+    description: string
+    enabled: bool
+    variants: [] # [Variant] a list of variants
+    rules: [] # [Rule] a list of rules
 ```
 
 Variants belong to flags and they are nested within each flag definition in a list under the key `variants`.
 A variant consists of a `key`, `name` and optional `description`.
 
 ```yaml
-  variants:
+variants:
   - key: red
     name: Red
     description: The color red
@@ -255,10 +274,10 @@ Rules are ordered by `rank`, allowing you to configure multiple potential matche
 For example, the following `rules` definition states that given a request matches the segment `newColorGroup` then it will return the variants `red` and `blue` in equal proportions (50/50 split).
 
 ```yaml
-    rules:
-    - segment: newColorGroup
-      rank: 1
-      distributions:
+rules:
+  - segment: newColorGroup
+    rank: 1
+    distributions:
       - variant: red
         rollout: 50
       - variant: blue
@@ -274,17 +293,17 @@ They can be re-used between different flags and their rule definitions.
 
 ```yaml
 segments:
-- key: internal-users
-  name: Internal Users
-  constraints:
-  - type: STRING_COMPARISON_TYPE
-    property: organization
-    operator: eq
-    value: internal
-  match_type: ALL_MATCH_TYPE
-- key: all-users
-  name: All Users
-  match_type: ALL_MATCH_TYPE
+  - key: internal-users
+    name: Internal Users
+    constraints:
+      - type: STRING_COMPARISON_TYPE
+        property: organization
+        operator: eq
+        value: internal
+    match_type: ALL_MATCH_TYPE
+  - key: all-users
+    name: All Users
+    match_type: ALL_MATCH_TYPE
 ```
 
 Here we have two segments `internal-users` and `all-users`.
@@ -307,7 +326,7 @@ There currently exist a few types of constraints:
 
 **Match Types**
 
-Each segment has a `match_type` which signifies whether or not the *all* constraints have to match or *any* (at-least one) must match.
+Each segment has a `match_type` which signifies whether or not the _all_ constraints have to match or _any_ (at-least one) must match.
 
 - `ALL_MATCH_TYPE`
 - `ANY_MATCH_TYPE`
