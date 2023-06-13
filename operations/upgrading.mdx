@@ -29,7 +29,7 @@ migrations pending, please backup your database and run `flipt migrate`
 <Warning>
   We **strongly recommend** that you perform a backup of your Flipt database
   before doing any migrations. While we strive to ensure that Flipt is error
-  free and production ready, we cannot guarantee perfection.
+  free and production ready, we can't guarantee perfection.
 </Warning>
 
 First, run `flipt -v` to see the version you have installed.
@@ -60,10 +60,10 @@ $ flipt migrate --config /etc/flipt/default.yml
 ```
 
 Now you can update your running instance(s) of Flipt to match the same version.
-We design our migrations to be forward compatible with older Flipt server versions, so it is safe for you to keep running Flipt while the migrations are run and after they have finished.
+We design our migrations to be forward compatible with older Flipt server versions, so it's safe for you to keep running Flipt while the migrations are run and after they have finished.
 
 ## Downgrade Process
 
 As mentioned, we recommend you backup your database before performing any upgrades.
-Flipt does not currently come with any built-in downgrade tooling.
+Flipt doesn't currently come with any built-in downgrade tooling.
 Our suggestion, if you need to revert to an previous version of Flipt, is to restore your database using a backup from when it was backing the target older version.
