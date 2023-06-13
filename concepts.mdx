@@ -16,9 +16,9 @@ Namespaces allow you to separate all data within Flipt for use in different envi
 Another common use-case of Namespaces is to separate Flipt data by internal team or organization.
 
 <Note>
-All data created in one namespace is only accessible within that namespace, meaning Flags/Segments/etc must be created in each namespace in which they are to be used.
+All data created in one namespace is only accessible within that namespace, meaning Flags/Segments/etc must be created in each namespace in which they're to be used.
 
-If a namespace is not selected then the 'Default' namespace is used.
+If a namespace isn't selected then the 'Default' namespace is used.
 
 </Note>
 
@@ -104,7 +104,7 @@ There are currently 4 constraint types:
 
 <Note>
   The constraint value is represented as a string in transit and in the
-  database, however it is coerced into the appropriate type for evaluation.
+  database, however it's coerced into the appropriate type for evaluation.
 </Note>
 
 ## Rules
@@ -113,7 +113,7 @@ Rules allow you to tie your flags, variants and segments together by specifying
 which segments are targeted by which variants.
 
 Rules can be as simple as `IF IN segment THEN RETURN variant_a` or they can be
-richer by using distribution logic to roll out features on a percent basis.
+richer by using distribution logic to roll out features on a percentage basis.
 
 Continuing our previous example, we may want to return the flag variant `blue`
 for all entities in the `new-users` segment. This would be configured like so:
@@ -122,7 +122,7 @@ for all entities in the `new-users` segment. This would be configured like so:
 
 <Warning>
   Rules are evaluated in order per their rank from 1-N. The first rule that
-  matches wins. Once created, rules can be re-ordered to change how they are
+  matches wins. Once created, rules can be re-ordered to change how they're
   evaluated.
 </Warning>
 
@@ -148,7 +148,7 @@ determine if that request matches any of your segments and if so which variant
 to return.
 
 In the above example involving colors, evaluation is where you send information
-about your current user to determine if they are a `new-user`, and which color
+about your current user to determine if they're a `new-user`, and which color
 (`blue`, `red`, or `green`) that they should see for their main color scheme.
 
 ![Evaluation Example](/images/concepts/evaluation.png)
@@ -168,7 +168,7 @@ What you want to test against in your application
 </Info>
 
 For Flipt to successfully determine which _bucket_ your entities fall into, it
-must have a way to uniquely identify them. This is the `entityId` and it is a
+must have a way to uniquely identify them. This is the `entityId` and it's a
 simple string. It's up to you what that `entityId` is.
 
 It could be a:
@@ -179,7 +179,7 @@ It could be a:
 - physical address
 - etc
 
-Anything that is unique enough for your application and its requirements.
+Anything that's unique enough for your application and its requirements.
 
 ### Context
 
@@ -197,17 +197,19 @@ that entity is a member of
 
 Examples of context could include:
 
+```
 - isAdmin
 - favoriteColor
 - country
 - freeUser
+```
 
 Think of these as pieces of information that are usually not unique, but that
 can be used to split your entities into your segments.
 
 You can include as much or as little context for each entity as you want,
-however, the more context that you provide, the more likely it is that an entity
+however, the more context that you provide, the more likely it's that an entity
 will match one of your segments.
 
 In Flipt, `context` is a simple map of key-value pairs where the key is the
-property to match against all constraints, and the value is what is compared.
+property to match against all constraints, and the value is what's compared.

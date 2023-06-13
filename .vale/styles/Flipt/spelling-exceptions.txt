@@ -1,11 +1,14 @@
 affordance
 auditable
+boolean
 caddy
 codeowners
+datetime
 declaratively
 deletable
 dep
 deps
+dev
 dex
 flipt
 flipt's
@@ -18,6 +21,7 @@ jq
 json
 linux
 memcached
+mintlify
 namespace
 namespaces
 nginx

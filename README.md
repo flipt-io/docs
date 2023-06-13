@@ -1,6 +1,6 @@
 # Flipt Docs
 
-This repo powers the content behind Flipt's docs at [flipt.io/docs](https://www.flipt.io/docs)
+This repository powers the content behind Flipt's docs at [flipt.io/docs](https://www.flipt.io/docs)
 
 ### 👩‍💻 Development
 
