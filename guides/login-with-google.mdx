@@ -1,0 +1,201 @@
+---
+title: Login with Google
+description: Configuring Flipt to enable login in with Google via OIDC.
+---
+
+![Flipt UI presenting login with google button](/images/guides/login-with-google/login-with-google.png)
+
+In a production environment it is often important to control who has access to your systems and feature flagging is no different.
+Flipt ships with built-in mechanisms and configuration for service-to-Flipt and user-to-Flipt authentication.
+
+For service-to-Flipt authentication Flipt supports static token and Kubernetes based authentication methods.
+However, neither of these methods are appropriate for browser sessions and the UI.
+To solve this, Flipt supports [OpenID Connect](/authentication/methods#openid-connect) (OIDC) as a session-compatible authentication method.
+OIDC is an open standard supported by many existing platforms such as Google, Okta, Auth0, GitLab and many more.
+
+In this guide you will learn how to configure Google as an OIDC provider for Flipt.
+
+By the end of this guide, we will have:
+
+- 🔒 Run Flipt and configured it to `require` authentication
+- 🔑 Created an OAuth Client in your Google workspace
+- 🔐 Configured Google as an OIDC provider for Flipt
+
+For this guide you're going to need the following:
+
+- [Docker](https://www.docker.com/)
+- [Google Cloud Account](https://cloud.google.com)
+
+## Brief explanation of OIDC
+
+OIDC is an extension ontop of the OAuth standard for delegated authentication.
+OAuth allows Flipt to delegate authentication onto an external provider of your choice.
+The OIDC extension provides the **Relying Party** (Flipt in this case) with a well-known protocol for requesting identity from an **Identity Provider** (IdP) (Google in this example).
+It ensures that we can support a multitide of IdPs through a standard set of configuration parameters.
+This means we do not have to add more code to Flipt each time we want to support an additional identity provider.
+As long as the provider conforms to the OIDC standard, Flipt can be configured to leverage it.
+It also gives Flipt the option to obtain and present user profile pictures and email addresses in the UI.
+
+## Running Flipt as a docker container
+
+For the purpose of this guide, we will start by configuring and running Flipt with a minimal configuration file.
+
+### 1. Create a new directory
+
+This is an optional step, however, we suggest you create yourself a blank directory in which to experiment with Flipt.
+
+```sh
+mkdir ~/flipt-with-google
+
+cd ~/flipt-with-google
+```
+
+### 2. Define a Flipt `config.yml`
+
+We're going to create a configuration file named `config.yml` in the current directory.
+This file will tell Flipt to increase its logging level to the maximum to aid in debugging.
+
+It will also set authentication as `required = true`.
+This is needed to ensure that Flipt enforces its APIs must be provided with a credential of some sort to gain access.
+
+```yaml config.yml
+version: "1.0"
+
+log:
+  level: DEBUG
+
+authentication:
+  required: true
+```
+
+### 3. Run Flipt as a Docker container
+
+Here we run Flipt and mount our local `config.yml` file into the running container.
+
+This will start Flipt as a process in the foreground of your current terminal session.
+You can stop Flipt by entering `ctrl+C`.
+
+This particular command forwards your localhost port `8080` into the containers localhost post `8080`.
+The `8080` port is the default for Flipt's HTTP service and can be changed via the `server` configuration parameter.
+
+```sh
+docker run -it --rm \
+  -p 8080:8080 \
+  -v "$(pwd)/config.yml:/config.yml" \
+  flipt/flipt:latest --config /config.yml
+```
+
+### 4. Navigate to the [Flipt UI](http://localhost:8080)
+
+Once you visit Flipts UI, you should be greated by a message stating that there are no login providers configured.
+As mentioned before, once authentication is required, a session compatible method is needed to enable login.
+We're now going to do that by configuring Google as an OIDC provider for Flipt.
+
+![UI presenting a no providers error message](/images/guides/login-with-google/no-providers.png)
+
+## Creating a Google OAuth client
+
+In order to get Google setup as our IdP, we first need a Google Cloud Account and to create a set of [Google OAuth client ID credentials](https://developers.google.com/workspace/guides/create-credentials#oauth-client-id).
+Google's documentation will always be the most up-to-date source for how to achieve this.
+However, we will go over some of the details here and strive to keep this guide up to date.
+
+1. Navigate to the [Google Console Credentials](https://console.cloud.google.com/apis/credentials)
+
+The API > Credentials section of Google Cloud Console is where you can create new OAuth client credentials.
+
+2. Click `+ Create Credentials`
+
+This presents us with a few options for credential types.
+
+![Google cloud create credentials popover]()
+
+Select the `Oauth client ID` type and you will be taken to an input form (like the one below).
+
+We're first requested to select an `Application type`. We shall choose the `Web application` option.
+Once selected you will be presented with more input options.
+
+![Google cloud create oauth client ID form]()
+
+As shown in the screenshot, we want enter the following values for the inputs:
+
+- Application type: `Web application`
+- Name: `Flipt` (something to identify the purpose of the credentials)
+
+Under the **Authorized redirect URIs** we're going to select `+ ADD URI`
+
+> Don't get this confused with _Authorized JavaScript origins_
+
+This will present us with a input box which we will populate with the following value:
+
+```url
+http://localhost:8080/auth/v1/method/oidc/google/callback
+```
+
+This is the redirect URL for your local running instance.
+In a production environment, you would replace the domain part of the URI with the public address of your flipt instance.
+
+3. Click `Create`
+
+This should create your credentials if all your inputs validate correctly.
+You should be presented with a modal containing your new client credentials.
+
+![Example modal containing Google OAuth client credentials]()
+
+You will need to take note of these values, as you're going to use them in the next step.
+
+## Configuring Flipt with OIDC credentials
+
+Open your `config.yml` from the first steps of this guide.
+Now we're going to update your configuration with the details we obtained from Google.
+
+We will:
+
+- Enabled the OIDC method
+- Configure the session domain
+- Define an OIDC provider called `google`
+- Add the specific details for the Google OIDC flow and the credentials we obtained previously
+
+Your configuration should look something like the following:
+
+```yaml config.yaml
+version: "1.0"
+
+log:
+  level: DEBUG
+
+authentication:
+  required: true
+  session:
+    domain: localhost:8080
+  methods:
+    oidc:
+      enabled: true
+      providers:
+        google:
+          issuer_url: "https://accounts.google.com"
+          client_id: "< client ID from Google >"
+          client_secret: "< client secret from Google >"
+          redirect_address: "http://localhost:8080"
+          scopes:
+            - email
+            - profile
+```
+
+<Note>
+If you do not want to add security credentials to your configuration file like this,
+then you can also supply these paramters as environment variables. All Flipt configuration
+parameters can be supplied as [environment variables](https://www.flipt.io/docs/configuration/overview#environment-variables).
+
+In this example the client secret can be supplied via the variable `FLIPT_AUTHENTICATION_METHODS_OIDC_PROVIDERS_GOOGLE_CLIENT_SECRET`.
+
+</Note>
+
+You can now stop and start your Flipt instance using the Docker command we described in section 1.
+Once Flipt has restarted you can to navigate your browser to the [UI](http://localhost:8080) and attempt a login with Google.
+When you click `Login with Google` you should be navigated away to your Google consent screen.
+Once you grant consent, you should return to Flipt and be logged into Flipt.
+
+## Production and beyond
+
+- adjusting parameters for production
+- enable csrf protection

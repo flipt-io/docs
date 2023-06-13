@@ -61,6 +61,12 @@
       ]
     },
     {
+      "group": "Guides",
+      "pages": [
+        "guides/login-with-google"
+      ]
+    },
+    {
       "group": "Configuration",
       "pages": [
         "configuration/overview",
