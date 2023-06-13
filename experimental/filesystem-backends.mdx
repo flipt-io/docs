@@ -121,12 +121,13 @@ Flipt will follow the configured reference (e.g. branch name) and keep up to dat
 
 #### Authentication
 
+Authentication enables the ability to leverage private Git repositories as flag state backends.
 The `git` type backend supports both `basic` and `token` based authentication schemes.
 
 <Note>
-  GitHub PAT (Personal Access Tokens) should be supplied using `basic`
-  authentication as the password. Use your GitHub username in the `username`
-  field.
+  When using GitHub and their PATs (Personal Access Tokens), `basic`
+  authentication should be used. GitHub expects you to supply a valid `username`
+  and provide your PAT as the `password` parameter.
 </Note>
 
 ## Flag State Configuration
