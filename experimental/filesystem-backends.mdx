@@ -8,7 +8,7 @@ description: Details on the experimental filesystem backends for Flipt.
 The following backend types are designed to support declarative management of feature flag state.
 In particular, they're designed to support GitOps practices with minimal external dependencies.
 
-This feature can be enabled via Flipts configuration parameters when running the `flipt` server binary.
+This feature can be enabled via configuration parameters when running the `flipt` server binary.
 As always, these parameters can be expressed via environment variables or Flipt's yaml configuration file:
 
 <Tabs>
@@ -33,8 +33,8 @@ As always, these parameters can be expressed via environment variables or Flipt'
 ## Backend Types
 
 There are currently two backend types we classify as being filesystem backends, `local` and `git`.
-The `local` backend has been primarily developed to support a local development experience.
-Whereas, the `git` backend is intended for production and serves flag state directly from a configurable repository and Git reference (e.g. branch).
+The `local` backend has been primarily developed to support a local development experience, 
+whereas, the `git` backend is intended for production and serves flag state directly from a configurable repository and Git reference (e.g. branch).
 
 ### `local` type
 
@@ -70,14 +70,13 @@ Flipt will periodically rebuild its state from the local disk.
   </Tab>
 </Tabs>
 
-> Serve your current directory.
 
 ### `git` type
 
-The `git` type backend is used to configure a target git repository and git reference to source feature flag state from.
+The `git` type backend is used to configure a target Git repository and Git reference to source feature flag state from.
 The configuration contains fields for addressing the repository, configuring the target reference as well as adding authentication credentials.
 
-Once a target repository and reference is configured, Flipt will poll the source repository on a periodic cadence.
+Once a target repository and reference are configured, Flipt will poll the source repository on a periodic cadence.
 This cadence is also configurable and defaults to 30 seconds.
 
 Flipt will follow the configured reference (e.g. branch name) and keep up to date with new changes.
@@ -124,7 +123,6 @@ Flipt will follow the configured reference (e.g. branch name) and keep up to dat
 #### Authentication
 
 The `git` type backend supports both `basic` and `token` based authentication schemes.
-These sections are mutually exclusive. Flipt will fail to initialize with a validation error if you attempt to configure both.
 
 <Note>
   GitHub PAT (Personal Access Tokens) should be supplied using `basic`
@@ -134,12 +132,12 @@ These sections are mutually exclusive. Flipt will fail to initialize with a vali
 
 ## Flag State Configuration
 
-Each of Flipts filesystem backends expects you to represent your feature flag configuration via a set of yaml files.
+Each of Flipt's filesystem backends expects you to represent your feature flag configuration via a set of YAML files.
 These files declaratively define what flags, segments, variants etc. exist and in what configuration.
 
 ### Locating Flag State
 
-Flipts filesystem backends allow you to define feature flags alongside other configuration in a shared directory or repository.
+Flipt's filesystem backends allow you to define feature flags alongside other configurations in a shared directory or repository.
 In order to identify which files are intended for Flipt, it uses a naming scheme to index which are flag state files.
 By default, Flipt will look for the following filename patterns when identifying files to attempt to parse as Flipt state:
 
@@ -148,10 +146,9 @@ By default, Flipt will look for the following filename patterns when identifying
 - `**/*.features.yaml`
 - `**/*.features.yml`
 
-Meaning, any file named `features.yaml`, `features.yml` or with either extension `.features.yaml` or `.features.yml` is considered.
-This is recursively from the root of your target directory or repository.
+Meaning, any file named `features.yaml`, `features.yml` or with either extension `.features.yaml` or `.features.yml` is considered recursively from the root of your target directory or repository.
 
-If this naming convention does not work for you, for whatever reason, it can be overriden by creating a file named `.flipt.yml` in the root of your target directory tree.
+If this naming convention does not work for you, it can be overridden by creating a file named `.flipt.yml` in the root of your target directory tree.
 This file will be used to instruct Flipt on how to index your directory tree and find flag state files:
 
 ```yaml
@@ -164,15 +161,15 @@ include:
 exclude: []
 ```
 
-The index file contains two lists `include` and `exclude`. These can contain specific paths or Glob matching patterns.
-The indexing process first matches the `include` section and then filters that set by the `exclude` section.
+The index file contains two lists `include` and `exclude`. These can contain specific paths or glob matching patterns.
+The indexing process first matches the `include` section and then filters that are set by the `exclude` section.
 
 ### Defining Flag State
 
 <Info>
   Flipt flag state file format has been taken directly from Flipts existing
   [import and export](/configuration/storage#import-export) flag state format.
-  You can run `flipt export` and add / commit the result to a directory or git
+  You can run `flipt export` and add/commit the result to a directory or Git
   repository to get started quickly.
 </Info>
 
@@ -217,7 +214,7 @@ segments:
 
 Each file identified for use by Flipt represents the contents of a single namespace.
 Multiple namespaces can be defined across multiple files.
-You can organize these files how you like in your target directory.
+You can organize these files however you like in your target directory.
 
 <Tip>
   By defining different namespaces in different directories, you can leverage
@@ -241,8 +238,8 @@ segments: [] # [Segment] list of Segment definitions
   [Concepts](/concepts) documentation page.
 </Info>
 
-The flags section is where your `Flag`, `Variant` and `Rule` definitions live.
-A Flag has many variants and many rules.
+The `flags` section is where your `Flag`, `Variant`, and `Rule` definitions live.
+A Flag can have zero or many variants and zero or many rules.
 
 ```yaml
 flags:
@@ -255,7 +252,6 @@ flags:
 ```
 
 Variants belong to flags and they are nested within each flag definition in a list under the key `variants`.
-A variant consists of a `key`, `name` and optional `description`.
 
 ```yaml
 variants:
@@ -268,7 +264,7 @@ variants:
 
 Rules also belong to Flags, however, they also reference specific Segments.
 Their purpose is to declare the distribution of which variants are returned for a flag.
-Rules require a matching segment key in order for the distribution to be considered.
+Rules require a matching segment key for the distribution to be considered.
 Rules are ordered by `rank`, allowing you to configure multiple potential matches, first match wins.
 
 For example, the following `rules` definition states that given a request matches the segment `newColorGroup` then it will return the variants `red` and `blue` in equal proportions (50/50 split).
@@ -307,11 +303,11 @@ segments:
 ```
 
 Here we have two segments `internal-users` and `all-users`.
-The `internal-users` segment has a single constraint which matches the property `organization` found on a evaluation context with the string `internal`.
+The `internal-users` segment has a single constraint that matches the property `organization` found on an evaluation context with the string `internal`.
 Given an evaluation API call is made with a context containing this property, the segment will match the request.
 
 The `all-users` segment has no constraints and will match **all** requests.
-This is useful because rules require a matching segment. This can be used as a catch all segment.
+This is useful because rules require a matching segment. This can be used as a catch-all segment.
 
 **Constraint Types**
 
@@ -326,7 +322,7 @@ There currently exist a few types of constraints:
 
 **Match Types**
 
-Each segment has a `match_type` which signifies whether or not the _all_ constraints have to match or _any_ (at-least one) must match.
+Each segment has a `match_type` which signifies whether or not _all_ constraints must match or _any_ (at least one) must match.
 
 - `ALL_MATCH_TYPE`
 - `ANY_MATCH_TYPE`
