@@ -33,7 +33,7 @@ As always, these parameters can be expressed via environment variables or Flipt'
 ## Backend Types
 
 There are currently two backend types we classify as being filesystem backends, `local` and `git`.
-The `local` backend has been primarily developed to support a local development experience, 
+The `local` backend has been primarily developed to support a local development experience,
 whereas, the `git` backend is intended for production and serves flag state directly from a configurable repository and Git reference (e.g. branch).
 
 ### `local` type
@@ -42,7 +42,7 @@ The purpose of this backend type is to support serving Flipt flag state directly
 You can simply specify a relative or absolute directory in order to start a local Flipt instance and serve flag state.
 This is particularly useful for local development and validation of flag state changes.
 
-Flipt will periodically rebuild its state from the local disk.
+Flipt will periodically rebuild its state from the local disk every 10 seconds.
 
 <Tabs>
   <Tab title="Environment Variable">
@@ -69,7 +69,6 @@ Flipt will periodically rebuild its state from the local disk.
 
   </Tab>
 </Tabs>
-
 
 ### `git` type
 
@@ -169,8 +168,10 @@ The indexing process first matches the `include` section and then filters that a
 <Info>
   Flipt flag state file format has been taken directly from Flipts existing
   [import and export](/configuration/storage#import-export) flag state format.
-  You can run `flipt export` and add/commit the result to a directory or Git
-  repository to get started quickly.
+  You can run `flipt export` on your existing Flipt instance, and then
+  add/commit the result to a directory or Git repository to get started quickly.
+  This can be used to migrate from a relational database backed instance of
+  Flipt to a filesystem backed deployment with ease.
 </Info>
 
 ```yaml features.yaml
