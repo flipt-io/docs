@@ -43,3 +43,5 @@ unary
 uncomment
 yaml
 zipkin
+URIs
+APIs
