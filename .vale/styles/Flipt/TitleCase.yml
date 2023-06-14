@@ -1,0 +1,6 @@
+extends: capitalization
+message: "Be sure to use title case! '%s'"
+scope: heading
+level: error
+match: $title
+style: AP
