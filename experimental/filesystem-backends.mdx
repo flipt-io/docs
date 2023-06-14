@@ -36,7 +36,7 @@ There are currently two backend types we classify as being filesystem backends, 
 The `local` backend has been primarily developed to support a local development experience,
 whereas, the `git` backend is intended for production and serves flag state directly from a configurable repository and Git reference (e.g. branch).
 
-### `local` type
+### Local
 
 The purpose of this backend type is to support serving Flipt flag state directly from your local filesystem.
 You can simply specify a relative or absolute directory in order to start a local Flipt instance and serve flag state.
@@ -70,7 +70,7 @@ Flipt will periodically rebuild its state from the local disk every 10 seconds.
   </Tab>
 </Tabs>
 
-### `git` type
+### Git
 
 The `git` type backend is used to configure a target Git repository and Git reference to source feature flag state from.
 The configuration contains fields for addressing the repository, configuring the target reference as well as adding authentication credentials.

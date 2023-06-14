@@ -121,7 +121,7 @@ When using a "session compatible" authentication method (e.g. [OIDC](/authentica
 
 In a browser context this means subsequent API calls will be automatically authenticated given the API requests are invoked with credentials included (cookies are enabled). Flipt's UI leverages this mechanism for its login functionality.
 
-## gRPC
+## GRPC
 
 For gRPC we use the [Metadata](https://grpc.io/docs/what-is-grpc/core-concepts/#metadata) functionality similar to HTTP Headers.
 The lower-case `authorization` metadata key should be supplied with a single string `Bearer <client-token>` to any RPC calls.
