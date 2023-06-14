@@ -97,6 +97,10 @@
       "pages": ["reference/overview"]
     },
     {
+      "group": "Experimental",
+      "pages": ["experimental/filesystem-backends"]
+    },
+    {
       "group": "Authentication",
       "pages": [
         "reference/authentication/list-tokens",

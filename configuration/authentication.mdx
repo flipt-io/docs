@@ -23,7 +23,7 @@ See the [Authentication: Overview](/authentication/overview) documentation for m
 
 ## Session
 
-This section contains common properties for establishing browser sessions via a "session compatible" authentication method. Session-compatible methods enable support for login in the UI. The methods below state whether or not they are session compatible (e.g. [OIDC](#method-oidc) is session compatible).
+This section contains common properties for establishing browser sessions via a "session compatible" authentication method. Session-compatible methods enable support for login in the UI. The methods below state whether or not they're session compatible (e.g. [OIDC](#method-oidc) is session compatible).
 
 In order to establish a browser session over HTTP (via a `Cookie` header) some configuration is required.
 
@@ -38,7 +38,7 @@ authentication:
 
 When a "session compatible" authentication method is enabled the `domain` property is **required**.
 It should be configured with the public domain your Flipt instance is hosted on.
-The other properties are not required to be explicitly configured.
+The other properties aren't required to be explicitly configured.
 
 To best secure your instance of Flipt, we advise that you run Flipt with `secure: true`.
 This will require you to expose Flipt over HTTPS.
@@ -190,7 +190,7 @@ authentication:
   `https://flipt.myorg.com/auth/v1/method/oidc/google/callback`.
 </Note>
 
-Additional `scopes` such as `profile` are not 100% necessary, however, adding
+Additional `scopes` such as `profile` aren't 100% necessary, however, adding
 them will result in Flipt being able to identify more details about your users
 such as personalized greeting messages and user profile pictures in the UI.
 
@@ -249,5 +249,5 @@ The `grace_period` is simply for the cleanup process.
 
 ## Reverse Proxy
 
-It is possible to secure Flipt simply by running it behind a reverse proxy in your own trusted environment.
+it's possible to secure Flipt simply by running it behind a reverse proxy in your own trusted environment.
 An example of this can be found in the core Flipt repository [here](https://github.com/flipt-io/flipt/tree/main/examples/auth).

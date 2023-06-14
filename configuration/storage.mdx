@@ -70,7 +70,7 @@ error in the console:
 migrations pending, please backup your database and run `flipt migrate`
 ```
 
-If it is your first run of Flipt, all migrations will automatically be run
+If it's your first run of Flipt, all migrations will automatically be run
 before starting the Flipt server.
 
 <Warning>
@@ -136,7 +136,7 @@ flipt import --namespace production flipt.yaml
 ```
 
 A namespace must exist before your import into it.
-For convenience, you can supply `--create-namespace` in order for Flipt to automatically create the namespace if it does not already exist.
+For convenience, you can supply `--create-namespace` in order for Flipt to automatically create the namespace if it doesn't already exist.
 
 ```yaml
 flipt import --namespace production --create-namespace flipt.yaml
@@ -148,8 +148,8 @@ collisions occur during the import.
 
 <Warning>
   Be careful when using the `--drop` flag as it will immediately drop all of
-  your data and there is no undo. It is recommended to first backup your
-  database before running this command just to be safe.
+  your data and there is no undo. It's recommended to first backup your database
+  before running this command just to be safe.
 </Warning>
 
 ### Export
@@ -195,9 +195,9 @@ evaluations. Enabling caching has been shown to speed up read performance by
 several orders of magnitude.
 
 <Warning>
-  Enabling in-memory caching when running more than one instance of Flipt is not
-  advised as it may lead to unpredictable results. It is recommended to use
-  Redis instead if you are running more than one instance of Flipt.
+  Enabling in-memory caching when running more than one instance of Flipt isn't
+  advised as it may lead to unpredictable results. It's recommended to use Redis
+  instead if you are running more than one instance of Flipt.
 </Warning>
 
 Caching works as follows:
@@ -232,7 +232,7 @@ expired items from your cache at a defined period.
 </Note>
 
 To tune the expiration and eviction interval of the cache set the following in
-your config:
+your configuration:
 
 ```yaml
 cache:
