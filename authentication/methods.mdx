@@ -40,11 +40,11 @@ As of version 1.19.0, the UI also supports the creation and deletion of tokens. 
 
 ### Bootstrapping
 
-On first startup, Flipt will automatically create a random static token with the name `initial_bootstrap_token` if one does not already exist and if `token` authentication is enabled.
+On first startup, Flipt will automatically create a random static token with the name `initial_bootstrap_token` if one doesn't already exist and if `token` authentication is enabled.
 
 ![Bootstrap Token](/images/authentication/bootstrap-token.png)
 
-This token is intended to be used to create additional tokens to then be used for subsequent API requests. By default it has no expiration date, therefore it is recommended that this token be deleted once the initial bootstrapping is complete.
+This token is intended to be used to create additional tokens to then be used for subsequent API requests. By default it has no expiration date, therefore it's recommended that this token be deleted once the initial bootstrapping is complete.
 
 This token is output to the Flipt logs on startup and can be found by searching for `client_token` in the logs:
 
@@ -63,11 +63,11 @@ See the [Configuration: Method Token](/configuration/overview#authentication-met
 [OpenID Connect](https://openid.net/connect/) (OIDC) is a simple identity layer on top of the OAuth 2.0 protocol. It allows Clients to verify the identity of the End-User based on the authentication performed by an Authorization Server, as well as to obtain basic profile information about the End-User in an interoperable and REST-like manner.
 
 <Note>
-Flipts own UI is designed to support this authentication method natively.
+Flipt's own UI is designed to support this authentication method natively.
 Meaning, once enabled, the UI will support login and present each provider as a login button.
 
 The rest of this information is mostly academic.
-It is mainly useful if you want to build your own browser application using cookie authentication or understand Flipt's OIDC flow at a lower level.
+It's mainly useful if you want to build your own browser application using cookie authentication or understand Flipt's OIDC flow at a lower level.
 
 Head over to [OIDC Configuration](/configuration/authentication#method-oidc) documentation to learn how to configure your provider(s).
 
@@ -82,7 +82,7 @@ This section of the API supports a generic OAuth 2.0 with OIDC flow.
 Flipt's configuration can be defined with multiple simultaneous OIDC providers.
 An operator of Flipt chooses a name for each provider and then configures the relevant secrets necessary to authenticate with an OIDC client.
 
-There are many OIDC providers out there. For example, we have tested Flipt with:
+There are many OIDC providers out there. For example, we've tested Flipt with:
 
 - Google
 - Auth0
@@ -93,7 +93,7 @@ There are many OIDC providers out there. For example, we have tested Flipt with:
 Each provider has their own way of establishing clients and acquiring the relevant credentials.
 You can find further documentation on leveraging providers like these in our [OIDC Configuration](/configuration/authentication#method-oidc) documentation.
 
-For illustration purposes, let us say we have configured a single provider with `Dex` and named it `dex` (lowercase) in our provider configuration.
+For illustration purposes, let us say we've configured a single provider with `Dex` and named it `dex` (lowercase) in our provider configuration.
 
 This will lead to the following endpoints being available on Flipt:
 
@@ -110,7 +110,7 @@ When using HTTP, this callback endpoint will establish the `flipt_client_token` 
 <Note>
 This method is designed for automatically authenticating applications with Flipt.
 
-We are actively designing and developing client-side implementations to leverage this method seamlessly.
+We're actively designing and developing client-side implementations to leverage this method seamlessly.
 However, for now, the API must be managed manually by your implementation.
 
 </Note>
@@ -125,8 +125,8 @@ Given the service account is deemed valid for the surrounding cluster this opera
 If your Kubernetes environment has short-lived service account tokens, care will be needed to periodically request a new client token using a newly issued service account token.
 
 <Tip>
-  Kubernetes refreshes service account tokens locally, all that is required is
-  to read the token from the disk again.
+  Kubernetes refreshes service account tokens locally, all that's required is to
+  read the token from the disk again.
 </Tip>
 
 The client token produced can be used in subsequent API requests with the rest of the Flipt API to gain authenticated access.
