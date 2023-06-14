@@ -120,12 +120,12 @@ Doing so will allow Flipt to identify the caller in your audit logs by their ema
 As well enabling the UI to present your users Google profile picture.
 
 <Warning>
-  You will have the option to create you OAuth application as `internal` or
+  You will have the option to create your OAuth application as `internal` or
   `external`. We recommend `internal` as that way only your internal Google
   workspace users can access Flipt.
 </Warning>
 
-Make sure to configure the consent screen as per Googles instructions and set the scopes accordingly.
+Make sure to configure the consent screen as per Google's instructions and set the scopes accordingly.
 
 ### 2. Open [Google Console Credentials](https://console.cloud.google.com/apis/credentials)
 
@@ -134,13 +134,17 @@ can also get there by going to the `API` section of your Google Cloud account an
 
 ### 3. Click `+ Create Credentials`
 
-This presents us with a few options for credential types.
+This presents us with a few options for credential types:
+
+- API Key
+- OAuth client ID
+- Service Account
 
 ![Google cloud create credentials popover](/images/guides/login-with-google/create-credentials-popover.png)
 
 Select the `Oauth client ID` type and you will be taken to an input form (like the one below).
 
-We're first requested to select an `Application type`. We shall choose the `Web application` option.
+Select the `Web application` option when prompted to select an `Application type`.
 Once selected you will be presented with more input options.
 
 ![Google cloud create oauth client ID form](/images/guides/login-with-google/create-oauth-client-id-form.png)
@@ -152,7 +156,7 @@ As shown in the screenshot, we'll want to enter the following values for the inp
 - Application type: `Web application`
 - Name: `Flipt` (something to identify the purpose of the credentials)
 
-Under the **Authorized redirect URIs** heading we're going to select `+ ADD URI`
+Under the **Authorized redirect URIs** heading select `+ ADD URI`
 
 > Don't get this confused with _Authorized JavaScript origins_
 
@@ -163,7 +167,7 @@ http://localhost:8080/auth/v1/method/oidc/google/callback
 ```
 
 This is the redirect URL for your local running instance.
-In a production environment, you would replace the domain part of the URI with the public address of your flipt instance.
+In a production environment, you would replace the domain part of the URI with the public address of your Flipt instance.
 
 ### 5. Click `Create`
 
@@ -193,7 +197,7 @@ The configuration below does the following for Flipt:
 
 Your configuration should look something like the following:
 
-```yaml config.yaml
+```yaml config.yml
 version: "1.0"
 
 log:
@@ -217,7 +221,7 @@ authentication:
             - profile
 ```
 
-The session domain is required for session compatible authentication methods.
+The session domain is required for session-compatible authentication methods.
 It's used by Flipt as the domain for storing authentication cookies.
 
 Note that we've enabled the `oidc` method, and it has a section called `providers`.
@@ -271,7 +275,7 @@ You will need to update the **redirect URI** of your OAuth client in Google with
 
 Now that we're hosting under a new domain, we need to instruct Flipt where to store cookies and what our redirect address is going to be.
 
-```diff config.yaml
+```diff config.yml
 version: "1.0"
 
 log:
