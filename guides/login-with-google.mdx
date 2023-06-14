@@ -30,9 +30,11 @@ For this guide you're going to need the following:
 
 OIDC is an extension on top of the OAuth standard for delegated authentication.
 OAuth allows Flipt to delegate authentication to an external provider of your choice.
+
 The OIDC extension provides the **Relying Party** (Flipt in this case) with a well-known protocol for requesting identity from an **Identity Provider** (IdP) (Google in this example).
 It ensures that we can support a multitude of IdPs through a standard set of configuration parameters.
 This means we don't have to add more code to Flipt each time we want to support an additional identity provider.
+
 As long as the provider conforms to the OIDC standard, Flipt can be configured to leverage it.
 It also gives Flipt the option to obtain and present user profile pictures and email addresses in the UI.
 
@@ -127,12 +129,11 @@ As well enabling the UI to present your users Google profile picture.
 
 Make sure to configure the consent screen as per Google's instructions and set the scopes accordingly.
 
-### 2. Open [Google Console Credentials](https://console.cloud.google.com/apis/credentials)
+### 2. Create your OAuth Client Credentials
 
-You can simply navigate to the link in the title here of this section, or you
-can also get there by going to the `API` section of your Google Cloud account and then select `Credentials`.
+1. Navigate to [Google Console Credentials](https://console.cloud.google.com/apis/credentials).
 
-### 3. Click `+ Create Credentials`
+2. Click `+ Create Credentials`.
 
 This presents us with a few options for credential types:
 
@@ -142,21 +143,21 @@ This presents us with a few options for credential types:
 
 ![Google cloud create credentials popover](/images/guides/login-with-google/create-credentials-popover.png)
 
-Select the `Oauth client ID` type and you will be taken to an input form (like the one below).
+Select the `OAuth client ID` type and you will be taken to an input form (like the one below).
 
 Select the `Web application` option when prompted to select an `Application type`.
 Once selected you will be presented with more input options.
 
 ![Google cloud create oauth client ID form](/images/guides/login-with-google/create-oauth-client-id-form.png)
 
-### 4. Configure the oauth client
+3. Configure the clients name and redirect URL.
 
 As shown in the screenshot, we'll want to enter the following values for the inputs:
 
 - Application type: `Web application`
 - Name: `Flipt` (something to identify the purpose of the credentials)
 
-Under the **Authorized redirect URIs** heading select `+ ADD URI`
+Under the **Authorized redirect URIs** heading select `+ ADD URI`.
 
 > Don't get this confused with _Authorized JavaScript origins_
 
@@ -169,7 +170,7 @@ http://localhost:8080/auth/v1/method/oidc/google/callback
 This is the redirect URL for your local running instance.
 In a production environment, you would replace the domain part of the URI with the public address of your Flipt instance.
 
-### 5. Click `Create`
+4. Click `Create`.
 
 This should create your credentials if all your inputs validate correctly.
 You should be presented with a modal containing your new client credentials.
