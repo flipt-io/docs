@@ -58,7 +58,7 @@ application.
 
 #### Configuration
 
-There is a default configuration file within the image. In order to supply a custom configuration, update the `docker run` command to mount your local config into the container
+There is a default configuration file within the image. In order to supply a custom configuration, update the `docker run` command to mount your local configuration into the container
 
 ```console
 docker run -d \
@@ -80,7 +80,7 @@ Any issues or suggestions on how to improve the Flipt Helm chart are welcome in 
 [Helm](https://helm.sh) must be installed to use the chart. Please refer to
 Helm's [documentation](https://helm.sh/docs/) to get started.
 
-Once Helm is set up properly, add the Flipt Helm repo as follows:
+Once Helm is set up properly, add the Flipt Helm repository as follows:
 
 ```console
 helm repo add flipt https://helm.flipt.io
@@ -113,8 +113,8 @@ This archive contains the Flipt binary, configuration, database migrations,
 README, LICENSE, and CHANGELOG files.
 
 <Note>
-  You will need to update the config file: `default.yml` if your migrations and
-  database locations differ from the standard locations.
+  You will need to update the configuration file: `default.yml` if your
+  migrations and database locations differ from the standard locations.
 </Note>
 
 Run the Flipt binary with:

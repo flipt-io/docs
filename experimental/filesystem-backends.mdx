@@ -148,7 +148,7 @@ By default, Flipt will look for the following filename patterns when identifying
 
 Meaning, any file named `features.yaml`, `features.yml` or with either extension `.features.yaml` or `.features.yml` is considered recursively from the root of your target directory or repository.
 
-If this naming convention does not work for you, it can be overridden by creating a file named `.flipt.yml` in the root of your target directory tree.
+If this naming convention doesn't work for you, it can be overridden by creating a file named `.flipt.yml` in the root of your target directory tree.
 This file will be used to instruct Flipt on how to index your directory tree and find flag state files:
 
 ```yaml
@@ -167,7 +167,7 @@ The indexing process first matches the `include` section and then filters that a
 ### Defining Flag State
 
 <Info>
-  Flipt flag state file format has been taken directly from Flipts existing
+  Flipt flag state file format has been taken directly from Flipt's existing
   [import and export](/configuration/storage#import-export) flag state format.
   You can run `flipt export` on your existing Flipt instance, and then
   add/commit the result to a directory or Git repository to get started quickly.
@@ -253,7 +253,7 @@ flags:
     rules: [] # [Rule] a list of rules
 ```
 
-Variants belong to flags and they are nested within each flag definition in a list under the key `variants`.
+Variants belong to flags and they're nested within each flag definition in a list under the key `variants`.
 
 ```yaml
 variants:
@@ -304,7 +304,7 @@ segments:
     match_type: ALL_MATCH_TYPE
 ```
 
-Here we have two segments `internal-users` and `all-users`.
+Here there are two segments `internal-users` and `all-users`.
 The `internal-users` segment has a single constraint that matches the property `organization` found on an evaluation context with the string `internal`.
 Given an evaluation API call is made with a context containing this property, the segment will match the request.
 

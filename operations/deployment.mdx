@@ -41,7 +41,7 @@ However, Flipt can be run in front of an externally managed relational database 
 As mentioned, Flipt runs on top of SQLite by default. SQLite is an embedded relational database, backed by a single file on disk. Access to the database is limited to a single writing process on the same machine.
 Using SQLite in this way means Flipt can only be run as a single instance.
 
-In many scenarios, it is advantageous to run multiple instances of a service like Flipt. Doing so can provide redundancy during critical failures. It also allows an operator to scale the number of instances to meet throughput demands.
+In many scenarios, it's advantageous to run multiple instances of a service like Flipt. Doing so can provide redundancy during critical failures. It also allows an operator to scale the number of instances to meet throughput demands.
 
 An externally hosted relational database is required to scale Flipt horizontally (run multiple instances with a shared backend). PostgreSQL, MySQL and CockroachDB are the currently supported relational backends. Check out [Configuration: Storage](/configuration/storage) for more details on how to configure Flipt's available storage backends.
 
@@ -70,7 +70,7 @@ Since each instance of Flipt has an isolated in-memory cache, the benefits dimin
 
 Using a remote system such as Redis to store the cache data, the same cache instance between multiple Flipt replicas can be shared. A single (logical) shared instance of Redis is required to see the benefits of this kind of caching.
 
-Redis is currently the only backend we support for caching purposes. We are considering adding more viable options (such as Memcache) in the future.
+Redis is currently the only backend we support for caching purposes. We're considering adding more viable options (such as Memcached) in the future.
 
 ## Further Considerations
 

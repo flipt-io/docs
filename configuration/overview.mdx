@@ -12,7 +12,7 @@ This file is read when Flipt starts up and configures several important
 properties for the server.
 
 <Tip>
-  We have both a [JSON
+  We provide both a [JSON
   schema](https://raw.githubusercontent.com/flipt-io/flipt/main/config/flipt.schema.json)
   and a [Cue
   schema](https://raw.githubusercontent.com/flipt-io/flipt/main/config/flipt.schema.cue)
@@ -104,7 +104,7 @@ These properties are as follows:
 
 | Property              | Description                    | Default        | Since   |
 | --------------------- | ------------------------------ | -------------- | ------- |
-| tracing.otlp.endpoint | The OTLP GRPC reciever address | localhost:4317 | v1.18.2 |
+| tracing.otlp.endpoint | The OTLP GRPC receiver address | localhost:4317 | v1.18.2 |
 
 ### Database
 
@@ -164,7 +164,7 @@ These properties are as follows:
 | authentication.methods.kubernetes.cleanup.grace_period       | How long an expired token can exist until considered deletable | 30m                                                  | v1.19.0 |
 | authentication.methods.kubernetes.discovery_url              | Kubernetes API server URL for OIDC configuration discovery     | https://kubernetes.default.svc.cluster.local         | v1.19.0 |
 | authentication.methods.kubernetes.ca_path                    | Kubernetes API CA certification path                           | /var/run/secrets/kubernetes.io/serviceaccount/ca.crt | v1.19.0 |
-| authentication.methods.kubernetes.service_account_token_path | Path to Flipts service account token                           | /var/run/secrets/kubernetes.io/serviceaccount/token  | v1.19.0 |
+| authentication.methods.kubernetes.service_account_token_path | Path to Flipt service account token                            | /var/run/secrets/kubernetes.io/serviceaccount/token  | v1.19.0 |
 
 ### Cache
 
@@ -196,7 +196,7 @@ eventually removed. Deprecated configuration options will be removed after \~6
 months from the time they were deprecated.
 
 All deprecated configuration options will be removed from the documentation,
-however, they will still work as expected until they are removed. A warning will
+however, they will still work as expected until they're removed. A warning will
 be logged in the Flipt logs when a deprecated configuration option is used.
 
 All deprecated options are listed in the [DEPRECATIONS](https://github.com/flipt-io/flipt/blob/main/DEPRECATIONS.md) file

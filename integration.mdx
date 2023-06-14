@@ -15,7 +15,7 @@ There are two ways to communicate with the Flipt server:
 1. REST API
 1. GRPC API
 
-We have also developed several clients in various languages for easier integration.
+We've also developed several clients in various languages for easier integration.
 
 ## REST API
 
@@ -57,7 +57,7 @@ openapi-generator generate -i openapi.yml -g java -o /tmp/flipt/java
 Since Flipt is a [GRPC](https://grpc.io/) enabled application, you can use a
 generated GRPC client for your language of choice.
 
-This means that your application can use the Flipt GRPC client if it is written
+This means that your application can use the Flipt GRPC client if it's written
 in one of the many languages that GRPC supports, including:
 
 - C++
@@ -81,13 +81,13 @@ Official Flipt GRPC clients are currently available for the following languages:
 - [Go](https://github.com/flipt-io/flipt-grpc-go) - deprecated: use [Go SDK](https://pkg.go.dev/go.flipt.io/flipt/sdk/go) instead
 - [Ruby](https://github.com/flipt-io/flipt-grpc-ruby)
 
-If your language is not listed, please see the section below on how to generate
+If your language isn't listed, please see the section below on how to generate
 a native GRPC client manually. If you choose to open-source this client, please
 submit a pull request so I can add it to the docs.
 
 ### Generate
 
-If a GRPC client in your language is not available for download, you can easily
+If a GRPC client in your language isn't available for download, you can easily
 generate it yourself using the existing
 [protobuf definition](https://github.com/flipt-io/flipt/blob/main/rpc/flipt/flipt.proto).
 The [GRPC documentation](https://grpc.io/docs/) has extensive examples of how to
@@ -130,7 +130,7 @@ flipt_pb.rb          flipt_services_pb.rb
 Client libraries built by awesome people from the Open Source community:
 
 <Warning>
-  These libraries are not maintained by the Flipt team and may not be up to date
+  These libraries aren't maintained by the Flipt team and may not be up to date
   with the latest version of Flipt. Please open an issue or pull request on the
   library's repository if you find any issues.
 </Warning>

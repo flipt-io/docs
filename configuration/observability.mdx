@@ -31,7 +31,7 @@ provided in the GitHub repository showing how to set up Flipt with Prometheus.
 
 ![Grafana Dashboard](/images/configuration/grafana_flag_dashboard.png)
 
-We have created a set of [Grafana](https://grafana.com/) dashboards that you can use to visualize the metrics collected by Flipt, including both server health and flag evaluation metrics.
+We provide created a set of [Grafana](https://grafana.com/) dashboards that you can use to visualize the metrics collected by Flipt, including both server health and flag evaluation metrics.
 
 You can find the dashboards in our [grafana-dashboards](https://github.com/flipt-io/grafana-dashboards) repository.
 
@@ -75,7 +75,7 @@ Starting from `v1.21.0`, Flipt supports sending audit events to configured sinks
 }
 ```
 
-- `version` : the version of the audit event structure. We do not expect too many changes to the structure of the audit event
+- `version` : the version of the audit event structure. We don't expect too many changes to the structure of the audit event
 - `type` : the type of the entity being acted upon (flag, variant, constraint, etc.)
 - `action` : the action taken upon the entity (created, deleted, updated, etc.)
 - `metadata` : extra information related to the audit event as a whole. The `actor` field will always be present containing some identity information of the source which initiated the audit event
