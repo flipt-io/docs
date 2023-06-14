@@ -16,6 +16,14 @@ We use [Vale](https://vale.sh) to lint our documentation. Vale is a command-line
 
 To install Vale, follow the [installation instructions](https://docs.errata.ai/vale/install).
 
+Once installed run the following in this project:
+
+```sh
+vale sync
+```
+
+> Installs all the dependent Vale packages.
+
 ### Usage
 
 To lint the documentation, run the following command at the root of the repository:
