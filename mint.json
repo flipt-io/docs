@@ -63,7 +63,8 @@
     {
       "group": "Guides",
       "pages": [
-        "guides/login-with-google"
+        "guides/login-with-google",
+        "guides/deploy-to-flyio"
       ]
     },
     {
