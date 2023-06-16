@@ -7,12 +7,12 @@ description: "Deploy Flipt to Fly.io with Postgres"
 
 ## What You'll Learn
 
-In this guide, you will learn how to deploy Flipt to Fly.io with Postgres. You'll also learn how to configure Flipt with Environment Variables.
+In this guide, you will learn how to deploy Flipt to Fly.io with Postgres. You'll also learn how to configure Flipt with environment variables.
 
 By the end of this guide, we will have:
 
 - 🚀 Successfully deployed Flipt to Fly.io
-- 🐘 Configured Flipt with Environment Variables to use Fly.io's managed Postgres service
+- 🐘 Configured Flipt with environment variables to use Fly.io's managed Postgres service
 
 ## Prerequisites
 
@@ -22,18 +22,20 @@ By the end of this guide, we will have:
 ## Deployment Steps
 
 1. Ensure you can log in to your Fly.io account with `fly auth login`.
-2. Create and `cd` into a new directory for your Flipt deployment. (e.g. `mkdir flipt-flyio && cd flipt-flyio`)
+2. Create and `cd` into a new directory for your Flipt deployment. (e.g. `mkdir flipt-test && cd flipt-test`)
 3. Begin the launch process to deploy Flipt on Fly.io using their CLI, selecting mainly the defaults and Postgres when prompted:
 
-<Warning>
-  Note the Postgres database connection string that's printed during the launch
-  process. You will need this to configure Flipt.
-</Warning>
+<Tip>
+  Here we specify the <code>ghcr.io/flipt-io/flipt:latest</code> image, which is
+  the latest stable release of Flipt. You can also use a specific version of
+  Flipt by replacing <code>latest</code> with a specific version tag (e.g.{" "}
+  <code>ghcr.io/flipt-io/flipt:v1.23.0</code>).
+</Tip>
 
 ```console
 $ fly launch -i ghcr.io/flipt-io/flipt:latest
 
-? App Name (leave blank to use an auto-generated name) flipt-flyio
+? App Name (leave blank to use an auto-generated name) flipt-test
 
 Automatically selected personal organization: <your-org>
 
@@ -42,7 +44,12 @@ Automatically selected personal organization: <your-org>
 ? Would you like to set up a Postgresql database now? Yes
 ```
 
-4. After the launch process completes, it will write a `fly.toml` file to your current directory. Here you can configure the number of instances, memory, and CPU allocated to your Flipt deployment. You can also set Environment Variables to customize Flipt's configuration.
+<Warning>
+  Note the Postgres database connection string that's printed during the launch
+  process. You will need this to configure Flipt.
+</Warning>
+
+4. After the launch process completes, it will write a `fly.toml` file to your current directory. Here you can configure the number of instances, memory, and CPU allocated to your Flipt deployment. You can also set environment variables to customize Flipt's configuration.
 
    For more information, refer to the [Fly.io documentation](https://fly.io/docs/reference/configuration/) and the [Flipt documentation](/configuration/overview).
 
@@ -77,10 +84,11 @@ opening https://flipt-test.fly.dev/ ...
 
 ## Configuration
 
-You can configure Flipt with [Environment Variables](/configuration/overview#environment-variables) in the `fly.toml` file. For example, to configure Flipt to use a custom port and enable DEBUG logging you can add the following to the `fly.toml` file:
+You can configure Flipt with [environment variables](/configuration/overview#environment-variables) in the `fly.toml` file. For example, to configure Flipt to use a custom port and enable DEBUG logging you can add the following to the `fly.toml` file:
 
 ```toml fly.toml
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+# See https://fly.io/docs/reference/configuration/ for information
+# about how to use this file.
 
 app = "flipt-test"
 primary_region = "iad"
