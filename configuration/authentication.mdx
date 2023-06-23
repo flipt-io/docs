@@ -158,6 +158,11 @@ curl --request GET \
 
 #### Example: OIDC With Google
 
+<Tip>
+  Checkout our new [Login with Google](/guides/login-with-google) guide for an
+  in-depth look into configuring Google as an OIDC provider.
+</Tip>
+
 Given we're running our instance of Flipt on the public internet at `https://flipt.myorg.com`.
 
 Using Google as an example and the documentation linked above, we obtained the following credentials for a Google OAuth client:
@@ -186,7 +191,7 @@ authentication:
 ```
 
 <Note>
-  The callback URL for this provider would be
+  The redirect URL for this provider would be
   `https://flipt.myorg.com/auth/v1/method/oidc/google/callback`.
 </Note>
 
