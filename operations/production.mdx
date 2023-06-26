@@ -53,7 +53,7 @@ database:
 
 By default, all queries are ran as prepared statements. This could be a problem if you are operate some proxies to your database.
 
-For instance, with PGBouncer as a proxy to a Postgres database, it does not support prepared statements in its [transaction pooling mode](https://www.pgbouncer.org/faq.html#how-to-use-prepared-statements-with-transaction-pooling).
+For instance, with PGBouncer as a proxy to a Postgres database, it doesn't support prepared statements in its [transaction pooling mode](https://www.pgbouncer.org/faq.html#how-to-use-prepared-statements-with-transaction-pooling).
 
 You can disable prepared statements for the database client via environment variable:
 
