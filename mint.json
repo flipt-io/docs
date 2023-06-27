@@ -90,6 +90,7 @@
       "pages": [
         "operations/architecture",
         "operations/deployment",
+        "operations/production",
         "operations/upgrading"
       ]
     },
