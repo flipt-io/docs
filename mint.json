@@ -90,7 +90,7 @@
       "pages": [
         "operations/architecture",
         "operations/deployment",
-        "operations/flipt-in-production",
+        "operations/production",
         "operations/upgrading"
       ]
     },
