@@ -87,5 +87,4 @@ You can also preview changes using PRs, which generates a preview link of the do
 - Mintlify dev isn't running - Run `mintlify install` it'll re-install dependencies.
 - Mintlify dev is updating really slowly - Run `mintlify clear` to clear the cache.
 
-
 [codespaces]: https://codespaces.new/flipt-io/docs?quickstart=1
