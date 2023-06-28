@@ -3,11 +3,11 @@ title: Production
 description: This document describes recommended configuration options for operating Flipt in Production.
 ---
 
-Flipt default setup is designed to help you get up and running quickly. To run Flipt successfully in a production environment, you will likely need to modify a few configuration options.
+Flipt's default setup is designed to help you get up and running quickly. To run Flipt successfully in a production environment, you will likely need to modify a few configuration options.
 
 Here are some of the configuration options and tips to consider when operating Flipt in production:
 
-1. **Database connection limits**
+## Database Connection Limits
 
 By default, the Go `database/sql` client, will have `MaxOpenConn` equal to 0 (unlimited), and `MaxIdleConn` equal to 2.
 
@@ -49,7 +49,7 @@ database:
   max_idle_conn: 5
 ```
 
-2. **Prepared statements**
+## Prepared Statements
 
 By default, all queries are run as prepared statements. This could post a problem in some environments.
 
@@ -68,11 +68,11 @@ database:
   prepared_statements_enabled: false
 ```
 
-3. **Debug logging**
+## Debug Logging
 
 Debug logging can be very useful if you are actively developing or trying to fix problems in an environment, but can have the adverse effect of eating up CPU time under load. Enabling debug logging can also end up mixing useful logs with non-useful ones.
 
-It's recommended to disable debug logging in a production environment by increasing the log level via an environment variable:
+It's recommended to disable Flipt's debug logging in a production environment by increasing the log level via an environment variable:
 
 ```bash
 FLIPT_LOG_LEVEL=info
