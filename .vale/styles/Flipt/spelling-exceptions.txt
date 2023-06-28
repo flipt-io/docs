@@ -3,6 +3,7 @@ auditable
 boolean
 caddy
 codeowners
+codespaces
 datetime
 declaratively
 deletable
