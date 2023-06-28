@@ -1,5 +1,7 @@
 # Flipt Docs
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/flipt-io/docs?quickstart=1)
+
 This repository powers the content behind Flipt's docs at [flipt.io/docs](https://www.flipt.io/docs)
 
 ## 📝 Contributing
