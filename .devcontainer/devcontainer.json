@@ -16,10 +16,13 @@
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "npm i -g mintlify",
+  "postCreateCommand": "./.devcontainer/postCreateCommand.sh",
   "customizations": {
     "vscode": {
-      "extensions": ["chrischinchilla.vale-vscode", "esbenp.prettier-vscode"]
+      "extensions": [
+        "chrischinchilla.vale-vscode",
+        "esbenp.prettier-vscode"
+      ]
     }
   }
   // Configure tool-specific properties.
