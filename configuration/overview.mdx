@@ -3,6 +3,13 @@ title: Overview
 description: This document describes how to configure the Flipt server.
 ---
 
+There are 2 ways to configure `flipt` server.
+
+Configuration precedence is as follows:
+
+1. [Environment Variables](#environment-variables)
+1. [Configuration File](#configuration-file)
+
 ## Configuration File
 
 The default way that Flipt is configured is with the use of a configuration file
@@ -10,6 +17,12 @@ The default way that Flipt is configured is with the use of a configuration file
 
 This file is read when Flipt starts up and configures several important
 properties for the server.
+
+As of version [v1.23](https://github.com/flipt-io/flipt/releases/tag/v1.23.0), the server will check in a few different locations for server configuration (in order):
+
+1. `--config` flag as an override
+2. `{{ USER_CONFIG_DIR }}/flipt/config.yml` (the `USER_CONFIG_DIR` value is based on your architecture and specified [here](https://pkg.go.dev/os#UserConfigDir))
+3. `/etc/flipt/config/default.yml`
 
 <Tip>
   We provide both a [JSON
@@ -211,6 +224,8 @@ variables using the syntax:
 ```yaml
 FLIPT_<SectionName>_<KeyName>
 ```
+
+Environment variables **MUST** have `FLIPT_` prefix and be in `UPPER_SNAKE_CASE` format.
 
 <Note>
   Using environment variables to override defaults is especially helpful when
