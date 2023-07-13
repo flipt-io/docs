@@ -218,7 +218,7 @@ property to match against all constraints, and the value is what's compared.
 
 Bucketing is the process of determining which variant to return for a given evaluation request.
 
-Flipt uses a [consistent hashing](https://en.wikipedia.org/wiki/Consistent_hashing) algorithm to determine which variant to return for a given `flagKey`, `entityID` and `context`. This is what allows Flipt to return the same variant every time (also sometimes referred to as **stickiness**).
+Flipt uses a hashing algorithm to determine which variant to return for a given `flagKey`, `entityID` and `context`. This is what allows Flipt to return the same variant every time (also sometimes referred to as **stickiness**).
 
 <Info>
 Flipt never persists any information about your entities or context or which
