@@ -213,3 +213,38 @@ will match one of your segments.
 
 In Flipt, `context` is a simple map of key-value pairs where the key is the
 property to match against all constraints, and the value is what's compared.
+
+### Bucketing
+
+Bucketing is the process of determining which variant to return for a given evaluation request.
+
+Flipt uses a hashing algorithm to determine which variant to return for a given `flagKey`, `entityID` and `context`. This is what allows Flipt to return the same variant every time (also sometimes referred to as **stickiness**).
+
+<Info>
+Flipt never persists any information about your entities or context or which
+variant was returned for a given evaluation request. This is all done at
+runtime and is ephemeral.
+
+This allows Flipt to be used in a wide variety of
+applications and use cases without having to worry about inadvertently storing
+personally identifiable information (PII) or other privacy concerns.
+
+</Info>
+
+**Here's how it works:**
+
+1. Flipt takes the `flagKey` and `entityID` and concatenates them together to
+   form a string that looks like `flagKey:entityID`. This is called the key.
+2. Flipt then takes this new key and uses a hashing algorithm ([CRC-32 ChecksumIEEE](https://pkg.go.dev/hash/crc32#ChecksumIEEE)) to create a 32-bit integer called the hash.
+3. Flipt then creates a set of buckets from 0&dash;999 (1000 total buckets), mapping them with a sorted set of the [distributions](#distributions) for the flag.
+4. Finally, Flipt takes the hash and uses the modulo operator to determine which bucket the hashed value falls into. The distribution that maps to that bucket is then returned.
+
+**Here's an example:**
+
+Imagine that you have a flag with two [distributions](#distributions) `A` and `B`.
+
+If `distribution A` has a 30% 'rollout', then it would 'take up' buckets 0&dash;299 (out of the 1000 buckets). `Distribution B` would take up the remaining buckets 300&dash;999.
+
+The `flagKey/entityID` hashed value is a 32bit integer on which Flipt performs a [modulo](https://en.wikipedia.org/wiki/Modulo) operation (% 1000) so that it 's guaranteed to return a number between 0&dash;999.
+
+The result of the modulo operation is then used to determine which distribution to return via the bucket mapping. If the result is between 0&dash;299, then `distribution A` is returned, otherwise `distribution B` is returned.
