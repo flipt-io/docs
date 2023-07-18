@@ -21,6 +21,39 @@ When authentication is set to `required`, the API will ensure valid credentials 
 
 See the [Authentication: Overview](/authentication/overview) documentation for more details on Flipt's API authentication handling.
 
+## Exclusions
+
+Exclusions allow you to disable authentication for sections of the API.
+The Flipt API is made of up of top-level API sections, each with its own unique prefix:
+
+- `/api/v1` is the core feature-flag state management section
+- `/meta` describes the configuration of the running Flipt instance
+- `/evaluation/v1` is the application facing flag state evaluation API
+
+Each of these API sections can be optionally ommitted from requiring authentication.
+A common usecase is to allow the evaluation API to be plublically accessible, while still requiring authenticated users for managing feature-flag configuration and state.
+
+By default, when authentication is configured as `required: true`, the effective configuration for the exclusions looks like this:
+
+```yaml config.yaml
+authentication:
+  required: true
+  exclude:
+    management: false
+    metadata: false
+    evaluation: false
+```
+
+This means every part of the Flipt API is required for authentication.
+However, taking the example from before, we could skip authentication for the evaluation section of the Flipt API like so:
+
+```yaml config.yaml
+authentication:
+  required: true
+  exclude:
+    evaluation: true
+```
+
 ## Session
 
 This section contains common properties for establishing browser sessions via a "session compatible" authentication method. Session-compatible methods enable support for login in the UI. The methods below state whether or not they're session compatible (e.g. [OIDC](#method-oidc) is session compatible).

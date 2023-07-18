@@ -17,6 +17,7 @@ Once enabled, all routes beneath the following API prefixes will require a [clie
 - `/api/v1/`
 - `/auth/v1/`
 - `/meta`
+- `/evaluation/v1/`
 
 <Warning>
 The following URLs aren't protected by authentication:
@@ -30,6 +31,10 @@ We're exploring ways to support protecting these endpoints going forward.
 For now, we recommend excluding these API prefixes from your load-balancer.
 
 </Warning>
+
+Apart from `/auth/v1/` itself, the rest of the top-level API prefixes can be optionally excluded from authentication.
+Allowing for sections, such as the evaluations API, to be publicly accessible while still protecting the management and metadata APIs.
+Checkout the [Configuration: Authentication Exclusions](/configuration/authentication#exclusions) documentation for details.
 
 ## Client Tokens
 

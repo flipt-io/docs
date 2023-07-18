@@ -137,14 +137,17 @@ These properties are as follows:
 
 ### Authentication
 
-| Property                              | Description                                                   | Default | Since   |
-| ------------------------------------- | ------------------------------------------------------------- | ------- | ------- |
-| authentication.required               | Enable or disable authentication validation on requests       | false   | v1.15.0 |
-| authentication.session.domain         | Public domain on which Flipt instance is hosted               |         | v1.17.0 |
-| authentication.session.secure         | Configures the `Secure` property on created session cookies   | false   | v1.17.0 |
-| authentication.session.token_lifetime | Configures the lifetime of the session token (login duration) | 24h     | v1.17.0 |
-| authentication.session.state_lifetime | Configures the lifetime of state parameters during OAuth flow | 10m     | v1.17.0 |
-| authentication.session.csrf.key       | Secret credential used to sign CSRF prevention tokens         |         | v1.17.0 |
+| Property                              | Description                                                    | Default | Since   |
+| ------------------------------------- | -------------------------------------------------------------- | ------- | ------- |
+| authentication.required               | Enable or disable authentication validation on requests        | false   | v1.15.0 |
+| authentication.exclude.management     | Enable or disable authentication for /api/v1 API prefix        | false   | v1.24.0 |
+| authentication.exclude.metadata       | Enable or disable authentication for /evaluation/v1 API prefix | false   | v1.24.0 |
+| authentication.exclude.evaluation     | Enable or disable authentication for /meta API prefix          | false   | v1.24.0 |
+| authentication.session.domain         | Public domain on which Flipt instance is hosted                |         | v1.17.0 |
+| authentication.session.secure         | Configures the `Secure` property on created session cookies    | false   | v1.17.0 |
+| authentication.session.token_lifetime | Configures the lifetime of the session token (login duration)  | 24h     | v1.17.0 |
+| authentication.session.state_lifetime | Configures the lifetime of state parameters during OAuth flow  | 10m     | v1.17.0 |
+| authentication.session.csrf.key       | Secret credential used to sign CSRF prevention tokens          |         | v1.17.0 |
 
 #### Authentication Methods: Token
 
