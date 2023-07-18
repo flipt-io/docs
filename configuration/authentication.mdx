@@ -30,8 +30,8 @@ The Flipt API is made of up of top-level API sections, each with its own unique 
 - `/meta` describes the configuration of the running Flipt instance
 - `/evaluation/v1` is the application facing flag state evaluation API
 
-Each of these API sections can be optionally ommitted from requiring authentication.
-A common usecase is to allow the evaluation API to be plublically accessible, while still requiring authenticated users for managing feature-flag configuration and state.
+Each of these API sections can be optionally omitted from requiring authentication.
+A common use case is to allow the evaluation API to be publicly accessible, while still requiring authenticated users for managing feature-flag configuration and state.
 
 By default, when authentication is configured as `required: true`, the effective configuration for the exclusions looks like this:
 
