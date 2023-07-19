@@ -15,18 +15,26 @@ With the databases that listen over a network (MySQL, Postgres, CockroachDB), th
 
 In high burst traffic scenarios, this can lead to the `too many open connections` error server side.
 
-You should tweak that number to be above 0, and to whatever fits your use case. This can be done via setting an environment variable:
+You should tweak that number to be above 0, and to whatever fits your use case.
+This can be altered either via the Flipt configuration file or environment variables:
 
-```bash
-FLIPT_DATABASE_MAX_OPEN_CONN=5
-```
+<Tabs>
+  <Tab title="Environment Variable">
 
-or in a configuration file:
+    ```bash
+    FLIPT_DB_MAX_OPEN_CONN=5
+    ```
 
-```yaml
-database:
-  max_open_conn: 5
-```
+  </Tab>
+  <Tab title="Configuration Yaml">
+
+    ```yaml
+    db:
+      max_open_conn: 5
+    ```
+
+  </Tab>
+</Tabs>
 
 The [Go documentation](https://pkg.go.dev/database/sql#DB.SetMaxOpenConns) states:
 
@@ -36,18 +44,23 @@ If MaxOpenConns is greater than 0 but less than the new MaxIdleConns, then the n
 
 So you should keep in mind that tuning `MaxOpenConn` might lead to tuning `MaxIdleConn` as well.
 
-You can do this via an environment variable:
+<Tabs>
+  <Tab title="Environment Variable">
 
-```bash
-FLIPT_DATABASE_MAX_IDLE_CONN=5
-```
+    ```bash
+    FLIPT_DB_MAX_IDLE_CONN=5
+    ```
 
-or in a configuration file:
+  </Tab>
+  <Tab title="Configuration Yaml">
 
-```yaml
-database:
-  max_idle_conn: 5
-```
+    ```yaml
+    db:
+      max_idle_conn: 5
+    ```
+
+  </Tab>
+</Tabs>
 
 ## Prepared Statements
 
@@ -55,32 +68,46 @@ By default, all queries are run as prepared statements. This could post a proble
 
 For instance, PGBouncer doesn't support prepared statements in its [transaction pooling mode](https://www.pgbouncer.org/faq.html#how-to-use-prepared-statements-with-transaction-pooling).
 
-You can disable prepared statements for the database client via an environment variable:
+You can disable prepared statements for the database client using:
 
-```bash
-FLIPT_DATABASE_PREPARED_STATEMENTS_ENABLED=false
-```
+<Tabs>
+  <Tab title="Environment Variable">
 
-or in a configuration file:
+    ```bash
+    FLIPT_DB_PREPARED_STATEMENTS_ENABLED=false
+    ```
 
-```yaml
-database:
-  prepared_statements_enabled: false
-```
+  </Tab>
+  <Tab title="Configuration Yaml">
+
+    ```yaml
+    db:
+      prepared_statements_enabled: false
+    ```
+
+  </Tab>
+</Tabs>
 
 ## Debug Logging
 
 Debug logging can be very useful if you are actively developing or trying to fix problems in an environment, but can have the adverse effect of eating up CPU time under load. Enabling debug logging can also end up mixing useful logs with non-useful ones.
 
-It's recommended to disable Flipt's debug logging in a production environment by increasing the log level via an environment variable:
+It's recommended to disable Flipt's debug logging in a production environment by increasing the log level:
 
-```bash
-FLIPT_LOG_LEVEL=info
-```
+<Tabs>
+  <Tab title="Environment Variable">
 
-or in a configuration file:
+    ```bash
+    FLIPT_LOG_LEVEL=info
+    ```
 
-```yaml
-log:
-  level: info
-```
+  </Tab>
+  <Tab title="Configuration Yaml">
+
+    ```yaml
+    log:
+      level: info
+    ```
+
+  </Tab>
+</Tabs>
