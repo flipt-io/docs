@@ -11,7 +11,7 @@ Namespaces are the recommended way to organize all of the resources such as Flag
 
 Namespaces allow you to separate all data within Flipt for use in different environments such as Development, Staging, Production, etc.
 
-![Namespaces Settings](/images/concepts/namespaces/production.png)
+![Namespaces Settings](/images/concepts/namespaces_production.png)
 
 Another common use-case of Namespaces is to separate Flipt data by internal team or organization.
 
@@ -22,11 +22,11 @@ If a namespace isn't selected then the 'Default' namespace is used.
 
 </Note>
 
-![Namespaces Settings](/images/concepts/namespaces/default.png)
+![Namespaces Settings](/images/concepts/namespaces_default.png)
 
 Namespaces can be managed within the Settings section of Flipt since version 1.20.0:
 
-![Namespaces Settings](/images/concepts/namespaces/settings.png)
+![Namespaces Settings](/images/concepts/settings_namespaces.png)
 
 ## Flags
 
@@ -47,14 +47,14 @@ more elaborate use cases.
 
 Variants are options for flags. For example, if you have a flag `colorscheme`
 that determines which main colors your users see when they login to your
-application, then possible variants could include `blue`, `green` or `red`.
+application, then possible variants could include `dark`, `light` or `auto`.
 
-Variants can also have JSON attachments as of
-[v1.6.1](https://github.com/flipt-io/flipt/releases/tag/v1.6.1).
+<Tip>
+  Variants can also have JSON attachments. This allows you to store additional
+  data about a variant that can be used in your application at runtime.
+</Tip>
 
 ![Variants Example](/images/concepts/variants.png)
-
-<Warning>Variant keys must be unique for a given flag.</Warning>
 
 ## Segments
 
@@ -100,7 +100,7 @@ There are currently 4 constraint types:
 - **Boolean** which allows you to check a boolean property of an entity such as `true` or `false`
 - **DateTime** which allows you to check a date or datetime property of an entity such as `2020-01-01` or `2020-01-01T00:00:00Z` ([RFC3339](https://datatracker.ietf.org/doc/html/rfc3339))
 
-![Constraints DateTime Type](/images/concepts/constraints/datetime.png)
+![Constraint Types](/images/concepts/constraints_types.png)
 
 <Note>
   The constraint value is represented as a string in transit and in the
@@ -115,7 +115,7 @@ which segments are targeted by which variants.
 Rules can be as simple as `IF IN segment THEN RETURN variant_a` or they can be
 richer by using distribution logic to roll out features on a percentage basis.
 
-Continuing our previous example, we may want to return the flag variant `blue`
+Continuing our previous example, we may want to return the flag variant `dark`
 for all entities in the `new-users` segment. This would be configured like so:
 
 ![Rules Example](/images/concepts/rules.png)
@@ -131,8 +131,8 @@ for all entities in the `new-users` segment. This would be configured like so:
 Distributions allow you to roll out different variants of your flag to
 percentages of your user base based on your rules.
 
-Let's say that instead of always showing the `blue` variant to your `new-users`
-segment, you want to show `blue` to **30%** of `new-users`, `red` to **10%**, and `green`
+Let's say that instead of always showing the `dark` variant to your `new-users`
+segment, you want to show `dark` to **10%** of `new-users`, `light` to **30%**, and `auto`
 to the remaining **60%**. You would accomplish this using rules with distributions:
 
 ![Distributions Example](/images/concepts/distributions.png)
@@ -149,7 +149,7 @@ to return.
 
 In the above example involving colors, evaluation is where you send information
 about your current user to determine if they're a `new-user`, and which color
-(`blue`, `red`, or `green`) that they should see for their main color scheme.
+(`dark`, `auto`, or `light`) that they should see for their main color scheme.
 
 ![Evaluation Example](/images/concepts/evaluation.png)
 
