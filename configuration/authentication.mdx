@@ -87,6 +87,8 @@ authentication:
   methods:
     oidc:
       enabled: true
+      email_matches:
+        - ^.*@flipt.io$
       providers:
         some_provider: # insert your provider name here
           issuer_url: "https://some.oidc.issuer.com"
