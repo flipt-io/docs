@@ -47,3 +47,4 @@ zipkin
 URIs
 APIs
 PGBouncer
+regexes

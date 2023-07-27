@@ -158,17 +158,17 @@ These properties are as follows:
 
 #### Authentication Methods: OIDC
 
-| Property                                                          | Description                                                    | Default | Since   |
-| ----------------------------------------------------------------- | -------------------------------------------------------------- | ------- | ------- |
-| authentication.methods.oidc.enabled                               | Enable OIDC authentication                                     | false   | v1.17.0 |
-| authentication.methods.oidc.cleanup.interval                      | Interval between deletion of expired tokens                    | 1h      | v1.17.0 |
-| authentication.methods.oidc.cleanup.grace_period                  | How long an expired token can exist until considered deletable | 30m     | v1.17.0 |
-| authentication.methods.oidc.providers.[provider].issuer_url       | Provider specific OIDC issuer URL (see your providers docs)    |         | v1.17.0 |
-| authentication.methods.oidc.providers.[provider].client_id        | Provider specific OIDC client ID (see your providers docs)     |         | v1.17.0 |
-| authentication.methods.oidc.providers.[provider].client_secret    | Provider specific OIDC client secret (see your providers docs) |         | v1.17.0 |
-| authentication.methods.oidc.providers.[provider].redirect_address | Public URL on which this Flipt instance is reachable           |         | v1.17.0 |
-| authentication.methods.oidc.providers.[provider].scopes           | Scopes to request from the provider                            |         | v1.17.0 |
-| authentication.methods.oidc.email_matches                         | Email whitelist for using the Flipt API                        |         | v1.24.0 |
+| Property                                                          | Description                                                      | Default | Since   |
+| ----------------------------------------------------------------- | ---------------------------------------------------------------- | ------- | ------- |
+| authentication.methods.oidc.enabled                               | Enable OIDC authentication                                       | false   | v1.17.0 |
+| authentication.methods.oidc.cleanup.interval                      | Interval between deletion of expired tokens                      | 1h      | v1.17.0 |
+| authentication.methods.oidc.cleanup.grace_period                  | How long an expired token can exist until considered deletable   | 30m     | v1.17.0 |
+| authentication.methods.oidc.providers.[provider].issuer_url       | Provider specific OIDC issuer URL (see your providers docs)      |         | v1.17.0 |
+| authentication.methods.oidc.providers.[provider].client_id        | Provider specific OIDC client ID (see your providers docs)       |         | v1.17.0 |
+| authentication.methods.oidc.providers.[provider].client_secret    | Provider specific OIDC client secret (see your providers docs)   |         | v1.17.0 |
+| authentication.methods.oidc.providers.[provider].redirect_address | Public URL on which this Flipt instance is reachable             |         | v1.17.0 |
+| authentication.methods.oidc.providers.[provider].scopes           | Scopes to request from the provider                              |         | v1.17.0 |
+| authentication.methods.oidc.email_matches                         | List of email addresses (regex) of users allowed to authenticate |         | v1.24.0 |
 
 #### Authentication Methods: Kubernetes
 
