@@ -46,7 +46,7 @@ more elaborate use cases.
 As of [v1.24.0](https://github.com/flipt-io/flipt/releases/tag/v1.24.0) there are now two types of flags:
 
 - **Variant** which allows you to return a single variant for a given flag given a set of evaluation rules. This is the default flag type.
-- **Boolean** which allows you to return a boolean value for a given flag given a set of rollout rules.
+- **Boolean** which allows you to return a boolean value for a given flag.
 
 ### Variants
 
@@ -63,9 +63,11 @@ application, then possible variants could include `dark`, `light` or `auto`.
 
 ### Boolean
 
-Boolean flags are a special type of flag that allow you to return a boolean value for a given flag given a set of rollout rules.
+Boolean flags are a special type of flag that allow you to return a boolean value for a given flag.
 
-You can use boolean flags to determine if a feature is enabled or disabled for a given entity (user, device, etc) by returning `true` or `false` respectively. Boolean flags work well for simple use cases where you don't need to return multiple variants. Boolean flags can be configured with rollout rules to determine which entities receive `true` or `false` for a given flag.
+You can use boolean flags to determine if a feature is enabled or disabled for a given entity (user, device, etc) by returning `true` or `false` respectively. Boolean flags work well for simple use cases where you don't need to return multiple variants. 
+
+Boolean flags can be configured with [rollout](#rollouts) rules to determine which entities receive `true` or `false` for a given flag.
 
 ![Boolean Flags Example](/images/concepts/flags_boolean.png)
 
@@ -161,7 +163,9 @@ of potential bugs.
   introduced in v1.24.0 of Flipt.
 </Info>
 
-Rollouts allow you to configure boolean flags to return `true` or `false` for a given flag given a set of rollout rules.
+Boolean flags return `true` or `false` based on the flags `enabled` property. Rollouts allow you to potentially change this value at request time. 
+
+Rollouts are a sequence of conditions which when one is matched for a request context, overrides the flag's `enabled` property.
 
 Current rollout types include:
 
@@ -171,12 +175,6 @@ Current rollout types include:
 ![Rollouts Example](/images/concepts/rollouts.png)
 
 Rollouts work similar to [Rules](#rules) in that they're evaluated in order per their rank from 1-N. The first rollout that matches wins. Once created, rollouts can be re-ordered to change how they're evaluated.
-
-<Note>
-  The `default` rollout is a special rollout that's always evaluated last. This
-  allows you to return a default value if no other rollouts match. It's value is
-  directly tied to the `enabled` value of the flag.
-</Note>
 
 ## Evaluation
 
