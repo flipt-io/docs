@@ -1,0 +1,22 @@
+---
+title: "Update Rollout"
+openapi: "PUT /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/rollouts/{id}"
+---
+
+<RequestExample>
+
+```bash cURL
+curl --request PUT \
+  --url https://try.flipt.io/api/v1/namespaces/default/flags/{flagKey}/rollouts \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{
+  "threshold": {
+    "percentage": 70.0,
+    "value": false
+  },
+  }
+}'
+```
+
+</RequestExample>

@@ -1,0 +1,21 @@
+---
+title: "Variant Evaluation"
+openapi: "POST /evaluate/v1/variant"
+---
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://try.flipt.io/evaluate/v1/namespaces/default/variant \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{
+  "context": {},
+  "entityId": "<entityid>",
+  "flagKey": "<flagkey>",
+  "namespaceKey": "<namespacekey>"
+}'
+```
+
+</RequestExample>

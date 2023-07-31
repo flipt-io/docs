@@ -20,9 +20,15 @@ We will describe any major changes in the section below.
 
 ## API Changes
 
+### v1.24.0
+
+Version [v1.24.0](https://github.com/flipt-io/flipt/releases/tag/v1.24.0) of Flipt introduced the concept of [boolean flag types](/concepts#boolean-flags) as well as [Rollouts](/concepts#rollouts) to override a flag's `enabled` state via a set of rules.
+
+We also introduced a new `/evaluate/v1` set of API endpoints to evaluate both `boolean` and `variant` flags. The previous `/api/v1/evaluate` endpoints for evaluation are still available and will continue to work as before, however they will only work for `variant` type flags and should be considered deprecated.
+
 ### v1.20.0
 
-Version [v1.20.0](https://github.com/flipt-io/flipt/releases/tag/v1.20.0) of Flipt introduced the concept of Namespaces as root objects nested under the `/namespaces` route (i.e.: `/api/v1/namespace/{namespaceKey}/flags`).
+Version [v1.20.0](https://github.com/flipt-io/flipt/releases/tag/v1.20.0) of Flipt introduced the concept of [Namespaces](/concepts#namespaces) as root objects nested under the `/namespaces` route (i.e.: `/api/v1/namespace/{namespaceKey}/flags`).
 
 All previous endpoints without the `/namespaces` prefix still work as before (i.e.: `/api/v1/flags`), they simply resolve to using the **default** namespace.
 

@@ -115,10 +115,11 @@
       ]
     },
     {
-      "group": "Evaluation",
+      "group": "Evaluation", 
       "pages": [
-        "reference/evaluate/batch-evaluate",
-        "reference/evaluate/evaluate"
+        "reference/evaluation/boolean-evaluation",
+        "reference/evaluation/variant-evaluation",
+        "reference/evaluation/batch-evaluation"
       ]
     },
     {
@@ -165,6 +166,17 @@
         "reference/constraints/create-constraint",
         "reference/constraints/delete-constraint",
         "reference/constraints/update-constraint"
+      ]
+    },
+    {
+      "group": "Rollouts",
+      "pages": [
+        "reference/rollouts/list-rollouts",
+        "reference/rollouts/create-rollout",
+        "reference/rollouts/order-rollouts",
+        "reference/rollouts/get-rollout",
+        "reference/rollouts/delete-rollout",
+        "reference/rollouts/update-rollout"
       ]
     },
     {

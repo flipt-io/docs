@@ -1,13 +1,13 @@
 ---
-title: "Batch Evaluate"
-openapi: "POST /api/v1/namespaces/{namespaceKey}/batch-evaluate"
+title: "Batch Evaluation"
+openapi: "POST /evaluate/v1/batch"
 ---
 
 <RequestExample>
 
 ```bash cURL
 curl --request POST \
-  --url https://try.flipt.io/api/v1/namespaces/default/batch-evaluate \
+  --url https://try.flipt.io/evaluate/v1/batch \
   --header 'Content-Type: application/json' \
   --header 'Accept: application/json' \
   --data '{
@@ -15,7 +15,8 @@ curl --request POST \
     {
       "context": {},
       "entityId": "<entityid>",
-      "flagKey": "<flagkey>"
+      "flagKey": "<flagkey>",
+      "namespaceKey": "<namespacekey>"
     }
   ]
 }'
