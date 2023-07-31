@@ -1,0 +1,18 @@
+---
+title: "Order Rollouts"
+openapi: "PUT /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/rollouts/order"
+---
+
+<RequestExample>
+
+```bash cURL
+curl --request PUT \
+  --url https://try.flipt.io/api/v1/namespaces/default/flags/{key}/rollouts/order \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{
+  "rolloutIds": []
+}'
+```
+
+</RequestExample>
