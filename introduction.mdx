@@ -54,7 +54,7 @@ you define.
 
 To create a variant:
 
-1. On the Flag Details page for the new flag you created, click `Add Variant`.
+1. On the Flag Details page for the new flag you created, click `New Variant`.
 2. Populate the details of the variant as shown.
 3. Click `Create`.
 4. Create one more variant populating the information as you wish.
@@ -94,7 +94,7 @@ Constraints are used to target a specific segment.
 To create a constraint:
 
 1. On the Segment Details page for the new segment you created, click
-   `Add Constraint`.
+   `New Constraint`.
 2. Populate the details of the constraint as shown.
 3. Click `Create`.
 
@@ -115,9 +115,9 @@ To create a rule:
 
 1. Go back to the flag you created at the beginning.
 2. Click `Evaluation`.
-3. Click `Add Rule`.
+3. Click `New Rule`.
 4. Next to `Segment` choose or search for the segment you created earlier.
-5. Next to `Type` choose `Multi-Variant`.
+5. Next to `Type` choose `Multi-Variate`.
 6. You should see the two variants that you created earlier, with a percentage
    of `50%` each.
 7. Click `Create`.
@@ -130,7 +130,7 @@ is that any entity will get that specific variant.
 
 <Note>
   You could just as easily have picked `Single Variant` instead of
-  `Multi-Variant` when setting up your rule. This would effectively mean you
+  `Multi-Variate` when setting up your rule. This would effectively mean you
   have a single distribution, a variant with `100%` chance of being returned.
 </Note>
 
@@ -152,12 +152,11 @@ To test evaluation:
 3. Notice that the `Entity ID` field is pre-populated with a random UUID. This represents
    the ID that you would use to uniquely identify entities (ex: users) that you
    want to test against your flags.
-4. Update the `Request Context` field as shown with valid JSON.
-5. Click `Evaluate`.
-6. Note the pane to the right has been populated with the evaluation
+4. Click `Evaluate`.
+5. Note the pane to the right has been populated with the evaluation
    response from the server, informing you that this request would match the
    segment that you created earlier, and return one of the variants defined.
-7. Experiment with different values for the `Request Context` and `Entity ID` fields.
+6. Experiment with different values for the `Request Context` and `Entity ID` fields.
 
 !["Evaluation Console"](/images/getting_started/evaluation_console.png)
 
