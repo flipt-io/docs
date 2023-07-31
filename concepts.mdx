@@ -11,7 +11,7 @@ Namespaces are the recommended way to organize all of the resources such as Flag
 
 Namespaces allow you to separate all data within Flipt for use in different environments such as Development, Staging, Production, etc.
 
-![Namespaces Settings](/images/concepts/namespaces/production.png)
+![Namespaces Settings](/images/concepts/namespaces_production.png)
 
 Another common use-case of Namespaces is to separate Flipt data by internal team or organization.
 
@@ -22,11 +22,11 @@ If a namespace isn't selected then the 'Default' namespace is used.
 
 </Note>
 
-![Namespaces Settings](/images/concepts/namespaces/default.png)
+![Namespaces Settings](/images/concepts/namespaces_default.png)
 
-Namespaces can be managed within the Settings section of Flipt since version 1.20.0:
+Namespaces can be managed within the `Settings` section of the Flipt UI:
 
-![Namespaces Settings](/images/concepts/namespaces/settings.png)
+![Namespaces Settings](/images/concepts/settings_namespaces.png)
 
 ## Flags
 
@@ -43,18 +43,33 @@ more elaborate use cases.
 
 ![Flags Example](/images/concepts/flags.png)
 
-## Variants
+As of [v1.24.0](https://github.com/flipt-io/flipt/releases/tag/v1.24.0) there are now two types of flags:
+
+- **Variant** which allows you to return a single variant for a given flag given a set of evaluation rules. This is the default flag type.
+- **Boolean** which allows you to return a boolean value for a given flag.
+
+### Variants
 
 Variants are options for flags. For example, if you have a flag `colorscheme`
 that determines which main colors your users see when they login to your
-application, then possible variants could include `blue`, `green` or `red`.
+application, then possible variants could include `dark`, `light` or `auto`.
 
-Variants can also have JSON attachments as of
-[v1.6.1](https://github.com/flipt-io/flipt/releases/tag/v1.6.1).
+<Tip>
+  Variants can also have JSON attachments. This allows you to store additional
+  data about a variant that can be used in your application at runtime.
+</Tip>
 
-![Variants Example](/images/concepts/variants.png)
+![Variant Flags Example](/images/concepts/flags_variants.png)
 
-<Warning>Variant keys must be unique for a given flag.</Warning>
+### Boolean
+
+Boolean flags are a special type of flag that allow you to return a boolean value for a given flag.
+
+You can use boolean flags to determine if a feature is enabled or disabled for a given entity (user, device, etc) by returning `true` or `false` respectively. Boolean flags work well for simple use cases where you don't need to return multiple variants.
+
+Boolean flags can be configured with [rollout](#rollouts) rules to determine which entities receive `true` or `false` for a given flag.
+
+![Boolean Flags Example](/images/concepts/flags_boolean.png)
 
 ## Segments
 
@@ -66,10 +81,7 @@ An example segment could be `new-users`.
 
 ![Segments Example](/images/concepts/segments.png)
 
-<Note>
-  Segments are global across the Flipt application so they can be used in
-  multiple rules.
-</Note>
+<Note>Segments are global within a Flipt namespace.</Note>
 
 ### Match Types
 
@@ -80,7 +92,7 @@ When configuring a segment you can choose a `Match Type` of either:
 - **Match Any** which requires AT LEAST ONE constraint to match for the segment
   to apply for evaluation.
 
-## Constraints
+### Constraints
 
 Constraints allow you to determine which segment a given entity is a part of.
 
@@ -91,7 +103,7 @@ to check their `finished_onboarding` property.
 
 All constraints have a _property_, _type_, _operator_ and optionally a _value_.
 
-### Constraint Types
+#### Constraint Types
 
 There are currently 4 constraint types:
 
@@ -100,7 +112,7 @@ There are currently 4 constraint types:
 - **Boolean** which allows you to check a boolean property of an entity such as `true` or `false`
 - **DateTime** which allows you to check a date or datetime property of an entity such as `2020-01-01` or `2020-01-01T00:00:00Z` ([RFC3339](https://datatracker.ietf.org/doc/html/rfc3339))
 
-![Constraints DateTime Type](/images/concepts/constraints/datetime.png)
+![Constraint Types](/images/concepts/constraints_types.png)
 
 <Note>
   The constraint value is represented as a string in transit and in the
@@ -109,30 +121,33 @@ There are currently 4 constraint types:
 
 ## Rules
 
+<Info>
+  Rules are only available for [Variant](#variants) flags. This was the only
+  flag type available pre-v1.24.0 of Flipt.
+</Info>
+
 Rules allow you to tie your flags, variants and segments together by specifying
 which segments are targeted by which variants.
 
 Rules can be as simple as `IF IN segment THEN RETURN variant_a` or they can be
 richer by using distribution logic to roll out features on a percentage basis.
 
-Continuing our previous example, we may want to return the flag variant `blue`
+Continuing our previous example, we may want to return the flag variant `dark`
 for all entities in the `new-users` segment. This would be configured like so:
 
 ![Rules Example](/images/concepts/rules.png)
 
-<Warning>
-  Rules are evaluated in order per their rank from 1-N. The first rule that
-  matches wins. Once created, rules can be re-ordered to change how they're
-  evaluated.
-</Warning>
+Rules are evaluated in order per their rank from 1-N. The first rule that
+matches wins. Once created, rules can be re-ordered to change how they're
+evaluated.
 
-## Distributions
+### Distributions
 
-Distributions allow you to roll out different variants of your flag to
+Distributions allow you to return different variants of your flag to different
 percentages of your user base based on your rules.
 
-Let's say that instead of always showing the `blue` variant to your `new-users`
-segment, you want to show `blue` to **30%** of `new-users`, `red` to **10%**, and `green`
+Let's say that instead of always showing the `dark` variant to your `new-users`
+segment, you want to show `dark` to **10%** of `new-users`, `light` to **30%**, and `auto`
 to the remaining **60%**. You would accomplish this using rules with distributions:
 
 ![Distributions Example](/images/concepts/distributions.png)
@@ -141,17 +156,49 @@ This is an extremely powerful feature of Flipt that can help you seamlessly
 deploy new features of your applications to your users while also limiting the reach
 of potential bugs.
 
+## Rollouts
+
+<Info>
+  Rollouts are only available for [Boolean](#boolean) flags. Rollouts were
+  introduced in v1.24.0 of Flipt.
+</Info>
+
+Boolean flags return `true` or `false` based on the flags `enabled` property. Rollouts allow you to potentially change this value at request time.
+
+Rollouts are a sequence of conditions which when one is matched for a request context, overrides the flag's `enabled` property.
+
+Current rollout types include:
+
+- **Threshold** which allows you to return `true` or `false` for a given percentage of entities.
+- **Segments Match** which allows you to return `true` or `false` if an entity matches a given segment.
+
+![Rollouts Example](/images/concepts/rollouts.png)
+
+Rollouts work similar to [Rules](#rules) in that they're evaluated in order per their rank from 1-N. The first rollout that matches wins. Once created, rollouts can be re-ordered to change how they're evaluated.
+
 ## Evaluation
 
 Evaluation is the process of sending requests to the Flipt server to process and
-determine if that request matches any of your segments and if so which variant
-to return.
+determine if that request matches any of your segments and if so which variant or boolean value
+to return depending on flag type.
 
 In the above example involving colors, evaluation is where you send information
 about your current user to determine if they're a `new-user`, and which color
-(`blue`, `red`, or `green`) that they should see for their main color scheme.
+(`dark`, `auto`, or `light`) that they should see for their main color scheme.
 
 ![Evaluation Example](/images/concepts/evaluation.png)
+
+<Warning>
+  A new set of evaluation endpoints exist as of v1.24.0 of Flipt: 
+  - `/evaluate/v1/boolean`
+  - `/evaluate/v1/variant`
+  - `/evaluate/v1/batch`
+  
+  See the API documentation for more information: [API Reference](/reference/overview).
+  
+  These endpoints should be used going forward. The `/api/v1/evaluate` and `/api/v1/batch-evaluate` endpoints are considered deprecated.
+
+</Warning>
 
 ### Entities
 

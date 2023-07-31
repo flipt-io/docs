@@ -130,6 +130,69 @@ The `git` type backend supports both `basic` and `token` based authentication sc
   and provide your PAT as the `password` parameter.
 </Note>
 
+### Object
+
+The object storage type supports using a hosted object storage service as the source of truth for Flipt state configuration.
+Currently, Flipt supports the S3 API as a backend. This means the AWS S3 and open-source alternatives such as Minio can be leveraged as Flipt backends.
+
+The contents of a target object storage bucket must contain Flipt state configuration files.
+As with the `git` and `local` backend types, the same rules apply with regards to how Flipt will locate feature flag state in your target bucket.
+
+Checkout the section below on [Flag State Configuration](#flag-state-configuration) for how Flipt decides which files in a target are considered for serving flag state.
+With the object storage backend, Flipt will respect a file at the root of the target with the name `.flipt.yml` to serve as an index for locating flag state configuration in the bucket.
+It will also use the same default strategy when the index isn't supplied (e.g. files name `features.yml` or `*.features.yml`).
+
+#### S3
+
+The S3 backend can be configured to serve state from a single bucket from a target S3 compatible API.
+
+The following is an example of how to configure Flipt to leverage this backend type:
+
+<Tabs>
+  <Tab title="Environment Variable">
+
+    ```bash
+    FLIPT_EXPERIMENTAL_FILESYSTEM_STORAGE_ENABLED=true
+    FLIPT_STORAGE_TYPE="object"
+    FLIPT_STORAGE_OBJECT_TYPE="s3"
+    FLIPT_STORAGE_OBJECT_S3_REGION="us-east-1"
+    FLIPT_STORAGE_OBJECT_S3_BUCKET="flipt_feature_flags"
+    FLIPT_STORAGE_OBJECT_S3_POLL_INTERVAL="1m"
+    # for non-AWS hosted S3
+    FLIPT_STORAGE_OBJECT_S3_ENDPOINT=http://localhost:9009
+    ```
+
+  </Tab>
+  <Tab title="Configuration Yaml">
+
+    ```yaml
+    experimental:
+      filesystem_storage:
+        enabled: true
+
+    storage:
+      type: object
+      object:
+        type: s3
+        s3:
+          region: us-east-1
+          bucket: flipt_feature_flags
+          poll_interval: "30s"
+          # for non-AWS hosted S3
+          endpoint: http://localhost:9009
+    ```
+
+  </Tab>
+</Tabs>
+
+In addition to these Flipt configuration parameters, credentials will also be required for Flipt to authenticate with the target object store.
+These should be provided as environment variables to the Flipt server process:
+
+```bash
+AWS_ACCESS_KEY_ID=...
+AWS_SECRET_ACCESS_KEY=...
+```
+
 ## Flag State Configuration
 
 Each of Flipt's filesystem backends expects you to represent your feature flag configuration via a set of YAML files.
@@ -137,7 +200,7 @@ These files declaratively define what flags, segments, variants etc. exist and i
 
 ### Locating Flag State
 
-Flipt's filesystem backends allow you to define feature flags alongside other configurations in a shared directory or repository.
+Flipt's filesystem backends allow you to define feature flags alongside other configurations in a shared directory, repository or object storage bucket.
 In order to identify which files are intended for Flipt, it uses a naming scheme to index which are flag state files.
 By default, Flipt will look for the following filename patterns when identifying files to attempt to parse as Flipt state:
 
@@ -146,7 +209,7 @@ By default, Flipt will look for the following filename patterns when identifying
 - `**/*.features.yaml`
 - `**/*.features.yml`
 
-Meaning, any file named `features.yaml`, `features.yml` or with either extension `.features.yaml` or `.features.yml` is considered recursively from the root of your target directory or repository.
+Any file named `features.yaml`, `features.yml`, or with either extension `.features.yaml` or `.features.yml` is considered recursively from the root of your target.
 
 If this naming convention doesn't work for you, it can be overridden by creating a file named `.flipt.yml` in the root of your target directory tree.
 This file will be used to instruct Flipt on how to index your directory tree and find flag state files:
