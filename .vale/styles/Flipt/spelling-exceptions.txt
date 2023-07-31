@@ -23,6 +23,7 @@ jq
 json
 linux
 memcached
+Minio
 mintlify
 namespace
 namespaces
