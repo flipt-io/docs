@@ -120,6 +120,8 @@ authentication:
   methods:
     oidc:
       enabled: true
+      email_matches:
+        - ^.*@flipt.io$
       providers:
         some_provider: # insert your provider name here
           issuer_url: "https://some.oidc.issuer.com"
@@ -188,6 +190,13 @@ curl --request GET \
   ]
 }
 ```
+
+### Email Matches
+
+Flipt users/operators could have a use case of locking down access to the Flipt API to a certain group of users within their organization behind OIDC.
+Since OIDC has the ability to get retrieve email on the server side, we provide a configuration option of using `email_matches` which are regexes that can be used to match against the OIDC email.
+
+You can see an example of that above in the [sample configuration](#method-oidc).
 
 #### Example: OIDC With Google
 

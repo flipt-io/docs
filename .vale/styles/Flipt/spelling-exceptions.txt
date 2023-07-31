@@ -38,6 +38,7 @@ postgres
 protobuf
 protoc
 redis
+regexes
 rflipt
 rollout
 rollouts
