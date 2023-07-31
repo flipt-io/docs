@@ -191,10 +191,15 @@ curl --request GET \
 }
 ```
 
-### Email Matches
+#### Email Matches
 
-Flipt users/operators could have a use case of locking down access to the Flipt API to a certain group of users within their organization behind OIDC.
-Since OIDC has the ability to get retrieve email on the server side, we provide a configuration option of using `email_matches` which are regexes that can be used to match against the OIDC email.
+Flipt operators may wish to lock down access to the Flipt API and UI to a specific group of users within their organization behind OIDC.
+Since OIDC has the ability to retrieve email addresses, Flipt also provides a configuration option of using `email_matches` which are [regular expressions](https://github.com/google/re2/wiki/Syntax) that can be used to match against the OIDC email.
+
+<Note>
+  You must request the `email` scope from your OIDC provider in order for this
+  feature to work.
+</Note>
 
 You can see an example of that above in the [sample configuration](#method-oidc).
 
