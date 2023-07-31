@@ -140,7 +140,7 @@ As with the `git` and `local` backend types, the same rules apply with regards t
 
 Checkout the section below on [Flag State Configuration](#flag-state-configuration) for how Flipt decides which files in a target are considered for serving flag state.
 With the object storage backend, Flipt will respect a file at the root of the target with the name `.flipt.yml` to serve as an index for locating flag state configuration in the bucket.
-It will also use the same default strategy when the index is not supplied (e.g. files name `features.yml` or `*.features.yml`).
+It will also use the same default strategy when the index isn't supplied (e.g. files name `features.yml` or `*.features.yml`).
 
 #### S3
 
@@ -185,7 +185,7 @@ The following is an example of how to configure Flipt to leverage this backend t
   </Tab>
 </Tabs>
 
-In addition to these Flipt configuraton parameters, credentials will also be required for Flipt to authenticate with the target object store.
+In addition to these Flipt configuration parameters, credentials will also be required for Flipt to authenticate with the target object store.
 These should be provided as environment variables to the Flipt server process:
 
 ```bash
