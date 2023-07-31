@@ -1,4 +1,5 @@
 affordance
+APIs
 auditable
 boolean
 caddy
@@ -22,6 +23,7 @@ jq
 json
 linux
 memcached
+Minio
 mintlify
 namespace
 namespaces
@@ -31,20 +33,19 @@ oidc
 okta
 otlp
 performant
+PGBouncer
 postgres
 protobuf
 protoc
 redis
 rflipt
 rollout
+rollouts
 sdk
 sdks
 sqlite
 unary
 uncomment
+URIs
 yaml
 zipkin
-URIs
-APIs
-PGBouncer
-Minio
