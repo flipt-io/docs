@@ -32,9 +32,9 @@ As always, these parameters can be expressed via environment variables or Flipt'
 
 ## Backend Types
 
-There are currently two backend types we classify as being filesystem backends, `local` and `git`.
+There are currently three backend types we classify as being filesystem backends, `local`, `git`, and `object`.
 The `local` backend has been primarily developed to support a local development experience,
-whereas, the `git` backend is intended for production and serves flag state directly from a configurable repository and Git reference (e.g. branch).
+whereas, the `git` and `object` backends are intended for production and serves flag state directly from a configurable repository and Git reference (e.g. branch) or object storage bucket.
 
 ### Local
 
@@ -133,7 +133,7 @@ The `git` type backend supports both `basic` and `token` based authentication sc
 ### Object
 
 The object storage type supports using a hosted object storage service as the source of truth for Flipt state configuration.
-Currently, Flipt supports the S3 API as a backend. This means the AWS S3 and open-source alternatives such as Minio can be leveraged as Flipt backends.
+Currently, Flipt supports the [S3 API](https://aws.amazon.com/s3/) as a backend. This means the AWS S3 and open-source alternatives such as [Minio](https://github.com/minio/minio) can be leveraged as Flipt backends.
 
 The contents of a target object storage bucket must contain Flipt state configuration files.
 As with the `git` and `local` backend types, the same rules apply with regards to how Flipt will locate feature flag state in your target bucket.
