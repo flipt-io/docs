@@ -79,62 +79,6 @@ These properties are as follows:
 | server.cert_file  | Path to the certificate file (if protocol is set to https)     |         | v0.8.0 |
 | server.cert_key   | Path to the certificate key file (if protocol is set to https) |         | v0.8.0 |
 
-### Audit Events
-
-| Property                 | Description                                     | Default | Since   |
-| ------------------------ | ----------------------------------------------- | ------- | ------- |
-| audit.buffer.capacity    | Max capacity of buffer to send events to sinks  | 2       | v1.21.0 |
-| audit.buffer.flushPeriod | Duration to wait before sending events to sinks | 2m      | v1.21.0 |
-
-#### Audit Events: Log File
-
-| Property                | Description                                                              | Default | Since   |
-| ----------------------- | ------------------------------------------------------------------------ | ------- | ------- |
-| audit.sinks.log.enabled | Enable log file sink                                                     | false   | v1.21.0 |
-| audit.sinks.log.file    | File path to write audit events to. Required if log file sink is enabled |         | v1.21.0 |
-
-### Tracing
-
-| Property         | Description                                | Default | Since   |
-| ---------------- | ------------------------------------------ | ------- | ------- |
-| tracing.enabled  | Enable tracing support                     | false   | v1.18.2 |
-| tracing.exporter | The exporter to use (jaeger, zipkin, otlp) | jaeger  | v1.18.2 |
-
-#### Tracing: Jaeger
-
-| Property            | Description                              | Default   | Since   |
-| ------------------- | ---------------------------------------- | --------- | ------- |
-| tracing.jaeger.host | The UDP host destination to report spans | localhost | v0.17.0 |
-| tracing.jaeger.port | The UDP port destination to report spans | 6831      | v0.17.0 |
-
-#### Tracing: Zipkin
-
-| Property                | Description                             | Default                            | Since   |
-| ----------------------- | --------------------------------------- | ---------------------------------- | ------- |
-| tracing.zipkin.endpoint | The Zipkin API endpoint to report spans | http://localhost:9411/api/v2/spans | v1.18.2 |
-
-#### Tracing: OTLP
-
-| Property              | Description                    | Default        | Since   |
-| --------------------- | ------------------------------ | -------------- | ------- |
-| tracing.otlp.endpoint | The OTLP GRPC receiver address | localhost:4317 | v1.18.2 |
-
-### Database
-
-| Property                       | Description                                                                                 | Default                      | Since   |
-| ------------------------------ | ------------------------------------------------------------------------------------------- | ---------------------------- | ------- |
-| db.url                         | URL to access Flipt database                                                                | file:/var/opt/flipt/flipt.db |         |
-| db.protocol                    | Protocol (Sqlite, MySQL, PostgreSQL, CockroachDB) for Flipt database (URL takes precedence) |                              | v0.18.0 |
-| db.host                        | Host to access Flipt database (URL takes precedence)                                        |                              | v0.18.0 |
-| db.port                        | Port to access Flipt database (URL takes precedence)                                        |                              | v0.18.0 |
-| db.name                        | Name of Flipt database (URL takes precedence)                                               |                              | v0.18.0 |
-| db.user                        | User to access Flipt database (URL takes precedence)                                        |                              | v0.18.0 |
-| db.password                    | Password to access Flipt database (URL takes precedence)                                    |                              | v0.18.0 |
-| db.max_idle_conn               | The maximum number of connections in the idle connection pool                               | 2                            | v0.17.0 |
-| db.max_open_conn               | The maximum number of open connections to the database                                      | unlimited                    | v0.17.0 |
-| db.conn_max_lifetime           | Sets the maximum amount of time in which a connection can be reused                         | unlimited                    | v0.17.0 |
-| db.prepared_statements_enabled | Enable or disable prepared statements for database queries                                  | true                         | v1.23.1 |
-
 ### Authentication
 
 | Property                              | Description                                                   | Default | Since   |
@@ -184,6 +128,61 @@ These properties are as follows:
 | authentication.methods.kubernetes.ca_path                    | Kubernetes API CA certification path                           | /var/run/secrets/kubernetes.io/serviceaccount/ca.crt | v1.19.0 |
 | authentication.methods.kubernetes.service_account_token_path | Path to Flipt service account token                            | /var/run/secrets/kubernetes.io/serviceaccount/token  | v1.19.0 |
 
+### Database
+
+| Property                       | Description                                                                                 | Default                      | Since   |
+| ------------------------------ | ------------------------------------------------------------------------------------------- | ---------------------------- | ------- |
+| db.url                         | URL to access Flipt database                                                                | file:/var/opt/flipt/flipt.db |         |
+| db.protocol                    | Protocol (Sqlite, MySQL, PostgreSQL, CockroachDB) for Flipt database (URL takes precedence) |                              | v0.18.0 |
+| db.host                        | Host to access Flipt database (URL takes precedence)                                        |                              | v0.18.0 |
+| db.port                        | Port to access Flipt database (URL takes precedence)                                        |                              | v0.18.0 |
+| db.name                        | Name of Flipt database (URL takes precedence)                                               |                              | v0.18.0 |
+| db.user                        | User to access Flipt database (URL takes precedence)                                        |                              | v0.18.0 |
+| db.password                    | Password to access Flipt database (URL takes precedence)                                    |                              | v0.18.0 |
+| db.max_idle_conn               | The maximum number of connections in the idle connection pool                               | 2                            | v0.17.0 |
+| db.max_open_conn               | The maximum number of open connections to the database                                      | unlimited                    | v0.17.0 |
+| db.conn_max_lifetime           | Sets the maximum amount of time in which a connection can be reused                         | unlimited                    | v0.17.0 |
+| db.prepared_statements_enabled | Enable or disable prepared statements for database queries                                  | true                         | v1.23.1 |
+
+### Storage
+
+| Property     | Description                                               | Default  | Since   |
+| ------------ | --------------------------------------------------------- | -------- | ------- |
+| storage.type | The type of storage to use (database, local, git, object) | database | v1.25.0 |
+
+#### Storage Local
+
+| Property           | Description                             | Default | Since   |
+| ------------------ | --------------------------------------- | ------- | ------- |
+| storage.local.path | The path to the local storage directory |         | v1.25.0 |
+
+#### Storage Git
+
+| Property                                  | Description                                                 | Default | Since   |
+| ----------------------------------------- | ----------------------------------------------------------- | ------- | ------- |
+| storage.git.repository                    | The URL of the git repository to use                        |         | v1.25.0 |
+| storage.git.ref                           | The git ref to use                                          | main    | v1.25.0 |
+| storage.git.poll_interval                 | The interval to poll the git repository and ref for changes | 30s     | v1.25.0 |
+| storage.git.authentication.basic.username | The username to use for basic authentication                |         | v1.25.0 |
+| storage.git.authentication.basic.password | The password to use for basic authentication                |         | v1.25.0 |
+| storage.git.authentication.token          | The access token to use for authentication                  |         | v1.25.0 |
+
+#### Storage Object
+
+| Property            | Description                            | Default | Since   |
+| ------------------- | -------------------------------------- | ------- | ------- |
+| storage.object.type | The type of object storage to use (s3) | s3      | v1.25.0 |
+
+##### Storage Object: S3
+
+| Property                        | Description                                 | Default | Since   |
+| ------------------------------- | ------------------------------------------- | ------- | ------- |
+| storage.object.s3.region        | The AWS region to use for S3 object storage |         | v1.25.0 |
+| storage.object.s3.bucket        | The S3 bucket to use for object storage     |         | v1.25.0 |
+| storage.object.s3.prefix        | The S3 prefix to use for object storage     |         | v1.25.0 |
+| storage.object.s3.endpoint      | The S3 endpoint to use for object storage   |         | v1.25.0 |
+| storage.object.s3.poll_interval | The interval to poll S3 for changes         | 30s     | v1.25.0 |
+
 ### Cache
 
 | Property      | Description                                             | Default | Since   |
@@ -206,6 +205,46 @@ These properties are as follows:
 | cache.redis.port     | Port to access the Redis database     | 6379      | v1.10.0 |
 | cache.redis.db       | Redis database to use                 | 0         | v1.10.0 |
 | cache.redis.password | Password to access the Redis database |           | v1.10.0 |
+
+### Audit Events
+
+| Property                 | Description                                     | Default | Since   |
+| ------------------------ | ----------------------------------------------- | ------- | ------- |
+| audit.buffer.capacity    | Max capacity of buffer to send events to sinks  | 2       | v1.21.0 |
+| audit.buffer.flushPeriod | Duration to wait before sending events to sinks | 2m      | v1.21.0 |
+
+#### Audit Events: Log File
+
+| Property                | Description                                                              | Default | Since   |
+| ----------------------- | ------------------------------------------------------------------------ | ------- | ------- |
+| audit.sinks.log.enabled | Enable log file sink                                                     | false   | v1.21.0 |
+| audit.sinks.log.file    | File path to write audit events to. Required if log file sink is enabled |         | v1.21.0 |
+
+### Tracing
+
+| Property         | Description                                | Default | Since   |
+| ---------------- | ------------------------------------------ | ------- | ------- |
+| tracing.enabled  | Enable tracing support                     | false   | v1.18.2 |
+| tracing.exporter | The exporter to use (jaeger, zipkin, otlp) | jaeger  | v1.18.2 |
+
+#### Tracing: Jaeger
+
+| Property            | Description                              | Default   | Since   |
+| ------------------- | ---------------------------------------- | --------- | ------- |
+| tracing.jaeger.host | The UDP host destination to report spans | localhost | v0.17.0 |
+| tracing.jaeger.port | The UDP port destination to report spans | 6831      | v0.17.0 |
+
+#### Tracing: Zipkin
+
+| Property                | Description                             | Default                            | Since   |
+| ----------------------- | --------------------------------------- | ---------------------------------- | ------- |
+| tracing.zipkin.endpoint | The Zipkin API endpoint to report spans | http://localhost:9411/api/v2/spans | v1.18.2 |
+
+#### Tracing: OTLP
+
+| Property              | Description                    | Default        | Since   |
+| --------------------- | ------------------------------ | -------------- | ------- |
+| tracing.otlp.endpoint | The OTLP GRPC receiver address | localhost:4317 | v1.18.2 |
 
 ## Deprecations
 
