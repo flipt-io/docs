@@ -100,10 +100,6 @@
       "pages": ["reference/overview"]
     },
     {
-      "group": "Experimental",
-      "pages": ["experimental/filesystem-backends"]
-    },
-    {
       "group": "Authentication",
       "pages": [
         "reference/authentication/list-tokens",
@@ -197,6 +193,12 @@
         "reference/distributions/delete-distribution",
         "reference/distributions/update-distribution"
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "experimental/filesystem-backends",
+      "destination": "configuration/storage"
     }
   ],
   "footerSocials": {

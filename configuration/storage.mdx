@@ -11,6 +11,11 @@ Flipt supports [SQLite](https://www.sqlite.org/index.html), [PostgreSQL](https:/
 SQLite is enabled by default for simplicity, however you should use PostgreSQL, MySQL, or CockroachDB if you intend to run multiple copies of Flipt in a high
 availability configuration.
 
+<Note>
+  All databases except for SQLite must exist and be up and running before Flipt
+  will be able to connect to it.
+</Note>
+
 The database connection can be configured as follows:
 
 ### SQLite
@@ -28,11 +33,6 @@ db:
   url: postgres://postgres@localhost:5432/flipt?sslmode=disable
 ```
 
-<Note>
-  The PostgreSQL database must exist and be up and running before Flipt will be
-  able to connect to it.
-</Note>
-
 ### CockroachDB
 
 ```yaml
@@ -40,22 +40,12 @@ db:
   url: cockroach://root@localhost:26257/flipt?sslmode=disable
 ```
 
-<Note>
-  The CockroachDB database must exist and be up and running before Flipt will be
-  able to connect to it.
-</Note>
-
 ### MySQL
 
 ```yaml
 db:
   url: mysql://mysql@localhost:3306/flipt
 ```
-
-<Note>
-  The MySQL database must exist and be up and running before Flipt will be able
-  to connect to it.
-</Note>
 
 ### Migrations
 
@@ -93,10 +83,282 @@ docker run -it -v $HOME/flipt:/var/opt/flipt flipt/flipt:latest /bin/sh -c './fl
 If you don't use mounted volumes to persist your data, your data will be lost
 when the migration container exits, having no effect on your Flipt instance!
 
+## Filesystem
+
+<Note>
+  This feature was added as an experiment in Flipt `v1.23.0` and officially
+  supported in Flipt `v1.25.0`.
+</Note>
+
+The following backend types are designed to support declarative management of feature flag state.
+In particular, they're designed to support GitOps practices with minimal external dependencies.
+
+There are currently three backend types we classify as being filesystem backends, `local`, `git`, and `object`.
+The `local` backend has been primarily developed to support a local development experience,
+whereas, the `git` and `object` backends are intended for production and serves flag state directly from a configurable repository and Git reference (e.g. branch) or object storage bucket.
+
+### Read Only Mode
+
+Once enabled, all filesystem backends put the Flipt API and UI into a `read only` mode that prevents from writing to the backend. This is useful for production environments where you want to ensure that flag state is only managed via the configured backend.
+
+### Local
+
+The purpose of this backend type is to support serving Flipt flag state directly from your local filesystem.
+You can simply specify a relative or absolute directory in order to start a local Flipt instance and serve flag state.
+This is particularly useful for local development and validation of flag state changes.
+
+Flipt will periodically rebuild its state from the local disk every 10 seconds.
+
+<Tabs>
+  <Tab title="Environment Variable">
+
+    ```bash
+    FLIPT_STORAGE_TYPE="local"
+    FLIPT_STORAGE_LOCAL_PATH="."
+    ```
+
+  </Tab>
+  <Tab title="Configuration Yaml">
+
+    ```yaml
+    storage:
+      type: local
+      local:
+        path: "."
+    ```
+
+  </Tab>
+</Tabs>
+
+### Git
+
+The `git` type backend is used to configure a target Git repository and Git reference to source feature flag state from.
+The configuration contains fields for addressing the repository, configuring the target reference as well as adding authentication credentials.
+
+Once a target repository and reference are configured, Flipt will poll the source repository on a periodic cadence.
+This cadence is also configurable and defaults to 30 seconds.
+
+Flipt will follow the configured reference (e.g. branch name) and keep up to date with new changes.
+
+<Tabs>
+  <Tab title="Environment Variable">
+
+    ```bash
+    FLIPT_STORAGE_TYPE="git"
+    FLIPT_STORAGE_GIT_REPOSITORY="https://github.com/predictab.le/config.git"
+    FLIPT_STORAGE_GIT_REF="main"
+    FLIPT_STORAGE_GIT_POLL_INTERVAL="30s"
+    # for private repository access
+    FLIPT_STORAGE_GIT_AUTHENTICATION_BASIC_USERNAME=...
+    FLIPT_STORAGE_GIT_AUTHENTICATION_BASIC_PASSWORD=...
+    ```
+
+  </Tab>
+  <Tab title="Configuration Yaml">
+
+    ```yaml
+    storage:
+      type: git
+      git:
+        repository: "https://github.com/predictab.le/config.git"
+        ref: "main"
+        poll_interval: "30s"
+        authentication:
+          basic:
+            username: ...
+            password: ...
+          token:
+            access_token: ...
+    ```
+
+  </Tab>
+</Tabs>
+
+#### Authentication
+
+Authentication enables the ability to leverage private Git repositories as flag state backends.
+The `git` type backend supports both `basic` and `token` based authentication schemes.
+
+<Note>
+  When using GitHub and their PATs (Personal Access Tokens), `basic`
+  authentication should be used. GitHub expects you to supply a valid `username`
+  and provide your PAT as the `password` parameter.
+</Note>
+
+### Object
+
+<Note>
+  This feature was added as an experiment in Flipt `v1.24.0` and officially
+  supported in FLipt `v1.25.0`.
+</Note>
+
+The object storage type supports using a hosted object storage service as the source of truth for Flipt state configuration.
+Currently, Flipt supports the [S3 API](https://aws.amazon.com/s3/) as a backend. This means the AWS S3 and open-source alternatives such as [Minio](https://github.com/minio/minio) can be leveraged as Flipt backends.
+
+The contents of a target object storage bucket must contain Flipt state configuration files.
+As with the `git` and `local` backend types, the same rules apply with regards to how Flipt will locate feature flag state in your target bucket.
+
+Checkout the section below on [Flag State Configuration](#flag-state-configuration) for how Flipt decides which files in a target are considered for serving flag state.
+With the object storage backend, Flipt will respect a file at the root of the target with the name `.flipt.yml` to serve as an index for locating flag state configuration in the bucket.
+It will also use the same default strategy when the index isn't supplied (e.g. files name `features.yml` or `*.features.yml`).
+
+#### S3
+
+The S3 backend can be configured to serve state from a single bucket from a target S3 compatible API.
+
+The following is an example of how to configure Flipt to leverage this backend type:
+
+<Tabs>
+  <Tab title="Environment Variable">
+
+    ```bash
+    FLIPT_STORAGE_TYPE="object"
+    FLIPT_STORAGE_OBJECT_TYPE="s3"
+    FLIPT_STORAGE_OBJECT_S3_REGION="us-east-1"
+    FLIPT_STORAGE_OBJECT_S3_BUCKET="flipt_feature_flags"
+    FLIPT_STORAGE_OBJECT_S3_POLL_INTERVAL="1m"
+    # for non-AWS hosted S3
+    FLIPT_STORAGE_OBJECT_S3_ENDPOINT=http://localhost:9009
+    ```
+
+  </Tab>
+  <Tab title="Configuration Yaml">
+
+    ```yaml
+    storage:
+      type: object
+      object:
+        type: s3
+        s3:
+          region: us-east-1
+          bucket: flipt_feature_flags
+          poll_interval: "30s"
+          # for non-AWS hosted S3
+          endpoint: http://localhost:9009
+    ```
+
+  </Tab>
+</Tabs>
+
+In addition to these Flipt configuration parameters, credentials will also be required for Flipt to authenticate with the target object store.
+These should be provided as environment variables to the Flipt server process:
+
+```bash
+AWS_ACCESS_KEY_ID=...
+AWS_SECRET_ACCESS_KEY=...
+```
+
+### Flag State Configuration
+
+Each of Flipt's filesystem backends expects you to represent your feature flag configuration via a set of YAML files.
+These files declaratively define what flags, segments, variants etc. exist and in what configuration.
+
+#### Locating Flag State
+
+Flipt's filesystem backends allow you to define feature flags alongside other configurations in a shared directory, repository or object storage bucket.
+In order to identify which files are intended for Flipt, it uses a naming scheme to index which are flag state files.
+By default, Flipt will look for the following filename patterns when identifying files to attempt to parse as Flipt state:
+
+- `**/features.yaml`
+- `**/features.yml`
+- `**/*.features.yaml`
+- `**/*.features.yml`
+
+Any file named `features.yaml`, `features.yml`, or with either extension `.features.yaml` or `.features.yml` is considered recursively from the root of your target.
+
+If this naming convention doesn't work for you, it can be overridden by creating a file named `.flipt.yml` in the root of your target directory tree.
+This file will be used to instruct Flipt on how to index your directory tree and find flag state files:
+
+```yaml
+version: "1.0"
+include:
+  - "**/features.yaml"
+  - "**/features.yml"
+  - "**/*.features.yaml"
+  - "**/*.features.yml"
+exclude: []
+```
+
+The index file contains two lists `include` and `exclude`. These can contain specific paths or glob matching patterns.
+The indexing process first matches the `include` section and then filters that are set by the `exclude` section.
+
+#### Defining Flag State
+
+<Info>
+
+Flipt flag state file format has been taken directly from Flipt's existing
+[import and export](/configuration/storage#import-export) flag state format.
+
+You can run `flipt export` on your existing Flipt instance, and then
+add/commit the result to a directory, object storage, or Git repository to get started quickly.
+
+This can be used to migrate from a relational database backed instance of Flipt to a filesystem backed deployment with ease.
+
+</Info>
+
+```yaml features.yaml
+namespace: backend
+flags:
+  - key: awesomeNewFeature
+    name: Awesome New Feature
+    enabled: true
+    variants:
+      - key: enabled
+        name: Enabled
+      - key: disabled
+        name: Disabled
+    rules:
+      - segment: internal-users
+        rank: 1
+        distributions:
+          - variant: enabled
+            rollout: 100
+      - segment: all-users
+        rank: 2
+        distributions:
+          - variant: enabled
+            rollout: 20
+          - variant: disabled
+            rollout: 80
+
+segments:
+  - key: internal-users
+    name: Internal Users
+    constraints:
+      - type: STRING_COMPARISON_TYPE
+        property: organization
+        operator: eq
+        value: internal
+    match_type: ALL_MATCH_TYPE
+  - key: all-users
+    name: All Users
+    match_type: ALL_MATCH_TYPE
+```
+
+Each file identified for use by Flipt represents the contents of a single namespace.
+Multiple namespaces can be defined across multiple files.
+You can organize these files however you like in your target directory.
+
+<Tip>
+  By defining different namespaces in different directories, you can leverage
+  features such as GitHub's Codeowners. This gives you authorization mechanisms
+  for managing contributions to Flipt state.
+</Tip>
+
+The file format currently consists of four top-level keys:
+
+```yaml
+version: "1.0" # a version for this file format
+namespace: default # string identifying the resources collective namespace
+flags: [] # [Flag] list of Flag definitions
+segments: [] # [Segment] list of Segment definitions
+```
+
 ## Import/Export
 
-Flipt supports importing and exporting your feature flag data since
-[v0.13.0](https://github.com/flipt-io/flipt/releases/tag/v0.13.0).
+<Note>Importing is only supported for database backed Flipt instances.</Note>
+
+Flipt supports importing and exporting your feature flag data since [v0.13.0](https://github.com/flipt-io/flipt/releases/tag/v0.13.0).
 
 Prior to Flipt [v1.20.0](https://github.com/flipt-io/flipt/releases/tag/v1.20.0) `import` and `export` ran directly against the backing database.
 Since `v1.20.0` you can now alternatively perform these operations through Flipt's API.
@@ -190,7 +452,7 @@ flipt export --namespace production
 
 ## Caching
 
-Flipt supports both in-memory cache as well as Redis to enable faster reads and
+Flipt supports both in-memory cache as well as [Redis](https://redis.io/) to enable faster reads and
 evaluations. Enabling caching has been shown to speed up read performance by
 several orders of magnitude.
 
