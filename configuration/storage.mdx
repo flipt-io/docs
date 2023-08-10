@@ -217,6 +217,8 @@ The following is an example of how to configure Flipt to leverage this backend t
     FLIPT_STORAGE_OBJECT_S3_REGION="us-east-1"
     FLIPT_STORAGE_OBJECT_S3_BUCKET="flipt_feature_flags"
     FLIPT_STORAGE_OBJECT_S3_POLL_INTERVAL="1m"
+    # optional bucket prefix for locating flag state files
+    FLIPT_STORAGE_OBJECT_S3_PREFIX="production"
     # for non-AWS hosted S3
     FLIPT_STORAGE_OBJECT_S3_ENDPOINT=http://localhost:9009
     ```
@@ -233,6 +235,8 @@ The following is an example of how to configure Flipt to leverage this backend t
           region: us-east-1
           bucket: flipt_feature_flags
           poll_interval: "30s"
+          # optional bucket prefix for locating flag state files
+          prefix: production
           # for non-AWS hosted S3
           endpoint: http://localhost:9009
     ```
