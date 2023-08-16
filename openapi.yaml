@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.2.7
+  version: 0.2.10
 paths:
   /evaluate/v1/boolean:
     post:
@@ -1336,11 +1336,11 @@ components:
       properties:
         type:
           $ref: '#/components/schemas/EvaluationevaluationResponseType'
-        boolean_response:
+        booleanResponse:
           $ref: '#/components/schemas/EvaluationbooleanEvaluationResponse'
-        variant_response:
+        variantResponse:
           $ref: '#/components/schemas/EvaluationvariantEvaluationResponse'
-        error_response:
+        errorResponse:
           $ref: '#/components/schemas/EvaluationerrorEvaluationResponse'
       required:
         - type
@@ -1698,6 +1698,8 @@ components:
           type: string
         reason:
           $ref: '#/components/schemas/EvaluateevaluationReason'
+        segmentKeys:
+          type: string
       required:
         - requestId
         - entityId
@@ -1939,6 +1941,11 @@ components:
         - description
         - createdAt
         - updatedAt
+    RolloutsrolloutSegmentOperator:
+      type: string
+      enum:
+        - OR_SEGMENT_OPERATOR
+        - AND_SEGMENT_OPERATOR
     RolloutsrolloutType:
       type: string
       enum:
@@ -1950,6 +1957,12 @@ components:
       properties:
         segmentKey:
           type: string
+        segmentKeys:
+          type: array
+          items:
+            type: string
+        segmentOperator:
+          $ref: '#/components/schemas/RolloutsrolloutSegmentOperator'
         value:
           type: boolean
       required:
@@ -2012,6 +2025,11 @@ components:
         - rules
         - nextPageToken
         - totalCount
+    RulesruleSegmentOperator:
+      type: string
+      enum:
+        - OR_SEGMENT_OPERATOR
+        - AND_SEGMENT_OPERATOR
     Rulesrule:
       type: object
       properties:
@@ -2023,6 +2041,12 @@ components:
           type: string
         segmentKey:
           type: string
+        segmentKeys:
+          type: array
+          items:
+            type: string
+        segmentOperator:
+          $ref: '#/components/schemas/RulesruleSegmentOperator'
         distributions:
           type: array
           items:
@@ -2040,6 +2064,7 @@ components:
         - namespaceKey
         - flagKey
         - segmentKey
+        - segmentOperator
         - distributions
         - rank
         - createdAt
@@ -2049,6 +2074,12 @@ components:
       properties:
         segmentKey:
           type: string
+        segmentKeys:
+          type: array
+          items:
+            type: string
+        segmentOperator:
+          $ref: '#/components/schemas/RulesruleSegmentOperator'
         rank:
           type: integer
       required:
@@ -2068,6 +2099,12 @@ components:
       properties:
         segmentKey:
           type: string
+        segmentKeys:
+          type: array
+          items:
+            type: string
+        segmentOperator:
+          $ref: '#/components/schemas/RulesruleSegmentOperator'
       required:
         - segmentKey
     SegmentssegmentList:
