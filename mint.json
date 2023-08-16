@@ -197,8 +197,8 @@
   ],
   "redirects": [
     {
-      "source": "experimental/filesystem-backends",
-      "destination": "configuration/storage"
+      "source": "/experimental/filesystem-backends",
+      "destination": "/configuration/storage"
     }
   ],
   "footerSocials": {
