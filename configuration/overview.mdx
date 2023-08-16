@@ -48,7 +48,7 @@ These properties are as follows:
 
 | Property               | Description                                                   | Default             | Since   |
 | ---------------------- | ------------------------------------------------------------- | ------------------- | ------- |
-| ui.enabled             | Enable UI and API docs                                        | true                |         |
+| ui.enabled             | Enable Flipt UI                                               | true                |         |
 | cors.enabled           | Enable CORS support                                           | false               | v0.7.0  |
 | cors.allowed_origins   | Sets Access-Control-Allow-Origin header on server             | "\*" (all domains)  | v0.7.0  |
 | meta.check_for_updates | Enable check for newer versions of Flipt on startup           | true                | v0.17.0 |
@@ -199,19 +199,24 @@ These properties are as follows:
 
 #### Cache: Redis
 
-| Property             | Description                           | Default   | Since   |
-| -------------------- | ------------------------------------- | --------- | ------- |
-| cache.redis.host     | Host to access the Redis database     | localhost | v1.10.0 |
-| cache.redis.port     | Port to access the Redis database     | 6379      | v1.10.0 |
-| cache.redis.db       | Redis database to use                 | 0         | v1.10.0 |
-| cache.redis.password | Password to access the Redis database |           | v1.10.0 |
+| Property                         | Description                                     | Default   | Since   |
+| -------------------------------- | ----------------------------------------------- | --------- | ------- |
+| cache.redis.host                 | Host to access the Redis database               | localhost | v1.10.0 |
+| cache.redis.port                 | Port to access the Redis database               | 6379      | v1.10.0 |
+| cache.redis.db                   | Redis database to use                           | 0         | v1.10.0 |
+| cache.redis.password             | Password to access the Redis database           |           | v1.10.0 |
+| cache.redis.require_tls          | Require TLS to access the Redis database        | false     | v1.25.0 |
+| cache.redis.pool_size            | Max number of socket connections per CPU        | 10        | v1.25.0 |
+| cache.redis.min_idle_connections | Minimum number of idle connections in the pool  | 0         | v1.25.0 |
+| cache.redis.conn_max_idle_time   | Maximum amount of time a connection can be idle | 30m       | v1.25.0 |
+| cache.redis.net_timeout          | Network timeout for Redis connections           | 0         | v1.25.0 |
 
 ### Audit Events
 
-| Property                 | Description                                     | Default | Since   |
-| ------------------------ | ----------------------------------------------- | ------- | ------- |
-| audit.buffer.capacity    | Max capacity of buffer to send events to sinks  | 2       | v1.21.0 |
-| audit.buffer.flushPeriod | Duration to wait before sending events to sinks | 2m      | v1.21.0 |
+| Property                  | Description                                     | Default | Since   |
+| ------------------------- | ----------------------------------------------- | ------- | ------- |
+| audit.buffer.capacity     | Max capacity of buffer to send events to sinks  | 2       | v1.21.0 |
+| audit.buffer.flush_period | Duration to wait before sending events to sinks | 2m      | v1.21.0 |
 
 #### Audit Events: Log File
 
