@@ -1,0 +1,479 @@
+---
+title: Get going with GitOps
+description: Configuring Flipt for a GitOps workflow
+---
+
+## Why GitOps?
+
+GitOps is a set of practices centered around storing your application and infrastructure configuration in Git.
+The goal being to leverage the capabilities of version-control for your entire systems configuration.
+
+If you're already embracing GitOps practices for your other configuration, then aligning your feature flags with these same practices can complete the experience.
+No more correlating what changed in Git, with what changed in your feature flag system to understand the entire state of the world.
+Git is the single source of truth as GitOps intended.
+
+So how do we achieve this with Flipt?
+
+## What We Will Learn
+
+In this guide we will:
+
+- 🏁 Add a feature flag to an existing codebase
+- 📝 Define the flag via Flipt's configuration format
+- 🌲 Add, commit and push the change to a production serving branch
+- 🎯 Adjust our configuration to target an internal group of users in our organization
+- 🌓 Progressively enable the flag for proportions of the user base
+
+## Setting the Scene
+
+Our guide starts with an imaginary organization, with a single web application defined in Go and committed to a single GitHub repository.
+We as the developer, have been tasked to experiment with a new sorting algorithm on an endpoint for our application.
+
+Our application handles requests from authenticated users.
+These users also happen to be grouped into organizations.
+We will use this information in our targeting rules later on.
+
+This endpoint happens to list out a bunch of strings in a JSON array.
+The sorting algorithm previously used was slow (Bubble Sort), and we want to try something new (Quicksort).
+While we feel confident in our implementation, we're going to practice caution and release the change behind a feature flag.
+
+### The Application
+
+```bash
+.
+├── go.mod
+├── go.sum
+├── main.go
+└── pkg
+    └── server
+        └── words.go
+```
+
+Our application lives in a directory committed to a Git repository.
+For the examples sake, we assume the repository will be hosted on GitHub at https://github.com/organization/repository.git.
+
+The target of our change is a `http.HandlerFunc` definition (in the file `pkg/server/words.go`) with the name `ListWords`.
+Currently, the function uses a sorting function `bubblesort` and we're going to swap this for the `quicksort` function.
+
+```go pkg/server/words.go
+func (s *Server) ListWords(w http.ResponseWriter, r *http.Request) {
+  words, err := getWords(r.Context())
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+
+  bubblesort(words)
+
+  if err := json.NewEncoder(w).Encode(words); err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+}
+```
+
+### Calling Flipt
+
+Instead of calling `bubblesort` directly, we're going to use the Flipt Go SDK to switch this call based on the feature flag `use-quicksort-algorithm`.
+
+This flag is going to be a **boolean** type flag, and so we use the `sdk.Evaluation().Boolean()` call to evaluate the `enabled` property of our flag.
+We provide this evaluation call with a request containing the flags key, an entity ID and a context map.
+
+```diff
+ func (s *Server) ListWords(w http.ResponseWriter, r *http.Request) {
+   words, err := getWords(r.Context())
+   if err != nil {
+     http.Error(w, err.Error(), http.StatusInternalServerError)
+     return
+   }
+ 
+-  bubbleSort(words)
++  flag, err := s.flipt.Evaluation().Boolean(r.Context(), &evaluation.EvaluationRequest{
++    FlagKey: "use-quicksort-algorithm",
++    EntityId: getUser(r.Context()),
++    Context: map[string]string{
++      "organization": getOrganization(r.Context()),
++    },
++  })
++
++  if flag.Enabled {
++    quicksort(words)
++  } else {
++    bubblesort(words)
++  }
+ 
+   if err := json.NewEncoder(w).Encode(words); err != nil {
+     http.Error(w, err.Error(), http.StatusInternalServerError)
+     return
+   }
+ }
+```
+
+The entity ID used here is going to be an identifier for the requests authenticated user. This is returned by the call to `getUser(r.Context())`.
+
+Our context map is going to contain a single key `organization`, which is populated by a call to `getOrganization(r.Context())`.
+This will also return an identifier, only this time for the requesting users organization.
+
+## Flipt's Filesystem Backends
+
+The focus of this guide is to leverage Flipt's new "filesystem backends" to enable a GitOps workflow.
+The name comes from the fact that the backend for Flipt is modelled around configuration files in a directory structure.
+These configuration files can coexist in a directory alongside other content (application code or other configuration code).
+
+There currently exist three top-level filesystem backend types:
+
+- `local` (local directory)
+- `git` (remote Git repository and branch)
+- `object` (object storage, currently only AWS S3)
+
+In this guide we will explore both the `local` and `git` backend types.
+
+### Defining Flag State Locally
+
+In order for our application to work, it now depends on communicating with an instance of Flipt.
+We're going to configure our instance using a `features.yml` file in the root of our existing project.
+Then we will configure Flipt to serve directly from our local directory.
+
+<Note>
+You don't have to call your file `features.yml` and you can spread your flag definitions across multiple files.
+Checkout our docs on [locating flag state](/configuration/storage#locating-flag-state) to learn more.
+</Note>
+
+```diff
+ .
++├── features.yml
+ ├── go.mod
+ ├── go.sum
+ ├── main.go
+ └── pkg
+     └── server
+         └── words.go
+```
+
+The contents of this file is going to start out with the definition of the `use-quicksort-algorithm` flag.
+This flag will be a _boolean_ type flag and be in a disabled (`enabled = false`) state.
+
+```yaml features.yml
+version: "1.2"
+namespace: default 
+flags:
+- key: use-quicksort-algorithm
+  type: BOOLEAN_FLAG_TYPE
+  enabled: false
+```
+
+### Running Flipt Locally
+
+Now the flag is defined in the current directory, we can run Flipt and configure the directory as the source of truth.
+This is useful for validating behaviour locally, before committing and pushing flag state to a production tracked Git repository.
+
+The following command runs Flipt in Docker, with the local directory mounted and Flipt configured appropriately.
+
+```bash
+docker run -it --rm \
+  -p 8080:8080 \
+  -p 9000:9000 \
+  -v "$(pwd):/data" \
+  -e FLIPT_STORAGE_TYPE=local \
+  -e FLIPT_STORAGE_LOCAL_PATH=/data \
+  flipt/flipt:latest
+```
+
+![Flipt instance showing flag in disabled state](/images/guides/get-going-with-gitops/flag-defined-locally.png)
+> This image demonstrates what can be seen in the Flipt UI with the configuration file we defined being served.
+
+Now that Flipt is running locally, our application can also be run and configured to target our local instance of Flipt available at both `http://localhost:8080` and `grpc://localhost:9000` (depending on your protocol of choice). The UI is also available on port `8080`, however, in read-only mode. As flag state is instead configured via the configuration file we defined before.
+
+### Running Flipt Over Git
+
+The `local` backend is useful for experimenting and exploring flag state in your development environment.
+However, in a production setting, both the `git` and the `object` storage types are more appropriate.
+Focussing on `git`, the following command runs Flipt with a remote Git repository hosted on GitHub and tracking the `main` branch.
+
+```bash
+docker run -it --rm \
+  -p 8080:8080 \
+  -p 9000:9000 \
+  -e FLIPT_STORAGE_TYPE=git \
+  -e FLIPT_STORAGE_GIT_REPOSITORY=https://github.com/organization/repository.git \
+  -e FLIPT_STORAGE_GIT_REF=main \
+  -e FLIPT_STORAGE_GIT_AUTHENTICATION_BASIC_USERNAME=username \
+  -e FLIPT_STORAGE_GIT_AUTHENTICATION_BASIC_PASSWORD=github-personal-access-token \
+  flipt/flipt:latest
+```
+
+In this example, Flipt has been configured to serve directly from our pretend repository with our application code in it.
+Flipt will track the HEAD of this repositories `main` branch.
+Changes will eventually propagate into our running instance of Flipt.
+
+<Info>
+Head to [Configuration: Storage: Filesystem Backends](/configuration/storage#filesystem) to learn more about configuring these backend types for Flipt.
+</Info>
+
+### Pushing Our New Flag To Production
+
+For sake of this demonstration, we're going to assume Flipt has been deployed and configured in this way for our production environment.
+Our production deployment of our words endpoint will also have been configured to connect to this running instance of Flipt.
+
+Given our repository is now being tracked and served by Flipt, we can add, commit and push both our changes to our endpoint, as well as our new `features.yml` file to our branch `main`.
+
+```bash
+git add pkg/server/words.go
+
+git add features.yml
+
+git commit -m "feat: define the use-quicksort-algorithm flag"
+
+git push origin main
+```
+
+Once Flipt has received the updated reference, our flag should be available through Flipt's API.
+The code change we added can now safely reference the present flag, which is currently in a `disabled` state.
+
+Next we will begin to enable the flag under different conditions.
+
+## Targeting and Rollouts
+
+Now our application is deployed with our code change and is referencing our new flag, we can adjust the state via the configuration file and push the changes to Git.
+
+We will start by checking out a new branch, as we're going to propose our change as a pull request and get review from a colleague.
+
+```bash
+git checkout -b enable-flag-for-internal-organization
+```
+
+### Internal Users
+
+Then we open the `features.yml` file and update definition with a new segment, and a rollout rule on our flag which returns `enable = true` when the request matches our new segment.
+
+```diff features.yml
+ version: "1.2"
+ namespace: default
+ flags:
+ - key: use-quicksort-algorithm
+   type: BOOLEAN_FLAG_TYPE
+   enabled: false
++  rollouts:
++  - segment:
++      key: internal-users
++      value: true
++segments:
++- key: internal-users
++  constraints:
++  - property: organization
++    operatior: eq
++    value: internal
++    type: STRING_COMPARISON_TYPE
+```
+
+Breaking this change down we've:
+
+#### The `internal-users` Segment
+
+```yaml features.yml
+# ...
+segments:
+- key: internal-users
+  constraints:
+  - property: organization
+    operatior: eq
+    value: internal
+    type: STRING_COMPARISON_TYPE
+```
+
+This segment definition matches any evaluation request where there exists a key `organization` on the context, with a value `internal`.
+Remember we added the key `organization` earlier when defining the flag in code.
+We used a value derived from the request (`getOrganization(r.Context())`).
+This got the organization identifier for the calling user.
+Now, when the user happens to be associated with the `internal` organization, it will match the `internal-users` segment in Flipt.
+
+#### A New Segment Rollout Rule
+
+```yaml features.yml
+flags:
+- key: user-quicksort-algorithm
+# ...
+  rollouts:
+  - segment:
+      key: internal-users
+      value: true
+```
+
+Finally, we add a rollout rule to our boolean flag.
+This rule allows us to override the `enabled` property of the flag under certain conditions.
+In this instance, we're using the `segment` type rule to say when the request matches the `internal-users` segment, return the value `true`.
+
+Now our flag is configured to target internal users and enable the Quicksort algorithm for those users instead.
+
+#### Proposing and Integrating Our Change
+
+Next, we add, commit and push the change to our branch.
+
+```bash
+git add features.yml
+
+git commit -m "feat: enable use-quicksort-algorithm for internal-users"
+
+git push enable-flag-for-internal-organization
+```
+
+From here, we can open a pull-request and get feedback from our team.
+Once we've have an approval, we can merge the PR and the change goes live.
+When the change has been merged into `main`, Flipt will eventually start serving this new configuration change.
+
+We can now request our application as an authenticated user.
+Users inside the `internal` organization should get results sorted with the new Quicksort algorithm.
+Whereas, the rest of users should still be served using the old Bubble Sort algorithm.
+
+<Tip>
+This is your opportunity to validate the change before exposing it to a wider audience.
+Perhaps the algorithm is incorrect, maybe the order has reversed or has become unstable for some entries.
+You can fix those changes now before targeting more users.
+</Tip>
+
+### Proportional Rollout
+
+Once we're confident our change is working as expected, because we've have validated the change in production for `internal` users, we can start to roll it out to external users.
+
+We could enable the flag for all users at once, but there is always a chance we've have missed something during manual validation.
+Everyone has the best intentions, but things get missed.
+So we're going to start slow and gradually enable it for percentages of our user-base.
+This will give the change time to bake with your audience.
+If anything is wrong, we've have minimized the effected users to a subset.
+
+Once again we're going to checkout a branch.
+
+```bash
+git checkout -b enable-flag-for-20-percent
+```
+
+Then we're going to edit `features.yml` and add a threshold percentage rule.
+
+```diff features.yml
+ version: "1.2"
+ namespace: default
+ flags:
+ - key: use-quicksort-algorithm
+   type: BOOLEAN_FLAG_TYPE
+   enabled: false
+   rollouts:
+   - segment:
+       key: internal-users
+       value: true
++  - threshold:
++      percentage: 20
++      value: true
+ segments:
+ - key: internal-users
+   constraints:
+   - property: organization
+     operatior: eq
+     value: internal
+     type: STRING_COMPARISON_TYPE
+```
+
+Again, breaking this change down:
+
+#### A New Threshold Rollout Rule
+
+Here we're adding a new, different rollout rule type to our existing flag.
+Note that we've have left our segment targeting rule intact.
+
+This means our flag will remain enabled for internal users.
+Rollouts rules are evaluated on each request in order.
+The first rule to match, will result in the flags enabled property returning the configured `value`.
+If no rules match, then the flags top-level `enabled` property is used as the final default return value.
+
+```yaml features.yml
+flags:
+- key: use-quicksort-algorithm
+# ...
+  - segment:
+      key: internal-users
+      value: true
+  - threshold:
+      percentage: 20
+      value: true
+```
+
+This threshold percentage is set to `20`, meaning roughly `20%` of entity IDs will match and cause the flag to return `enabled = true`.
+
+<Info>
+Head to [Concepts: Bucketing](/concepts#bucketing) to learn how this mechanism is actually achieved.
+</Info>
+
+#### Proposing and Integrating Our Change
+
+Once again, we add, commit and push the change to our branch.
+
+```bash
+git add features.yml
+
+git commit -m "feat: enable use-quicksort-algorithm for 20% of users"
+
+git push enable-flag-for-20-percent
+```
+
+From here, we can open a pull-request and get feedback from our team.
+Once we've have an approval, we can merge the PR and the change goes live.
+
+### Closing the Loop
+
+This process can be repeated, each time increasing the `percentage` property of this newly added `threshold` rollout rule.
+Once we get to the stage of enabling the flag for 100% of users, we can either set the percentage to `100` or we can remove the targeting rules altogether and set the `enabled` property to `true`.
+
+```yaml features.yml
+version: "1.2"
+namespace: default
+flags:
+- key: use-quicksort-algorithm
+  type: BOOLEAN_FLAG_TYPE
+  enabled: true
+```
+
+Beyond this, we can further close the loop by removing the feature flag call from our application code and simply use the new `quicksort` function.
+
+```go pkg/server/words.go
+func (s *Server) ListWords(w http.ResponseWriter, r *http.Request) {
+  words, err := getWords(r.Context())
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+
+  quicksort(words)
+
+  if err := json.NewEncoder(w).Encode(words); err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+}
+```
+
+## Recap
+
+We've successfully rolled a feature out to production using GitOps practices via Flipt's declarative feature flag configuration files and filesystem backends.
+Along the way, we had the opportunity to use Git to understand the current state of the world.
+At each commit, we could've fully recreate the configuration of our entire application, including the state of Flipt itself.
+
+### Further Considerations
+
+Now you have all the tools necessary to practice GitOps with your feature flags.
+
+However, in production, you mileage may vary with the different backed types.
+You might want to consider the `object` (and AWS S3 type) backend if your source Git repositories are large (we're working on a guide for that now).
+
+The filesystem storage backends currently mandate that the UI is **read-only**.
+We've thoughts on how this could change in the future, but for now this is a limitation.
+You always have your editor, Git and the SCMs (GitHub, Gitlab etc) for state management in the meantime.
+
+Each of these backends work by polling their sources (git, local directory or object store) and the interval can be configured.
+Checkout the [Configuration: Storage: Filesystem](/configuration/storage#filesystem) for details on adjusting these intervals.
+
+### Further Reading
+
+Beyond here, you may want to checkout the following to learn more about Flipt's features and operations:
+
+- [Login with Google](/guides/login-with-google) for authenticating the UI
+- [Deploy to Kubernetes](/guides/deploy-to-kubernetes) for deploying to Kubernetes
+- [Configuration: Observability](/configuration/observability) for monitoring in production

@@ -63,6 +63,7 @@
     {
       "group": "Guides",
       "pages": [
+        "guides/get-going-with-gitops",
         "guides/login-with-google",
         "guides/deploy-to-flyio",
         "guides/deploy-to-kubernetes"

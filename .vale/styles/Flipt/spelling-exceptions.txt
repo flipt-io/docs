@@ -50,3 +50,6 @@ uncomment
 URIs
 yaml
 zipkin
+Quicksort
+SCMs
+Gitlab
