@@ -184,7 +184,7 @@ docker run -it --rm \
 
 > This image demonstrates what can be seen in the Flipt UI with the configuration file we defined being served.
 
-Now that Flipt is running locally, our application can also be run and configured to target our local instance of Flipt available at both `http://localhost:8080` and `grpc://localhost:9000` (depending on your protocol of choice). The UI is also available on port `8080`, however, it is running in **read-only mode** since flag state is configured via the configuration file we defined before.
+Now that Flipt is running locally, our application can also be run and configured to target our local instance of Flipt available at both `http://localhost:8080` and `grpc://localhost:9000` (depending on your protocol of choice). The UI is also available on port `8080`, however, it's running in **read-only mode** since flag state is configured via the configuration file we defined before.
 
 ### Running Flipt Over Git
 
@@ -322,7 +322,7 @@ git push enable-flag-for-internal-organization
 ```
 
 From here, we can open a pull-request and get feedback from our team.
-Once we have approval, we can merge the PR and the change goes live.
+Once approval has been given, we can merge the PR and the change goes live.
 When the change has been merged into `main`, Flipt will eventually start serving this new configuration change.
 
 We can now request our application as an authenticated user.
@@ -341,7 +341,7 @@ Whereas, the rest of users should still be served using the old Bubble Sort algo
 Once we're confident our change is working as expected, since we've validated the change in production for `internal` users, we can start to roll it out to external users.
 
 <Tip>
-The `flipt` binary has the subcommand `flipt validate`.
+The `flipt` binary has the sub-command `flipt validate`.
 This can be used to statically validate your Flipt feature configuration files.
 You can install this to run during a CI step and catch bugs before merging changes into `main`.
 
@@ -389,7 +389,7 @@ Again, breaking this change down:
 #### A New Threshold Rollout Rule
 
 Here we're adding a new, different rollout rule type to our existing flag.
-Note that we have left our segment targeting rule intact.
+Note that we've left our segment targeting rule intact.
 
 This means our flag will remain enabled for internal users.
 Rollout rules are evaluated on each request in order.
