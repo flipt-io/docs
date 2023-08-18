@@ -285,7 +285,7 @@ segments:
         type: STRING_COMPARISON_TYPE
 ```
 
-This segment definition matches any evaluation request where there exists a key `organization` on the context, with a value `internal`.
+This [segment](/concepts#segments) definition matches any evaluation request where there exists a key `organization` on the context, with a value `internal`.
 Remember we added the key `organization` earlier when defining the flag in code.
 We used a value derived from the request (`getOrganization(r.Context())`).
 This got the organization identifier for the calling user.
@@ -303,7 +303,7 @@ flags:
           value: true
 ```
 
-Finally, we add a rollout rule to our boolean flag.
+Finally, we add a [rollout rule](/concepts#rollouts) to our boolean flag.
 This rule allows us to override the `enabled` property of the flag under certain conditions.
 In this instance, we're using the `segment` type rule to say when the request matches the `internal-users` segment, return the value `true`.
 
@@ -339,6 +339,14 @@ Whereas, the rest of users should still be served using the old Bubble Sort algo
 ### Proportional Rollout
 
 Once we're confident our change is working as expected, since we've validated the change in production for `internal` users, we can start to roll it out to external users.
+
+<Tip>
+The `flipt` binary has the subcommand `flipt validate`.
+This can be used to statically validate your Flipt feature configuration files.
+You can install this to run during a CI step and catch bugs before merging changes into `main`.
+
+For GitHub, try our pre-built [Flipt Validate Action](https://github.com/marketplace/actions/flipt-validate-action).
+</Tip>
 
 We could enable the flag for all users at once, but there is always a chance we've missed something during manual validation.
 Everyone has the best intentions, however. things get missed. So instead we're going to start slow and gradually enable it for percentages of our user base.
@@ -469,16 +477,8 @@ However, in production, your mileage may vary with the different backed types.
 You might want to consider the `object` (and AWS S3 type) backend if your source Git repositories are large (we're working on a guide for that now).
 
 The filesystem storage backends currently mandate that the UI is **read-only**.
-We've thoughts on how this could change in the future, but for now this is a limitation.
+We've thoughts on how this could change in the future, but for now, this is a limitation.
 You always have your editor, Git and the SCMs (GitHub, Gitlab etc) for state management in the meantime.
 
 Each of these backends work by polling their sources (git, local directory or object store) and the interval can be configured.
 Checkout the [Configuration: Storage: Filesystem](/configuration/storage#filesystem) for details on adjusting these intervals.
-
-### Further Reading
-
-Beyond here, you may want to checkout the following to learn more about Flipt's features and operations:
-
-- [Login with Google](/guides/login-with-google) for authenticating the UI
-- [Deploy to Kubernetes](/guides/deploy-to-kubernetes) for deploying to Kubernetes
-- [Configuration: Observability](/configuration/observability) for monitoring in production
