@@ -50,7 +50,7 @@ While we feel confident in our implementation, we're going to practice caution a
 ```
 
 Our application lives in a directory committed to a Git repository.
-For the example's sake, we assume the repository will be hosted on GitHub at https://github.com/organization/repository.git.
+For the example's sake, we assume the repository will be hosted on GitHub at `https://github.com/organization/repository.git`.
 
 The target of our change is a `http.HandlerFunc` definition (in the file `pkg/server/words.go`) with the name `ListWords`.
 Currently, the function uses a sorting function `bubblesort` and we're going to swap this for the `quicksort` function.
@@ -238,7 +238,7 @@ Next we will begin to enable the flag under different conditions.
 
 ## Targeting and Rollouts
 
-Now our application is deployed with our code change and is referencing our new flag, we can adjust the state via the configuration file and push the changes to Git.
+Now that our application is deployed with our code change and is referencing our new flag, we can adjust the state via the configuration file and push the changes to Git.
 
 We will start by checking out a new branch, as we're going to propose our change as a pull request and get review from a colleague.
 
