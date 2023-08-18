@@ -1,5 +1,5 @@
 ---
-title: Get going with GitOps
+title: Get Going with GitOps
 description: Configuring Flipt for a GitOps workflow
 ---
 
@@ -14,19 +14,19 @@ Git is the single source of truth as GitOps intended.
 
 So how do we achieve this with Flipt?
 
-## What We Will Learn
+## What You'll Learn
 
-In this guide we will:
+In this guide you will:
 
 - 🏁 Add a feature flag to an existing codebase
 - 📝 Define the flag via Flipt's configuration format
-- 🌲 Add, commit and push the change to a production serving branch
+- 🌲 Add, commit, and push the change to a production-serving branch
 - 🎯 Adjust our configuration to target an internal group of users in our organization
 - 🌓 Progressively enable the flag for proportions of the user base
 
 ## Setting the Scene
 
-Our guide starts with an imaginary organization, with a single web application defined in Go and committed to a single GitHub repository.
+Our guide starts with an imaginary organization with a single web application defined in Go and committed to a GitHub repository.
 We as the developer, have been tasked to experiment with a new sorting algorithm on an endpoint for our application.
 
 Our application handles requests from authenticated users.
@@ -50,7 +50,7 @@ While we feel confident in our implementation, we're going to practice caution a
 ```
 
 Our application lives in a directory committed to a Git repository.
-For the examples sake, we assume the repository will be hosted on GitHub at https://github.com/organization/repository.git.
+For the example's sake, we assume the repository will be hosted on GitHub at https://github.com/organization/repository.git.
 
 The target of our change is a `http.HandlerFunc` definition (in the file `pkg/server/words.go`) with the name `ListWords`.
 Currently, the function uses a sorting function `bubblesort` and we're going to swap this for the `quicksort` function.
@@ -74,7 +74,7 @@ func (s *Server) ListWords(w http.ResponseWriter, r *http.Request) {
 
 ### Calling Flipt
 
-Instead of calling `bubblesort` directly, we're going to use the Flipt Go SDK to switch this call based on the feature flag `use-quicksort-algorithm`.
+Instead of calling `bubblesort` directly, we're going to use the [Flipt Go SDK](https://github.com/flipt-io/flipt/blob/main/sdk/go) to switch this call based on the feature flag `use-quicksort-algorithm`.
 
 This flag is going to be a **boolean** type flag, and so we use the `sdk.Evaluation().Boolean()` call to evaluate the `enabled` property of our flag.
 We provide this evaluation call with a request containing the flags key, an entity ID and a context map.
@@ -112,12 +112,12 @@ We provide this evaluation call with a request containing the flags key, an enti
 The entity ID used here is going to be an identifier for the requests authenticated user. This is returned by the call to `getUser(r.Context())`.
 
 Our context map is going to contain a single key `organization`, which is populated by a call to `getOrganization(r.Context())`.
-This will also return an identifier, only this time for the requesting users organization.
+This will also return an identifier, only this time for the requesting user's organization.
 
 ## Flipt's Filesystem Backends
 
 The focus of this guide is to leverage Flipt's new "filesystem backends" to enable a GitOps workflow.
-The name comes from the fact that the backend for Flipt is modelled around configuration files in a directory structure.
+The name comes from the fact that the backend for Flipt is modeled around configuration files in a directory structure.
 These configuration files can coexist in a directory alongside other content (application code or other configuration code).
 
 There currently exist three top-level filesystem backend types:
@@ -184,7 +184,7 @@ docker run -it --rm \
 
 > This image demonstrates what can be seen in the Flipt UI with the configuration file we defined being served.
 
-Now that Flipt is running locally, our application can also be run and configured to target our local instance of Flipt available at both `http://localhost:8080` and `grpc://localhost:9000` (depending on your protocol of choice). The UI is also available on port `8080`, however, in read-only mode. As flag state is instead configured via the configuration file we defined before.
+Now that Flipt is running locally, our application can also be run and configured to target our local instance of Flipt available at both `http://localhost:8080` and `grpc://localhost:9000` (depending on your protocol of choice). The UI is also available on port `8080`, however, it is running in **read-only mode** since flag state is configured via the configuration file we defined before.
 
 ### Running Flipt Over Git
 
@@ -205,7 +205,7 @@ docker run -it --rm \
 ```
 
 In this example, Flipt has been configured to serve directly from our pretend repository with our application code in it.
-Flipt will track the HEAD of this repositories `main` branch.
+Flipt will track the HEAD of this repository's `main` branch.
 Changes will eventually propagate into our running instance of Flipt.
 
 <Info>
@@ -219,7 +219,7 @@ Changes will eventually propagate into our running instance of Flipt.
 For sake of this demonstration, we're going to assume Flipt has been deployed and configured in this way for our production environment.
 Our production deployment of our words endpoint will also have been configured to connect to this running instance of Flipt.
 
-Given our repository is now being tracked and served by Flipt, we can add, commit and push both our changes to our endpoint, as well as our new `features.yml` file to our branch `main`.
+Given our repository is now being tracked and served by Flipt, we can add, commit, and push both our changes to our endpoint, as well as our new `features.yml` file to our branch `main`.
 
 ```bash
 git add pkg/server/words.go
@@ -248,7 +248,7 @@ git checkout -b enable-flag-for-internal-organization
 
 ### Internal Users
 
-Then we open the `features.yml` file and update definition with a new segment, and a rollout rule on our flag which returns `enable = true` when the request matches our new segment.
+We open the `features.yml` file and update the definition with a new segment and add a rollout rule on our flag which returns `enable = true` when the request matches our new segment.
 
 ```diff features.yml
  version: "1.2"
@@ -270,7 +270,7 @@ Then we open the `features.yml` file and update definition with a new segment, a
 +    type: STRING_COMPARISON_TYPE
 ```
 
-Breaking this change down we've:
+Breaking this change down we've got:
 
 #### The `internal-users` Segment
 
@@ -311,7 +311,7 @@ Now our flag is configured to target internal users and enable the Quicksort alg
 
 #### Proposing and Integrating Our Change
 
-Next, we add, commit and push the change to our branch.
+Next, we add, commit, and push the change to our branch.
 
 ```bash
 git add features.yml
@@ -322,7 +322,7 @@ git push enable-flag-for-internal-organization
 ```
 
 From here, we can open a pull-request and get feedback from our team.
-Once we've have an approval, we can merge the PR and the change goes live.
+Once we have approval, we can merge the PR and the change goes live.
 When the change has been merged into `main`, Flipt will eventually start serving this new configuration change.
 
 We can now request our application as an authenticated user.
@@ -338,13 +338,12 @@ Whereas, the rest of users should still be served using the old Bubble Sort algo
 
 ### Proportional Rollout
 
-Once we're confident our change is working as expected, because we've have validated the change in production for `internal` users, we can start to roll it out to external users.
+Once we're confident our change is working as expected, since we've validated the change in production for `internal` users, we can start to roll it out to external users.
 
-We could enable the flag for all users at once, but there is always a chance we've have missed something during manual validation.
-Everyone has the best intentions, but things get missed.
-So we're going to start slow and gradually enable it for percentages of our user-base.
+We could enable the flag for all users at once, but there is always a chance we've missed something during manual validation.
+Everyone has the best intentions, however. things get missed. So instead we're going to start slow and gradually enable it for percentages of our user base.
 This will give the change time to bake with your audience.
-If anything is wrong, we've have minimized the effected users to a subset.
+If anything is wrong, we've minimized the effected users to a small subset.
 
 Once again we're going to checkout a branch.
 
@@ -382,11 +381,11 @@ Again, breaking this change down:
 #### A New Threshold Rollout Rule
 
 Here we're adding a new, different rollout rule type to our existing flag.
-Note that we've have left our segment targeting rule intact.
+Note that we have left our segment targeting rule intact.
 
 This means our flag will remain enabled for internal users.
-Rollouts rules are evaluated on each request in order.
-The first rule to match, will result in the flags enabled property returning the configured `value`.
+Rollout rules are evaluated on each request in order.
+The first rule to match will result in the flags enabled property returning the configured `value`.
 If no rules match, then the flags top-level `enabled` property is used as the final default return value.
 
 ```yaml features.yml
@@ -410,7 +409,7 @@ This threshold percentage is set to `20`, meaning roughly `20%` of entity IDs wi
 
 #### Proposing and Integrating Our Change
 
-Once again, we add, commit and push the change to our branch.
+Once again, we add, commit, and push the change to our branch.
 
 ```bash
 git add features.yml
@@ -421,7 +420,7 @@ git push enable-flag-for-20-percent
 ```
 
 From here, we can open a pull-request and get feedback from our team.
-Once we've have an approval, we can merge the PR and the change goes live.
+Once we've got approval, we can merge the PR and the change goes live.
 
 ### Closing the Loop
 
@@ -460,13 +459,13 @@ func (s *Server) ListWords(w http.ResponseWriter, r *http.Request) {
 
 We've successfully rolled a feature out to production using GitOps practices via Flipt's declarative feature flag configuration files and filesystem backends.
 Along the way, we had the opportunity to use Git to understand the current state of the world.
-At each commit, we could've fully recreate the configuration of our entire application, including the state of Flipt itself.
+At each commit, we could've fully recreated the configuration of our entire application, including the state of Flipt itself.
 
 ### Further Considerations
 
 Now you have all the tools necessary to practice GitOps with your feature flags.
 
-However, in production, you mileage may vary with the different backed types.
+However, in production, your mileage may vary with the different backed types.
 You might want to consider the `object` (and AWS S3 type) backend if your source Git repositories are large (we're working on a guide for that now).
 
 The filesystem storage backends currently mandate that the UI is **read-only**.
