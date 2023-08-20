@@ -5,9 +5,12 @@ description: This document describes how to configure Flipt's telemetry outputs 
 
 ## Telemetry
 
-Flipt developers rely on anonymous usage data to help prioritize new features
-and improve the product. The information collected is completely anonymous,
+Flipt developers rely on anonymous usage data to help prioritize new features and improve the product. The information collected is completely anonymous,
 never shared with external entities, and you can opt-out at any time.
+
+The telemetry data is collected by default, but you can disable it by following the instructions below.
+
+Telemetry is only collected when Flipt is running, **once at startup** and then every **4 hours**.
 
 ### What Kind of Data is Collected?
 
@@ -16,8 +19,7 @@ never shared with external entities, and you can opt-out at any time.
 - Cache backend (i.e.: Redis)
 - Authentication methods (i.e.: OIDC)
 
-We use [Segment](https://segment.com) to collect the data. Only the creator of
-Flipt has access to the raw data.
+We use [Segment](https://segment.com) to collect the data. Only the Flipt team has access to the raw data.
 
 Here is an example of the telemetry data sent to Segment:
 
@@ -28,6 +30,8 @@ Here is an example of the telemetry data sent to Segment:
   "lastTimestamp": "2023-04-25T01:01:51Z",
   "flipt": {
     "version": "v1.21.1",
+    "os": "linux",
+    "arch": "amd64",
     "storage": {
       "database": "postgres",
       "cache": "redis"
@@ -39,7 +43,7 @@ Here is an example of the telemetry data sent to Segment:
 }
 ```
 
-You can always view the full schema of the telemetry data and see how it's collected on
+You can always view the current schema of the telemetry data and see how it's collected on
 [GitHub](https://github.com/flipt-io/flipt/blob/main/internal/telemetry/telemetry.go).
 
 ### How to Disable Telemetry
@@ -56,7 +60,7 @@ meta:
 #### Environment Variables
 
 ```shell
-export FLIPT_TELEMETRY_ENABLED=false
+export FLIPT_META_TELEMETRY_ENABLED=false
 ```
 
 As of [v1.21.0](https://github.com/flipt-io/flipt/releases/tag/v1.21.0), telemetry can also be disabled by setting the [DO_NOT_TRACK](https://consoledonottrack.com/) environment variable to `true` or `1`:
