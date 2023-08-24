@@ -205,9 +205,9 @@ You can see an example of that above in the [sample configuration](#method-oidc)
 
 #### PKCE
 
-There are a good amount of OIDC providers that support the PKCE (Proof Key for Code Exchange) flow as well as the implicit OAuth flow. Flipt allows for a piece of configuration to enable PKCE for all the legs of the OIDC authentication flow.
+A good amount of OIDC providers support the PKCE (Proof Key for Code Exchange) flow and the implicit OAuth flow. Flipt allows for a configuration to enable PKCE for all the legs of the OIDC authentication flow.
 
-To enable this, you will need to set the [`use_pkce`](/configuration/overview#authentication-methods-oidc) property to `true` for each provider you would like to leverage PKCE with.
+To enable this, you must set the [`use_pkce`](/configuration/overview#authentication-methods-oidc) property to `true` for each provider you would like to leverage PKCE with.
 
 #### Example: OIDC With Google
 
