@@ -1,6 +1,6 @@
 ## Login With GitHub
 
-If you've read the Login With Google guide, you would have learned that Flipt supports many methods of authentication for users to control who has access to what in Flipt.
+If you've read the [Login With Google guide](/guides/login-with-google), you would have learned that Flipt supports many methods of authentication for users to control who has access to what in Flipt.
 
 Alongside the suport for OIDC Login that supports many providers, Flipt has launched support for login in with GitHub in version [v1.26.0](https://github.com/flipt-io/flipt/tree/v1.26.0), through the OAuth2.0 flow! This guide will serve as a walk-through on how to set this flow up for users of Flipt in your organization(s).
 
@@ -50,11 +50,11 @@ The Client ID should already be provided to you. For a client secret, you will h
 
 1. Define a `config.yml`
 
-Flipt relies on configuration that the user provides for many bits of functionality. In order to enable Login With GitHub feature, you must define a configuration file `config.yml` in this case.
+Flipt relies on configuration that the user provides for many bits of functionality. In order to enable the Login With GitHub feature, you must define a configuration file `config.yml` with certain fields and values.
 
 Our [documentation](https://www.flipt.io/docs/configuration/overview) gives a complete list of all configuration values available for how to configure Flipt.
 
-Under Authentication Methods: GitHub. You should see the values that need to be provided in order to enable the login feature.
+Under [Authentication Methods: GitHub](/configuration/overview#authentication-methods-github). You should see the values that need to be provided in order to enable the login feature.
 
 It should look like the following:
 
@@ -80,7 +80,7 @@ authentication:
 
 The `client_id` and `client_secret` are going to be to values from your GitHub OAuth application. The `redirect_address` will be the `ngrok` URL with no path (e.g. https://36f1-2600-1700-1d64-daa0-444c-3f7e-ceb7-3825.ngrok-free.app). The `scopes` is entirely dependent on what level of access you would like the returned GH access token to have. [Here](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps) is a list of scopes that you can use.
 
-The last bit of configuration is the session details. In order for the browser to establish a session to communicate with Flipt in an authenticated way, we provide access details in an HTTP cookie whose value is a static token created by Flipt. This static token is created during the GH OAuth2.0 flow, and associated with the GH access token and other metadata. The domain value will specify which hosts can receive a cookie. Since we only care about the host that is serving Flipt you can provide the `ngrok` URL value but without the `https://` prefix (e.g. 36f1-2600-1700-1d64-daa0-444c-3f7e-ceb7-3825.ngrok-free.app).
+The last bit of configuration is the session details. In order for the browser to establish a session to communicate with Flipt in an authenticated way, we provide access details in an HTTP cookie whose value is a static token created by Flipt. This static token is created during the GH OAuth2.0 flow, and associated with the GH metadata retrieved from the GH API with the access token. The `domain` value will specify which hosts can receive a cookie. Since we only care about the host that is serving Flipt you can provide the `ngrok` URL value but without the `https://` prefix (e.g. 36f1-2600-1700-1d64-daa0-444c-3f7e-ceb7-3825.ngrok-free.app).
 
 2. Run the Docker container
 
