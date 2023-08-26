@@ -105,7 +105,7 @@ All constraints have a _property_, _type_, _operator_ and optionally a _value_.
 
 #### Constraint Types
 
-There are currently 4 constraint types:
+Currently 4 constraint types are available:
 
 - **String** which allows you to check a string property of an entity
 - **Number** which allows you to check a number property of an entity (integer or float)
@@ -152,9 +152,7 @@ to the remaining **60%**. You would accomplish this using rules with distributio
 
 ![Distributions Example](/images/concepts/distributions.png)
 
-This is an extremely powerful feature of Flipt that can help you seamlessly
-deploy new features of your applications to your users while also limiting the reach
-of potential bugs.
+The ability to manage distributions, as illustrated in the image above, is an extremely powerful feature of Flipt that can help you seamlessly deploy new features of your applications to your users while also limiting the reach of potential bugs.
 
 ## Rollouts
 
@@ -278,7 +276,7 @@ personally identifiable information (PII) or other privacy concerns.
 
 </Info>
 
-**Here's how it works:**
+**Let's look at how it works:**
 
 1. Flipt takes the `flagKey` and `entityID` and concatenates them together to
    form a string that looks like `flagKey:entityID`. This is called the key.
@@ -286,7 +284,7 @@ personally identifiable information (PII) or other privacy concerns.
 3. Flipt then creates a set of buckets from 0&dash;999 (1000 total buckets), mapping them with a sorted set of the [distributions](#distributions) for the flag.
 4. Finally, Flipt takes the hash and uses the modulo operator to determine which bucket the hashed value falls into. The distribution that maps to that bucket is then returned.
 
-**Here's an example:**
+**Consider an example:**
 
 Imagine that you have a flag with two [distributions](#distributions) `A` and `B`.
 

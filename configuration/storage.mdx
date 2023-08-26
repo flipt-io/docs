@@ -93,7 +93,7 @@ when the migration container exits, having no effect on your Flipt instance!
 The following backend types are designed to support declarative management of feature flag state.
 In particular, they're designed to support GitOps practices with minimal external dependencies.
 
-There are currently three backend types we classify as being filesystem backends, `local`, `git`, and `object`.
+Currently, we classify `local`, `git`, and `object` as the three filesystem backends.
 The `local` backend has been primarily developed to support a local development experience,
 whereas, the `git` and `object` backends are intended for production and serves flag state directly from a configurable repository and Git reference (e.g. branch) or object storage bucket.
 
