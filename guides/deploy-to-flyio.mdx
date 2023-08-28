@@ -26,9 +26,9 @@ By the end of this guide, we will have:
 3. Begin the launch process to deploy Flipt on Fly.io using their CLI, selecting mainly the defaults and Postgres when prompted:
 
 <Tip>
-  Here we specify the <code>ghcr.io/flipt-io/flipt:latest</code> image, which is
-  the latest stable release of Flipt. You can also use a specific version of
-  Flipt by replacing <code>latest</code> with a specific version tag (e.g.{" "}
+  We specify the <code>ghcr.io/flipt-io/flipt:latest</code> image, which is the
+  latest stable release of Flipt. You can also use a specific version of Flipt
+  by replacing <code>latest</code> with a specific version tag (e.g.{" "}
   <code>ghcr.io/flipt-io/flipt:v1.23.0</code>).
 </Tip>
 
@@ -49,7 +49,7 @@ Automatically selected personal organization: <your-org>
   process. You will need this to configure Flipt.
 </Warning>
 
-4. After the launch process completes, it will write a `fly.toml` file to your current directory. Here you can configure the number of instances, memory, and CPU allocated to your Flipt deployment. You can also set environment variables to customize Flipt's configuration.
+4. After the launch process completes, it will write a `fly.toml` file to your current directory. You can configure the number of instances, memory, and CPU allocated to your Flipt deployment. You can also set environment variables to customize Flipt's configuration.
 
    For more information, refer to the [Fly.io documentation](https://fly.io/docs/reference/configuration/) and the [Flipt documentation](/configuration/overview).
 

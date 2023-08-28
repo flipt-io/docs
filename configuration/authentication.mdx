@@ -110,7 +110,7 @@ Further explanation for using this method can be found in the [Authentication: S
 
 ### Method: OIDC
 
-<Note>This is a `session compatible` authentication method.</Note>
+<Note>The `OIDC` method a `session compatible` authentication method.</Note>
 
 The `oidc` method provides the ability to establish client tokens via OAuth 2.0 with OIDC flow.
 Once enabled and configured properly, the UI will automatically leverage it and present any configured providers as login options.
@@ -123,7 +123,7 @@ authentication:
       email_matches:
         - ^.*@flipt.io$
       providers:
-        some_provider: # insert your provider name here
+        some_provider: # insert your provider name
           issuer_url: "https://some.oidc.issuer.com"
           client_id: "some_client_identifier"
           client_secret: "some_client_secret_credential"
@@ -301,5 +301,5 @@ The `grace_period` is simply for the cleanup process.
 
 ## Reverse Proxy
 
-it's possible to secure Flipt simply by running it behind a reverse proxy in your own trusted environment.
-An example of this can be found in the core Flipt repository [here](https://github.com/flipt-io/flipt/tree/main/examples/auth).
+You can secure Flipt simply by running it behind a reverse proxy in your own trusted environment.
+An example of this can be found in [authentication examples](https://github.com/flipt-io/flipt/tree/main/examples/auth) in the Flipt repository.
