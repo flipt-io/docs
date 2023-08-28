@@ -48,7 +48,7 @@ For the purpose of this guide, we will start by configuring and running Flipt wi
 
 ### 1. Create a New Directory
 
-This is an optional step, however, we suggest you create a blank directory in which to experiment with Flipt.
+Creating a new directory is an optional step, however, we suggest you create a blank directory in which to experiment with Flipt.
 
 ```sh
 mkdir ~/flipt-with-google
@@ -76,7 +76,7 @@ authentication:
 
 ### 3. Run Flipt as a Docker container
 
-Here we run Flipt and mount our local `config.yml` file into the running container.
+In this step, we run Flipt and mount our local `config.yml` file into the running container.
 
 This will start Flipt as a process in the foreground of your current terminal session.
 You can stop Flipt by entering `ctrl+C`.
@@ -108,7 +108,7 @@ In order to get Google setup as our IdP, we need:
 3. To create a set of [Google OAuth client ID credentials](https://developers.google.com/workspace/guides/create-credentials#oauth-client-id)
 
 Google's documentation will always be the most up-to-date source for how to achieve this.
-However, we will go over some of the details here and strive to keep this guide up to date.
+However, we will go over some of the details and strive to keep this guide up to date.
 
 ### 1. Configure your [OAuth Consent Screen](https://developers.google.com/workspace/guides/configure-oauth-consent)
 
@@ -171,7 +171,7 @@ This will present us with an input box which we will populate with the following
 http://localhost:8080/auth/v1/method/oidc/google/callback
 ```
 
-This is the redirect URL for your local running instance.
+The URL `http://localhost:8080/auth/v1/method/oidc/google/callback` is the redirect URL for your local running instance.
 In a production environment, you would replace the domain part of the URI with the public address of your Flipt instance.
 
 4. Click `Create`.
@@ -264,8 +264,7 @@ To help you across the finishing line, here are some tips and considerations to 
 In reality, you're not going to run Flipt on `localhost`.
 You're going to host it on some domain name on the public internet or within a VPN.
 
-There are a few touch points where you're going to want to update with your new domain.
-Take for example, the domain `https://flipt.internal.dev`.
+A few touch points will need to be updated with your new domain. For example, consider the domain `https://flipt.internal.dev`.
 
 1. Update your Google OAuth Client
 

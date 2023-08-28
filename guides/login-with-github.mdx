@@ -2,7 +2,7 @@
 
 If you've read the [Login With Google guide](/guides/login-with-google), you would have learned that Flipt supports many methods of authentication for users to control who has access to what in Flipt.
 
-Alongside the support for OIDC Login that supports many providers, Flipt has launched support for login with GitHub in version [v1.26.0](https://github.com/flipt-io/flipt/tree/v1.26.0), through the OAuth2.0 flow. This guide will serve as a walk-through on how to set this flow up for users of Flipt in your organization.
+Alongside the support for generic OIDC login, Flipt has launched support for login with GitHub in version [v1.26.0](https://github.com/flipt-io/flipt/tree/v1.26.0), through their OAuth2.0 flow. This guide will serve as a walk-through on how to set this flow up for users of Flipt in your organization.
 
 ## Prerequisites
 
@@ -40,7 +40,9 @@ $ ngrok http 8080
 
 Copy the https URL that `ngrok` provides, and append `/auth/v1/method/github/callback` to it. This will be the value you should put for the callback URL. (e.g. https://36f1-2600-1700-1d64-daa0-444c-3f7e-ceb7-3825.ngrok-free.app/auth/v1/method/github/callback).
 
-(**Note**: Using `ngrok` is just to get started with getting the GitHub OAuth2.0 flow working. In a production setting, if Flipt is publicly accessible, you can use that hostname instead of `ngrok`. These values can always be changed later after the creation of the application.)
+<Note>
+We're using `ngrok` here for illustration purposes. In a production setting, you would use whichever publically accessible domain name you have configured for your Flipt deployment. These values can always be changed later after the creation of the application.
+</Note>
 
 5. Retrieve the `Client ID` and `Client Secret` from the created OAuth2.0 app
 
@@ -80,7 +82,7 @@ authentication:
 
 The `client_id` and `client_secret` are going to be the values from your GitHub OAuth application. The `redirect_address` will be the `ngrok` URL with no path (e.g. https://36f1-2600-1700-1d64-daa0-444c-3f7e-ceb7-3825.ngrok-free.app). The `scopes` are entirely dependent on what level of access you would like the returned GitHub access token to have. The [GitHub documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps) describes a list of valid scopes.
 
-The last bit of configuration is the session details. In order for the browser to establish a session to communicate with Flipt in an authenticated way, we must provide access details in an HTTP cookie whose value is a static token created by Flipt. This static token is created during the GitHub OAuth2.0 flow, and associated with the GitHub metadata retrieved from the GitHub API with the access token. The `domain` value will specify which hosts can receive a cookie. Since we only care about the host serving Flipt, you can provide the `ngrok` URL value but without the `https://` prefix (e.g. 36f1-2600-1700-1d64-daa0-444c-3f7e-ceb7-3825.ngrok-free.app).
+The last bit of configuration is the session details. In order for the browser to establish a session to communicate with Flipt in an authenticated way, we must provide access details in an HTTP cookie whose value is a static token created by Flipt. This static token is created during the GitHub OAuth2.0 flow, and associated with the GitHub metadata retrieved from the GitHub API with the access token. The `domain` value will specify which host can receive the cookie. Since we only care about the host serving Flipt, you can provide the `ngrok` URL value but without the `https://` prefix (e.g. 36f1-2600-1700-1d64-daa0-444c-3f7e-ceb7-3825.ngrok-free.app).
 
 2. Run the Docker container
 
