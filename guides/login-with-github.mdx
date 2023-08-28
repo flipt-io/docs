@@ -41,7 +41,10 @@ $ ngrok http 8080
 Copy the https URL that `ngrok` provides, and append `/auth/v1/method/github/callback` to it. This will be the value you should put for the callback URL. (e.g. https://36f1-2600-1700-1d64-daa0-444c-3f7e-ceb7-3825.ngrok-free.app/auth/v1/method/github/callback).
 
 <Note>
-We're using `ngrok` here for illustration purposes. In a production setting, you would use whichever publically accessible domain name you have configured for your Flipt deployment. These values can always be changed later after the creation of the application.
+  We're using `ngrok` here for illustration purposes. In a production setting,
+  you would use whichever publically accessible domain name you have configured
+  for your Flipt deployment. These values can always be changed later after the
+  creation of the application.
 </Note>
 
 5. Retrieve the `Client ID` and `Client Secret` from the created OAuth2.0 app
