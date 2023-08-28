@@ -23,9 +23,8 @@ go_gc_duration_seconds{quantile="1"} 0.00026651 go_gc_duration_seconds_sum
 0.000402094 go_gc_duration_seconds_count 5
 ```
 
-There is an
-[example](https://github.com/flipt-io/flipt/tree/main/examples/prometheus)
-provided in the GitHub repository showing how to set up Flipt with Prometheus.
+An [example](https://github.com/flipt-io/flipt/tree/main/examples/prometheus)
+showing how to set up Flipt with Prometheus can be found in the GitHub repository.
 
 ### Dashboards
 
@@ -47,7 +46,7 @@ Currently, we support the following tracing backends:
 
 Enable tracing via the values described in the [Tracing configuration](/configuration/overview#tracing) and point Flipt to your configured collector to record spans.
 
-There are [examples](https://github.com/flipt-io/flipt/tree/main/examples/tracing) provided in the main GitHub repository showing how to set up Flipt with each of the supported tracing backends.
+[Examples](https://github.com/flipt-io/flipt/tree/main/examples/tracing) showing how to set up Flipt with each of the supported tracing backends can be found in the main GitHub repository .
 
 ## Audit Events
 
@@ -84,6 +83,6 @@ Starting from `v1.21.0`, Flipt supports sending audit events to configured sinks
 
 Currently, we support the following sinks for audit events:
 
-- Log File: the audit events are JSON encoded and new-line delimited. Configuration found [here](/configuration/overview#audit-events-log-file)
+- Log File: the audit events are JSON encoded and new-line delimited. You can find the configuration in the [Audit Events - Log File](/configuration/overview#audit-events-log-file) section of the Configuration documentation.
 
 You can find [examples](https://github.com/flipt-io/flipt/tree/main/examples/audit) in the main GitHub repository on how to enable audit events, and how to tune configuration for it.

@@ -3,7 +3,7 @@ title: Overview
 description: This document describes how to configure the Flipt server.
 ---
 
-There are 2 ways to configure `flipt` server.
+`Flipt` server can be configured in two ways.
 
 Configuration precedence is as follows:
 
@@ -21,7 +21,7 @@ properties for the server.
 As of version [v1.23](https://github.com/flipt-io/flipt/releases/tag/v1.23.0), the server will check in a few different locations for server configuration (in order):
 
 1. `--config` flag as an override
-2. `{{ USER_CONFIG_DIR }}/flipt/config.yml` (the `USER_CONFIG_DIR` value is based on your architecture and specified [here](https://pkg.go.dev/os#UserConfigDir))
+2. `{{ USER_CONFIG_DIR }}/flipt/config.yml` (the `USER_CONFIG_DIR` value is based on your architecture and specified in the [Go documentation](https://pkg.go.dev/os#UserConfigDir))
 3. `/etc/flipt/config/default.yml`
 
 <Tip>

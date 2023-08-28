@@ -80,7 +80,7 @@ Feature flag systems are primarily read-often and written infrequently. This all
 
 This has the potential for multiple benefits:
 
-- Failures in either read or write tiers can be isolated from one another. A failure in the tier serving the dashboard wouldn’t necessarily affect flag evaluations.
+- Failures in either read or write tiers can be isolated from one another. A failure in the tier serving the dashboard wouldn't necessarily affect flag evaluations.
 - Reads could be configured with access to the cache, where writes could be isolated from the caching tier. This may have benefits to the number of connections required on your caching layer.
 - Reads could be deployed in front of read-only replicas of a database, with the write-tier connecting directly to the primary, allowing more potential for scale in the database layer.
 
