@@ -46,9 +46,9 @@ Vale will lint the file and output any errors or warnings to the console.
 
 Vale is configured using a YAML file called `.vale.ini`. This file is located in the root of the repository.
 
-Our configuration file uses rules from the [Microsoft Writing Style Guide](https://docs.microsoft.com/en-us/style-guide/welcome/). You can find the full configuration file [here](.vale.ini).
+Our configuration file uses rules from the [Microsoft Writing Style Guide](https://docs.microsoft.com/en-us/style-guide/welcome/). The full configuration can be found in the [.vale.ini](.vale.ini) file.
 
-We also use a [custom style](https://docs.errata.ai/vale/styles) to lint our documentation. You can find the style file [here](.vale/styles/flipt).
+We also use a [custom style](https://docs.errata.ai/vale/styles) to lint our documentation. The style file can be found in the (.vale/styles/flipt)[.vale/styles/flipt) directory.
 
 ### Spelling Errors
 
