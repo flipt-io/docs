@@ -103,7 +103,32 @@ This will lead to the following endpoints being available on Flipt:
 These two endpoints are necessary to support the different legs of the OAuth/OIDC flow.
 The first can be requested to obtain an authorization URL directed at the configured instance of Dex.
 The latter is the destination that Dex will redirect the client back to.
-When using HTTP, this callback endpoint will establish the `flipt_client_token` and return it via the `Set-Cookie` response header.
+When using HTTP, this callback endpoint will establish a cookie named `flipt_client_token` and return it via the `Set-Cookie` response header.
+
+## GitHub
+
+[GitHub](https://github.com) is an OAuth 2.0 implementation compatible with GitHub.
+
+<Note>
+As with OIDC, the GitHub method works natively with the Flipt UI.
+Once enabled, the UI will support a "Login with GitHub" login option.
+</Note>
+
+The `GitHub` authentication method is primarily designed to support browser-based authentication.
+However, it can be manually invoked if the need arises.
+
+Once enabled, the `/auth/v1/method/github` API prefix is mounted to Flipt's API.
+This section of the API supports a GitHub's OAuth 2.0 flow.
+
+This will lead to the following endpoints being available on Flipt:
+
+- `GET /auth/v1/method/github/authorize`
+- `GET /auth/v1/method/github/callback`
+
+These two endpoints are necessary to support the different legs of the OAuth flow.
+The first can be requested to obtain an authorization URL directed at GitHub.
+The latter is the destination that GitHub will redirect the client back to.
+When using HTTP, this callback endpoint will establish a cookie named `flipt_client_token` and return it via the `Set-Cookie` response header.
 
 ## Kubernetes
 
