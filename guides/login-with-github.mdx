@@ -1,11 +1,11 @@
 ---
 title: Login with GitHub
-description: Configuring Flipt to enable login with GitHub via OAuth2.0
+description: Configuring Flipt to enable login with GitHub via OAuth 2.0
 ---
 
 If you've read the [Login With Google guide](/guides/login-with-google), you would have learned that Flipt supports many methods of authentication for users to control who has access to Flipt.
 
-Alongside the support for generic OIDC login, Flipt has launched support for login with GitHub in version [v1.26.0](https://github.com/flipt-io/flipt/releases/tag/v1.26.0), through their OAuth2.0 flow. This guide will serve as a walk-through on how to set this flow up for users of Flipt in your organization.
+Alongside the support for generic OIDC login, Flipt has launched support for login with GitHub in version [v1.26.0](https://github.com/flipt-io/flipt/releases/tag/v1.26.0), through their OAuth 2.0 flow. This guide will serve as a walk-through on how to set this flow up for users of Flipt in your organization.
 
 ## Prerequisites
 
@@ -13,15 +13,15 @@ Alongside the support for generic OIDC login, Flipt has launched support for log
 - [GitHub](https://github.com/)
 - [Ngrok](https://ngrok.com/)
 
-## Brief on OAuth2.0
+## Brief on OAuth 2.0
 
-OAuth2.0 is an authentication standard whose goal is to allow 3rd party applications to access authorized resources from a provider. It relies on the user explicitly granting access to the 3rd party application to issue a token on behalf of the OAuth2.0 provider for authorized use.
+OAuth 2.0 is an authentication standard whose goal is to allow 3rd party applications to access authorized resources from a provider. It relies on the user explicitly granting access to the 3rd party application to issue a token on behalf of the OAuth 2.0 provider for authorized use.
 
-![OAuth2.0 Flow Diagram](/images/guides/login-with-github/oauth-flow-diagram.png)
+![OAuth 2.0 Flow Diagram](/images/guides/login-with-github/oauth-flow-diagram.png)
 
-In comparison to OIDC, OAuth2.0 doesn't have an identity standard, so retrieving identity can vary drastically from provider to provider. Therefore, it's up to the user to consult the OAuth2.0 provider's documentation to understand if and how identity information can be retrieved.
+In comparison to OIDC, OAuth 2.0 doesn't have an identity standard, so retrieving identity can vary drastically from provider to provider. Therefore, it's up to the user to consult the OAuth 2.0 provider's documentation to understand if and how identity information can be retrieved.
 
-## Creating OAuth2.0 Application on GitHub
+## Creating OAuth 2.0 Application on GitHub
 
 1. Navigate to your GitHub account, and click on `Settings` under the menu of your Profile icon
 
@@ -31,7 +31,7 @@ In comparison to OIDC, OAuth2.0 doesn't have an identity standard, so retrieving
 
 4. You should be brought to a page that looks like the image below, and can start filling out the information:
 
-![OAuth2.0 App Creation](/images/guides/login-with-github/oauth-registration.png)
+![OAuth 2.0 App Creation](/images/guides/login-with-github/oauth-registration.png)
 
 - `Application Name`: Give your application a meaningful name
 - `Homepage URL`: Usually Flipt will be used internally by organizations, so this value depends on how you plan to expose Flipt. When in doubt you can just use the URL to your organization's home page
@@ -45,24 +45,24 @@ Copy the https URL that `ngrok` provides, and append `/auth/v1/method/github/cal
 
 <Note>
   We're using `ngrok` here for illustration purposes. In a production setting,
-  you would use whichever publically accessible domain name you have configured
+  you would use whichever publicly accessible domain name you have configured
   for your Flipt deployment. These values can always be changed later after the
   creation of the application.
 </Note>
 
-5. Retrieve the `Client ID` and `Client Secret` from the created OAuth2.0 app
+5. Retrieve the `Client ID` and `Client Secret` from the created OAuth 2.0 app
 
-The Client ID should already be provided to you. You will have to generate a client secret. Click on the `Generate a new client secret` button (it might ask you to authenticate again with GitHub).
+The Client ID should already be provided to you. You will have to generate a client secret. Click on the `Generate a new client secret` button (it may ask you to authenticate again with GitHub).
 
 ## Running Flipt Locally
 
 1. Define a `config.yml`
 
-Flipt relies on configuration that the user provides for many bits of functionality. In order to enable the Login With GitHub feature, you must define a configuration file `config.yml` with certain fields and values.
+Flipt relies on configuration that the user provides for many bits of functionality. To enable the Login With GitHub feature, you must define a configuration file `config.yml` with certain fields and values.
 
-Our [documentation](https://www.flipt.io/docs/configuration/overview) gives a complete list of all configuration values available for how to configure Flipt.
+The [configuration documentation](https://www.flipt.io/docs/configuration/overview) gives a complete list of all configuration values available for how to configure Flipt.
 
-The [Authentication Methods: GitHub](/configuration/overview#authentication-methods-github) section of our configuration documentation describes the values needed to enable the Login with GitHub functionality.
+The [Authentication Methods: GitHub](/configuration/overview#authentication-methods-github) section of the configuration documentation describes the values needed to enable the Login with GitHub functionality.
 
 It should look similar to the following:
 
@@ -88,7 +88,7 @@ authentication:
 
 The `client_id` and `client_secret` are going to be the values from your GitHub OAuth application. The `redirect_address` will be the `ngrok` URL with no path (e.g. `https://36f1-2600-1700-1d64-daa0-444c-3f7e-ceb7-3825.ngrok-free.app`). The `scopes` are entirely dependent on what level of access you would like the returned GitHub access token to have. The [GitHub documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps) describes a list of valid scopes.
 
-The last bit of configuration is the session details. In order for the browser to establish a session to communicate with Flipt in an authenticated way, we must provide access details in an HTTP cookie whose value is a static token created by Flipt. This static token is created during the GitHub OAuth2.0 flow, and associated with the GitHub metadata retrieved from the GitHub API with the access token. The `domain` value will specify which host can receive the cookie. Since we only care about the host serving Flipt, you can provide the `ngrok` URL value but without the `https://` prefix (e.g. `36f1-2600-1700-1d64-daa0-444c-3f7e-ceb7-3825.ngrok-free.app`).
+The last bit of configuration is the session details. In order for the browser to establish a session to communicate with Flipt in an authenticated way, you must provide access details in an HTTP cookie whose value is a static token created by Flipt. This static token is created during the GitHub OAuth 2.0 flow, and associated with the GitHub metadata retrieved from the GitHub API with the access token. The `domain` value will specify which host can receive the cookie. Since we only care about the host serving Flipt, you can provide the `ngrok` URL value but without the `https://` prefix (e.g. `36f1-2600-1700-1d64-daa0-444c-3f7e-ceb7-3825.ngrok-free.app`).
 
 2. Run the Docker container
 
@@ -111,7 +111,7 @@ Click the button to Login With GitHub, and it should take you to the GitHub doma
 
 ![GitHub Authorization](/images/guides/login-with-github/github-authorization.png)
 
-Click on the green `Authorize {username}` button to allow completion of the OAuth2.0 flow
+Click on the green `Authorize {username}` button to allow completion of the OAuth 2.0 flow
 
 4. ✅ Start using Flipt
 
@@ -121,4 +121,4 @@ After completion of the flow you should be taken to the normal Flipt homepage an
 
 ## Conclusion
 
-This guide shows the basics of getting Flipt running with GitHub OAuth2.0 authentication in a development setting using `ngrok`. Now that you know the basics, you can tailor the configuration pieces to fit your exact use cases. For instance, you probably would not use `ngrok` in a production setting, but rather a custom domain. If you have a custom domain, you can modify the `Authorization Callback URL` value on the GitHub OAuth application page, the `redirect_address`, and `domain` configuration values for the Flipt configuration.
+This guide shows the basics of getting Flipt running with GitHub OAuth 2.0 authentication in a development setting using `ngrok`. Now that you know the basics, you can tailor the configuration pieces to fit your exact use cases. For instance, you would not use `ngrok` in a production setting, but rather a custom domain. If you have a custom domain, you can modify the `Authorization Callback URL` value on the GitHub OAuth application page, the `redirect_address`, and `domain` configuration values for the Flipt configuration.
