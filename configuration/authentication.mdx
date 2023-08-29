@@ -110,7 +110,12 @@ Further explanation for using this method can be found in the [Authentication: S
 
 ### Method: OIDC
 
-<Note>The `OIDC` method a `session compatible` authentication method.</Note>
+<Note>The `OIDC` method is a `session compatible` authentication method.</Note>
+
+<Tip>
+  Read our [Login with Google](/guides/login-with-google) guide for a more
+  in-depth walkthrough setting up an OIDC provider.
+</Tip>
 
 The `oidc` method provides the ability to establish client tokens via OAuth 2.0 with OIDC flow.
 Once enabled and configured properly, the UI will automatically leverage it and present any configured providers as login options.
@@ -262,6 +267,34 @@ Google's consent screen can be configured to only accept accounts that are withi
 Other providers have similar mechanisms for attenuating who can leverage this authentication flow.
 
 </Tip>
+
+### Method: GitHub
+
+<Note>
+  The `GitHub` method is a `session compatible` authentication method.
+</Note>
+
+<Tip>
+  Read our [Login with Github](/guides/login-with-github) guide for a more
+  in-depth walkthrough.
+</Tip>
+
+The `github` method provides the ability to establish client tokens via OAuth 2.0 with GitHub as the identity provider.
+Once enabled and configured properly, the UI will automatically leverage it and present a "Login with GitHub" button.
+
+```yaml config.yaml
+authentication:
+  methods:
+    github:
+      enabled: true
+      client_id: "some_client_identifier"
+      client_secret: "some_client_secret_credential"
+      redirect_address: "https://your.flipt.instance.url.com"
+      scopes:
+        - user:email
+```
+
+!["GitHub Login"](../images/guides/login-with-github/login-with-github.png)
 
 ### Method: Kubernetes
 
