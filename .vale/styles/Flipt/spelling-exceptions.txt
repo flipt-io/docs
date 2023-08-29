@@ -53,3 +53,5 @@ zipkin
 Quicksort
 SCMs
 Gitlab
+ngrok
+hostname
