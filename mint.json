@@ -72,7 +72,8 @@
           "pages": [
             "guides/deploy-to-flyio",
             "guides/deploy-to-kubernetes",
-            "guides/login-with-google"
+            "guides/login-with-google",
+            "guides/login-with-github"
           ]
         }
       ]

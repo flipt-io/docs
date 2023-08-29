@@ -208,6 +208,12 @@ Since OIDC has the ability to retrieve email addresses, Flipt also provides a co
 
 You can see an example of that above in the [sample configuration](#method-oidc).
 
+#### PKCE
+
+A good amount of OIDC providers support the PKCE (Proof Key for Code Exchange) flow and the implicit OAuth flow. Flipt allows for a configuration to enable PKCE for all the legs of the OIDC authentication flow.
+
+To enable this, you must set the [`use_pkce`](/configuration/overview#authentication-methods-oidc) property to `true` for each provider you would like to leverage PKCE with.
+
 #### Example: OIDC With Google
 
 <Tip>
