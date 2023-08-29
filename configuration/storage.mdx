@@ -11,14 +11,20 @@ Flipt supports [SQLite](https://www.sqlite.org/index.html), [PostgreSQL](https:/
 SQLite is enabled by default for simplicity, however you should use PostgreSQL, MySQL, or CockroachDB if you intend to run multiple copies of Flipt in a high
 availability configuration.
 
-<Note>
+<Warning>
   All databases except for SQLite must exist and be up and running before Flipt
   will be able to connect to it.
-</Note>
+</Warning>
 
 The database connection can be configured as follows:
 
 ### SQLite
+
+<Note>
+  The default location of the SQLite database is `/var/opt/flipt/flipt.db` on
+  Linux and `~/Library/Application Support/flipt/flipt.db` on macOS (since
+  v1.26.0).
+</Note>
 
 ```yaml
 db:
