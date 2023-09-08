@@ -222,5 +222,8 @@
     "ga4": {
       "measurementId": "G-Q8MF5LZSNS"
     }
+  },
+  "feedback": {
+    "thumbsRating": true,
   }
 }
