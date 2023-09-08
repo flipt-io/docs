@@ -319,12 +319,10 @@ flags:
         name: Disabled
     rules:
       - segment: internal-users
-        rank: 1
         distributions:
           - variant: enabled
             rollout: 100
       - segment: all-users
-        rank: 2
         distributions:
           - variant: enabled
             rollout: 20
