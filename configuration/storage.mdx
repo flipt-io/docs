@@ -185,11 +185,29 @@ Flipt will follow the configured reference (e.g. branch name) and keep up to dat
 Authentication enables the ability to leverage private Git repositories as flag state backends.
 The `git` type backend supports both `basic` and `token` based authentication schemes.
 
+**GitHub**
+
 <Note>
-  When using GitHub and their PATs (Personal Access Tokens), `basic`
-  authentication should be used. GitHub expects you to supply a valid `username`
-  and provide your PAT as the `password` parameter.
+  When using GitHub and their [PATs (Personal Access
+  Tokens)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens),
+  `basic` authentication should be used. GitHub expects you to supply a valid
+  `username` and provide your PAT as the `password` parameter.
 </Note>
+
+```yaml
+storage:
+  type: git
+  git:
+    repository: "https://github.com/predictab.le/config.git"
+    ref: "main"
+    poll_interval: "30s"
+    authentication:
+      basic:
+        username: < username >
+        password: < github-personal-access-token >
+```
+
+See our [GitOps Guide](/guides/get-going-with-gitops) for an example of how to setup a GitHub repository as a flag state backend.
 
 ### Object
 
