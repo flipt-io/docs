@@ -227,10 +227,11 @@ These properties are as follows:
 
 ### Audit Events
 
-| Property                  | Description                                     | Default | Since   |
-| ------------------------- | ----------------------------------------------- | ------- | ------- |
-| audit.buffer.capacity     | Max capacity of buffer to send events to sinks  | 2       | v1.21.0 |
-| audit.buffer.flush_period | Duration to wait before sending events to sinks | 2m      | v1.21.0 |
+| Property                  | Description                                        | Default | Since   |
+| ------------------------- | -------------------------------------------------- | ------- | ------- |
+| audit.buffer.capacity     | Max capacity of buffer to send events to sinks     | 2       | v1.21.0 |
+| audit.buffer.flush_period | Duration to wait before sending events to sinks    | 2m      | v1.21.0 |
+| audit.events              | Type of events user would like to receive on sinks | ["*:*"] | v1.27.0 |
 
 #### Audit Events: Log File
 
@@ -238,6 +239,15 @@ These properties are as follows:
 | ----------------------- | ------------------------------------------------------------------------ | ------- | ------- |
 | audit.sinks.log.enabled | Enable log file sink                                                     | false   | v1.21.0 |
 | audit.sinks.log.file    | File path to write audit events to. Required if log file sink is enabled |         | v1.21.0 |
+
+#### Audit Events: Webhook
+
+| Property                                 | Description                                                        | Default | Since   |
+| ---------------------------------------- | ------------------------------------------------------------------ | ------- | ------- |
+| audit.sinks.webhook.enabled              | Enable webhook sink                                                | false   | v1.27.0 |
+| audit.sinks.webhook.url                  | URL to send audit events to                                        |         | v1.27.0 |
+| audit.sinks.webhook.signing_secret       | Signing secret to use for verification of origin on webhook server |         | v1.27.0 |
+| audit.sinks.webhook.max_backoff_duration | Max exponential backoff duration for sending webhook upon failure  | 15s     | v1.27.0 |
 
 ### Tracing
 
