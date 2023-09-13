@@ -1,4 +1,5 @@
 {
+  "$schema": "https://mintlify.com/schema.json",
   "name": "Flipt",
   "logo": {
     "light": "/logo/light-logo.svg",
@@ -225,5 +226,6 @@
   },
   "feedback": {
     "thumbsRating": true,
+    "suggestEdit": true
   }
 }
