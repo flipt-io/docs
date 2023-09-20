@@ -315,7 +315,7 @@ The indexing process first matches the `include` section and then filters that a
 <Info>
 
 Flipt flag state file format has been taken directly from Flipt's existing
-[import and export](/configuration/storage#import-export) flag state format.
+[import and export](/operations/import-export) flag state format.
 
 You can run `flipt export` on your existing Flipt instance, and then
 add/commit the result to a directory, object storage, or Git repository to get started quickly.
@@ -378,102 +378,6 @@ version: "1.0" # a version for this file format
 namespace: default # string identifying the resources collective namespace
 flags: [] # [Flag] list of Flag definitions
 segments: [] # [Segment] list of Segment definitions
-```
-
-## Import/Export
-
-<Note>Importing is only supported for database backed Flipt instances.</Note>
-
-Flipt supports importing and exporting your feature flag data since [v0.13.0](https://github.com/flipt-io/flipt/releases/tag/v0.13.0).
-
-Prior to Flipt [v1.20.0](https://github.com/flipt-io/flipt/releases/tag/v1.20.0) `import` and `export` ran directly against the backing database.
-Since `v1.20.0` you can now alternatively perform these operations through Flipt's API.
-Both `flipt import` and `flipt export` support the `--address` and `--token` flags to enable this behaviour.
-
-```
-flipt import --address http://flipt.my.org --token static-api-token
-
-flipt export --address grpc://flipt.my.org:9000
-```
-
-Both `HTTP` and `gRPC` are supported by the `--address` flag.
-
-### Import
-
-To import previously exported Flipt data, use the `flipt import` command. You
-can import either from a file or from STDIN.
-
-To import from STDIN, Flipt requires the `--stdin` flag:
-
-```yaml
-cat flipt.yaml | flipt import --stdin
-```
-
-If not importing using `--stdin`, Flipt requires the file to be imported as an
-argument:
-
-```yaml
-flipt import flipt.yaml
-```
-
-By default, Flipt will import into the `default` namespace.
-Use the flag `--namespace` to import into a different namespace.
-
-```yaml
-flipt import --namespace production flipt.yaml
-```
-
-A namespace must exist before your import into it.
-For convenience, you can supply `--create-namespace` in order for Flipt to automatically create the namespace if it doesn't already exist.
-
-```yaml
-flipt import --namespace production --create-namespace flipt.yaml
-```
-
-This command supports the `--drop` flag that will drop all of the data in your
-Flipt database tables before importing. This is to ensure that no data
-collisions occur during the import.
-
-<Warning>
-  Be careful when using the `--drop` flag as it will immediately drop all of
-  your data and there is no undo. It's recommended to first backup your database
-  before running this command just to be safe.
-</Warning>
-
-### Export
-
-To export Flipt data, use the `flipt export` command.
-
-By default, `export` will output to STDOUT:
-
-```yaml
-$ flipt export
-
-flags:
-- key: new-contact-page
-  name: New Contact Page
-  description: Show users our Beta contact page
-  enabled: true
-  variants:
-  - key: blue
-    name: Blue
-  - key: green
-    name: Green
-
-```
-
-You can also export to a file using the `-o filename` or `--output filename`
-flags:
-
-```yaml
-flipt export -o flipt.yaml
-```
-
-By default, Flipt will export from the `default` namespace.
-Use the flag `--namespace` to export from a different namespace.
-
-```yaml
-flipt export --namespace production
 ```
 
 ## Caching
