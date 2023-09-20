@@ -102,6 +102,7 @@
       "pages": [
         "operations/architecture",
         "operations/deployment",
+        "operations/import-export",
         "operations/production",
         "operations/upgrading"
       ]
