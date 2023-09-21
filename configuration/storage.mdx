@@ -8,7 +8,7 @@ description: This document describes how to configure Flipt's storage backend me
 Flipt supports [SQLite](https://www.sqlite.org/index.html), [PostgreSQL](https://www.postgresql.org/), [CockroachDB](https://www.cockroachlabs.com/) and
 [MySQL](https://dev.mysql.com/) databases.
 
-SQLite is enabled by default for simplicity, however you should use PostgreSQL, MySQL, or CockroachDB if you intend to run multiple copies of Flipt in a high
+SQLite is enabled by default for simplicity, however, you should use PostgreSQL, MySQL, or CockroachDB if you intend to run multiple copies of Flipt in a high
 availability configuration.
 
 <Warning>
@@ -101,11 +101,11 @@ In particular, they're designed to support GitOps practices with minimal externa
 
 Currently, we classify `local`, `git`, and `object` as the three filesystem backends.
 The `local` backend has been primarily developed to support a local development experience,
-whereas, the `git` and `object` backends are intended for production and serves flag state directly from a configurable repository and Git reference (e.g. branch) or object storage bucket.
+whereas, the `git` and `object` backends are intended for production and serve flag state directly from a configurable repository and Git reference (e.g. branch) or object storage bucket.
 
 ### Read Only Mode
 
-Once enabled, all filesystem backends put the Flipt API and UI into a `read only` mode that prevents from writing to the backend. This is useful for production environments where you want to ensure that flag state is only managed via the configured backend.
+Once enabled, all filesystem backends put the Flipt API and UI into a `read only` mode that prevents Flipt from writing to the backend. This is useful for production environments where you want to ensure that flag state is only managed via the configured backend.
 
 ### Local
 
@@ -138,7 +138,7 @@ Flipt will periodically rebuild its state from the local disk every 10 seconds.
 
 ### Git
 
-The `git` type backend is used to configure a target Git repository and Git reference to source feature flag state from.
+The `git` type backend is used to configure a target Git repository and Git reference to source feature flag state.
 The configuration contains fields for addressing the repository, configuring the target reference as well as adding authentication credentials.
 
 Once a target repository and reference are configured, Flipt will poll the source repository on a periodic cadence.
@@ -207,28 +207,28 @@ storage:
         password: < github-personal-access-token >
 ```
 
-See our [GitOps Guide](/guides/get-going-with-gitops) for an example of how to setup a GitHub repository as a flag state backend.
+See our [GitOps Guide](/guides/get-going-with-gitops) for an example of how to set up a GitHub repository as a flag state backend.
 
 ### Object
 
 <Note>
   This feature was added as an experiment in Flipt `v1.24.0` and officially
-  supported in FLipt `v1.25.0`.
+  supported in Flipt `v1.25.0`.
 </Note>
 
 The object storage type supports using a hosted object storage service as the source of truth for Flipt state configuration.
 Currently, Flipt supports the [S3 API](https://aws.amazon.com/s3/) as a backend. This means the AWS S3 and open-source alternatives such as [Minio](https://github.com/minio/minio) can be leveraged as Flipt backends.
 
 The contents of a target object storage bucket must contain Flipt state configuration files.
-As with the `git` and `local` backend types, the same rules apply with regards to how Flipt will locate feature flag state in your target bucket.
+As with the `git` and `local` backend types, the same rules apply with regard to how Flipt will locate feature flag state in your target bucket.
 
-Checkout the section below on [Flag State Configuration](#flag-state-configuration) for how Flipt decides which files in a target are considered for serving flag state.
+Check out the section below on [Flag State Configuration](#flag-state-configuration) for how Flipt decides which files in a target are considered for serving flag state.
 With the object storage backend, Flipt will respect a file at the root of the target with the name `.flipt.yml` to serve as an index for locating flag state configuration in the bucket.
-It will also use the same default strategy when the index isn't supplied (e.g. files name `features.yml` or `*.features.yml`).
+It will also use the same default strategy when the index isn't supplied (e.g. file name `features.yml` or `*.features.yml`).
 
 #### S3
 
-The S3 backend can be configured to serve state from a single bucket from a target S3 compatible API.
+The S3 backend can be configured to serve state from a single bucket from a target S3-compatible API.
 
 The following is an example of how to configure Flipt to leverage this backend type:
 
@@ -268,7 +268,7 @@ The following is an example of how to configure Flipt to leverage this backend t
   </Tab>
 </Tabs>
 
-In addition to these Flipt configuration parameters, credentials will also be required for Flipt to authenticate with the target object store.
+In addition to these Flipt configuration parameters, credentials will also be required for Flipt to authenticate with the target object-store.
 These should be provided as environment variables to the Flipt server process:
 
 ```bash
@@ -279,11 +279,11 @@ AWS_SECRET_ACCESS_KEY=...
 ### Flag State Configuration
 
 Each of Flipt's filesystem backends expects you to represent your feature flag configuration via a set of YAML files.
-These files declaratively define what flags, segments, variants etc. exist and in what configuration.
+These files declaratively define what flags, segments, variants, etc. exist and in what configuration.
 
 #### Locating Flag State
 
-Flipt's filesystem backends allow you to define feature flags alongside other configurations in a shared directory, repository or object storage bucket.
+Flipt's filesystem backends allow you to define feature flags alongside other configurations in a shared directory, repository, or object storage bucket.
 In order to identify which files are intended for Flipt, it uses a naming scheme to index which are flag state files.
 By default, Flipt will look for the following filename patterns when identifying files to attempt to parse as Flipt state:
 
@@ -307,7 +307,7 @@ include:
 exclude: []
 ```
 
-The index file contains two lists `include` and `exclude`. These can contain specific paths or glob matching patterns.
+The index file contains two lists `include` and `exclude`. These can contain specific paths or glob-matching patterns.
 The indexing process first matches the `include` section and then filters that are set by the `exclude` section.
 
 #### Defining Flag State
@@ -320,7 +320,7 @@ Flipt flag state file format has been taken directly from Flipt's existing
 You can run `flipt export` on your existing Flipt instance, and then
 add/commit the result to a directory, object storage, or Git repository to get started quickly.
 
-This can be used to migrate from a relational database backed instance of Flipt to a filesystem backed deployment with ease.
+This can be used to migrate from a relational database-backed instance of Flipt to a filesystem-backed deployment with ease.
 
 </Info>
 
