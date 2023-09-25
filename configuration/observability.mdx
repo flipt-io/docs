@@ -148,7 +148,7 @@ The value in the header is the request body HMAC sha256 signed with the signing 
 
 #### Webhook Templates
 
-Starting from [v1.28.0](https://github.com/flipt-io/flipt/releases/tag/v1.28.0), you can specify configuration for Flipt to send Webhooks to a URL with the Audit event properties you can template in the body of the request.
+Starting from [v1.28.0](https://github.com/flipt-io/flipt/releases/tag/v1.28.0), you can specify a template for the body of an Audit Event Webhook request.
 
 A sample configuration can look something like this:
 
@@ -185,4 +185,4 @@ type Event struct {
 }
 ```
 
-and is located [here](https://github.com/flipt-io/flipt/blob/v1.28.0/internal/server/audit/audit.go#L51-L61) in code. So any of these values in the structure are fair game for however you want to construct your HTTP body template.
+Any of the values that are [exposed](https://github.com/flipt-io/flipt/blob/v1.28.0/internal/server/audit/audit.go#L51-L61) by Flipt are fair game for inclusion in your HTTP body template.
