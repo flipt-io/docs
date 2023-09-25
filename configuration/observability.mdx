@@ -145,3 +145,44 @@ X-Forwarded-Proto: https
 You also have the ability to provide a signing secret for requests to your webhook. If you specify a signing secret, you will receive a request with the `X-Flipt-Webhook-Signature` header populated.
 
 The value in the header is the request body HMAC sha256 signed with the signing secret you specified. On the webhook server, you can validate the signature by using the same signing secret. It is _strongly recommended_ that you do this to prevent requests to your webhook server that are from invalid origins.
+
+#### Webhook Templates
+
+Starting from [v1.28.0](https://github.com/flipt-io/flipt/releases/tag/v1.28.0), you can specify configuration for Flipt to send Webhooks to a URL with the Audit event properties you can template in the body of the request.
+
+A sample configuration can look something like this:
+
+```yaml
+audit:
+  sinks:
+    webhook:
+      enabled: true
+      templates:
+        - url: https://example.com
+          headers:
+            Content-Type: application/json
+            Authorization: Bearer this-is-a-seret-token
+          body: |
+            {
+              "type": {{ .Type }},
+              "action": {{ .Action }}
+            }
+```
+
+This configuration tells Flipt to send a `POST` request when events need to be emitted to the URL `https://example.com` with the HTTP headers, `Content-Type` and `Authorization`, and the body which is a Go template that will be executed when an event comes in. The event structure looks like this:
+
+```go
+type Event struct {
+	Version string `json:"version"`
+	Type    Type   `json:"type"`
+	Action  Action `json:"action"`
+
+	Metadata Metadata `json:"metadata"`
+
+	Payload interface{} `json:"payload"`
+
+	Timestamp string `json:"timestamp"`
+}
+```
+
+and is located [here](https://github.com/flipt-io/flipt/blob/v1.28.0/internal/server/audit/audit.go#L51-L61) in code. So any of these values in the structure are fair game for however you want to construct your HTTP body template.
