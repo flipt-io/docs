@@ -169,7 +169,7 @@ audit:
             }
 ```
 
-This configuration tells Flipt to send a `POST` request when events need to be emitted to the URL `https://example.com` with the HTTP headers, `Content-Type` and `Authorization`, and the body which is a Go template that will be executed when an event comes in. The event structure looks like this:
+This configuration tells Flipt to send a `POST` request when events need to be emitted to the URL `https://example.com` with the HTTP headers, `Content-Type` and `Authorization`, and the body which is a [Go template](https://pkg.go.dev/text/template) that will be executed when an event comes in. The event structure looks like this:
 
 ```go
 type Event struct {
