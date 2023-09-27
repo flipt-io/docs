@@ -1,0 +1,55 @@
+---
+title: OpenFeature
+description: An overview of OpenFeature and Flipt OpenFeature integrations.
+---
+
+<Frame>
+  <img
+    noZoom
+    className="block h-32 dark:hidden"
+    src="/images/integration/openfeature-dark.svg"
+  />
+  <img
+    noZoom
+    className="hidden h-32 dark:block"
+    src="/images/integration/openfeature-light.svg"
+  />
+</Frame>
+
+[OpenFeature](https://openfeature.dev/) is an open specification that provides a vendor-agnostic, community-driven API for feature flagging that works with your favorite feature flag management tool.
+
+OpenFeature allows you to use the same feature flagging API across multiple feature flag management tools. This means that you can switch between feature flag management tools without having to change your code.
+
+OpenFeature is a CNCF Sandbox project. You can learn more about OpenFeature on the [OpenFeature website](https://openfeature.dev/).
+
+## Flipt OpenFeature Providers
+
+As a feature flag management tool, Flipt provides our own OpenFeature integrations (providers). This means that you can use the OpenFeature API with Flipt.
+
+From the [OpenFeature Specification](https://docs.openfeature.dev/docs/specification/sections/providers):
+
+> Providers are the "translator" between the flag evaluation calls made in application code, and the flag management system that stores flags and in some cases evaluates flags.
+
+We currently provide the following OpenFeature providers:
+
+<CardGroup cols={2}>
+  <Card
+    href="https://github.com/flipt-io/flipt-openfeature-provider-go"
+    title="Go"
+    icon="golang"
+    color="#00add8"
+  >
+    The official Flipt OpenFeature Provider using the OpenFeature Go SDK.
+  </Card>
+  <Card href="#" title="Java (In-Progress)" icon="java" color="#e41f23">
+    The official Flipt OpenFeature Provider using the OpenFeature Java SDK.
+  </Card>
+  <Card
+    href="https://github.com/flipt-io/flipt/discussions/2125"
+    title="Request a Client"
+    icon="github"
+    color="#000000"
+  >
+    > Need a client in another language? Let us know!
+  </Card>
+</CardGroup>
