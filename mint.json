@@ -71,6 +71,7 @@
         "integration/overview",
         "integration/rest",
         "integration/grpc",
+        "integration/openfeature",
         "integration/examples"
       ]
     },
