@@ -9,7 +9,7 @@ Some of the configuration options and tips to consider when operating Flipt in p
 
 ## Database Connection Limits
 
-By default, the Go `database/sql` client, will have `MaxOpenConn` equal to 0 (unlimited), and `MaxIdleConn` equal to 2.
+By default, the Go `database/sql` client will have `MaxOpenConn` equal to 0 (unlimited), and `MaxIdleConn` equal to 2.
 
 With the databases that listen over a network (MySQL, Postgres, CockroachDB), there are default server limits for the number of open connections it supports.
 
@@ -42,7 +42,7 @@ The [Go documentation](https://pkg.go.dev/database/sql#DB.SetMaxOpenConns) state
 If MaxOpenConns is greater than 0 but less than the new MaxIdleConns, then the new MaxIdleConns will be reduced to match the MaxOpenConns limit.
 ```
 
-So you should keep in mind that tuning `MaxOpenConn` might lead to tuning `MaxIdleConn` as well.
+Keep in mind that tuning `MaxOpenConn` may lead to tuning `MaxIdleConn` as well.
 
 <Tabs>
   <Tab title="Environment Variable">
@@ -64,7 +64,7 @@ So you should keep in mind that tuning `MaxOpenConn` might lead to tuning `MaxId
 
 ## Prepared Statements
 
-By default, all queries are run as prepared statements. This could post a problem in some environments.
+By default, all queries are run as prepared statements. This could pose a problem in some environments.
 
 For instance, PGBouncer doesn't support prepared statements in its [transaction pooling mode](https://www.pgbouncer.org/faq.html#how-to-use-prepared-statements-with-transaction-pooling).
 
@@ -90,7 +90,7 @@ You can disable prepared statements for the database client using:
 
 ## Debug Logging
 
-Debug logging can be very useful if you are actively developing or trying to fix problems in an environment, but can have the adverse effect of eating up CPU time under load. Enabling debug logging can also end up mixing useful logs with non-useful ones.
+Debug logging can be useful if you are actively developing or trying to fix problems in an environment, but can have the adverse effect of eating up CPU time under load. Enabling debug logging can end up mixing useful logs with non-useful ones.
 
 It's recommended to disable Flipt's debug logging in a production environment by increasing the log level:
 

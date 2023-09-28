@@ -2,6 +2,37 @@
 title: "Installation"
 ---
 
+## Quickstart
+
+Flipt is a single binary that can be run on any Linux or macOS (arm64) host. You can install and try out Flipt in a few different ways:
+
+<CodeGroup>
+
+```console Docker
+docker run -d \
+    -p 8080:8080 \
+    -p 9000:9000 \
+    -v $HOME/flipt:/var/opt/flipt \
+    flipt/flipt:latest
+```
+
+```console Kubernetes/Helm
+helm repo add flipt https://helm.flipt.io
+helm install flipt flipt/flipt
+```
+
+```console Homebrew
+brew install flipt-io/brew/flipt
+```
+
+```console Binary
+curl -fsSL https://github.com/flipt-io/flipt/raw/main/install.sh | bash
+```
+
+</CodeGroup>
+
+For more details on each installation method, see the sections below.
+
 ## Docker
 
 The simplest way to run Flipt is via Docker. This streamlines the installation
@@ -130,14 +161,26 @@ You can always download the latest release archive of Flipt from the
 
 ### Installing
 
+#### Script
+
+You can use the following script to download and install the latest Flipt binary:
+
+```console
+curl -fsSL https://github.com/flipt-io/flipt/raw/main/install.sh | bash
+```
+
+View the [install.sh](https://github.com/flipt-io/flipt/blob/main/install.sh) source for more details.
+
+#### Manual
+
 Download to an accessible location on your host and un-zip with the following
 commands (requires [jq](https://stedolan.github.io/jq/)):
 
 ```console
-$ export FLIPT_VERSION=$(curl --silent "https://api.github.com/repos/flipt-io/flipt/releases/latest" | jq '.tag_name?' | tr -d '"' | tr -d 'v')
-$ curl -L "https://github.com/flipt-io/flipt/releases/download/v${FLIPT_VERSION}/flipt_${FLIPT_VERSION}_linux_x86_64.tar.gz" -o flipt.tar.gz && \
-    tar -xvf flipt.tar.gz && \
-    chmod +x ./flipt
+export FLIPT_VERSION=$(curl --silent "https://api.github.com/repos/flipt-io/flipt/releases/latest" | jq '.tag_name?' | tr -d '"' | tr -d 'v')
+curl -L "https://github.com/flipt-io/flipt/releases/download/v${FLIPT_VERSION}/flipt_${FLIPT_VERSION}_linux_x86_64.tar.gz" -o flipt.tar.gz && \
+  tar -xvf flipt.tar.gz && \
+  chmod +x ./flipt
 ```
 
 This archive contains the Flipt binary, configuration, README, LICENSE, and CHANGELOG files.
