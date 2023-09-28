@@ -53,9 +53,10 @@ flipt import --namespace production --create-namespace flipt.yaml
 <Note>
   In [v1.28.0](https://github.com/flipt-io/flipt/releases/tag/v1.28.0), we introduced some breaking changes to `import`.
 
-  You no longer have to use the `--namespace` or `--create-namespace` flags to import resources into a specific namespace.
+You no longer have to use the `--namespace` or `--create-namespace` flags to import resources into a specific namespace.
 
-  The namespaces are now inferred from the YAML documents themselves. If a namespace your document refers to does not exist in the database, it will be created.
+The namespaces are now inferred from the YAML documents themselves. If a namespace your document refers to does not exist in the database, it will be created.
+
 </Note>
 
 This command supports the `--drop` flag that will drop all of the data in your
@@ -106,9 +107,10 @@ flipt export --namespace production
 <Note>
   In [v1.28.0](https://github.com/flipt-io/flipt/releases/tag/v1.28.0), we have extended this functionality to support exporting state from multiple namespaces to a single YAML file.
 
-  The `--namespace` flag is now deprecated, and two new flags now exist.
+The `--namespace` flag is now deprecated, and two new flags now exist.
 
-  The `--namespaces` flag will accept a comma delimited list of namespaces from which you would like to export from.
+The `--namespaces` flag will accept a comma delimited list of namespaces from which you would like to export from.
 
-  The `--all-namespaces flag is a boolean flag which tells export to export all namespaces to the single file you specify, or to standard out by default.
+The `--all-namespaces flag is a boolean flag which tells export to export all namespaces to the single file you specify, or to standard out by default.
+
 </Note>
