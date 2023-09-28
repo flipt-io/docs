@@ -104,6 +104,28 @@
       ]
     },
     {
+      "group": "CLI",
+      "pages": [
+        "cli/overview",
+        {
+          "group": "Commands",
+          "pages":[
+            {
+              "group": "config",
+              "pages":[
+                "cli/commands/config/init",
+                "cli/commands/config/edit"
+              ]
+            },
+            "cli/commands/export",
+            "cli/commands/import",
+            "cli/commands/migrate",
+            "cli/commands/validate"
+          ]
+        }
+      ]
+    },
+    {
       "group": "Authentication",
       "pages": [
         "authentication/overview",
