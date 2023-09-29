@@ -18,7 +18,7 @@ The default way that Flipt is configured is with the use of a configuration file
 This file is read when Flipt starts up and configures several important
 properties for the server.
 
-As of version [v1.23](https://github.com/flipt-io/flipt/releases/tag/v1.23.0), the server will check in a few different locations for server configuration (in order):
+The server will check in a few different locations for server configuration (in order):
 
 1. `--config` flag as an override
 2. `{{ USER_CONFIG_DIR }}/flipt/config.yml` (the `USER_CONFIG_DIR` value is based on your architecture and specified in the [Go documentation](https://pkg.go.dev/os#UserConfigDir))
