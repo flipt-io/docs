@@ -1,0 +1,74 @@
+---
+title: REST SDKs
+description: An overview of the REST SDKs available for integrating with Flipt.
+---
+
+## Official Clients
+
+Official Flipt REST clients are currently available in the following languages:
+
+<CardGroup cols={2}>
+  <Card
+    title="Node/TypeScript"
+    href="https://github.com/flipt-io/flipt-node"
+    icon="node"
+    color="#68a063"
+  >
+    Evaluate flags in your Node applications
+  </Card>
+  <Card
+    href="https://github.com/flipt-io/flipt-python"
+    title="Python"
+    icon="python"
+    color="#4c8abe"
+  >
+    Evaluate flags in your Python applications
+  </Card>
+  <Card
+    href="https://github.com/flipt-io/flipt/tree/main/sdk/go"
+    title="Go"
+    icon="golang"
+    color="#00add8"
+  >
+    Evaluate flags in your Go applications
+  </Card>
+  <Card
+    href="https://github.com/flipt-io/flipt-rust"
+    title="Rust"
+    icon="rust"
+    color="#cd412b"
+  >
+    Evaluate flags in your Rust applications
+  </Card>
+  <Card
+    href="https://github.com/flipt-io/flipt-java"
+    title="Java"
+    icon="java"
+    color="#e41f23"
+  >
+    Evaluate flags in your Java applications
+  </Card>
+  <Card
+    href="https://github.com/flipt-io/flipt/discussions/2125"
+    title="Request a Client"
+    icon="github"
+    color="#000000"
+  >
+    > Need a client in another language? Let us know!
+  </Card>
+</CardGroup>
+
+## Generate
+
+You can use [openapi-generator](https://openapi-generator.tech/) to generate client code in your preferred language from the [Flipt OpenAPI v3 specification](https://github.com/flipt-io/flipt-openapi).
+
+While generating clients is outside of the scope of this documentation, an example of generating a Java client with the `openapi-generator` is below.
+
+**Java Example**
+
+1. Install [`openapi-generator`](https://openapi-generator.tech/docs/installation)
+2. Generate using `openapi-generator-cli` to desired location:
+
+```
+openapi-generator generate -i openapi.yml -g java -o /tmp/flipt/java
+```

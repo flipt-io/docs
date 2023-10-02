@@ -1,0 +1,24 @@
+---
+title: "export"
+description: "Export Flipt data to file/stdout"
+---
+
+```
+flipt export [flags]
+```
+
+### Options
+
+```
+  -a, --address string      address of remote Flipt instance to export from (defaults to direct DB export if not supplied)
+      --all-namespaces      export all namespaces. (mutually exclusive with --namespaces)
+      --config string       path to config file
+  -h, --help                help for export
+      --namespaces string   comma-delimited list of namespaces to export from. (mutually exclusive with --all-namespaces) (default "default")
+  -o, --output string       export to filename (default STDOUT)
+  -t, --token string        client token used to authenticate access to remote Flipt instance when exporting.
+```
+
+### More Info
+
+See the [import/export](/operations/import-export) section of the documentation for more information.

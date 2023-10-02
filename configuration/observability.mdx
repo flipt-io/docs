@@ -23,14 +23,14 @@ go_gc_duration_seconds{quantile="1"} 0.00026651 go_gc_duration_seconds_sum
 0.000402094 go_gc_duration_seconds_count 5
 ```
 
-An [example](https://github.com/flipt-io/flipt/tree/main/examples/prometheus)
+An [example](https://github.com/flipt-io/flipt/tree/main/examples/metrics)
 showing how to set up Flipt with Prometheus can be found in the GitHub repository.
 
 ### Dashboards
 
 ![Grafana Dashboard](/images/configuration/grafana_flag_dashboard.png)
 
-We provide created a set of [Grafana](https://grafana.com/) dashboards that you can use to visualize the metrics collected by Flipt, including both server health and flag evaluation metrics.
+We provide a set of [Grafana](https://grafana.com/) dashboards that you can use to visualize the metrics collected by Flipt, including both server health and flag evaluation metrics.
 
 You can find the dashboards in our [grafana-dashboards](https://github.com/flipt-io/grafana-dashboards) repository.
 
@@ -47,6 +47,22 @@ Currently, we support the following tracing backends:
 Enable tracing via the values described in the [Tracing configuration](/configuration/overview#tracing) and point Flipt to your configured collector to record spans.
 
 [Examples](https://github.com/flipt-io/flipt/tree/main/examples/tracing) showing how to set up Flipt with each of the supported tracing backends can be found in the main GitHub repository .
+
+### OTLP
+
+OTLP supports additional configuration such as specifying the protocol to use (gRPC or HTTP) as well as providing custom headers to send with the request.
+
+Custom headers can be used to provide authentication information to the collector which may be required if you are using a hosted collector such as [NewRelic](https://docs.newrelic.com/docs/more-integrations/open-source-telemetry-integrations/opentelemetry/get-started/opentelemetry-set-up-your-app/), [DataDog](https://docs.datadoghq.com/opentelemetry/otlp_ingest_in_the_agent/?tab=host), or [Honeycomb](https://docs.honeycomb.io/getting-data-in/opentelemetry-overview/#instrumenting-with-opentelemetry).
+
+These can be configured via the `tracing.otlp` configuration section.
+
+```yaml
+tracing:
+  otlp:
+    endpoint: "https://{your-collector-url}"
+    headers:
+      "X-Some-Header": "some-value"
+```
 
 ## Audit Events
 

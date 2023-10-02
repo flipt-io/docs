@@ -36,7 +36,7 @@
   "anchors": [
     {
       "name": "API Reference",
-      "icon": "square-terminal",
+      "icon": "cloud",
       "url": "reference"
     },
     {
@@ -45,20 +45,34 @@
       "url": "https://www.flipt.io/blog"
     },
     {
-      "name": "Community",
+      "name": "Changelog",
+      "icon": "timer",
+      "url": "https://features.flipt.io/changelog"
+    },
+    {
+      "name": "Discord",
       "icon": "discord",
       "url": "https://www.flipt.io/discord"
     }
   ],
   "navigation": [
     {
-      "group": "Home",
+      "group": "Overview",
       "pages": [
         "introduction",
         "usecases",
         "concepts",
-        "installation",
-        "integration"
+        "installation"
+      ]
+    },
+    {
+      "group": "Integration",
+      "pages": [
+        "integration/overview",
+        "integration/rest",
+        "integration/grpc",
+        "integration/openfeature",
+        "integration/examples"
       ]
     },
     {
@@ -87,6 +101,28 @@
         "configuration/authentication",
         "configuration/observability",
         "configuration/telemetry"
+      ]
+    },
+    {
+      "group": "CLI",
+      "pages": [
+        "cli/overview",
+        {
+          "group": "Commands",
+          "pages":[
+            {
+              "group": "config",
+              "pages":[
+                "cli/commands/config/init",
+                "cli/commands/config/edit"
+              ]
+            },
+            "cli/commands/export",
+            "cli/commands/import",
+            "cli/commands/migrate",
+            "cli/commands/validate"
+          ]
+        }
       ]
     },
     {

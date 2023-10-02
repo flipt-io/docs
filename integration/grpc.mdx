@@ -1,0 +1,87 @@
+---
+title: GRPC SDKs
+description: An overview of the GRPC SDKs available for integrating with Flipt.
+---
+
+## Official Clients
+
+Official Flipt GRPC clients are currently available for the following languages:
+
+<CardGroup cols={2}>
+  <Card
+    href="https://github.com/flipt-io/flipt/tree/main/sdk/go"
+    title="Go"
+    icon="golang"
+    color="#00add8"
+  >
+    Evaluate flags in your Go applications with GRPC
+  </Card>
+  <Card
+    href="https://github.com/flipt-io/flipt-grpc-ruby"
+    title="Ruby"
+    icon="gem"
+    color="#cd412b"
+  >
+    Evaluate flags in your Ruby applications with GRPC
+  </Card>
+  <Card
+    href="https://github.com/flipt-io/flipt-grpc-dotnet"
+    title=".NET"
+    icon="microsoft"
+    color="#4c8abe"
+  >
+    Evaluate flags in your .NET applications with GRPC
+  </Card>
+  <Card
+    href="https://github.com/flipt-io/flipt/discussions/2125"
+    title="Request a Client"
+    icon="github"
+    color="#000000"
+  >
+    > Need a client in another language? Let us know!
+  </Card>
+</CardGroup>
+
+If your language isn't listed, please see the section below on how to generate
+a native GRPC client manually. If you choose to open-source this client, please
+submit a pull request so that we can add it to the docs.
+
+## Generate
+
+If a GRPC client in your language isn't available for download, you can easily
+generate it yourself using the existing
+[protobuf definition](https://github.com/flipt-io/flipt/blob/main/rpc/flipt/flipt.proto).
+The [GRPC documentation](https://grpc.io/docs/) has extensive examples of how to
+generate GRPC clients in each supported language.
+
+<Note>
+  GRPC generates both client implementation and server interfaces. To use Flipt
+  you only need the GRPC client implementation and can ignore the server code as
+  this is implemented by Flipt itself.
+</Note>
+
+Below are two examples of how to generate Flipt clients in both Go and Ruby.
+
+**Go Example**
+
+1. Follow the [setup instructions](https://grpc.io/docs/quickstart/go/) on the GRPC website.
+2. Generate using protoc to desired location:
+
+```console
+protoc -I ./rpc --go_out=plugins=grpc:/tmp/flipt/go ./rpc/flipt.proto
+cd /tmp/flipt/go/flipt
+ls
+flipt.pb.go          flipt_pb.rb          flipt_services_pb.
+```
+
+**Ruby Example**
+
+1. Follow the [setup instructions](https://grpc.io/docs/quickstart/ruby/) on the GRPC website.
+2. Generate using protoc to the desired location:
+
+```console
+grpc_tools_ruby_protoc -I ./rpc --ruby_out=/tmp/flipt/ruby --grpc_out=/tmp/flipt/ruby ./rpc/flipt.proto
+cd /tmp/flipt/ruby
+ls
+flipt_pb.rb          flipt_services_pb.rb
+```

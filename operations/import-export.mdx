@@ -5,10 +5,7 @@ description: Importing and exporting data to and from Flipt
 
 <Note>Importing is only supported for database backed Flipt instances.</Note>
 
-Prior to Flipt [v1.20.0](https://github.com/flipt-io/flipt/releases/tag/v1.20.0) `import` and `export` ran directly against the backing database.
-
-Since `v1.20.0` you can now alternatively perform these operations through Flipt's API.
-Both `flipt import` and `flipt export` support the `--address` and `--token` flags to enable this behaviour.
+Both `flipt import` and `flipt export` support the `--address` and `--token` flags to enable transferring data to and from Flipt instances via the API instead of requiring a direct database connection.
 
 ```
 flipt import --address http://flipt.my.org --token static-api-token
@@ -50,14 +47,23 @@ For convenience, you can supply `--create-namespace` in order for Flipt to autom
 flipt import --namespace production --create-namespace flipt.yaml
 ```
 
-This command supports the `--drop` flag that will drop all of the data in your
+<Note>
+  In [v1.28.0](https://github.com/flipt-io/flipt/releases/tag/v1.28.0), we introduced some breaking changes to `import`.
+
+You no longer have to use the `--namespace` or `--create-namespace` flags to import resources into a specific namespace.
+
+The namespaces are now inferred from the YAML documents themselves. If a namespace your document refers to does not exist in the database, it will be created.
+
+</Note>
+
+This command supports the `--drop` flag that will drop all data in your
 Flipt database tables before importing. This is to ensure that no data
 collisions occur during the import.
 
 <Warning>
-  Be careful when using the `--drop` flag as it will immediately drop all of
-  your data and there is no undo. It's recommended to first backup your database
-  before running this command just to be safe.
+  Be careful when using the `--drop` flag as it will immediately drop all data
+  and there is no undo. It's recommended to first backup your database before
+  running this command just to be safe.
 </Warning>
 
 ## Export
@@ -79,7 +85,6 @@ flags:
     name: Blue
   - key: green
     name: Green
-
 ```
 
 You can also export to a file using the `-o filename` or `--output filename`
@@ -95,3 +100,14 @@ Use the flag `--namespace` to export from a different namespace.
 ```yaml
 flipt export --namespace production
 ```
+
+<Note>
+  In [v1.28.0](https://github.com/flipt-io/flipt/releases/tag/v1.28.0), we have extended this functionality to support exporting state from multiple namespaces to a single YAML file.
+
+The `--namespace` flag is now deprecated.
+
+The `--namespaces` flag will accept a comma-delimited list of namespaces from which you would like to export from.
+
+The `--all-namespaces flag is a boolean flag that tells export to export all namespaces to the single file you specify, or to standard out by default.
+
+</Note>
