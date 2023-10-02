@@ -1,0 +1,44 @@
+---
+title: "Overview"
+description: "Overview of the flipt CLI"
+---
+
+The `flipt` CLI is a command line interface for managing Flipt. It's useful for configuring your Flipt instance, running migrations, validating `.features.yml` files, and more.
+
+You can use it in various environments, including your local machine, CI/CD, and more.
+
+### Installation
+
+<CodeGroup>
+```console Homebrew
+brew install flipt-io/brew/flipt
+```
+
+```console Binary
+curl -fsSL https://github.com/flipt-io/flipt/raw/main/install.sh | bash
+```
+
+</CodeGroup>
+
+### Usage
+
+```
+flipt <command> <subcommand> [flags]
+```
+
+`flipt` with no arguments will run the Flipt server. It will look for a configuration file as described in the [configuration](/configuration/overview#configuration-file) documentation. You can specify a different configuration file with the `--config` flag.
+
+### Examples
+
+```
+$ flipt
+$ flipt config init
+$ flipt --config /path/to/config.yml migrate
+```
+
+### Options
+
+```
+      --config string   path to config file
+  -h, --help            help for flipt
+```
