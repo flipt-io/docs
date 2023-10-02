@@ -269,9 +269,10 @@ These properties are as follows:
 
 #### Tracing: OTLP
 
-| Property              | Description                    | Default        | Since   |
-| --------------------- | ------------------------------ | -------------- | ------- |
-| tracing.otlp.endpoint | The OTLP GRPC receiver address | localhost:4317 | v1.18.2 |
+| Property              | Description                                                       | Default               | Since   |
+| --------------------- | ----------------------------------------------------------------- | --------------------- | ------- |
+| tracing.otlp.endpoint | The OTLP receiver address (supports: grpc, http, https)           | grpc://localhost:4317 | v1.18.2 |
+| tracing.otlp.headers  | Additional headers to send with OTLP requests (map[string]string) |                       | v1.28.0 |
 
 ## Deprecations
 
