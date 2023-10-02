@@ -3,7 +3,7 @@ title: Overview
 description: This document describes how to configure the Flipt server.
 ---
 
-`Flipt` server can be configured in two ways.
+Flipt server can be configured in two ways.
 
 Configuration precedence is as follows:
 
@@ -18,29 +18,27 @@ The default way that Flipt is configured is with the use of a configuration file
 This file is read when Flipt starts up and configures several important
 properties for the server.
 
+<Tip>
+  You can generate a default configuration file by running `flipt config init`
+  as of v1.28.0. See the [CLI](/cli) documentation for more information.
+</Tip>
+
 The server will check in a few different locations for server configuration (in order):
 
 1. `--config` flag as an override
 2. `{{ USER_CONFIG_DIR }}/flipt/config.yml` (the `USER_CONFIG_DIR` value is based on your architecture and specified in the [Go documentation](https://pkg.go.dev/os#UserConfigDir))
 3. `/etc/flipt/config/default.yml`
 
-<Tip>
+<Note>
   We provide both a [JSON
   schema](https://raw.githubusercontent.com/flipt-io/flipt/main/config/flipt.schema.json)
   and a [Cue
   schema](https://raw.githubusercontent.com/flipt-io/flipt/main/config/flipt.schema.cue)
   that you can use to validate your configuration file and it's properties.
-</Tip>
+</Note>
 
 You can edit any of these properties to your liking, and on restart Flipt will
 pick up the new changes.
-
-<Note>
-  These defaults are commented out in
-  [default.yml](https://github.com/flipt-io/flipt/blob/main/config/default.yml)
-  to give you an idea of what they are. To change them you'll first need to
-  uncomment them.
-</Note>
 
 These properties are as follows:
 
