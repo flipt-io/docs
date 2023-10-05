@@ -17,8 +17,7 @@ Both `HTTP` and `gRPC` are supported by the `--address` flag.
 
 ## Import
 
-To import data into Flipt, use the `flipt import` command. You
-can import either from a file or from STDIN.
+To import data into Flipt, use the `flipt import` command. You can either import from a file or from STDIN.
 
 To import from STDIN, Flipt requires the `--stdin` flag:
 
@@ -26,45 +25,26 @@ To import from STDIN, Flipt requires the `--stdin` flag:
 cat flipt.yaml | flipt import --stdin
 ```
 
-If not importing using `--stdin`, Flipt requires the file to be imported as an
-argument:
+If not importing using `--stdin`, Flipt requires the file to be imported as an argument:
 
 ```yaml
 flipt import flipt.yaml
 ```
 
-By default, Flipt will import into the `default` namespace.
-Use the flag `--namespace` to import into a different namespace.
-
-```yaml
-flipt import --namespace production flipt.yaml
-```
-
-A namespace must exist before your import into it.
-For convenience, you can supply `--create-namespace` in order for Flipt to automatically create the namespace if it doesn't already exist.
-
-```yaml
-flipt import --namespace production --create-namespace flipt.yaml
-```
-
 <Note>
-  In [v1.28.0](https://github.com/flipt-io/flipt/releases/tag/v1.28.0), we introduced some breaking changes to `import`.
-
-You no longer have to use the `--namespace` or `--create-namespace` flags to import resources into a specific namespace.
-
-The namespaces are now inferred from the YAML documents themselves. If a namespace your document refers to does not exist in the database, it will be created.
-
+  Namespaces are inferred from the YAML documents themselves. If a namespace
+  your document refers to doesn't exist in the database, it will be created.
 </Note>
 
-This command supports the `--drop` flag that will drop all data in your
-Flipt database tables before importing. This is to ensure that no data
-collisions occur during the import.
+This command supports the `--drop` flag that will drop all data in your Flipt database tables before importing. This is to ensure that no data collisions occur during the import.
 
 <Warning>
   Be careful when using the `--drop` flag as it will immediately drop all data
   and there is no undo. It's recommended to first backup your database before
   running this command just to be safe.
 </Warning>
+
+See the [CLI reference](/cli/commands/import) for more information on the `import` command.
 
 ## Export
 
@@ -94,20 +74,15 @@ flags:
 flipt export -o flipt.yaml
 ```
 
-By default, Flipt will export from the `default` namespace.
-Use the flag `--namespace` to export from a different namespace.
+By default, Flipt will export from the `default` namespace. Use the flag `--namespaces` to export from a different namespace or multiple namespaces.
 
 ```yaml
-flipt export --namespace production
+flipt export --namespaces production
 ```
 
-<Note>
-  In [v1.28.0](https://github.com/flipt-io/flipt/releases/tag/v1.28.0), we have extended this functionality to support exporting state from multiple namespaces to a single YAML file.
+<Tip>
+  The `--all-namespaces` flag is a boolean flag that tells export to export all
+  namespaces.
+</Tip>
 
-The `--namespace` flag is now deprecated.
-
-The `--namespaces` flag will accept a comma-delimited list of namespaces from which you would like to export from.
-
-The `--all-namespaces flag is a boolean flag that tells export to export all namespaces to the single file you specify, or to standard out by default.
-
-</Note>
+See the [CLI reference](/cli/commands/export) for more information on the `export` command.
