@@ -105,7 +105,9 @@ whereas, the `git` and `object` backends are intended for production and serve f
 
 ### Read Only Mode
 
-Once enabled, all filesystem backends put the Flipt API and UI into a `read only` mode that prevents Flipt from writing to the backend. This is useful for production environments where you want to ensure that flag state is only managed via the configured backend.
+![Read Only Mode](/images/configuration/readonly.png)
+
+Once enabled, all filesystem backends put the Flipt API and UI into a `read-only` mode that prevents Flipt from writing to the backend. This is useful for production environments where you want to ensure that flag state is only managed via the configured backend.
 
 ### Local
 
@@ -284,8 +286,8 @@ These files declaratively define what flags, segments, variants, etc. exist and 
 #### Locating Flag State
 
 Flipt's filesystem backends allow you to define feature flags alongside other configurations in a shared directory, repository, or object storage bucket.
-In order to identify which files are intended for Flipt, it uses a naming scheme to index which are flag state files.
-By default, Flipt will look for the following filename patterns when identifying files to attempt to parse as Flipt state:
+
+Flipt uses a naming scheme to index which files are flag state files. By default, Flipt will look for the following filename patterns to attempt to parse as Flipt state:
 
 - `**/features.yaml`
 - `**/features.yml`
@@ -294,8 +296,7 @@ By default, Flipt will look for the following filename patterns when identifying
 
 Any file named `features.yaml`, `features.yml`, or with either extension `.features.yaml` or `.features.yml` is considered recursively from the root of your target.
 
-If this naming convention doesn't work for you, it can be overridden by creating a file named `.flipt.yml` in the root of your target directory tree.
-This file will be used to instruct Flipt on how to index your directory tree and find flag state files:
+If this naming convention doesn't work for you, it can be overridden by creating a file named `.flipt.yml` in the root of your target directory tree. This file will be used to instruct Flipt on how to index your directory tree and find flag state files:
 
 ```yaml
 version: "1.0"
@@ -318,7 +319,7 @@ Flipt flag state file format has been taken directly from Flipt's existing
 [import and export](/operations/import-export) flag state format.
 
 You can run `flipt export` on your existing Flipt instance, and then
-add/commit the result to a directory, object storage, or Git repository to get started quickly.
+add/commit the result to a directory, object storage, or Git repository to get started.
 
 This can be used to migrate from a relational database-backed instance of Flipt to a filesystem-backed deployment with ease.
 
