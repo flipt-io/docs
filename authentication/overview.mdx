@@ -12,7 +12,7 @@ Head to the [Configuration: Authentication](/configuration/authentication) secti
 
 </Info>
 
-Once enabled, all routes beneath the following API prefixes will require a [client token](#client-tokens) in order to authenticate requests:
+Once enabled, all routes beneath the following API prefixes will require a [client token](#client-tokens) to authenticate requests:
 
 - `/api/v1/`
 - `/auth/v1/`
@@ -26,7 +26,7 @@ The following URLs aren't protected by authentication:
 - `/metrics`
 - `/health`
 
-They're currently unprotected to support backwards compatibility.
+They're currently unprotected to support backward compatibility.
 We're exploring ways to support protecting these endpoints going forward.
 For now, we recommend excluding these API prefixes from your load-balancer.
 
