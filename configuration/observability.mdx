@@ -158,11 +158,28 @@ X-Forwarded-Proto: https
 }
 ```
 
-You also have the ability to provide a signing secret for requests to your webhook. If you specify a signing secret, you will receive a request with the `X-Flipt-Webhook-Signature` header populated.
+#### Automatic Retries
 
-The value in the header is the request body HMAC sha256 signed with the signing secret you specified. On the webhook server, you can validate the signature by using the same signing secret. It is _strongly recommended_ that you do this to prevent requests to your webhook server that are from invalid origins.
+If the webhook server returns a non-200 response, Flipt will retry sending the request using an exponential backoff strategy until a maximum elapsed duration. The default maximum elapsed duration is 15 seconds.
 
-#### Webhook Templates
+You can configure the maximum duration using the following configuration:
+
+```yaml
+audit:
+  sinks:
+    webhook:
+      max_backoff_duration: 15s
+```
+
+See the [Audit Events - Webhook](/configuration/overview#audit-events-webhook) section of the configuration documentation for more details.
+
+#### Security
+
+You may provide a signing secret for requests to your webhook. If you specify a signing secret, you will receive a request with the `X-Flipt-Webhook-Signature` header populated. This value can be set in the [Audit Events - Webhook](/configuration/overview#audit-events-webhook) section of the Flipt server configuration.
+
+The value in the `X-Flipt-Webhook-Signature` header is the request body HMAC SHA256 signed with the signing secret you specified. On the webhook server, you can validate the signature by using the same signing secret. It's _strongly recommended_ that you do this to prevent requests to your webhook server that are from invalid origins.
+
+#### Templates
 
 Starting from [v1.28.0](https://github.com/flipt-io/flipt/releases/tag/v1.28.0), you can specify a template for the body of an Audit Event Webhook request.
 
