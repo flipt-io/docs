@@ -8,6 +8,10 @@ Flipt is a single binary that can be run on any Linux or macOS (arm64) host. You
 
 <CodeGroup>
 
+```console Binary
+curl -fsSL https://github.com/flipt-io/flipt/raw/main/install.sh | sh
+```
+
 ```console Docker
 docker run -d \
     -p 8080:8080 \
@@ -23,10 +27,6 @@ helm install flipt flipt/flipt
 
 ```console Homebrew
 brew install flipt-io/brew/flipt
-```
-
-```console Binary
-curl -fsSL https://github.com/flipt-io/flipt/raw/main/install.sh | bash
 ```
 
 </CodeGroup>
