@@ -144,6 +144,12 @@
       ]
     },
     {
+      "group": "Tooling",
+      "pages": [
+        "tooling/github-actions"
+      ]
+    },
+    {
       "group": "Overview",
       "pages": ["reference/overview"]
     },

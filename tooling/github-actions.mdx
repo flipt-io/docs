@@ -1,0 +1,31 @@
+---
+title: GitHub Actions
+description: How to use our GitHub Actions to automate your workflows.
+---
+
+## Validate
+
+![Flipt Validate Action](/images/tooling/validate-action.png)
+
+The [flipt-validate action](https://github.com/flipt-io/validate-action) is used to validate your [features.yml](/configuration/storage#flag-state-configuration) files in a GitHub workflow. We recommend to use this action in your workflow to ensure that your Flipt data is syntactically and semantically valid before deploying when using [Git](https://www.flipt.io/docs/configuration/storage#git) or other [file-based backends](https://www.flipt.io/docs/configuration/storage#filesystem).
+
+It uses the [`flipt validate`](/cli/commands/validate) command under the hood to validate your data. If the data is invalid, the action will fail and provide a detailed error annotation at the source of the error.
+
+### Usage
+
+The following example demonstrates how to use the action in a GitHub workflow.
+
+```yaml
+validate:
+  runs-on: ubuntu-latest
+  steps:
+    # Checkout the target repository
+    - uses: actions/checkout@v3
+
+    - uses: flipt-io/validate-action@v0.1.0
+      # with:
+      # Optional, the token to use for GitHub API requests
+      # github-token: ${{ secrets.GITHUB_TOKEN }}
+      # Optional, the directory to validate, defaults to the repository root
+      # working-directory:
+```
