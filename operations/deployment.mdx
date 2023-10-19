@@ -98,11 +98,16 @@ Flipt ships with metrics, logging and tracing around both behaviour and system p
 
 ## Kubernetes
 
-TODO: Add more details on how to deploy Flipt in Kubernetes.
+Flipt already supports running as a [Docker container](https://github.com/flipt-io/flipt#docker-whale), so the lift to run within a Kubernetes environment proves to be quite simple.
+
+The easiest way to get started is to use our [helm chart](https://github.com/flipt-io/helm-charts). The `install` command in the README of our helm chart repo will provision a Kubernetes Deployment of flipt along with a Kubernetes Service.
+
+If you are already familiar with Kubernetes, you can get started by using the image `flipt:flipt:latest` (or pin to a specific version if need be) hosted on Docker Hub.
+
 
 ### Sidecar Deployment
 
-TODO: Add more details on how to deploy Flipt as a sidecar in Kubernetes.
+We released an [blog post](https://www.flipt.io/blog/flipt-as-a-sidecar) on October 16, 2023 that explored a nice use case of an efficient way to run Flipt as a sidecar.
 
 <Frame>
 <div className="block dark:hidden">
@@ -113,3 +118,11 @@ TODO: Add more details on how to deploy Flipt as a sidecar in Kubernetes.
   ![Flipt sidecar deployment configuration](/images/operations/flipt-k8s-sidecar-dark.svg)
 </div>
 </Frame>
+
+The above image could apply to a generic architecture, but we will focus on this being the state of a Kubernetes cluster.
+
+The `Flipt (master)` is the source of truth of all feature flag state, and where Flipt users will make edits to the state through the UI. You can think of this component as what comes by default by on a `helm install`.
+
+The `Flipt Exporter` is a [Kubernetes CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) which uses the [flipt export](/operations/import-export#export) command to upload potential changed state to an S3 bucket. As the feature flag state reaches an S3 bucket, several instances of Flipt can then be ran on top of that S3 bucket. Once such example is the `Flipt Sidecar` in the diagram which is collocated with a main process (in the same Kubernetes pod) that uses a Flipt client.
+
+The overall idea here is for the main process to achieve faster evaluations going over the "localhost" rather than through a central Flipt process which could be running anywhere in a distributed sense.
