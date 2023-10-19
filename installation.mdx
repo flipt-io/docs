@@ -17,7 +17,7 @@ docker run -d \
     -p 8080:8080 \
     -p 9000:9000 \
     -v $HOME/flipt:/var/opt/flipt \
-    flipt/flipt:latest
+    docker.flipt.io/flipt/flipt:latest
 ```
 
 ```console Kubernetes/Helm
@@ -54,7 +54,7 @@ docker run -d \
     -p 8080:8080 \
     -p 9000:9000 \
     -v $HOME/flipt:/var/opt/flipt \
-    flipt/flipt:latest
+    docker.flipt.io/flipt/flipt:latest
 ```
 
 This will download the image and start a Flipt container and publish ports
@@ -94,7 +94,7 @@ docker run -d \
     -p 9000:9000 \
     -v $HOME/flipt:/var/opt/flipt \
     -v $HOME/flipt/config.yaml:/etc/flipt/config.yaml \
-    flipt/flipt:latest
+    docker.flipt.io/flipt/flipt:latest
 ```
 
 ## Kubernetes/Helm
