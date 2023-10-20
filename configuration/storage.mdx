@@ -46,10 +46,15 @@ db:
 
 #### Remote
 
+<Note>
+  If using [Turso](https://turso.tech/) you must use a [database auth
+  token](https://docs.turso.tech/reference/turso-cli#creating-a-database-token)
+  to access the database.
+</Note>
+
 ```yaml
-db:
-  # http(s): informs flipt to use libSQL over HTTP(s) via sqld
-  url: http://db-[your-github-name].turso.io
+db: # http(s): informs flipt to use libSQL over HTTP(s) via sqld/Turso
+  url: https://db-[your-github-name].turso.io?authToken=[your-auth-token]
 ```
 
 ### PostgreSQL
