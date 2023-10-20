@@ -95,3 +95,31 @@ This has the potential for multiple benefits:
 </Frame>
 
 Flipt ships with metrics, logging and tracing around both behaviour and system performance metrics. These pieces of telemetry can be useful for understanding the constraints within your setup of Flipt. We recommend reading the [Configuration: Observability](/configuration/observability) section to understand more about how to extract these measurements.
+
+## Kubernetes
+
+Flipt already supports running as a [Docker container](/installation#docker), so the lift to run within a Kubernetes environment proves to be quite simple.
+
+The easiest way to get started is to use our [Helm chart](installation#kubernetes-helm). The chart will provision a Kubernetes Deployment of Flipt along with a Kubernetes Service.
+
+If you are already familiar with Kubernetes, you can get started by using the `flipt:latest` image (or pin to a specific version).
+
+### Sidecar Deployment
+
+We published a [blog post](https://www.flipt.io/blog/flipt-as-a-sidecar) that explores an efficient way to run Flipt as a sidecar.
+
+<Frame>
+<div className="block dark:hidden">
+  ![Flipt sidecar deployment configuration](/images/operations/flipt-k8s-sidecar-light.svg)
+</div>
+
+<div className="hidden dark:block">
+  ![Flipt sidecar deployment configuration](/images/operations/flipt-k8s-sidecar-dark.svg)
+</div>
+</Frame>
+
+The `Flipt (master)` is the source of truth of all feature flag state where Flipt users make edits through the UI.
+
+The `Flipt Exporter` is a [Kubernetes CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) which uses the [flipt export](/cli/commands/export) command to upload potential changed state to a S3 bucket. Several instances of Flipt can then be run using the S3 bucket as a source of truth. One such example is the `Flipt Sidecar` in the diagram which is collocated with a main process (in the same Kubernetes pod) that uses a Flipt client.
+
+The overall idea is for the main process to achieve faster evaluations going over the "localhost" rather than through a central Flipt process which could be running anywhere in a distributed sense.
