@@ -111,3 +111,28 @@ It's recommended to disable Flipt's debug logging in a production environment by
 
   </Tab>
 </Tabs>
+
+## Profiling
+
+Flipt exposes profiling endpoints (`/debug/pprof`) that can be useful for debugging and troubleshooting. However, these endpoints can be a security risk if exposed to the public internet.
+
+You can disable these endpoints by setting the following configuration options:
+
+<Tabs>
+  <Tab title="Environment Variable">
+
+    ```bash
+    FLIPT_DIAGNOSTICS_PROFILING_ENABLED=false
+    ```
+
+  </Tab>
+  <Tab title="Configuration Yaml">
+
+    ```yaml
+    diagnostics:
+      profiling:
+        enabled: false
+    ```
+
+  </Tab>
+</Tabs>

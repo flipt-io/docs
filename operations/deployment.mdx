@@ -8,7 +8,7 @@ Head to the [Installation](/installation) section for more details.
 
 Running Flipt with the default configuration is a great way to get to grips with using it.
 However, the default settings have some limitations which might make it impractical in a production environment.
-This guide will explore some Flipt deployment configurations for increased scalability and reliability.
+This guide explores some deployment configurations for increased scalability and reliability.
 
 ## Defaults
 
@@ -72,35 +72,53 @@ Using a remote system such as Redis to store the cache data, the same cache inst
 
 Redis is currently the only backend we support for caching purposes. We're considering adding more viable options (such as Memcached) in the future.
 
-## Further Considerations
+## Health Checks
 
-Flipt primarily relies on the backing database to achieve scalability. It offers caching to minimize the dependence on the backing store and avoid re-work. However, attention should be paid to the health and performance of the backing database and the interactions between Flipt and storage.
+Flipt exposes health check endpoints for both HTTP and gRPC. These endpoints are useful for orchestrators such as Kubernetes to determine if a Flipt instance is healthy and ready to serve traffic.
 
-Feature flag systems are primarily read-often and written infrequently. This allows some affordance to how such a system can be deployed and operated. When deployed against a remote database, Flipt operates as a stateless system, allowing operators to deploy multiple instances of Flipt in various configurations. A more advanced deployment scenario might see Flipt run in two alternate tiers, one for servicing your application's flag evaluations (read-tier) and another for the Flipt dashboard and making flag state changes (write-tier).
+<Note>
+  Health checks are not only useful in a Kubernetes environment but can be used
+  in any environment where you need to determine the health of a Flipt instance.
+</Note>
 
-This has the potential for multiple benefits:
+### HTTP
 
-- Failures in either read or write tiers can be isolated from one another. A failure in the tier serving the dashboard wouldn't necessarily affect flag evaluations.
-- Reads could be configured with access to the cache, where writes could be isolated from the caching tier. This may have benefits to the number of connections required on your caching layer.
-- Reads could be deployed in front of read-only replicas of a database, with the write-tier connecting directly to the primary, allowing more potential for scale in the database layer.
+Flipt exposes a health check endpoint at `/health` which can be used to determine the health of a Flipt instance. The endpoint returns a `200` status code and a JSON body with a `status` field if the instance is healthy and ready to serve traffic.
 
-<Frame>
-<div className="block dark:hidden">
-  ![Flipt separate read/write tier deployment configuration](/images/operations/flipt-complex-deployment-light.svg)
-</div>
+```bash
+$ curl -v http://localhost:8080/health
 
-<div className="hidden dark:block">
-  ![Flipt separate read/write tier deployment configuration](/images/operations/flipt-complex-deployment-dark.svg)
-</div>
-</Frame>
+> GET /health HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/8.1.2
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+< Content-Length: 21
+<
+{"status":"SERVING"}
+```
 
-Flipt ships with metrics, logging and tracing around both behaviour and system performance metrics. These pieces of telemetry can be useful for understanding the constraints within your setup of Flipt. We recommend reading the [Configuration: Observability](/configuration/observability) section to understand more about how to extract these measurements.
+### gRPC
+
+Flipt exposes a health check endpoint at `/grpc.health.v1.Health/Check` which can be used to determine the health of a Flipt instance. The endpoint returns a `SERVING` status code if the instance is healthy and ready to serve traffic.
+
+```bash
+$ grpcurl -plaintext localhost:9000 grpc.health.v1.Health/Check
+
+{
+  "status": "SERVING"
+}
+```
+
+Read more about the [gRPC Health Checking Protocol](https://grpc.io/docs/guides/health-checking/) for more details.
 
 ## Kubernetes
 
 Flipt already supports running as a [Docker container](/installation#docker), so the lift to run within a Kubernetes environment proves to be quite simple.
 
-The easiest way to get started is to use our [Helm chart](installation#kubernetes-helm). The chart will provision a Kubernetes Deployment of Flipt along with a Kubernetes Service.
+The easiest way to get started is to use our [Helm chart](installation#kubernetes-helm). The chart provisions a Kubernetes Deployment of Flipt along with a Kubernetes Service.
 
 If you are already familiar with Kubernetes, you can get started by using the `flipt:latest` image (or pin to a specific version).
 
@@ -123,3 +141,27 @@ The `Flipt (master)` is the source of truth of all feature flag state where Flip
 The `Flipt Exporter` is a [Kubernetes CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) which uses the [flipt export](/cli/commands/export) command to upload potential changed state to a S3 bucket. Several instances of Flipt can then be run using the S3 bucket as a source of truth. One such example is the `Flipt Sidecar` in the diagram which is collocated with a main process (in the same Kubernetes pod) that uses a Flipt client.
 
 The overall idea is for the main process to achieve faster evaluations going over the "localhost" rather than through a central Flipt process which could be running anywhere in a distributed sense.
+
+## Further Considerations
+
+Flipt primarily relies on the backing database to achieve scalability. It offers caching to minimize the dependence on the backing store and avoid re-work. However, attention should be paid to the health and performance of the backing database and the interactions between Flipt and storage.
+
+Feature flag systems are primarily read-often and written infrequently. This allows some affordance to how such a system can be deployed and operated. When deployed against a remote database, Flipt operates as a stateless system, allowing operators to deploy multiple instances of Flipt in various configurations. A more advanced deployment scenario might see Flipt run in two alternate tiers, one for servicing your application's flag evaluations (read-tier) and another for the Flipt dashboard and making flag state changes (write-tier).
+
+This has the potential for multiple benefits:
+
+- Failures in either read or write tiers can be isolated from one another. A failure in the tier serving the dashboard wouldn't necessarily affect flag evaluations.
+- Reads can be configured with access to the cache, where writes can be isolated from the caching tier. This may have benefits to the number of connections required on your caching layer.
+- Reads can be deployed in front of read-only replicas of a database, with the write-tier connecting directly to the primary, allowing more potential for scale in the database layer.
+
+<Frame>
+<div className="block dark:hidden">
+  ![Flipt separate read/write tier deployment configuration](/images/operations/flipt-complex-deployment-light.svg)
+</div>
+
+<div className="hidden dark:block">
+  ![Flipt separate read/write tier deployment configuration](/images/operations/flipt-complex-deployment-dark.svg)
+</div>
+</Frame>
+
+Flipt ships with metrics, logging and tracing around both behaviour and system performance metrics. These pieces of telemetry can be useful for understanding the constraints within your setup of Flipt. We recommend reading the [Configuration: Observability](/configuration/observability) section to understand more about how to extract these measurements.
