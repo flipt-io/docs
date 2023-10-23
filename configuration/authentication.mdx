@@ -138,8 +138,7 @@ authentication:
             - profile
 ```
 
-Multiple providers can be configured simultaneously.
-Each will result in a Login option being presented in the UI, along with a separate endpoint being added in the API to support each provider flow.
+Multiple providers can be configured simultaneously. Each provider will result in a login option being presented in the UI, along with a configured endpoint to support the provider flow.
 
 !["OIDC Login"](../images/configuration/oidc_login.png)
 
@@ -151,8 +150,9 @@ Flipt has been tested with each of the following providers:
 - [Dex](https://dexidp.io/docs/openid-connect/)
 - [Okta](https://developer.okta.com/docs/concepts/oauth-openid/#oauth-2-0)
 - [AzureAD](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc)
+- [Keycloak](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker_oidc)
 
-Though the intention is that it should work with other OIDC providers, these are just the handful the Flipt team has validated.
+Though the intention is that it should work with all OIDC providers, these are just the handful the Flipt team has validated.
 
 Following any of the links above should take you to the relevant documentation for each of these providers' OIDC client setups.
 You can use the credentials and client configuration obtained using those steps as configuration for your Flipt instance.

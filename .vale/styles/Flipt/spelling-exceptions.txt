@@ -1,10 +1,12 @@
 affordance
 APIs
 auditable
+backoff
 boolean
 caddy
 codeowners
 codespaces
+config
 darwin
 datetime
 declaratively
@@ -17,6 +19,7 @@ flipt
 flipt's
 Gitlab
 grafana
+grpc
 hostname
 http
 httplug
@@ -24,6 +27,7 @@ https
 javascript
 jq
 json
+keycloak
 linux
 memcached
 Minio
