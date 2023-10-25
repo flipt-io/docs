@@ -97,9 +97,10 @@
       "group": "Configuration",
       "pages": [
         "configuration/overview",
-        "configuration/storage",
         "configuration/authentication",
+        "configuration/auditing",
         "configuration/observability",
+        "configuration/storage",
         "configuration/telemetry"
       ]
     },

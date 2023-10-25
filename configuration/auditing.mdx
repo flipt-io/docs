@@ -1,0 +1,160 @@
+---
+title: Auditing
+description: This document describes Flipt's auditing capabilities.
+---
+
+## Audit Events
+
+Flipt supports sending audit events to configured sinks. Audit events have the following structure:
+
+```json
+{
+  "version": "0.1",
+  "type": "flag",
+  "action": "created",
+  "metadata": {
+    "actor": {
+      "authentication": "none",
+      "ip": "172.17.0.1"
+    }
+  },
+  "payload": {
+    "description": "flipt flag",
+    "enabled": true,
+    "key": "flipt",
+    "name": "flipt",
+    "namespace_key": "default"
+  },
+  "timestamp": "1970-01-01T00:00:00Z"
+}
+```
+
+- `version` : the version of the audit event structure. We don't expect too many changes to the structure of the audit event
+- `type` : the type of the entity being acted upon (flag, variant, constraint, etc.)
+- `action` : the action taken upon the entity (created, deleted, updated, etc.)
+- `metadata` : extra information related to the audit event as a whole. The `actor` field will always be present containing some identity information of the source which initiated the audit event
+- `payload` : the actual payload used to interact with the `Flipt` server for certain auditable events
+- `timestamp`: the time the event was created
+
+Currently, we support the following sinks for audit events:
+
+- Log File: the audit events are JSON encoded and new-line delimited. You can find the configuration in the [Audit Events - Log File](/configuration/overview#audit-events-log-file) section of the Configuration documentation.
+- Webhook: the audit events are sent to a URL of your choice. You can find the configuration in the [Audit Events - Webhook](/configuration/overview#audit-events-webhook) section of the Configuration documentation.
+
+You can find [examples](https://github.com/flipt-io/flipt/tree/main/examples/audit) in the main GitHub repository on how to enable audit events and how to tune configuration for it.
+
+## Event Filtering
+
+Starting from [v1.27.0](https://github.com/flipt-io/flipt/releases/tag/v1.27.0), you can specify configuration for which events you would like to receive on your audit sink.
+
+An always up to date list of events supported is available in our [GitHub repository](https://github.com/flipt-io/flipt/blob/main/internal/server/audit/README.md).
+
+Events are specified in the format of `noun:verb`. You can also specify a wild card for either the noun or the verb. For instance `*:created` corresponds to all `created` events for every entity. Furthermore, `flag:*` corresponds to all `flag` events, and `*:*` corresponds to every single event.
+
+Examples of configuring events include:
+
+```
+flag:created
+namespace:created
+flag:*
+rollout:deleted
+rule:deleted
+*:updated
+```
+
+## Webhooks
+
+You can opt to receive audit events as an HTTP POST to a configured webhook.
+
+Below is an example HTTP POST request made to a webhook URL:
+
+```console
+POST / HTTP/1.1
+Content-Length: 275
+Accept-Encoding: gzip
+Content-Type: application/json
+X-Forwarded-For: 136.54.97.144
+X-Forwarded-Proto: https
+
+{
+  "version": "0.1",
+  "type": "flag",
+  "action": "updated",
+  "metadata": {
+    "actor": {
+      "authentication": "none",
+      "ip": "127.0.0.1"
+    }
+  },
+  "payload": {
+    "description": "",
+    "enabled": true,
+    "key": "maintenance-mode",
+    "name": "Maintenance Mode",
+    "namespace_key": "default"
+  },
+  "timestamp": "2023-09-13T13:05:18-04:00"
+}
+```
+
+### Automatic Retries
+
+If the webhook server returns a non-200 response, Flipt will retry sending the request using an exponential backoff strategy until a maximum elapsed duration. The default maximum elapsed duration is 15 seconds.
+
+You can configure the maximum duration using the following configuration:
+
+```yaml
+audit:
+  sinks:
+    webhook:
+      max_backoff_duration: 15s
+```
+
+See the [Audit Events - Webhook](/configuration/overview#audit-events-webhook) section of the configuration documentation for more details.
+
+### Security
+
+You may provide a signing secret for requests to your webhook. If you specify a signing secret, you will receive a request with the `X-Flipt-Webhook-Signature` header populated. This value can be set in the [Audit Events - Webhook](/configuration/overview#audit-events-webhook) section of the Flipt server configuration.
+
+The value in the `X-Flipt-Webhook-Signature` header is the request body HMAC SHA256 signed with the signing secret you specified. On the webhook server, you can validate the signature by using the same signing secret. It's _strongly recommended_ that you do this to prevent requests to your webhook server that are from invalid origins.
+
+### Templates
+
+Starting from [v1.28.0](https://github.com/flipt-io/flipt/releases/tag/v1.28.0), you can specify a template for the body of an Audit Event Webhook request.
+
+A sample configuration can look something like this:
+
+```yaml
+audit:
+  sinks:
+    webhook:
+      enabled: true
+      templates:
+        - url: https://example.com
+          headers:
+            Content-Type: application/json
+            Authorization: Bearer this-is-a-seret-token
+          body: |
+            {
+              "type": {{ .Type }},
+              "action": {{ .Action }}
+            }
+```
+
+This configuration tells Flipt to send a `POST` request when events need to be emitted to the URL `https://example.com` with the HTTP headers, `Content-Type` and `Authorization`, and the body which is a [Go template](https://pkg.go.dev/text/template) that will be executed when an event comes in. The event structure looks like this:
+
+```go
+type Event struct {
+	Version string `json:"version"`
+	Type    Type   `json:"type"`
+	Action  Action `json:"action"`
+
+	Metadata Metadata `json:"metadata"`
+
+	Payload interface{} `json:"payload"`
+
+	Timestamp string `json:"timestamp"`
+}
+```
+
+Any of the values that are [exposed](https://github.com/flipt-io/flipt/blob/v1.28.0/internal/server/audit/audit.go#L51-L61) by Flipt are fair game for inclusion in your HTTP body template.
