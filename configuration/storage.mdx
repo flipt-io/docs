@@ -205,7 +205,7 @@ Flipt will follow the configured reference (e.g. branch name) and keep up to dat
 #### Authentication
 
 Authentication enables the ability to leverage private Git repositories as flag state backends.
-The `git` type backend supports both `basic` and `token` based authentication schemes.
+The `git` type backend supports both `basic`, `token` and `ssh` based authentication schemes.
 
 **GitHub**
 
@@ -228,6 +228,34 @@ storage:
         username: < username >
         password: < github-personal-access-token >
 ```
+
+**SSH**
+
+In order to configure Flipt with SSH, you will need to generate an SSH key-pair and configure your repository provider with the public key.
+GitHub has some excellent documentation regarding how to generate and install you credentials [here](https://docs.github.com/en/authentication/connecting-to-github-with-ssh).
+
+Once you have your private key credentials you will need to configure Flipt to use them.
+This can be done via the `storage.git.authentication.ssh` configuration section:
+
+```yaml
+storage:
+  type: git
+  git:
+    repository: git@github.com:flipt-io/some-private-repo.git
+    authentication:
+      ssh:
+        password: flipt
+        private_key_path: private-key.pem
+        # private_key_bytes: <raw-key-bytes> # alternatively pass the raw bytes inline
+        insecure_ignore_host_key: true
+```
+
+<Warning>
+  `insecure_ignore_host_key` is not encouraged for production use, and is
+  `false` by default. Instead, you are advised to put the key fingerprint in the
+  known hosts file where you are running Flipt. For example, for Github you can
+  do `ssh-keyscan github.com >> ~/.ssh/known_hosts` on the Flipt host.
+</Warning>
 
 See our [GitOps Guide](/guides/get-going-with-gitops) for an example of how to set up a GitHub repository as a flag state backend.
 
