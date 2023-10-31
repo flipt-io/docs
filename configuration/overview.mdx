@@ -170,14 +170,18 @@ These properties are as follows:
 
 #### Storage Git
 
-| Property                                  | Description                                                 | Default | Since   |
-| ----------------------------------------- | ----------------------------------------------------------- | ------- | ------- |
-| storage.git.repository                    | The URL of the git repository to use                        |         | v1.25.0 |
-| storage.git.ref                           | The git ref to use                                          | main    | v1.25.0 |
-| storage.git.poll_interval                 | The interval to poll the git repository and ref for changes | 30s     | v1.25.0 |
-| storage.git.authentication.basic.username | The username to use for basic authentication                |         | v1.25.0 |
-| storage.git.authentication.basic.password | The password to use for basic authentication                |         | v1.25.0 |
-| storage.git.authentication.token          | The access token to use for authentication                  |         | v1.25.0 |
+| Property                                                | Description                                                 | Default | Since   |
+| ------------------------------------------------------- | ----------------------------------------------------------- | ------- | ------- |
+| storage.git.repository                                  | The URL of the git repository to use                        |         | v1.25.0 |
+| storage.git.ref                                         | The git ref to use                                          | main    | v1.25.0 |
+| storage.git.poll_interval                               | The interval to poll the git repository and ref for changes | 30s     | v1.25.0 |
+| storage.git.authentication.basic.username               | The username to use for basic authentication                |         | v1.25.0 |
+| storage.git.authentication.basic.password               | The password to use for basic authentication                |         | v1.25.0 |
+| storage.git.authentication.token                        | The access token to use for authentication                  |         | v1.25.0 |
+| storage.git.authentication.ssh.password                 | Password used to generate the SSH keypair                   |         | v1.30.0 |
+| storage.git.authentication.ssh.private_key_path         | Path to private key on the filesystem                       |         | v1.30.0 |
+| storage.git.authentication.ssh.private_key_bytes        | (alternative) raw private key bytes                         |         | v1.30.0 |
+| storage.git.authentication.ssh.insecure_ignore_host_key | Skip verifying the known hosts key (avoid in production)    | false   | v1.30.0 |
 
 #### Storage Object
 
