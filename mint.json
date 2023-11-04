@@ -266,6 +266,9 @@
   "analytics": {
     "ga4": {
       "measurementId": "G-Q8MF5LZSNS"
+    },
+    "koala": {
+      "publicApiKey": "pk_ec5df6fa506399d9065131b64546a1ec7dfc"
     }
   },
   "feedback": {
