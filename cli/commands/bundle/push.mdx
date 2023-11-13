@@ -1,0 +1,24 @@
+---
+title: "flipt bundle push"
+description: "Push local bundle to remote"
+---
+
+```
+flipt bundle push [flags] <from> <to>
+```
+
+This command pushes a bundle located at `from` to the target `to`.
+More commonly this is used to push a local bundle to an upstream registry.
+
+### Examples
+
+```
+flipt bundle push mybundle:latest ghcr.io/flipt-io/flipt/mybundle:latest
+sha256:0e500a47bc26afcc91a1cea7abb39f55566bb99b709449a1752eea65000a663c
+```
+
+### Options
+
+```
+  -h, --help   help for push
+```

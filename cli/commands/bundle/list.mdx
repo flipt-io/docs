@@ -1,0 +1,27 @@
+---
+title: "flipt bundle list"
+description: "List all bundles"
+---
+
+```
+flipt bundle list [flags]
+```
+
+This command lists out named bundle previously built or pulled locally.
+Each bundle is listed with its digest, name, created timestamp and optional tag.
+
+### Examples
+
+```
+$ flipt bundle list
+DIGEST    REPO       TAG      CREATED
+8a70b2c   mybundle   latest   2023-11-13 13:51:20 +0000 UTC
+9388e73   mybundle            2023-11-10 12:02:04 +0000 UTC
+3e628b6   mybundle            2023-11-03 15:54:54 +0000 UTC
+```
+
+### Options
+
+```
+  -h, --help   help for list
+```

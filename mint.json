@@ -118,6 +118,15 @@
                 "cli/commands/config/edit"
               ]
             },
+            {
+              "group": "bundle",
+              "pages":[
+                "cli/commands/bundle/build",
+                "cli/commands/bundle/list",
+                "cli/commands/bundle/pull",
+                "cli/commands/bundle/push"
+              ]
+            },
             "cli/commands/export",
             "cli/commands/import",
             "cli/commands/migrate",
