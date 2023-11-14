@@ -10,6 +10,23 @@ The Flipt REST API can also be used with any language that can make HTTP request
 
 The latest version of the REST API is fully documented using the [OpenAPI v3 specification](https://github.com/flipt-io/flipt-openapi).
 
+## SDKs
+
+We're adding new SDKs all the time. To see the latest list of SDKs, head to the [REST SDKs](/integration/rest) documentation
+
+## Authentication
+
+<Info>
+Flipt authentication is **disabled** (not required) by default.
+
+Head to the [Configuration: Authentication](/configuration#authentication) section to enable it.
+
+</Info>
+
+Once enabled, the Flipt REST API uses tokens for authentication. The token is passed in the `Authorization` header of the request as a `Bearer` token.
+
+For more information on how to create a token, see the [Authentication](/authentication) documentation.
+
 ## Backward Compatibility
 
 We take great care to ensure that the Flipt REST API is backward compatible. This means that you can safely upgrade to a newer version of Flipt without having to change your API calls.
@@ -33,34 +50,3 @@ Version [v1.20.0](https://github.com/flipt-io/flipt/releases/tag/v1.20.0) of Fli
 All previous endpoints without the `/namespaces` prefix still work as before (i.e.: `/api/v1/flags`), they simply resolve to using the **default** namespace.
 
 See the [Concepts: Namespaces](/concepts#namespaces) section for more information.
-
-## SDKs
-
-Official REST client SDKs exist for the following languages:
-
-- [Go](https://pkg.go.dev/go.flipt.io/flipt/sdk/go)
-- [Node.js/TypeScript](https://github.com/flipt-io/flipt-node)
-- [Java](https://github.com/flipt-io/flipt-java)
-- [Rust](https://github.com/flipt-io/flipt-rust)
-- [Python](https://github.com/flipt-io/flipt-python)
-
-<Note>
-We're working on more REST API SDKs and would love to hear from you if you're
-interested in helping out or have a request for an SDK in a specific language.
-
-Please reach out to us in our [Discord server](https://www.flipt.io/discord).
-
-</Note>
-
-## Authentication
-
-<Info>
-Flipt authentication is **disabled** (not required) by default.
-
-Head to the [Configuration: Authentication](/configuration#authentication) section to enable it.
-
-</Info>
-
-Once enabled, the Flipt REST API uses tokens for authentication. The token is passed in the `Authorization` header of the request as a `Bearer` token.
-
-For more information on how to create a token, see the [Authentication](/authentication) documentation.
