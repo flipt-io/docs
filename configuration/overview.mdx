@@ -244,13 +244,13 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 
 #### Storage OCI
 
-| Property                                   | Description                                           | Default               | Since   |
-| ------------------------------------------ | ----------------------------------------------------- | --------------------- | ------- |
-| storage.object.oci.repository              | The target bundle repository (with optional registry) |                       | v1.31.0 |
-| storage.object.oci.authentication.username | The username to use for authentication                |                       | v1.31.0 |
-| storage.object.oci.authentication.password | The password to use for authentication                |                       | v1.31.0 |
-| storage.object.oci.bundles_directory       | The directory in which to store local bundles         | $config/flipt/bundles | v1.31.0 |
-| storage.object.oci.poll_interval           | The interval to poll the registry for changes         | 30s                   | v1.31.0 |
+| Property                            | Description                                           | Default               | Since   |
+| ----------------------------------- | ----------------------------------------------------- | --------------------- | ------- |
+| storage.oci.repository              | The target bundle repository (with optional registry) |                       | v1.31.0 |
+| storage.oci.authentication.username | The username to use for authentication                |                       | v1.31.0 |
+| storage.oci.authentication.password | The password to use for authentication                |                       | v1.31.0 |
+| storage.oci.bundles_directory       | The directory in which to store local bundles         | $config/flipt/bundles | v1.31.0 |
+| storage.oci.poll_interval           | The interval to poll the registry for changes         | 30s                   | v1.31.0 |
 
 ### Cache
 
