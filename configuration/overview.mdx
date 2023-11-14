@@ -199,6 +199,16 @@ These properties are as follows:
 | storage.object.s3.endpoint      | The S3 endpoint to use for object storage   |         | v1.25.0 |
 | storage.object.s3.poll_interval | The interval to poll S3 for changes         | 30s     | v1.25.0 |
 
+#### Storage OCI
+
+| Property                                   | Description                                           | Default               | Since   |
+| ------------------------------------------ | ----------------------------------------------------- | --------------------- | ------- |
+| storage.object.oci.repository              | The target bundle repository (with optional registry) |                       | v1.31.0 |
+| storage.object.oci.authentication.username | The username to use for authentication                |                       | v1.31.0 |
+| storage.object.oci.authentication.password | The password to use for authentication                |                       | v1.31.0 |
+| storage.object.oci.bundles_directory       | The directory in which to store local bundles         | $config/flipt/bundles | v1.31.0 |
+| storage.object.oci.poll_interval           | The interval to poll the registry for changes         | 30s                   | v1.31.0 |
+
 ### Cache
 
 | Property      | Description                                             | Default | Since   |
