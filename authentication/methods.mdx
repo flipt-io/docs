@@ -69,7 +69,9 @@ Tokens can be created with an optional namespace to allow for more granular cont
 Namespaced tokens are useful for the scenario when you want to limit the privileges of an integration such as a CI/CD pipeline or internal service.
 
 <Info>
-It's important to note that namespaced tokens offer limited access to the Flipt API, as only API requests that can be scoped to a namespace are supported.
+  It's important to note that namespaced tokens offer limited access to the
+  Flipt API, as only API requests that can be scoped to a namespace are
+  supported.
 </Info>
 
 For example, the `/api/v1/namespaces/{namespace}/flags` endpoint supports a `namespace` parameter, therefore a namespaced token can be used to access this endpoint. However, the `/auth/v1/tokens` endpoint is not associated with a single `namespace`, so a namespaced token cannot be used to access this endpoint.
