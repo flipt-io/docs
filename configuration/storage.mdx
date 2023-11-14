@@ -3,7 +3,7 @@ title: Storage
 description: This document describes how to configure Flipt's storage backend mechanisms.
 ---
 
-## Relational Database Backends
+## Relational Database
 
 Flipt supports [SQLite](https://www.sqlite.org/index.html), [PostgreSQL](https://www.postgresql.org/), [CockroachDB](https://www.cockroachlabs.com/) and [MySQL](https://dev.mysql.com/) relational databases.
 
@@ -114,7 +114,7 @@ docker run -it -v $HOME/flipt:/var/opt/flipt flipt/flipt:latest /bin/sh -c './fl
 If you don't use mounted volumes to persist your data, your data will be lost
 when the migration container exits, having no effect on your Flipt instance!
 
-## Declarative Backends
+## Declarative
 
 The following backend types are designed to support declarative management of feature flag state via a well-known file format.
 In particular, they're designed to support GitOps practices with minimal external dependencies.

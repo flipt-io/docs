@@ -114,17 +114,18 @@ The entity ID used here is going to be an identifier for the requests authentica
 Our context map is going to contain a single key `organization`, which is populated by a call to `getOrganization(r.Context())`.
 This will also return an identifier, only this time for the requesting user's organization.
 
-## Flipt's Filesystem Backends
+## Flipt's Declarative Backends
 
-The focus of this guide is to leverage Flipt's new "filesystem backends" to enable a GitOps workflow.
+The focus of this guide is to leverage Flipt's new "declarative backends" to enable a GitOps workflow.
 The name comes from the fact that the backend for Flipt is modeled around configuration files in a directory structure.
 These configuration files can coexist in a directory alongside other content (application code or other configuration code).
 
-There currently exist three top-level filesystem backend types:
+There currently exist three top-level declarative backend types:
 
 - `local` (local directory)
 - `git` (remote Git repository and branch)
 - `object` (object storage, currently only AWS S3)
+- `oci` (OCI registry storage)
 
 In this guide we will explore both the `local` and `git` backend types.
 
@@ -209,8 +210,8 @@ Flipt will track the HEAD of this repository's `main` branch.
 Changes will eventually propagate into our running instance of Flipt.
 
 <Info>
-  Head to [Configuration: Storage: Declarative Backends
-  Backends](/configuration/storage#declarative-backends) to learn more about
+  Head to [Configuration: Storage: Declarative
+  Backends](/configuration/storage#declarative) to learn more about
   configuring these backend types for Flipt.
 </Info>
 
@@ -466,7 +467,7 @@ func (s *Server) ListWords(w http.ResponseWriter, r *http.Request) {
 
 ## Recap
 
-We've successfully rolled a feature out to production using GitOps practices via Flipt's declarative feature flag configuration files and filesystem backends.
+We've successfully rolled a feature out to production using GitOps practices via Flipt's declarative feature flag configuration files and declarative backends.
 Along the way, we had the opportunity to use Git to understand the current state of the world.
 At each commit, we could've fully recreated the configuration of our entire application, including the state of Flipt itself.
 
@@ -477,9 +478,9 @@ Now you have all the tools necessary to practice GitOps with your feature flags.
 However, in production, your mileage may vary with the different backed types.
 You might want to consider the `object` (and AWS S3 type) backend if your source Git repositories are large (we're working on a guide for that now).
 
-The filesystem storage backends currently mandate that the UI is **read-only**.
+The declarative storage backends currently mandate that the UI is **read-only**.
 We've thoughts on how this could change in the future, but for now, this is a limitation.
 You always have your editor, Git and the SCMs (GitHub, Gitlab etc) for state management in the meantime.
 
 Each of these backends work by polling their sources (git, local directory or object store) and the interval can be configured.
-Checkout the [Configuration: Storage: Filesystem](/configuration/storage#filesystem) for details on adjusting these intervals.
+Checkout the [Configuration: Storage: Declarative](/configuration/storage#declarative) for details on adjusting these intervals.
