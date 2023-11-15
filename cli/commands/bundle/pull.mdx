@@ -1,0 +1,27 @@
+---
+title: "bundle pull"
+description: "Pull a remote bundle"
+---
+
+```
+flipt bundle pull [flags] <remote>
+```
+
+This command fetches a bundle from a target remote locally with the same name.
+
+### Examples
+
+```
+$ flipt bundle pull ghcr.io/flipt-io/flipt/mybundle:latest
+sha256:0e500a47bc26afcc91a1cea7abb39f55566bb99b709449a1752eea65000a663c
+
+$ flipt bundle list
+0e500a4   mybundle   latest   2023-11-13 13:53:52 +0000 UTC
+8a70b2c   mybundle            2023-11-13 13:51:20 +0000 UTC
+```
+
+### Options
+
+```
+  -h, --help   help for pull
+```
