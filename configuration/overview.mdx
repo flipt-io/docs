@@ -40,9 +40,52 @@ The server will check in a few different locations for server configuration (in 
 You can edit any of these properties to your liking, and on restart Flipt will
 pick up the new changes.
 
-These properties are as follows:
+## Environment Variables
 
-### General
+All options in the configuration file can be overridden using environment
+variables using the syntax:
+
+```yaml
+FLIPT_<SectionName>_<KeyName>
+```
+
+Environment variables **MUST** have `FLIPT_` prefix and be in `UPPER_SNAKE_CASE` format.
+
+<Note>
+  Using environment variables to override defaults is especially helpful when
+  running with Docker as described in the [Installation](/installation)
+  documentation.
+</Note>
+
+Keys should be uppercase and `.` should be replaced by `_`. For example,
+given these configuration settings:
+
+```yaml
+server:
+  grpc_port: 9000
+
+db:
+  url: file:/var/opt/flipt/flipt.db
+```
+
+You can override them using:
+
+```console
+export FLIPT_SERVER_GRPC_PORT=9001
+export FLIPT_DB_URL="postgres://postgres@localhost:5432/flipt?sslmode=disable"
+```
+
+### Multiple Values
+
+Some configuration options can have a list of values. For example, the `cors.allowed_origins` option can have multiple origins.
+
+In this case, you can use a space separated list of values for the environment variable override:
+
+```console
+export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
+```
+
+## Configuration Parameters
 
 | Property                      | Description                                                   | Default             | Since   |
 | ----------------------------- | ------------------------------------------------------------- | ------------------- | ------- |
@@ -199,6 +242,16 @@ These properties are as follows:
 | storage.object.s3.endpoint      | The S3 endpoint to use for object storage   |         | v1.25.0 |
 | storage.object.s3.poll_interval | The interval to poll S3 for changes         | 30s     | v1.25.0 |
 
+#### Storage OCI
+
+| Property                            | Description                                           | Default               | Since   |
+| ----------------------------------- | ----------------------------------------------------- | --------------------- | ------- |
+| storage.oci.repository              | The target bundle repository (with optional registry) |                       | v1.31.0 |
+| storage.oci.authentication.username | The username to use for authentication                |                       | v1.31.0 |
+| storage.oci.authentication.password | The password to use for authentication                |                       | v1.31.0 |
+| storage.oci.bundles_directory       | The directory in which to store local bundles         | $config/flipt/bundles | v1.31.0 |
+| storage.oci.poll_interval           | The interval to poll the registry for changes         | 30s                   | v1.31.0 |
+
 ### Cache
 
 | Property      | Description                                             | Default | Since   |
@@ -291,48 +344,3 @@ be logged in the Flipt logs when a deprecated configuration option is used.
 
 All deprecated options are listed in the [DEPRECATIONS](https://github.com/flipt-io/flipt/blob/main/DEPRECATIONS.md) file
 in the Flipt repository as well as the [CHANGELOG](https://github.com/flipt-io/flipt/blob/main/CHANGELOG.md).
-
-## Environment Variables
-
-All options in the configuration file can be overridden using environment
-variables using the syntax:
-
-```yaml
-FLIPT_<SectionName>_<KeyName>
-```
-
-Environment variables **MUST** have `FLIPT_` prefix and be in `UPPER_SNAKE_CASE` format.
-
-<Note>
-  Using environment variables to override defaults is especially helpful when
-  running with Docker as described in the [Installation](/installation)
-  documentation.
-</Note>
-
-Keys should be uppercase and `.` should be replaced by `_`. For example,
-given these configuration settings:
-
-```yaml
-server:
-  grpc_port: 9000
-
-db:
-  url: file:/var/opt/flipt/flipt.db
-```
-
-You can override them using:
-
-```console
-export FLIPT_SERVER_GRPC_PORT=9001
-export FLIPT_DB_URL="postgres://postgres@localhost:5432/flipt?sslmode=disable"
-```
-
-### Multiple Values
-
-Some configuration options can have a list of values. For example, the `cors.allowed_origins` option can have multiple origins.
-
-In this case, you can use a space separated list of values for the environment variable override:
-
-```console
-export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
-```

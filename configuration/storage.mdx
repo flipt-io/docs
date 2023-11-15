@@ -3,9 +3,9 @@ title: Storage
 description: This document describes how to configure Flipt's storage backend mechanisms.
 ---
 
-## Databases
+## Relational Database
 
-Flipt supports [SQLite](https://www.sqlite.org/index.html), [PostgreSQL](https://www.postgresql.org/), [CockroachDB](https://www.cockroachlabs.com/) and [MySQL](https://dev.mysql.com/) databases.
+Flipt supports [SQLite](https://www.sqlite.org/index.html), [PostgreSQL](https://www.postgresql.org/), [CockroachDB](https://www.cockroachlabs.com/) and [MySQL](https://dev.mysql.com/) relational databases.
 
 <Note>
   As of [v1.29.0](https://github.com/flipt-io/flipt/releases/tag/v1.29.0), Flipt
@@ -114,14 +114,14 @@ docker run -it -v $HOME/flipt:/var/opt/flipt flipt/flipt:latest /bin/sh -c './fl
 If you don't use mounted volumes to persist your data, your data will be lost
 when the migration container exits, having no effect on your Flipt instance!
 
-## Filesystem
+## Declarative
 
-The following backend types are designed to support declarative management of feature flag state.
+The following backend types are designed to support declarative management of feature flag state via a well-known file format.
 In particular, they're designed to support GitOps practices with minimal external dependencies.
 
-Currently, we classify `local`, `git`, and `object` as the three filesystem backends.
+Currently, we classify `local`, `git`, `object` and `oci` as the four declarative backends.
 The `local` backend has been primarily developed to support a local development experience,
-whereas, the `git` and `object` backends are intended for production and serve flag state directly from a configurable repository and Git reference (e.g. branch) or object storage bucket.
+whereas, the `git`, `object` and `oci` backends are intended for production use.
 
 ### Read Only Mode
 
@@ -320,6 +320,43 @@ These should be provided as environment variables to the Flipt server process:
 AWS_ACCESS_KEY_ID=...
 AWS_SECRET_ACCESS_KEY=...
 ```
+
+### OCI
+
+Since `v1.31.0`, Flipt supports using any [OCI](https://opencontainers.org/) compatible registry as a declarative backend source.
+Flipt has its own custom OCI manifest format (we call them `bundles`), which can be built and managed using the [Flipt CLI](/cli/commands/bundle).
+
+<Tabs>
+  <Tab title="Environment Variable">
+
+    ```bash
+    FLIPT_STORAGE_TYPE="oci"
+    FLIPT_STORAGE_OCI_REPOSITORY="some.oci.registry/repository/image:tag"
+    FLIPT_STORAGE_OCI_POLL_INTERVAL="30s"
+    # authentication credentials
+    FLIPT_STORAGE_OCI_AUTHENTICATION_USERNAME="username"
+    FLIPT_STORAGE_OCI_AUTHENTICATION_PASSWORD="password"
+    # location used for storing local bundles
+    FLIPT_STORAGE_OCI_BUNDLES_DIRECTORY="<user_config_dir>/flipt/bundles"
+    ```
+
+  </Tab>
+  <Tab title="Configuration Yaml">
+
+    ```yaml
+    storage:
+      type: "oci"
+      oci:
+        repository: "some.oci.registry/repository/image:tag"
+        poll_interval: "30s"
+        authentication:
+          username: "username"
+          password: "password"
+        bundles_directory: "<user_config_dir>/flipt/bundles"
+    ```
+
+  </Tab>
+</Tabs>
 
 ### Flag State Configuration
 
