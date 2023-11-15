@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.2.10
+  version: 0.2.15
 paths:
   /evaluate/v1/boolean:
     post:
@@ -161,6 +161,8 @@ paths:
               type: object
               properties:
                 name:
+                  type: string
+                namespaceKey:
                   type: string
                 description:
                   type: string
@@ -1362,6 +1364,8 @@ components:
       properties:
         requestId:
           type: string
+        flagKey:
+          type: string
         enabled:
           type: boolean
         timestamp:
@@ -1374,6 +1378,7 @@ components:
           $ref: '#/components/schemas/EvaluationevaluationReason'
       required:
         - requestId
+        - flagKey
         - enabled
         - timestamp
         - requestDurationMillis
@@ -1385,6 +1390,8 @@ components:
           type: string
         match:
           type: boolean
+        flagKey:
+          type: string
         segmentKeys:
           type: array
           items:
@@ -1404,6 +1411,7 @@ components:
       required:
         - requestId
         - match
+        - flagKey
         - segmentKeys
         - variantKey
         - variantAttachment
