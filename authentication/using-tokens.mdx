@@ -57,9 +57,9 @@ def doRequest():
 ### 2. `Cookie` Header
 
 <Warning>
-  Please enable [CSRF](/configuration/authentication#session) prevention in your
-  Flipt configuration when using a "session compatible" authentication method
-  and `Cookie` based authentication in the browser.
+  It's important to enable [CSRF](/configuration/authentication#session)
+  prevention in your Flipt configuration when using a "session compatible"
+  authentication method and `Cookie` based authentication in the browser.
 </Warning>
 
 For browser-based applications (e.g. Flipt's own user interface) we support supplying a client token via a particular `Cookie` called `flipt_client_token`.
