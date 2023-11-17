@@ -240,6 +240,13 @@ git push origin main
 Once Flipt has received the updated reference, our flag should be available through Flipt's API.
 The code change we added can now safely reference the present flag, which is currently in a `disabled` state.
 
+This is where you might use something like `curl` to ensure the service is still behaving as expected:
+
+```bash
+# the -w option prints timing output at the end
+curl -w "\nTotal: %{time_total}s\n" "http://localhost:8000/words"
+```
+
 Next we will begin to enable the flag under different conditions.
 
 ## Targeting and Rollouts
@@ -341,6 +348,10 @@ Whereas, the rest of users should still be served using the old Bubble Sort algo
   incorrect, maybe the order has reversed or has become unstable for some
   entries. You can fix those changes now before targeting more users.
 </Tip>
+
+```bash
+curl -w "\nTotal: %{time_total}s\n" "http://localhost:8000/words?org=internal-users"
+```
 
 ### Proportional Rollout
 
@@ -481,7 +492,7 @@ At each commit, we could've fully recreated the configuration of our entire appl
 Now you have all the tools necessary to practice GitOps with your feature flags.
 
 However, in production, your mileage may vary with the different backed types.
-You might want to consider the `object` (and AWS S3 type) backend if your source Git repositories are large (we're working on a guide for that now).
+You might want to consider the `object` (and AWS S3 type) or the `oci` backend if your source Git repositories are large (we're working on a guide for that now).
 
 The declarative storage backends currently mandate that the UI is **read-only**.
 We've thoughts on how this could change in the future, but for now, this is a limitation.
