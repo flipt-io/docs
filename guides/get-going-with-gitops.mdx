@@ -40,7 +40,7 @@ While we feel confident in our implementation, we're going to practice caution a
 ### The Application
 
 <Note>
-  If you want to follow along you can fork [this
+  If you want to follow along you can fork our [gitops guide
   repository](https://github.com/flipt-io/flipt-gitops-guide).
 </Note>
 
@@ -240,7 +240,7 @@ git push origin main
 Once Flipt has received the updated reference, our flag should be available through Flipt's API.
 The code change we added can now safely reference the present flag, which is currently in a `disabled` state.
 
-This is where you might use something like `curl` to ensure the service is still behaving as expected:
+This is where you would use `curl` to ensure the service is still behaving as expected:
 
 ```bash
 # the -w option prints timing output at the end
