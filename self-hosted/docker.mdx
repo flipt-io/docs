@@ -1,0 +1,66 @@
+---
+title: "Docker"
+description: "Running Flipt in a Docker container"
+---
+
+The simplest way to run Flipt is via Docker. This streamlines the installation
+and configuration by using a reliable runtime.
+
+### Prerequisites
+
+Docker installation is required on the host, see the [official installation docs](https://docs.docker.com/install/).
+
+<Note>
+  Flipt requires Docker Engine version
+  [20.10](https://docs.docker.com/engine/release-notes/20.10/) or higher.
+</Note>
+
+### Running
+
+```console
+docker run -d \
+    -p 8080:8080 \
+    -p 9000:9000 \
+    -v $HOME/flipt:/var/opt/flipt \
+    docker.flipt.io/flipt/flipt:latest
+```
+
+This will download the image and start a Flipt container and publish ports
+needed to access the UI and backend server. All persistent Flipt data will be
+stored in `$HOME/flipt`.
+
+<Info>
+  `$HOME/flipt` is just used as an example, you can use any directory you would
+  like on the host.
+</Info>
+
+The Flipt container uses host-mounted volumes to persist data:
+
+| Host location | Container location | Purpose                      |
+| ------------- | ------------------ | ---------------------------- |
+| $HOME/flipt   | /var/opt/flipt     | For storing application data |
+
+This allows data to persist between Docker container restarts.
+
+<Warning>
+  If you don't use mounted volumes to persist your data, your data will be lost
+  when the container exits!
+</Warning>
+
+After starting the container you can visit http://0.0.0.0:8080 to view the
+application.
+
+<Note>Flipt runs without the root user in the Docker container.</Note>
+
+### Configuration
+
+A default configuration file within the image. To supply a custom configuration, update the `docker run` command to mount your local configuration into the container
+
+```console
+docker run -d \
+    -p 8080:8080 \
+    -p 9000:9000 \
+    -v $HOME/flipt:/var/opt/flipt \
+    -v $HOME/flipt/config.yaml:/etc/flipt/config.yaml \
+    docker.flipt.io/flipt/flipt:latest
+```
