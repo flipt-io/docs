@@ -12,6 +12,7 @@ The release notes on GitHub for each Flipt release should signify whether it doe
 You can find the releases and release notes on [GitHub](https://github.com/flipt-io/flipt/releases).
 
 Before upgrading your Flipt instances to a new version, you may need to run the `flipt migrate` command against your database.
+
 The Flipt binary is self-contained and has all necessary migrations baked in.
 You should use the version of Flipt you're attempting to upgrade to.
 
@@ -54,13 +55,13 @@ Go Version: go1.20.3
 Once you have identified the version you have installed is the target version you are upgrading to, you can run `flipt migrate` (In this instance I am upgrading to Flipt v1.20.0).
 
 ```sh
-$ flipt migrate --config /etc/flipt/default.yml
+$ flipt migrate
 2023-04-13T15:35:17Z	DEBUG	using driver	{"driver": "sqlite3"}
 2023-04-13T15:35:17Z	DEBUG	migrations complete
 ```
 
 Now you can update your running instance(s) of Flipt to match the same version.
-We design our migrations to be forward compatible with older Flipt server versions, so it's safe for you to keep running Flipt while the migrations are run and after they have finished.
+We design our migrations to be compatible with older Flipt server versions, so it's safe for you to keep running Flipt while the migrations are run and after they have finished.
 
 ## Downgrade Process
 
