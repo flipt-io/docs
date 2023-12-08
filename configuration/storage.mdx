@@ -129,6 +129,12 @@ whereas, the `git`, `object` and `oci` backends are intended for production use.
 
 Once enabled, all filesystem backends put the Flipt API and UI into a `read-only` mode that prevents Flipt from writing to the backend. This is useful for production environments where you want to ensure that flag state is only managed via the configured backend.
 
+<Tip>
+  You can also put Flipt into `read-only` mode by setting the
+  `FLIPT_STORAGE_READ_ONLY` environment variable to `true`, or setting
+  `storage.read_only` to `true` in your configuration.
+</Tip>
+
 ### Local
 
 The purpose of this backend type is to support serving Flipt flag state directly from your local filesystem.

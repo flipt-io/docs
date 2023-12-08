@@ -16,7 +16,7 @@ Namespaces allow you to separate all data within Flipt for use in different envi
 Another common use-case of Namespaces is to separate Flipt data by internal team or organization.
 
 <Note>
-All data created in one namespace is only accessible within that namespace, meaning Flags/Segments/etc must be created in each namespace in which they're to be used.
+All data created in one namespace is only accessible within that namespace, meaning flags/segments/etc must be created in each namespace in which they're to be used.
 
 If a namespace isn't selected then the 'Default' namespace is used.
 
@@ -35,7 +35,7 @@ features that you want to be able to enable or disable for users of your
 applications.
 
 For example, a flag named `new-contact-page` could be used to determine whether
-or not a given user sees the latest version of a contact us page that you are
+or not a given user sees the latest version of a 'Contact Us' page that you are
 working on when they visit your homepage.
 
 Flags can be used as simple on/off toggles or with variants and rules to support
@@ -43,7 +43,7 @@ more elaborate use cases.
 
 ![Flags Example](/images/concepts/flags.png)
 
-As of [v1.24.0](https://github.com/flipt-io/flipt/releases/tag/v1.24.0) there are now two types of flags:
+There are two types of flags:
 
 - **Variant** which allows you to return a single variant for a given flag given a set of evaluation rules. This is the default flag type.
 - **Boolean** which allows you to return a boolean value for a given flag.

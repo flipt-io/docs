@@ -61,8 +61,23 @@
       "pages": [
         "introduction",
         "usecases",
-        "concepts",
-        "installation"
+        "concepts"
+      ]
+    },
+    {
+      "group": "Self-Hosted",
+      "pages": [
+        "self-hosted/overview",
+        "self-hosted/docker",
+        "self-hosted/kubernetes"
+      ]
+    },
+    {
+      "group": "Managed",
+      "pages": [
+        "managed/overview",
+        "managed/byoc",
+        "managed/hybrid"
       ]
     },
     {
@@ -263,6 +278,10 @@
     {
       "source": "/experimental/filesystem-backends",
       "destination": "/configuration/storage"
+    },
+    {
+      "source": "/installation",
+      "destination": "/self-hosted/overview"
     }
   ],
   "footerSocials": {
