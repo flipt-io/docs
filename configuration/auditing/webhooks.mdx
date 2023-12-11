@@ -1,0 +1,124 @@
+---
+title: Webhooks
+description: This document describes Flipt's webhook support.
+---
+
+You can opt to receive audit events as an HTTP POST to a configured webhook.
+
+Below is an example HTTP POST request made to a webhook URL:
+
+```console
+POST / HTTP/1.1
+Content-Length: 275
+Accept-Encoding: gzip
+Content-Type: application/json
+X-Forwarded-For: 136.54.97.144
+X-Forwarded-Proto: https
+
+{
+  "version": "0.1",
+  "type": "flag",
+  "action": "updated",
+  "metadata": {
+    "actor": {
+      "authentication": "none",
+      "ip": "127.0.0.1"
+    }
+  },
+  "payload": {
+    "description": "",
+    "enabled": true,
+    "key": "maintenance-mode",
+    "name": "Maintenance Mode",
+    "namespace_key": "default"
+  },
+  "timestamp": "2023-09-13T13:05:18-04:00"
+}
+```
+
+## Automatic Retries
+
+If the webhook server returns a non-200 response, Flipt will retry sending the request using an exponential backoff strategy until a maximum elapsed duration. The default maximum elapsed duration is 15 seconds.
+
+You can configure the maximum duration using the following configuration:
+
+```yaml
+audit:
+  sinks:
+    webhook:
+      max_backoff_duration: 15s
+```
+
+See the [Audit Events - Webhook](/configuration/overview#audit-events-webhook) section of the configuration documentation for more details.
+
+## Security
+
+You may provide a signing secret for requests to your webhook. If you specify a signing secret, you will receive a request with the `X-Flipt-Webhook-Signature` header populated. This value can be set in the [Audit Events - Webhook](/configuration/overview#audit-events-webhook) section of the Flipt server configuration.
+
+The value in the `X-Flipt-Webhook-Signature` header is the request body HMAC SHA256 signed with the signing secret you specified. On the webhook server, you can validate the signature by using the same signing secret. It's _strongly recommended_ that you do this to prevent requests to your webhook server that are from invalid origins.
+
+## Templates
+
+Starting from [v1.28.0](https://github.com/flipt-io/flipt/releases/tag/v1.28.0), you can specify a template for the body of an Audit Event Webhook request.
+
+A sample configuration can look something like this:
+
+```yaml
+audit:
+  sinks:
+    webhook:
+      enabled: true
+      templates:
+        - url: https://example.com
+          headers:
+            Content-Type: application/json
+            Authorization: Bearer this-is-a-seret-token
+          body: |
+            {
+              "type": {{ .Type }},
+              "action": {{ .Action }}
+            }
+```
+
+This configuration tells Flipt to send a `POST` request when events need to be emitted to the URL `https://example.com` with the HTTP headers, `Content-Type` and `Authorization`, and the body which is a [Go template](https://pkg.go.dev/text/template) that will be executed when an event comes in. The event structure looks like this:
+
+```go
+type Event struct {
+	Version string `json:"version"`
+	Type    Type   `json:"type"`
+	Action  Action `json:"action"`
+
+	Metadata Metadata `json:"metadata"`
+
+	Payload interface{} `json:"payload"`
+
+	Timestamp string `json:"timestamp"`
+}
+```
+
+Any of the values that are [exposed](https://github.com/flipt-io/flipt/blob/v1.28.0/internal/server/audit/audit.go#L51-L61) by Flipt are available for inclusion in your HTTP body template.
+
+### Example: Slack
+
+Below is an example of a Slack webhook integration that uses the templating feature to send a Slack message when a flag is updated.
+
+```yaml
+audit:
+  sinks:
+    webhook:
+      enabled: true
+      templates:
+        - url: "https://hooks.slack.com/services/xxxxx"
+          headers:
+            Content-Type: "application/json"
+          body: |
+            {
+              "text": "Flipt Event: {{.Type}}/{{.Action}}\n\n```{{.Payload }}```"
+            }
+```
+
+The above configuration will send a Slack message that looks like this:
+
+![Slack Message](/images/configuration/auditing/slack-webhook.png)
+
+You can find more information about Slack webhooks [here](https://api.slack.com/messaging/webhooks). You can also use the [Slack Block Kit Builder](https://app.slack.com/block-kit-builder) to build more complex messages.

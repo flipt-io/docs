@@ -43,6 +43,7 @@ otlp
 performant
 PGBouncer
 postgres
+pprof
 protobuf
 protoc
 Quicksort
