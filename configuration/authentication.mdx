@@ -91,7 +91,7 @@ Each key within the `methods` section is a particular authentication method.
 These methods are disabled (`enabled: false`) by default.
 Enabling and configuring a method allows for different ways to establish client token credentials within Flipt.
 
-### Method: Static Token
+### Static Token
 
 The `token` method provides the ability to create client tokens statically, with optional expiry constraints.
 
@@ -108,7 +108,7 @@ Once enabled, static tokens can be created via the [CreateToken](/reference/auth
 
 Further explanation for using this method can be found in the [Authentication: Static Token](/authentication/methods#static-token) documentation.
 
-### Method: OIDC
+### OIDC
 
 <Note>The `OIDC` method is a `session compatible` authentication method.</Note>
 
@@ -269,7 +269,7 @@ Other providers have similar mechanisms for attenuating who can leverage this au
 
 </Tip>
 
-### Method: GitHub
+### GitHub
 
 <Note>
   The `GitHub` method is a `session compatible` authentication method.
@@ -297,7 +297,30 @@ authentication:
 
 !["GitHub Login"](../images/guides/login-with-github/login-with-github.png)
 
-### Method: Kubernetes
+#### Allowed Organizations
+
+The GitHub authentication method supports the ability to restrict access to a set of GitHub organizations. This is important if you want to limit access to Flipt to only members of a specific organization as opposed to all GitHub users.
+
+To enable this feature, set the `github.allowed_organizations` configuration value to a list of GitHub organizations. For example:
+
+```yaml config.yaml
+authentication:
+  methods:
+    github:
+      enabled: true
+      scopes:
+        - read:org
+      allowed_organizations:
+        - my-org
+        - my-other-org
+```
+
+<Note>
+  The `read:org` scope is required to retrieve the list of organizations that
+  the user is a member of.
+</Note>
+
+### Kubernetes
 
 The `kubernetes` method provides the ability to exchange Kubernetes service account tokens for client tokens.
 

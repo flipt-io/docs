@@ -33,6 +33,7 @@ memcached
 Minio
 mintlify
 namespace
+namespaced
 namespaces
 nginx
 ngrok
