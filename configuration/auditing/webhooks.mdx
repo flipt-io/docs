@@ -102,7 +102,7 @@ Any of the values that are [exposed](https://github.com/flipt-io/flipt/blob/v1.2
 
 Below is an example of a Slack webhook integration that uses the templating feature to send a Slack message when a flag is updated.
 
-````yaml
+```yaml
 audit:
   sinks:
     webhook:
@@ -115,7 +115,7 @@ audit:
             {
               "text": "Flipt Event: {{.Type}}/{{.Action}}\n\n```{{.Payload }}```"
             }
-````
+```
 
 The above configuration will send a Slack message that looks like this:
 
