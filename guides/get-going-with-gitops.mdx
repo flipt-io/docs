@@ -143,7 +143,6 @@ func (s *Server) ListWords(w http.ResponseWriter, r *http.Request) {
   }
 }
 ```
-
 </CodeGroup>
 
 The entity ID used here is going to be an identifier for the requests authenticated user. This is returned by the call to `getUser(r.Context())`.
