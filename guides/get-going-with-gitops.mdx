@@ -123,7 +123,6 @@ func (s *Server) ListWords(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  bubbleSort(words)
   flag, err := s.flipt.Evaluation().Boolean(r.Context(), &evaluation.EvaluationRequest{
     FlagKey: "use-quicksort-algorithm",
     EntityId: getUser(r.Context()),
