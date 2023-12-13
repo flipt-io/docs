@@ -84,7 +84,8 @@ Instead of calling `bubblesort` directly, we're going to use the [Flipt Go SDK](
 This flag is going to be a **boolean** type flag, and so we use the `sdk.Evaluation().Boolean()` call to evaluate the `enabled` property of our flag.
 We provide this evaluation call with a request containing the flags key, an entity ID and a context map.
 
-```diff
+<CodeGroup>
+```diff diff.go
  func (s *Server) ListWords(w http.ResponseWriter, r *http.Request) {
    words, err := getWords(r.Context())
    if err != nil {
@@ -92,20 +93,20 @@ We provide this evaluation call with a request containing the flags key, an enti
      return
    }
 
--  bubbleSort(words)
-+  flag, err := s.flipt.Evaluation().Boolean(r.Context(), &evaluation.EvaluationRequest{
-+    FlagKey: "use-quicksort-algorithm",
-+    EntityId: getUser(r.Context()),
-+    Context: map[string]string{
-+      "organization": getOrganization(r.Context()),
-+    },
-+  })
+- bubbleSort(words)
++ flag, err := s.flipt.Evaluation().Boolean(r.Context(), &evaluation.EvaluationRequest{
++   FlagKey: "use-quicksort-algorithm",
++   EntityId: getUser(r.Context()),
++   Context: map[string]string{
++     "organization": getOrganization(r.Context()),
++   },
++ })
 +
-+  if flag.Enabled {
-+    quicksort(words)
-+  } else {
-+    bubblesort(words)
-+  }
++ if flag.Enabled {
++   quicksort(words)
++ } else {
++   bubblesort(words)
++ }
 
    if err := json.NewEncoder(w).Encode(words); err != nil {
      http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -113,6 +114,36 @@ We provide this evaluation call with a request containing the flags key, an enti
    }
  }
 ```
+
+```go pkg/server/words.go
+func (s *Server) ListWords(w http.ResponseWriter, r *http.Request) {
+  words, err := getWords(r.Context())
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+
+  flag, err := s.flipt.Evaluation().Boolean(r.Context(), &evaluation.EvaluationRequest{
+    FlagKey: "use-quicksort-algorithm",
+    EntityId: getUser(r.Context()),
+    Context: map[string]string{
+      "organization": getOrganization(r.Context()),
+    },
+  })
+
+  if flag.Enabled {
+    quicksort(words)
+  } else {
+    bubblesort(words)
+  }
+
+  if err := json.NewEncoder(w).Encode(words); err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+}
+```
+</CodeGroup>
 
 The entity ID used here is going to be an identifier for the requests authenticated user. This is returned by the call to `getUser(r.Context())`.
 
@@ -164,9 +195,10 @@ This flag will be a _boolean_ type flag and be in a disabled (`enabled = false`)
 version: "1.2"
 namespace: default
 flags:
-  - key: use-quicksort-algorithm
-    type: BOOLEAN_FLAG_TYPE
-    enabled: false
+- key: use-quicksort-algorithm
+  name: Use Quicksort Algorithm
+  type: BOOLEAN_FLAG_TYPE
+  enabled: false
 ```
 
 ### Running Flipt Locally
@@ -263,11 +295,14 @@ git checkout -b enable-flag-for-internal-organization
 
 We open the `features.yml` file and update the definition with a new segment and add a rollout rule on our flag which returns `enable = true` when the request matches our new segment.
 
-```diff features.yml
+<CodeGroup>
+
+```diff features.diff
  version: "1.2"
  namespace: default
  flags:
  - key: use-quicksort-algorithm
+   name: Use Quicksort Algorithm
    type: BOOLEAN_FLAG_TYPE
    enabled: false
 +  rollouts:
@@ -276,12 +311,39 @@ We open the `features.yml` file and update the definition with a new segment and
 +      value: true
 +segments:
 +- key: internal-users
++  name: Internal Users
++  match_type: ANY_MATCH_TYPE
 +  constraints:
 +  - property: organization
-+    operatior: eq
++    operator: eq
 +    value: internal
 +    type: STRING_COMPARISON_TYPE
 ```
+
+```yaml features.yml
+version: "1.2"
+namespace: default
+flags:
+- key: use-quicksort-algorithm
+  name: Use Quicksort Algorithm
+  type: BOOLEAN_FLAG_TYPE
+  enabled: false
+  rollouts:
+  - segment:
+      key: internal-users
+      value: true
+segments:
+- key: internal-users
+  name: Internal Users
+  match_type: ANY_MATCH_TYPE
+  constraints:
+  - property: organization
+    operator: eq
+    value: internal
+    type: STRING_COMPARISON_TYPE
+```
+
+</CodeGroup>
 
 Breaking this change down we've got:
 
@@ -290,12 +352,14 @@ Breaking this change down we've got:
 ```yaml features.yml
 # ...
 segments:
-  - key: internal-users
-    constraints:
-      - property: organization
-        operatior: eq
-        value: internal
-        type: STRING_COMPARISON_TYPE
+- key: internal-users
+  name: Internal Users
+  match_type: ANY_MATCH_TYPE
+  constraints:
+  - property: organization
+    operator: eq
+    value: internal
+    type: STRING_COMPARISON_TYPE
 ```
 
 This [segment](/concepts#segments) definition matches any evaluation request where there exists a key `organization` on the context, with a value `internal`.
@@ -308,12 +372,12 @@ Now, when the user happens to be associated with the `internal` organization, it
 
 ```yaml features.yml
 flags:
-  - key: user-quicksort-algorithm
-    # ...
-    rollouts:
-      - segment:
-          key: internal-users
-          value: true
+- key: use-quicksort-algorithm
+  # ...
+  rollouts:
+  - segment:
+      key: internal-users
+      value: true
 ```
 
 Finally, we add a [rollout rule](/concepts#rollouts) to our boolean flag.
@@ -379,11 +443,13 @@ git checkout -b enable-flag-for-20-percent
 
 Then we're going to edit `features.yml` and add a threshold percentage rule.
 
-```diff features.yml
+<CodeGroup>
+```diff features.diff
  version: "1.2"
  namespace: default
  flags:
  - key: use-quicksort-algorithm
+   name: Use Quicksort Algorithm
    type: BOOLEAN_FLAG_TYPE
    enabled: false
    rollouts:
@@ -395,12 +461,42 @@ Then we're going to edit `features.yml` and add a threshold percentage rule.
 +      value: true
  segments:
  - key: internal-users
+   name: Internal Users
+   match_type: ANY_MATCH_TYPE
    constraints:
    - property: organization
-     operatior: eq
+     operator: eq
      value: internal
      type: STRING_COMPARISON_TYPE
 ```
+
+```yaml features.yaml
+version: "1.2"
+namespace: default
+flags:
+- key: use-quicksort-algorithm
+  name: Use Quicksort Algorithm
+  type: BOOLEAN_FLAG_TYPE
+  enabled: false
+  rollouts:
+  - segment:
+      key: internal-users
+      value: true
+  - threshold:
+      percentage: 20
+      value: true
+segments:
+- key: internal-users
+  name: Internal Users
+  match_type: ANY_MATCH_TYPE
+  constraints:
+  - property: organization
+    operator: eq
+    value: internal
+    type: STRING_COMPARISON_TYPE
+```
+
+</CodeGroup>
 
 Again, breaking this change down:
 
@@ -418,12 +514,12 @@ If no rules match, then the flags top-level `enabled` property is used as the fi
 flags:
 - key: use-quicksort-algorithm
 # ...
-  - segment:
-      key: internal-users
-      value: true
-  - threshold:
-      percentage: 20
-      value: true
+- segment:
+    key: internal-users
+    value: true
+- threshold:
+    percentage: 20
+    value: true
 ```
 
 This threshold percentage is set to `20`, meaning roughly `20%` of entity IDs will match and cause the flag to return `enabled = true`.
@@ -457,9 +553,10 @@ Once we get to the stage of enabling the flag for 100% of users, we can either s
 version: "1.2"
 namespace: default
 flags:
-  - key: use-quicksort-algorithm
-    type: BOOLEAN_FLAG_TYPE
-    enabled: true
+- key: use-quicksort-algorithm
+  name: Use Quicksort Algorithm
+  type: BOOLEAN_FLAG_TYPE
+  enabled: true
 ```
 
 Beyond this, we can further close the loop by removing the feature flag call from our application code and simply use the new `quicksort` function.
