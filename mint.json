@@ -84,8 +84,14 @@
       "group": "Integration",
       "pages": [
         "integration/overview",
-        "integration/rest",
-        "integration/grpc",
+        {
+          "group": "Server-Side SDKs",
+          "pages": [
+            "integration/server/rest",
+            "integration/server/grpc"
+          ]
+        },
+        "integration/client",
         "integration/openfeature",
         "integration/examples"
       ]
@@ -289,6 +295,14 @@
     {
       "source": "/installation",
       "destination": "/self-hosted/overview"
+    },
+    {
+      "source": "/integration/rest",
+      "destination": "/integration/server/rest"
+    },
+    { 
+      "source": "/integration/grpc",
+      "destination": "/integration/server/grpc"
     }
   ],
   "footerSocials": {

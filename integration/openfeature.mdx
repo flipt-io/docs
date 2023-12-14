@@ -22,15 +22,21 @@ OpenFeature allows you to use the same feature flagging API across multiple feat
 
 OpenFeature is a CNCF Sandbox project. You can learn more about OpenFeature on the [OpenFeature website](https://openfeature.dev/).
 
-## Flipt OpenFeature Providers
+## Providers
 
 As a feature flag management tool, Flipt provides our own OpenFeature integrations (providers). This means that you can use the OpenFeature API with Flipt.
+
+<Note>
+  We currently only provide server-side OpenFeature providers. Once the
+  OpenFeature client-side specification is finalized, we will provide
+  client-side OpenFeature providers as well.
+</Note>
 
 From the [OpenFeature Specification](https://docs.openfeature.dev/docs/specification/sections/providers):
 
 > Providers are the "translator" between the flag evaluation calls made in application code, and the flag management system that stores flags and in some cases evaluates flags.
 
-We currently provide the following OpenFeature providers:
+We currently provide the following OpenFeature server-side providers:
 
 <CardGroup cols={2}>
   <Card
