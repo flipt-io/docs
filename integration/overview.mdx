@@ -60,9 +60,8 @@ We're actively working on improving them and adding more languages. If you have 
 
 Client-side evaluation is much more performant than server-side evaluation, but it comes with some tradeoffs. The main tradeoff is that you need to keep your feature flag rules in sync with Flipt. This means that you will need to periodically fetch the feature flag rules from Flipt and update your local copy. Our client-side SDKs provide a way to do this automatically.
 
-Reasons for using client side evaluation include:
+Reasons for using client-side evaluation include:
 
-- Your application is running in an environment where it cannot make requests to Flipt for each feature flag evaluation (for example a mobile application)
 - You want to reduce the number of requests your application makes to Flipt for feature flag evaluations
 - You want to reduce the latency of feature flag evaluations
 
