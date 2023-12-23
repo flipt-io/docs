@@ -119,15 +119,24 @@ when the migration container exits, having no effect on your Flipt instance!
 The following backend types are designed to support declarative management of feature flag state via a well-known file format.
 In particular, they're designed to support GitOps practices with minimal external dependencies.
 
-Currently, we classify `local`, `git`, `object` and `oci` as the four declarative backends.
-The `local` backend has been primarily developed to support a local development experience,
-whereas, the `git`, `object` and `oci` backends are intended for production use.
+The current four declarative backend types include:
+
+- [Local](#local-2)
+- [Git](#git)
+- [Object](#object)
+- [OCI](#oci)
+
+<Info>
+  The `local` backend has been primarily developed to support a local
+  development experience, whereas, the `git`, `object` and `oci` backends are
+  intended for production use.
+</Info>
 
 ### Read Only Mode
 
 ![Read Only Mode](/images/configuration/readonly.png)
 
-Once enabled, all filesystem backends put the Flipt API and UI into a `read-only` mode that prevents Flipt from writing to the backend. This is useful for production environments where you want to ensure that flag state is only managed via the configured backend.
+Once enabled, all declarative backends put the Flipt API and UI into a `read-only` mode that prevents Flipt from writing to the backend. This is useful for production environments where you want to ensure that flag state is only managed via the configured backend.
 
 <Tip>
   You can also put Flipt into `read-only` mode by setting the
@@ -331,7 +340,7 @@ The following is an example of how to configure Flipt to leverage this backend t
 
 <Note>
   In addition to these Flipt configuration parameters, valid credentials will
-  also be required for Flipt to authenticate with the target object-store.
+  also be required for Flipt to authenticate with the target object store.
 </Note>
 
 These should be provided as environment variables to the Flipt server process:
@@ -379,23 +388,26 @@ The following is an example of how to configure Flipt to leverage this backend t
 
 <Note>
   In addition to these Flipt configuration parameters, valid credentials will
-  also be required for Flipt to authenticate with the target object-store.
+  also be required for Flipt to authenticate with the target object store.
 </Note>
 
-  These should be provided as environment variables to the Flipt server process. There are 2 options supported for authentication:
-  
-  * Using [Azure credentials](https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication?tabs=bash#2-authenticate-with-azure)
-  ```bash
-  AZURE_CLIENT_ID=...	#Application ID of an Azure service principal
-  AZURE_TENANT_ID=...	#ID of the application's Microsoft Entra tenant
-  AZURE_CLIENT_SECRET=...	#Password of the Azure service principal
-  ```
-  * Using Azure Blob storage [account keys](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage?tabs=azure-portal)
-  
-  ```bash
-  AZURE_STORAGE_ACCOUNT=... # account name
-  AZURE_STORAGE_KEY=... # secret shared key
-  ```
+These should be provided as environment variables to the Flipt server process. There are 2 options supported for authentication:
+
+- Using [Azure Credentials](https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication?tabs=bash#2-authenticate-with-azure)
+
+```bash
+AZURE_CLIENT_ID=...	# application ID of an Azure service principal
+AZURE_TENANT_ID=...	# ID of the application's Microsoft Entra tenant
+AZURE_CLIENT_SECRET=...	# password of the Azure service principal
+```
+
+- Using Azure Blob [Storage Account Keys](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage?tabs=azure-portal)
+
+```bash
+AZURE_STORAGE_ACCOUNT=...
+AZURE_STORAGE_KEY=...
+```
+
 ### OCI
 
 Since `v1.31.0`, Flipt supports using any [OCI](https://opencontainers.org/) compatible registry as a declarative backend source.
@@ -468,8 +480,6 @@ The indexing process first matches the `include` section and then filters that a
 
 #### Defining Flag State
 
-<Info>
-
 Flipt flag state file format has been taken directly from Flipt's existing
 [import and export](/operations/import-export) flag state format.
 
@@ -477,8 +487,6 @@ You can run `flipt export` on your existing Flipt instance, and then
 add/commit the result to a directory, object storage, or Git repository to get started.
 
 This can be used to migrate from a relational database-backed instance of Flipt to a filesystem-backed deployment with ease.
-
-</Info>
 
 ```yaml features.yaml
 namespace: backend
