@@ -382,13 +382,20 @@ The following is an example of how to configure Flipt to leverage this backend t
   also be required for Flipt to authenticate with the target object-store.
 </Note>
 
-These should be provided as environment variables to the Flipt server process:
-
-```bash
-AZURE_STORAGE_ACCOUNT=...
-AZURE_STORAGE_KEY=...
-```
-
+  These should be provided as environment variables to the Flipt server process. There are 2 options supported for authentication:
+  
+  * Using [Azure credentials](https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication?tabs=bash#2-authenticate-with-azure)
+  ```bash
+  AZURE_CLIENT_ID=...	#Application ID of an Azure service principal
+  AZURE_TENANT_ID=...	#ID of the application's Microsoft Entra tenant
+  AZURE_CLIENT_SECRET=...	#Password of the Azure service principal
+  ```
+  * Using Azure Blob storage [account keys](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage?tabs=azure-portal)
+  
+  ```bash
+  AZURE_STORAGE_ACCOUNT=... # account name
+  AZURE_STORAGE_KEY=... # secret shared key
+  ```
 ### OCI
 
 Since `v1.31.0`, Flipt supports using any [OCI](https://opencontainers.org/) compatible registry as a declarative backend source.
