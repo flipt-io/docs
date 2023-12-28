@@ -119,15 +119,24 @@ when the migration container exits, having no effect on your Flipt instance!
 The following backend types are designed to support declarative management of feature flag state via a well-known file format.
 In particular, they're designed to support GitOps practices with minimal external dependencies.
 
-Currently, we classify `local`, `git`, `object` and `oci` as the four declarative backends.
-The `local` backend has been primarily developed to support a local development experience,
-whereas, the `git`, `object` and `oci` backends are intended for production use.
+The current four declarative backend types include:
+
+- [Local](#local-2)
+- [Git](#git)
+- [Object](#object)
+- [OCI](#oci)
+
+<Info>
+  The `local` backend has been primarily developed to support a local
+  development experience, whereas, the `git`, `object` and `oci` backends are
+  intended for production use.
+</Info>
 
 ### Read Only Mode
 
 ![Read Only Mode](/images/configuration/readonly.png)
 
-Once enabled, all filesystem backends put the Flipt API and UI into a `read-only` mode that prevents Flipt from writing to the backend. This is useful for production environments where you want to ensure that flag state is only managed via the configured backend.
+Once enabled, all declarative backends put the Flipt API and UI into a `read-only` mode that prevents Flipt from writing to the backend. This is useful for production environments where you want to ensure that flag state is only managed via the configured backend.
 
 <Tip>
   You can also put Flipt into `read-only` mode by setting the
@@ -259,7 +268,7 @@ storage:
 <Warning>
   `insecure_ignore_host_key` is not encouraged for production use, and is
   `false` by default. Instead, you are advised to put the key fingerprint in the
-  known hosts file where you are running Flipt. For example, for Github you can
+  known hosts file where you are running Flipt. For example, for GitHub you can
   do `ssh-keyscan github.com >> ~/.ssh/known_hosts` on the Flipt host.
 </Warning>
 
@@ -268,18 +277,28 @@ See our [GitOps Guide](/guides/get-going-with-gitops) for an example of how to s
 ### Object
 
 The object storage type supports using a hosted object storage service as the source of truth for Flipt state configuration.
-Currently, Flipt supports the [S3 API](https://aws.amazon.com/s3/) as a backend. This means the AWS S3 and open-source alternatives such as [Minio](https://github.com/minio/minio) can be leveraged as Flipt backends.
+
+Currently, Flipt supports the following object store providers:
+
+- [AWS S3](https://aws.amazon.com/s3/)
+- [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
+
+Additional providers such as [Google Cloud Storage](https://cloud.google.com/storage) are planned for future releases.
+
+#### Contents
 
 The contents of a target object storage bucket must contain Flipt state configuration files.
 As with the `git` and `local` backend types, the same rules apply with regard to how Flipt will locate feature flag state in your target bucket.
 
-Check out the section below on [Flag State Configuration](#flag-state-configuration) for how Flipt decides which files in a target are considered for serving flag state.
+See the section below on [Flag State Configuration](#flag-state-configuration) for how Flipt decides which files in a target are considered for serving flag state.
+
 With the object storage backend, Flipt will respect a file at the root of the target with the name `.flipt.yml` to serve as an index for locating flag state configuration in the bucket.
+
 It will also use the same default strategy when the index isn't supplied (e.g. file name `features.yml` or `*.features.yml`).
 
-#### S3
+#### Amazon S3
 
-The S3 backend can be configured to serve state from a single bucket from a target S3-compatible API.
+The AWS S3 backend can be configured to serve state from a single bucket from a target S3-compatible API. This means that both AWS S3 and open-source alternatives such as [Minio](https://github.com/minio/minio) can be used.
 
 The following is an example of how to configure Flipt to leverage this backend type:
 
@@ -292,9 +311,9 @@ The following is an example of how to configure Flipt to leverage this backend t
     FLIPT_STORAGE_OBJECT_S3_REGION="us-east-1"
     FLIPT_STORAGE_OBJECT_S3_BUCKET="flipt_feature_flags"
     FLIPT_STORAGE_OBJECT_S3_POLL_INTERVAL="1m"
-    # optional bucket prefix for locating flag state files
+    # optional: bucket prefix for locating flag state files
     FLIPT_STORAGE_OBJECT_S3_PREFIX="production"
-    # for non-AWS hosted S3
+    # optional: for non-AWS hosted S3
     FLIPT_STORAGE_OBJECT_S3_ENDPOINT=http://localhost:9009
     ```
 
@@ -310,21 +329,83 @@ The following is an example of how to configure Flipt to leverage this backend t
           region: us-east-1
           bucket: flipt_feature_flags
           poll_interval: "30s"
-          # optional bucket prefix for locating flag state files
+          # optional: bucket prefix for locating flag state files
           prefix: production
-          # for non-AWS hosted S3
+          # optional: for non-AWS hosted S3
           endpoint: http://localhost:9009
     ```
 
   </Tab>
 </Tabs>
 
-In addition to these Flipt configuration parameters, credentials will also be required for Flipt to authenticate with the target object-store.
+<Note>
+  In addition to these Flipt configuration parameters, valid credentials will
+  also be required for Flipt to authenticate with the target object store.
+</Note>
+
 These should be provided as environment variables to the Flipt server process:
 
 ```bash
 AWS_ACCESS_KEY_ID=...
 AWS_SECRET_ACCESS_KEY=...
+```
+
+#### Azure Blob Storage
+
+The Azure Blob Storage backend can be configured to serve state from a single container from a target Azure Blob Storage account.
+
+The following is an example of how to configure Flipt to leverage this backend type:
+
+<Tabs>
+  <Tab title="Environment Variable">
+
+    ```bash
+    FLIPT_STORAGE_TYPE="object"
+    FLIPT_STORAGE_OBJECT_TYPE="azblob"
+    FLIPT_STORAGE_OBJECT_AZBLOB_CONTAINER="flipt-feature-flags"
+    FLIPT_STORAGE_OBJECT_AZBLOB_POLL_INTERVAL="1m"
+    # optional: for customizing Azure blob storage endpoint
+    FLIPT_STORAGE_OBJECT_AZBLOB_ENDPOINT=http://localhost:10000
+    ```
+
+  </Tab>
+  <Tab title="Configuration Yaml">
+
+    ```yaml
+    storage:
+      type: object
+      object:
+        type: azblob
+        azblob:
+          container: flipt-feature-flags
+          # optional: for customizing Azure blob storage endpoint
+          endpoint: https//devaccount.blob.core.windows.net
+          poll_interval: "30s"
+    ```
+
+  </Tab>
+</Tabs>
+
+<Note>
+  In addition to these Flipt configuration parameters, valid credentials will
+  also be required for Flipt to authenticate with the target object store.
+</Note>
+
+These should be provided as environment variables to the Flipt server process. There are 2 options supported for authentication:
+
+- Using [Azure Credentials](https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication?tabs=bash#2-authenticate-with-azure)
+
+```bash
+AZURE_CLIENT_ID=...	# application ID of an Azure service principal
+AZURE_TENANT_ID=...	# ID of the application's Microsoft Entra tenant
+AZURE_CLIENT_SECRET=...	# password of the Azure service principal
+```
+
+- Using Azure Blob [Storage Account Keys](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage?tabs=azure-portal)
+
+```bash
+AZURE_STORAGE_ACCOUNT=...
+AZURE_STORAGE_KEY=...
 ```
 
 ### OCI
@@ -399,8 +480,6 @@ The indexing process first matches the `include` section and then filters that a
 
 #### Defining Flag State
 
-<Info>
-
 Flipt flag state file format has been taken directly from Flipt's existing
 [import and export](/operations/import-export) flag state format.
 
@@ -408,8 +487,6 @@ You can run `flipt export` on your existing Flipt instance, and then
 add/commit the result to a directory, object storage, or Git repository to get started.
 
 This can be used to migrate from a relational database-backed instance of Flipt to a filesystem-backed deployment with ease.
-
-</Info>
 
 ```yaml features.yaml
 namespace: backend
