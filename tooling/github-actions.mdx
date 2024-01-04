@@ -3,29 +3,36 @@ title: GitHub Actions
 description: How to use our GitHub Actions to automate your workflows.
 ---
 
-## Validate
+## Setup Flipt
 
-![Flipt Validate Action](/images/tooling/validate-action.png)
+![Flipt Setup Action](/images/tooling/setup-action.png)
 
-The [flipt-validate action](https://github.com/flipt-io/validate-action) is used to validate your [features.yml](/configuration/storage#flag-state-configuration) files in a GitHub workflow. We recommend using this action in your workflow to ensure that your Flipt data is syntactically and semantically valid before deploying when using [Git](https://www.flipt.io/docs/configuration/storage#git) or other [declarative backends](https://www.flipt.io/docs/configuration/storage#declarative).
-
-It uses the [`flipt validate`](/cli/commands/validate) command under the hood to validate your data. If the data is invalid, the action will fail and provide a detailed error annotation at the source of the error.
+The [flipt-setup-action](https://github.com/marketplace/actions/flipt-setup-action) can be used to setup Flipt in your GitHub workflow. Once setup, you can then use any of the [CLI commands](https://www.flipt.io/docs/cli/overview) that Flipt provides in your workflow.
 
 ### Usage
 
-The following example demonstrates how to use the action in a GitHub workflow.
+The following example demonstrates how to use the action in a GitHub workflow which runs the [flipt validate](https://www.flipt.io/docs/cli/commands/validate) command.
 
 ```yaml
 validate:
   runs-on: ubuntu-latest
   steps:
-    # Checkout the target repository
     - uses: actions/checkout@v3
 
-    - uses: flipt-io/validate-action@v0.2.0
+    - uses: flipt-io/setup-action@v0.1.0
       # with:
-      # Optional, the token to use for GitHub API requests
-      # github-token: ${{ secrets.GITHUB_TOKEN }}
-      # Optional, the directory to validate, defaults to the repository root
+      # Optional, additional arguments to pass to the `flipt` command
+      # args:
+      # Optional, the version of Flipt to install, defaults to the latest release
+      # version:
+      # Optional, the directory to run Flipt against, defaults to the repository root
       # working-directory:
+
+    - run: flipt validate
 ```
+
+Other commands that may be useful to run in your workflows include:
+
+- [flipt bundle](https://www.flipt.io/docs/cli/commands/bundle)
+- [flipt export](https://www.flipt.io/docs/cli/commands/export)
+- [flipt import](https://www.flipt.io/docs/cli/commands/import)
