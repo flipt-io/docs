@@ -4,7 +4,7 @@ description: Details on various ways to deploy Flipt.
 ---
 
 Flipt is built and delivered as a single standalone binary.
-Head to the [Installation](/installation) section for more details.
+Head to the [Self Hosted](/self-hosted/overview) section for more details.
 
 Running Flipt with the default configuration is a great way to get to grips with using it.
 However, the default settings have some limitations which might make it impractical in a production environment.
@@ -24,7 +24,9 @@ By default, Flipt runs as a single instance process backed by SQLite. Additional
 </div>
 </Frame>
 
-However, Flipt can be run in front of an externally managed relational database (e.g. PostgreSQL, MySQL or CockroachDB), allowing operators to run multiple instances. Caching can also be configured: both in-memory or shared via a distributed solution such as Redis. Enabling caching will reduce the number of interactions required on the database, making reads significantly faster.
+However, Flipt can be run in front of an externally managed relational database (e.g. PostgreSQL, MySQL or CockroachDB), allowing operators to run multiple instances.
+
+Caching can also be configured: both in-memory or shared via a distributed solution such as Redis. Enabling caching will reduce the number of interactions required on the database, making reads significantly faster.
 
 <Frame>
 <div className="block dark:hidden">
@@ -56,7 +58,7 @@ Once configured with one of these databases, you can run multiple instances safe
 ## Caching
 
 Flipt supports both in-memory caching and the ability to use an external system such as Redis.
-Caching allows Flipt to reuse computed results made in a short period. This reduces the number of requests to the backing database and minimises waste caused by excess evaluation.
+Caching allows Flipt to reuse computed results made in a short period. This reduces the number of requests to the backing database and minimizes waste caused by excess evaluation.
 
 In-memory caching can be enabled via the “caching” section of the configuration file and requires no external dependencies.
 
@@ -68,9 +70,9 @@ In-memory caching can be enabled via the “caching” section of the configurat
 However, there is a limitation when multiple instances of Flipt are run in parallel.
 Since each instance of Flipt has an isolated in-memory cache, the benefits diminish the more instances of Flipt you run.
 
-Using a remote system such as Redis to store the cache data, the same cache instance between multiple Flipt replicas can be shared. A single (logical) shared instance of Redis is required to see the benefits of this kind of caching.
+Using a remote system such as [Redis](https://redis.io/) to store the cache data, the same cache instance between multiple Flipt replicas can be shared. A single (logical) shared instance of Redis is required to see the benefits of this kind of caching.
 
-Redis is currently the only backend we support for caching purposes. We're considering adding more viable options (such as Memcached) in the future.
+Redis is currently the only caching backend. We're considering adding more viable options (such as [Memcached](https://memcached.org/)) in the future. Please [open an issue](https://github.com/flipt-io/flipt/issues/new/) if you have a specific caching backend you would like to see supported.
 
 ## Health Checks
 
@@ -116,9 +118,9 @@ Read more about the [gRPC Health Checking Protocol](https://grpc.io/docs/guides/
 
 ## Kubernetes
 
-Flipt already supports running as a [Docker container](/installation#docker), so the lift to run within a Kubernetes environment proves to be quite simple.
+Flipt already supports running as a [Docker container](/self-hosted/docker), so the lift to run within a Kubernetes environment proves to be quite simple.
 
-The easiest way to get started is to use our [Helm chart](installation#kubernetes-helm). The chart provisions a Kubernetes Deployment of Flipt along with a Kubernetes Service.
+The easiest way to get started is to use our official [Helm chart](/self-hosted/kubernetes). The chart provisions a Kubernetes Deployment of Flipt along with a Kubernetes Service.
 
 If you are already familiar with Kubernetes, you can get started by using the `flipt:latest` image (or pin to a specific version).
 
@@ -164,4 +166,4 @@ This has the potential for multiple benefits:
 </div>
 </Frame>
 
-Flipt ships with metrics, logging and tracing around both behaviour and system performance metrics. These pieces of telemetry can be useful for understanding the constraints within your setup of Flipt. We recommend reading the [Configuration: Observability](/configuration/observability) section to understand more about how to extract these measurements.
+Flipt ships with metrics, logging and tracing around both behavior and system performance metrics. These pieces of telemetry can be useful for understanding the constraints within your setup of Flipt. We recommend reading the [Configuration: Observability](/configuration/observability) section to understand more about how to extract these measurements.
