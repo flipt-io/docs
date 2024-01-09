@@ -184,6 +184,17 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | authentication.methods.kubernetes.ca_path                    | Kubernetes API CA certification path                           | /var/run/secrets/kubernetes.io/serviceaccount/ca.crt | v1.19.0 |
 | authentication.methods.kubernetes.service_account_token_path | Path to Flipt service account token                            | /var/run/secrets/kubernetes.io/serviceaccount/token  | v1.19.0 |
 
+#### Authentication Methods: JWT
+
+| Property                                          | Description                                                      | Default | Since   |
+| ------------------------------------------------- | ---------------------------------------------------------------- | ------- | ------- |
+| authentication.methods.jwt.enabled               | Enable JWT authentication                                        | false   | v1.35.0 |
+| authentication.methods.jwt.jwks_url              | URL to retrieve JWKS for JWT validation                          |         | v1.35.0 |
+| authentication.methods.jwt.public_key_file       | Path to public key file for JWT validation                      |         | v1.35.0 |
+| authentication.methods.jwt.validate_claims.issuer | The issuer claim to validate on JWT tokens                          | | v1.35.0 |
+| authentication.methods.jwt.validate_claims.audiences | The audience claim (list) to validate on JWT tokens                    |         | v1.35.0 |
+
+
 ### Database
 
 | Property                       | Description                                                         | Default                             | Since                  |
