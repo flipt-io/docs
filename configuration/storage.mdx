@@ -282,8 +282,7 @@ Currently, Flipt supports the following object store providers:
 
 - [AWS S3](https://aws.amazon.com/s3/)
 - [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
-
-Additional providers such as [Google Cloud Storage](https://cloud.google.com/storage) are planned for future releases.
+- [Google Cloud Storage](https://cloud.google.com/storage)
 
 #### Contents
 
@@ -406,6 +405,55 @@ AZURE_CLIENT_SECRET=...	# password of the Azure service principal
 ```bash
 AZURE_STORAGE_ACCOUNT=...
 AZURE_STORAGE_KEY=...
+```
+
+#### Google Cloud Storage
+
+The Google Cloud Storage backend can be configured to serve state from a single bucket from a target Google Cloud Storage account.
+
+The following is an example of how to configure Flipt to leverage this backend type:
+
+<Tabs>
+  <Tab title="Environment Variable">
+
+    ```bash
+    FLIPT_STORAGE_TYPE="object"
+    FLIPT_STORAGE_OBJECT_TYPE="googlecloud"
+    FLIPT_STORAGE_OBJECT_GOOGLECLOUD_BUCKET="flipt-feature-flags"
+    FLIPT_STORAGE_OBJECT_GOOGLECLOUD_POLL_INTERVAL="1m"
+    # optional: bucket prefix for locating flag state files
+    FLIPT_STORAGE_OBJECT_GOOGLECLOUD_PREFIX="production"
+    ```
+
+  </Tab>
+  <Tab title="Configuration Yaml">
+
+    ```yaml
+    storage:
+      type: object
+      object:
+        type: googlecloud
+        googlecloud:
+          bucket: flipt-feature-flags
+          poll_interval: "30s"
+    ```
+
+  </Tab>
+</Tabs>
+
+<Note>
+  In addition to these Flipt configuration parameters, valid credentials will
+  also be required for Flipt to authenticate with the target object store.
+</Note>
+
+If running in a Google Cloud environment, you can use [Application Default Credentials](https://cloud.google.com/docs/authentication/production) to authenticate with Google Cloud Storage.
+
+Alternatively, you can use a [Service Account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) to authenticate with Google Cloud Storage and provide the service account key file to Flipt.
+
+This should be provided as an environment variable to the Flipt server process:
+
+```bash
+GOOGLE_APPLICATION_CREDENTIALS=... # path to a service account key file
 ```
 
 ### OCI
