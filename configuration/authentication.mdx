@@ -340,9 +340,9 @@ Further explanation for using this method can be found in the [Authentication: K
 
 ### JSON Web Token
 
-The `jwt` method provides the ability to authenticate with Flipt using an externally issued JSON Web Token. This method is useful for integrating with other authentication systems that can issue JWTs (e.g. [Auth0](https://auth0.com/docs/tokens/json-web-tokens)).
+The `jwt` method provides the ability to authenticate with Flipt using an externally issued JSON Web Token. This method is useful for integrating with other authentication systems that can issue JWTs (e.g. [Auth0](https://auth0.com/docs/tokens/json-web-tokens)) or by generating your own signed JWTs on the fly.
 
-Flipt supports asymmetrically signed JWTs using the following algorithm:
+Flipt supports asymmetrically signed JWTs using the following algorithms:
 
 - RS256
 - RS512
@@ -350,7 +350,7 @@ Flipt supports asymmetrically signed JWTs using the following algorithm:
 - ES512
 - EdDSA
 
-This means that the JWT must be signed using an RSA private key and Flipt must be configured with the corresponding public key.
+This means that the JWT must be signed using a private key leveraging one of these algorithms and Flipt must be configured with the corresponding public key.
 
 Flipt supports key verification using the following methods:
 

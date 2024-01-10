@@ -270,7 +270,7 @@ The expiration can be used to schedule when to next request a new client token.
 
 [JSON Web Tokens](https://jwt.io/) (JWT) are an open, industry standard RFC 7519 method for representing claims securely between two parties. Flipt supports the use of externally created and signed JWTs as a method of authentication.
 
-JWT authentication is useful for scenarios where you want to integrate Flipt with an existing authentication system.
+JWT authentication is useful for scenarios where you want to integrate Flipt with an existing authentication system, or where you want to perform service to Flipt authentication without the need to manage static client tokens.
 
 <Note>
   JWT authentication is **not** supported by the Flipt UI as it is not a session compatible authentication method.
