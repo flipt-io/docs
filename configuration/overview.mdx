@@ -120,7 +120,7 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | server.grpc_port               | The port on which to serve the Flipt GRPC server                                                      | 9000      |         |
 | server.grpc_conn_max_idle_time | Maximum amount of time a GRPC connection can be idle                                                  | unlimited | v1.35.0 |
 | server.grpc_conn_max_age       | Maximum amount of time a GRPC connection can live                                                     | unlimited | v1.35.0 |
-| server.grpc_conn_max_age_grace | Maximum amount of time a GRPC connection can live for outstanding RPCs after exceeding `conn_max_age` | unlimited | v1.35.0 |
+| server.grpc_conn_max_age_grace | Maximum amount of time a GRPC connection can live for outstanding RPCs after exceeding `grpc_conn_max_age ` | unlimited | v1.35.0 |
 | server.cert_file               | Path to the certificate file (if protocol is set to https)                                            |           | v0.8.0  |
 | server.cert_key                | Path to the certificate key file (if protocol is set to https)                                        |           | v0.8.0  |
 
