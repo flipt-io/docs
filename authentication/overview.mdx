@@ -50,6 +50,14 @@ Flipt supports multiple authentication methods for acquiring credentials:
 
 Once a `client token` has been acquired, it can be supplied via request metadata dependent on the protocol. Both HTTP and gRPC examples can be found on the [Using Client Tokens](/authentication/using-tokens) page.
 
+## JSON Web Tokens
+
+Flipt can also authenticate requests using externally created and signed [JSON Web Tokens](https://jwt.io/). This is useful for integrating existing authentication systems with Flipt.
+
+To enable JWT authentication, you will need to configure Flipt with the public key used to verify the JWT signature.
+
+See the [Configuration: JWT Authentication](/configuration/authentication#json-web-token) documentation for details.
+
 ## Authorization
 
 Currently, Flipt only supports authentication without any extended authorization capabilities.

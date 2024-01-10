@@ -168,7 +168,8 @@
       "pages": [
         "authentication/overview",
         "authentication/methods",
-        "authentication/using-tokens"
+        "authentication/using-tokens",
+        "authentication/using-jwts"
       ]
     },
     {

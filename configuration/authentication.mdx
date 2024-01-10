@@ -218,7 +218,7 @@ To enable this, you must set the [`use_pkce`](/configuration/overview#authentica
 #### Example: OIDC With Google
 
 <Tip>
-  Checkout our new [Login with Google](/guides/login-with-google) guide for an
+  Checkout our [Login with Google](/guides/login-with-google) guide for an
   in-depth look into configuring Google as an OIDC provider.
 </Tip>
 
@@ -334,9 +334,81 @@ authentication:
       service_account_token_path: /var/run/secrets/kubernetes.io/serviceaccount/token
 ```
 
-Once enabled, client tokens can be retrieved by sending a Kubernetes pod's service account token to the [VerifyServiceAccount](/reference/authentication/kubernetes-verify-service-account) operation in the API.
+Once enabled, client tokens can be retrieved by sending a Kubernetes pod's service account token to the `VerifyServiceAccount` operation in the API.
 
 Further explanation for using this method can be found in the [Authentication: Kubernetes](/authentication/methods#kubernetes) documentation.
+
+### JSON Web Token
+
+The `jwt` method provides the ability to authenticate with Flipt using an externally issued JSON Web Token. This method is useful for integrating with other authentication systems that can issue JWTs (e.g. [Auth0](https://auth0.com/docs/tokens/json-web-tokens)) or by generating your own signed JWTs on the fly.
+
+Flipt supports asymmetrically signed JWTs using the following algorithms:
+
+- RS256
+- RS512
+- ES256
+- ES512
+- EdDSA
+
+This means that the JWT must be signed using a private key leveraging one of these algorithms and Flipt must be configured with the corresponding public key.
+
+Flipt supports key verification using the following methods:
+
+- [JWKS](https://auth0.com/docs/secure/tokens/json-web-tokens/json-web-key-sets) URL (JSON Web Key Set URL)
+- PEM (Privacy Enhanced Mail) encoded public key
+
+<Note>
+  These methods are mutually exclusive, meaning that only one of them can be
+  configured at a time.
+</Note>
+
+#### JWKS URL
+
+The `jwks_url` configuration value is a URL that points to a JWKS (JSON Web Key Set) endpoint. This endpoint must return a JSON object that contains a list of public keys that can be used to verify the JWT signature.
+
+```yaml config.yaml
+authentication:
+  methods:
+    jwt:
+      enabled: true
+      jwks_url: https://auth0.com/.well-known/jwks.json
+```
+
+#### PEM Encoded Public Key
+
+The `public_key_file` configuration value is the path to a PEM encoded public key that can be used to verify the JWT signature.
+
+```yaml config.yaml
+authentication:
+  methods:
+    jwt:
+      enabled: true
+      public_key_file: /path/to/public_key.pem
+```
+
+#### Claim Validation
+
+Flipt supports validating the following claims:
+
+- `iss` (issuer)
+- `aud` (audience)
+- `exp` (expiration time)
+- `nbf` (not before)
+- `iat` (issued at)
+
+<Note>The `exp`, `nbf`, and `iat` claims are validated by default.</Note>
+
+To enable claim validation, configure the values in the `validate_claims` configuration option to the expected values.
+
+```yaml config.yaml
+authentication:
+  methods:
+    jwt:
+      enabled: true
+      validate_claims:
+        issuer: https://auth0.com/
+        audiences: https://flipt.io/, https://flipt.com/ # at least one audience must match
+```
 
 ### Common Properties: Cleanup
 

@@ -165,6 +165,7 @@ This allows services deployed into the same Kubernetes cluster as Flipt to autom
 ![Kubernetes Authentication Flow](/images/authentication/kubernetes.svg)
 
 When enabled (see our [Configuration: Method Kubernetes](/configuration/authentication#kubernetes) documentation) a service deployed within Kubernetes can read their service account token from local disk and invoke the verify service account operation on the API.
+
 Given the service account is deemed valid for the surrounding cluster this operation will return a valid Flipt client token with a matching expiration as the service account.
 If your Kubernetes environment has short-lived service account tokens, care will be needed to periodically request a new client token using a newly issued service account token.
 
@@ -261,5 +262,21 @@ func getClientToken(ctx context.Context) (*Response, error) {
 
 </CodeGroup>
 
-The client token found in the body of the response can be used in the authentication bearer header, as outlined in [Using Client Tokens](/authentication/using-tokens).
+The client token found in the body of the response can then be used to authenticate with Flipt as outlined in [Using Client Tokens](/authentication/using-tokens).
+
 The expiration can be used to schedule when to next request a new client token.
+
+## JSON Web Tokens
+
+[JSON Web Tokens](https://jwt.io/) (JWT) are an open, industry standard RFC 7519 method for representing claims securely between two parties. Flipt supports the use of externally created and signed JWTs as a method of authentication.
+
+JWT authentication is useful for scenarios where you want to integrate Flipt with an existing authentication system, or where you want to perform service to Flipt authentication without the need to manage static client tokens.
+
+<Note>
+  JWT authentication is **not** supported by the Flipt UI as it is not a session
+  compatible authentication method.
+</Note>
+
+![JWT Authentication Flow](/images/authentication/jwt.svg)
+
+The JWT issued by the Authorization Server can then be used to authenticate with Flipt as outlined in [Using JSON Web Tokens](/authentication/using-jwts).
