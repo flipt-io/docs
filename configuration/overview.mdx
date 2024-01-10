@@ -111,15 +111,18 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 
 ### Server
 
-| Property          | Description                                                    | Default | Since  |
-| ----------------- | -------------------------------------------------------------- | ------- | ------ |
-| server.protocol   | http or https                                                  | http    | v0.8.0 |
-| server.host       | The host address on which to serve the Flipt application       | 0.0.0.0 |        |
-| server.http_port  | The HTTP port on which to serve the Flipt REST API and UI      | 8080    |        |
-| server.https_port | The HTTPS port on which to serve the Flipt REST API and UI     | 443     | v0.8.0 |
-| server.grpc_port  | The port on which to serve the Flipt GRPC server               | 9000    |        |
-| server.cert_file  | Path to the certificate file (if protocol is set to https)     |         | v0.8.0 |
-| server.cert_key   | Path to the certificate key file (if protocol is set to https) |         | v0.8.0 |
+| Property                       | Description                                                                                                 | Default   | Since   |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------- | --------- | ------- |
+| server.protocol                | http or https                                                                                               | http      | v0.8.0  |
+| server.host                    | The host address on which to serve the Flipt application                                                    | 0.0.0.0   |         |
+| server.http_port               | The HTTP port on which to serve the Flipt REST API and UI                                                   | 8080      |         |
+| server.https_port              | The HTTPS port on which to serve the Flipt REST API and UI                                                  | 443       | v0.8.0  |
+| server.grpc_port               | The port on which to serve the Flipt GRPC server                                                            | 9000      |         |
+| server.grpc_conn_max_idle_time | Maximum amount of time a GRPC connection can be idle                                                        | unlimited | v1.35.0 |
+| server.grpc_conn_max_age       | Maximum amount of time a GRPC connection can live                                                           | unlimited | v1.35.0 |
+| server.grpc_conn_max_age_grace | Maximum amount of time a GRPC connection can live for outstanding RPCs after exceeding `grpc_conn_max_age ` | unlimited | v1.35.0 |
+| server.cert_file               | Path to the certificate file (if protocol is set to https)                                                  |           | v0.8.0  |
+| server.cert_key                | Path to the certificate key file (if protocol is set to https)                                              |           | v0.8.0  |
 
 ### Authentication
 
