@@ -358,7 +358,8 @@ Flipt supports key verification using the following methods:
 - PEM (Privacy Enhanced Mail) encoded public key
 
 <Note>
-These methods are mutually exclusive, meaning that only one of them can be configured at a time.
+  These methods are mutually exclusive, meaning that only one of them can be
+  configured at a time.
 </Note>
 
 #### JWKS URL
@@ -395,9 +396,7 @@ Flipt supports validating the following claims:
 - `nbf` (not before)
 - `iat` (issued at)
 
-<Note>
-  The `exp`, `nbf`, and `iat` claims are validated by default.
-</Note>
+<Note>The `exp`, `nbf`, and `iat` claims are validated by default.</Note>
 
 To enable claim validation, configure the values in the `validate_claims` configuration option to the expected values.
 
