@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 0.2.15
+  version: 0.2.18
 paths:
   /evaluate/v1/boolean:
     post:
@@ -523,6 +523,11 @@ paths:
           required: false
           schema:
             type: string
+        - name: reference
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: ''
@@ -569,6 +574,11 @@ paths:
         - name: key
           in: path
           required: true
+          schema:
+            type: string
+        - name: reference
+          in: query
+          required: false
           schema:
             type: string
       responses:
@@ -648,6 +658,11 @@ paths:
           required: false
           schema:
             type: string
+        - name: reference
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: ''
@@ -684,6 +699,11 @@ paths:
         - name: key
           in: path
           required: true
+          schema:
+            type: string
+        - name: reference
+          in: query
+          required: false
           schema:
             type: string
       responses:
@@ -759,6 +779,11 @@ paths:
           schema:
             type: integer
         - name: pageToken
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: reference
           in: query
           required: false
           schema:
@@ -845,6 +870,11 @@ paths:
         - name: id
           in: path
           required: true
+          schema:
+            type: string
+        - name: reference
+          in: query
+          required: false
           schema:
             type: string
       responses:
@@ -940,6 +970,11 @@ paths:
           required: false
           schema:
             type: string
+        - name: reference
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: ''
@@ -1022,6 +1057,11 @@ paths:
         - name: id
           in: path
           required: true
+          schema:
+            type: string
+        - name: reference
+          in: query
+          required: false
           schema:
             type: string
       responses:
@@ -1112,6 +1152,11 @@ paths:
           required: false
           schema:
             type: string
+        - name: reference
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: ''
@@ -1158,6 +1203,11 @@ paths:
         - name: key
           in: path
           required: true
+          schema:
+            type: string
+        - name: reference
+          in: query
+          required: false
           schema:
             type: string
       responses:
@@ -1322,6 +1372,8 @@ components:
           type: object
           additionalProperties:
             type: string
+        reference:
+          type: string
       required:
         - namespaceKey
         - flagKey
@@ -1439,6 +1491,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EvaluationevaluationRequest'
+        reference:
+          type: string
       required:
         - requests
     EvaluationbatchEvaluationResponse:
@@ -1478,6 +1532,7 @@ components:
         - METHOD_TOKEN
         - METHOD_OIDC
         - METHOD_KUBERNETES
+        - METHOD_JWT
       description: The default is METHOD_NONE
     Authauthentication:
       type: object
