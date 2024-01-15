@@ -10,6 +10,22 @@ The Flipt REST API can also be used with any language that can make HTTP request
 
 The latest version of the REST API is fully documented using the [OpenAPI v3 specification](https://github.com/flipt-io/flipt-openapi).
 
+## Authentication
+
+<Info>
+Flipt authentication is **disabled** (not required) by default.
+
+Head to the [Configuration: Authentication](/configuration#authentication) section to enable it.
+
+</Info>
+
+As of [v1.35.0](https://github.com/flipt-io/flipt/releases/tag/v1.35.0) Flipt now supports two types of authentication for the API:
+
+- **Client Token Authentication** - This method user tokens stored by Flipt to authenticate the request. See the [Using Client Tokens](/authentication/using-tokens) section for more information.
+- **JSON Web Token (JWT) Authentication** - This method uses a JWT token, created and signed externally from Flipt to authenticate the request. See the [Using JWT Tokens](/authentication/using-jwt) section for more information.
+
+See the [Authentication](/authentication) documentation for more information on all supported authentication methods.
+
 ## SDKs
 
 We're adding new SDKs all the time. To see the current list of official REST SDKs, head to the [REST SDKs](/integration/server/rest) documentation.
@@ -37,16 +53,3 @@ Version [v1.20.0](https://github.com/flipt-io/flipt/releases/tag/v1.20.0) of Fli
 All previous endpoints without the `/namespaces` prefix still work as before (i.e.: `/api/v1/flags`), they simply resolve to using the **default** namespace.
 
 See the [Concepts: Namespaces](/concepts#namespaces) section for more information.
-
-## Authentication
-
-<Info>
-Flipt authentication is **disabled** (not required) by default.
-
-Head to the [Configuration: Authentication](/configuration#authentication) section to enable it.
-
-</Info>
-
-Once enabled, the Flipt REST API uses tokens for authentication. The token is passed in the `Authorization` header of the request as a `Bearer` token.
-
-For more information on how to create a token, see the [Authentication](/authentication) documentation.
