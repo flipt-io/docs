@@ -156,11 +156,11 @@ The focus of this guide is to leverage Flipt's new "declarative backends" to ena
 The name comes from the fact that the backend for Flipt is modeled around configuration files in a directory structure.
 These configuration files can coexist in a directory alongside other content (application code or other configuration code).
 
-There currently exist three top-level declarative backend types:
+There currently exist four top-level declarative backend types:
 
 - `local` (local directory)
 - `git` (remote Git repository and branch)
-- `object` (object storage, currently only AWS S3)
+- `object` (object storage, AWS S3 or Azure Blob Storage or Google Cloud Storage)
 - `oci` (OCI registry storage)
 
 In this guide we will explore both the `local` and `git` backend types.
