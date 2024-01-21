@@ -43,7 +43,7 @@ okta
 otlp
 performant
 PGBouncer
-plugable
+pluggable
 postgres
 pprof
 Promtail
