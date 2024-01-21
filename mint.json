@@ -60,8 +60,16 @@
       "group": "Overview",
       "pages": [
         "introduction",
-        "usecases",
         "concepts"
+      ]
+    },
+    {
+      "group": "Use Cases",
+      "pages": [
+        "usecases/overview",
+        "usecases/cloudnative",
+        "usecases/edge",
+        "usecases/gitops"
       ]
     },
     {

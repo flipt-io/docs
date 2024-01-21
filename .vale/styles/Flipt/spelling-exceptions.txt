@@ -43,8 +43,10 @@ okta
 otlp
 performant
 PGBouncer
+pluggable
 postgres
 pprof
+Promtail
 protobuf
 protoc
 Quicksort
@@ -56,7 +58,9 @@ rollouts
 SCMs
 sdk
 sdks
+Splunk
 sqlite
+Turso
 unary
 uncomment
 uncompromised

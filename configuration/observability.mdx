@@ -1,6 +1,6 @@
 ---
 title: Observability
-description: This document describes how to configure Flipt's observability mechanisms including metrics and tracing.
+description: This document describes how to configure Flipt's observability mechanisms including metrics, logging, and tracing.
 ---
 
 ## Metrics
@@ -34,6 +34,51 @@ We provide a set of [Grafana](https://grafana.com/) dashboards that you can use 
 
 You can find the dashboards in our [grafana-dashboards](https://github.com/flipt-io/grafana-dashboards) repository.
 
+## Logging
+
+Flipt writes logs to STDOUT in two formats:
+
+- JSON
+- Console
+
+The format can be configured via the `log.encoding` configuration option.
+
+```yaml
+log:
+  encoding: json
+```
+
+For production deployments, we recommend using the JSON format as it's easier to parse and ingest into log aggregation systems such as Elasticsearch, Splunk, Loki, or DataDog.
+
+We've prepared an [example](https://github.com/flipt-io/flipt/tree/main/examples/audit/log) showing how to set up Flipt with Grafana Loki and Promtail to ingest and query logs.
+
+### JSON
+
+```json
+{
+  "L": "INFO",
+  "T": "2024-01-20T21:59:49-05:00",
+  "M": "finished unary call with code OK",
+  "server": "grpc",
+  "grpc.start_time": "2024-01-20T21:59:49-05:00",
+  "system": "grpc",
+  "span.kind": "server",
+  "grpc.service": "flipt.evaluation.EvaluationService",
+  "grpc.method": "Boolean",
+  "peer.address": "127.0.0.1:52635",
+  "grpc.code": "OK",
+  "grpc.time_ms": 0.146
+}
+```
+
+### Console
+
+```text
+2024-01-20T22:04:18-05:00	INFO	finished unary call with code OK	{"server": "grpc", "grpc.start_time": "2024-01-20T22:04:18-05:00", "system": "grpc", "span.kind": "server", "grpc.service": "flipt.evaluation.EvaluationService", "grpc.method": "Boolean", "peer.address": "127.0.0.1:53714", "grpc.code": "OK", "grpc.time_ms": 0.373}
+```
+
+More information about the available configuration options can be found in the [Logging configuration](/configuration/overview#logging) section.
+
 ## Tracing
 
 Flipt supports distributed tracing via the [OpenTelemetry](https://opentelemetry.io/) project.
@@ -42,7 +87,7 @@ Currently, we support the following tracing backends:
 
 - [Jaeger](https://www.jaegertracing.io/)
 - [Zipkin](https://zipkin.io/)
-- [OTLP](https://opentelemetry.io/docs/reference/specification/protocol/).
+- [OTLP](https://opentelemetry.io/docs/reference/specification/protocol/)
 
 Enable tracing via the values described in the [Tracing configuration](/configuration/overview#tracing) and point Flipt to your configured collector to record spans.
 
