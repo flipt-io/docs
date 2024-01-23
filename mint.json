@@ -163,6 +163,7 @@
                 "cli/commands/bundle/push"
               ]
             },
+            "cli/commands/evaluate",
             "cli/commands/export",
             "cli/commands/import",
             "cli/commands/migrate",
