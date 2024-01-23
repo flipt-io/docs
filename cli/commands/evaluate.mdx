@@ -1,0 +1,30 @@
+---
+title: "evaluate"
+description: "Evaluate a flag with Flipt."
+---
+
+```
+flipt evaluate [flagKey] [flags]
+```
+
+### Options
+
+```
+  -a, --address string        address of Flipt instance. (default "http://localhost:8080")
+  -c, --context stringArray   evaluation request context as key=value.
+  -e, --entity-id string      evaluation request entity id. (default "${uuid}")
+  -h, --help                  help for evaluate
+  -i, --interval duration     interval between requests in watch mode. (default 1s)
+  -n, --namespace string      flag namespace. (default "default")
+  -r, --request-id string     evaluation request id.
+  -t, --token string          client token used to authenticate access to Flipt instance.
+  -w, --watch                 enable watch mode.
+```
+
+### Examples
+
+```
+$ flipt evaluate chat-enabled --context test=foo
+
+{"flag_key":"chat-enabled","enabled":true,"reason":"DEFAULT_EVALUATION_REASON","request_id":"73d12ea1-65d7-401d-b0c7-f7a6b3d41dd6","request_duration_millis":0.894792,"timestamp":"2024-01-23T17:37:13.484716964Z"}
+```
