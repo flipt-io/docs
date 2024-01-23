@@ -10,10 +10,65 @@ flipt validate [flags]
 ### Options
 
 ```
+  -e, --extra-schema string   path to extra schema constraints
   -F, --format string         output format: json, text (default "text")
   -h, --help                  help for validate
       --issue-exit-code int   Exit code to use when issues are found (default 1)
 ```
+
+### Behavior
+
+This command validates Flipt's declarative feature configuration files.
+
+It looks for features flag definitions in the same way as Flipt's declarative backends. Checkout the documentation on [locating flag state](/configuration/storage#locating-flag-state) to learn more about this process.
+
+### Extra Schema
+
+The flag `--extra-schema` (short form `-e`) can be used to pass additional constraints via a [CUE](https://cuelang.org/) schema file.
+This file will be unified with the base schema used within `flipt validate` to ensure the format of Flipt files.
+You can find the base schema [here](https://github.com/flipt-io/flipt/blob/main/internal/cue/flipt.cue).
+
+As an example, take the following flipt `features.yaml` file:
+
+```yaml
+flags:
+  - key: someFeature
+    name: Some Feature
+```
+
+Running validate will succeed when provided with a path to this file.
+
+```console
+➜ flipt validate
+➜ echo $?
+0
+```
+
+By default, the flag `description` field is not required. However, imagine that you want to ensure this field is always provided with a non-empty string. You can do this via the `--extra-schema` flag and a CUE definition.
+In this instance we're going to create a CUE file named `extended.cue`.
+Within this file we will add a constraint to the `#Flag` CUE definition, which ensures our desired behavior.
+
+```cue
+#Flag: {
+  description: =~"^.+$"
+}
+```
+
+This definition ensures that description is both supplied and that the value matches the regular expression.
+The regular expression in this example ensures a string with a length of at least 1 character.
+
+Now when invoking the validate sub-command, we pass the path to this extra CUE definition:
+
+```console
+➜ flipt validate -e extended.cue
+Validation failed!
+
+- Message  : flags.0.description: incomplete value =~"^.+$"
+  File     : features.yaml
+  Line     : 2
+```
+
+Here we see that our additional constraint on description is being validated and described in the output.
 
 ### More Info
 
