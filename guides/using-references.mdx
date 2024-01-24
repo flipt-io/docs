@@ -29,7 +29,7 @@ In this guide you will learn how to:
 
 We're going to be making a change to our internal organization sales dashboard. This dashboard is made up of simple [React](https://reactjs.org/) frontend and a Go backend. The frontend is a single page application that makes API calls to the backend to fetch data. The backend is a **new** API that returns a list of sales performance data. The frontend will use this data to render a graph of our companies sales performance.
 
-Because this API is new and we're not sure how it will perform, we want to test it in a production-like environment before we merge it into our main branch. 
+Because this API is new and we're not sure how it will perform, we want to test it in a production-like environment before we merge it into our main branch.
 
 ![Our example application without our new graph](/images/guides/using-references/dashboard-main.png)
 
@@ -38,7 +38,8 @@ We already use Flipt in our production environment, and we want to be able to us
 We also make use of Flipt's GitOps integration to manage our feature flags in our Git repository. This allows us to manage our feature flags in a declarative format, and have them automatically synced to Flipt in the background.
 
 <Tip>
-  If you're not familiar with Flipt's GitOps integration, check out our <a href="/guides/get-going-with-gitops">GitOps guide</a> for more information.
+  If you're not familiar with Flipt's GitOps integration, check out our{" "}
+  <a href="/guides/get-going-with-gitops">GitOps guide</a> for more information.
 </Tip>
 
 ### Structure
@@ -56,7 +57,6 @@ The application is made up of three directories:
   If you want to follow along you can fork our [guide
   repository](https://github.com/flipt-io/guides).
 </Note>
-
 
 For the purpose of this guide, we'll mainly focus on the Go backend and the Flipt feature flag definition file.
 
@@ -190,7 +190,9 @@ This is because Flipt is configured to track the `main` branch of our Git reposi
 ![Our feature flag is still disabled in the UI](/images/guides/using-references/flag-disabled.png)
 
 <Tip>
-In an upcoming release, we'll be adding the ability to switch between references in the UI. This will allow you to see the state of your feature flags in each Git branch.
+  In an upcoming release, we'll be adding the ability to switch between
+  references in the UI. This will allow you to see the state of your feature
+  flags in each Git branch.
 </Tip>
 
 Now that our preview environment is deployed, we can test our new API. We can view our application deploy to Koyeb from the Koyeb dashboard.
@@ -199,7 +201,7 @@ You can also view the application settings and see that the `FLIPT_CLIENT_REFERE
 
 ![Our application settings in Koyeb](/images/guides/using-references/koyeb-settings.png)
 
-Now we can click on the application URL to view our application. We can see that our new API is working and our graph is being rendered. 🎉 
+Now we can click on the application URL to view our application. We can see that our new API is working and our graph is being rendered. 🎉
 
 This means our feature flag is enabled successfully in our preview environment.
 
@@ -233,4 +235,3 @@ You always have your editor, Git and the SCMs (GitHub, Gitlab etc) for state man
 
 Flipt will automatically sync your feature flag definitions to Flipt in the background. Each of these backends work by polling their sources (git, oci, local directory or object store) and the interval can be configured.
 Checkout the [Configuration: Storage: Declarative](/configuration/storage#declarative) for details on adjusting these intervals.
-
