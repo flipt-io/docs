@@ -1,0 +1,174 @@
+---
+title: Preview Environments and Feature Flags
+description: Creating Preview Environments and Leveraging Feature Flags
+---
+
+## What are Preview Environments?
+
+Preview environments are a way to create a temporary environment for a pull request. This allows you to test your changes in a production-like environment before merging your code. This is especially useful for testing changes that require a full build and deploy cycle.
+
+In this guide, we're going to demonstrate how to leverage Flipt in preview environments to test changes in a production-like environment, without affecting your production users.
+
+## What You'll Learn
+
+In this guide you will learn how to:
+
+- 🏁 Setup Flipt to work in a preview environment
+- 🚀 Create a preview environment for a pull request that modifies a feature flag in our [declarative format](/configuration/storage#flag-state-configuration)
+- 🌲 Add, commit, and push the change to a preview branch
+- 🧪 Test the change in the preview environment
+- 🎉 Merge the pull request and deploy the change to production
+
+## Our Example Application
+
+We're going to be making a change to our internal organization sales dashboard. This dashboard is made up of simple [React](https://reactjs.org/) frontend and a Go backend. The frontend is a single page application that makes API calls to the backend to fetch data. The backend is a **new** API that returns a list of sales performance data.
+
+Because this API is new and we're not sure how it will perform, we want to test it in a production-like environment before we merge it into our main branch. 
+
+We already use Flipt in our production environment, and we want to be able to use the same instance without having to deploy a new Flipt specifically for our preview environments.
+
+We also make use of Flipt's GitOps integration to manage our feature flags in our Git repository. This allows us to manage our feature flags in a declarative format, and have them automatically synced to Flipt in the background.
+
+<Tip>
+  If you're not familiar with Flipt's GitOps integration, check out our <a href="/guides/get-going-with-gitops">GitOps guide</a> for more information.
+</Tip>
+
+### The Application
+
+<Note>
+  If you want to follow along you can fork our [gitops guide
+  repository](https://github.com/flipt-io/guides).
+</Note>
+
+Our application lives in a directory committed to a Git repository.
+For the example's sake, we assume the repository will be hosted on GitHub at `https://github.com/organization/repository.git`.
+
+The application is made up of three directories:
+
+- `cmd/api` - contains our Go backend API and loads the UI
+- `ui` - contains our React frontend
+- `pkg/peformance` - contains our Flipt feature flag definition
+
+For the purpose of this guide, we'll mainly focus on the Go backend and the Flipt feature flag definition file.
+
+#### Go Backend
+
+The purpose of our Go backend is two-fold:
+
+1. Serve our React frontend
+2. Serve our new API
+
+Our new API is a simple HTTP endpoint that returns a list of sales performance data.
+
+Because we're good engineers, we want to make sure that our new API is performant before we merge it into our main branch. To do this, we're going to use Flipt to control access to our new API.
+
+The main bit of code that we want to guard is where we mount the `/api/performance` endpoint:
+
+```go
+	http.HandleFunc("/api/performance", func(w http.ResponseWriter, r *http.Request) {
+		logger := slog.With(
+			slog.String("namespace", "performance"),
+			slog.String("flag", "showPerformanceHistory"),
+		)
+
+		// evaluate the showPerformanceHistory features flag
+		result, err := flipt.Evaluation().Boolean(r.Context(), &evaluation.EvaluationRequest{
+			NamespaceKey: "performance",
+			FlagKey:      "showPerformanceHistory",
+			EntityId:     fmt.Sprintf("%x", rand.Intn(1000)),
+			Reference:    os.Getenv("FLIPT_CLIENT_REFERENCE"),
+		})
+		if err != nil {
+			logger.Error("evaluating flag", "error", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// if the flag is disabled we return that the endpoint cannot be found
+		if !result.Enabled {
+			logger.Debug("flag disabled")
+			http.Error(w, "path not found", http.StatusNotFound)
+			return
+		}
+
+		if err := json.NewEncoder(w).Encode(&history); err != nil {
+			logger.Error("parsing json", "error", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	})
+```
+
+Here you can see that we're using Flipt's Go client to evaluate the `showPerformanceHistory` feature flag. If the flag is enabled, we return the sales performance data.
+
+Also of note, we're using the `FLIPT_CLIENT_REFERENCE` environment variable to pass in the reference to Flipt in the evaluation call. This is used to serve a different Git branch for each preview environment. We'll talk more about this later.
+
+#### Flipt Feature Flag Definition
+
+Our feature flag definition is stored in the `pkg/performance` directory. This directory contains a single file called `features.yml`. This file contains the definition of our `showPerformanceHistory` feature flag.
+
+```yaml
+namespace: performance
+flags:
+  - key: showPerformanceHistory
+    name: Show Performance History Graph
+    type: BOOLEAN_FLAG_TYPE
+    enabled: false
+```
+
+<Note>
+  You don't have to call your file `features.yml` and you can spread your flag
+  definitions across multiple files. Checkout our docs on [locating flag
+  state](/configuration/storage#locating-flag-state) to learn more.
+</Note>
+
+## Enabling Preview Environments
+
+For this guide, we're going to use [GitHub Actions](https://github.com/features/actions) to deploy our preview environments to [Koyeb](https://www.koyeb.com/).
+
+Koyeb has a nice tutorial on how to deploy a preview environment using GitHub Actions. You can find it [here](https://www.koyeb.com/tutorials/deploy-preview-environments-on-koyeb-for-github-pull-requests).
+
+To get our preview environments working with Flipt, we'll need some way of passing the Git branch name to Flipt. We can do this by setting the `FLIPT_CLIENT_REFERENCE` environment variable to the Git branch name. This will allow us to serve a different Git branch for each preview environment.
+
+To do this, we'll need to add a step to our GitHub Actions workflow that sets the `FLIPT_CLIENT_REFERENCE` environment variable to the Git branch name.
+
+```yaml
+- name: Deploy the application to Koyeb
+  uses: koyeb/action-git-deploy@v1
+  with:
+    app-name: "dashboard-app-preview-${{ github.head_ref }}"
+    service-name: ${{ github.head_ref }}
+    service-ports: "8081:http"
+    service-routes: "/:8081"
+    service-env: "FLIPT_CLIENT_REFERENCE=${{ github.head_ref }},FLIPT_ADDRESS=${{ secrets.FLIPT_ADDRESS }}"
+    docker: ghcr.io/flipt-io/dashboard-app:latest
+```
+
+Here we're also setting the `FLIPT_ADDRESS` environment variable to the address of our Flipt instance. This could also be configured in your application via a config file.
+
+## Enabling the Flag and Pushing to a Preview Branch
+
+Now that we have our preview environments setup, we can enable our feature flag and push our changes to a preview branch.
+
+To enable our feature flag, we'll need to update our `features.yml` file to set the `enabled` field to `true`.
+
+```yaml
+namespace: performance
+flags:
+  - key: showPerformanceHistory
+    name: Show Performance History Graph
+    type: BOOLEAN_FLAG_TYPE
+    enabled: true
+```
+
+Now we can add, commit, and push our changes to a preview branch.
+
+```bash
+git checkout -b feature/enable-performance-history
+git add pkg/performance/features.yml
+git commit -m "Enable performance history"
+git push origin feature/enable-performance-history
+```
+
+We'll also need to create a pull request for our preview branch. This will trigger our GitHub Actions workflow and deploy our preview environment.
+
