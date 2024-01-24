@@ -230,7 +230,7 @@ References are available for all of our GET API endpoints, (e.g. [`GET /api/v1/f
 We've also added support for references in all of our [server side REST SDKs](/integration/server/rest) and our [client side SDKs](/integration/client).
 
 References currently only work with Git, and our `git` backend, like all of the declarative storage backends, mandates that the UI is **read-only**.
-We've thoughts on how this could change in the future, but for now, this is a limitation.
+We have thoughts on how this could change in the future, but for now, this is a limitation.
 You always have your editor, Git and the SCMs (GitHub, Gitlab etc) for state management in the meantime.
 
 Flipt will automatically sync your feature flag definitions to Flipt in the background. Each of these backends work by polling their sources (git, oci, local directory or object store) and the interval can be configured.
