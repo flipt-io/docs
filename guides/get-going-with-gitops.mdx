@@ -37,11 +37,11 @@ This endpoint happens to list out a bunch of strings in a JSON array.
 The sorting algorithm previously used was slow (Bubble Sort), and we want to try something new (Quicksort).
 While we feel confident in our implementation, we're going to practice caution and release the change behind a feature flag.
 
-### The Application
+### Structure
 
 <Note>
   If you want to follow along you can fork our [gitops guide
-  repository](https://github.com/flipt-io/flipt-gitops-guide).
+  repository](https://github.com/flipt-io/guides).
 </Note>
 
 ```bash
@@ -426,7 +426,7 @@ The `flipt` binary has the sub-command `flipt validate`.
 This can be used to statically validate your Flipt feature configuration files.
 You can install this to run during a CI step and catch bugs before merging changes into `main`.
 
-For GitHub, try our pre-built [Flipt Validate Action](https://github.com/marketplace/actions/flipt-validate-action).
+For GitHub, try our pre-built [Flipt Setup Action](https://github.com/marketplace/actions/flipt-setup-action).
 
 </Tip>
 
@@ -588,12 +588,11 @@ At each commit, we could've fully recreated the configuration of our entire appl
 
 Now you have all the tools necessary to practice GitOps with your feature flags.
 
-However, in production, your mileage may vary with the different backed types.
-You might want to consider the `object` (and AWS S3 type) or the `oci` backend if your source Git repositories are large (we're working on a guide for that now).
+You might want to consider the `object` or the `oci` backend if your source Git repositories are too large (we're working on a guide for that now).
 
 The declarative storage backends currently mandate that the UI is **read-only**.
 We've thoughts on how this could change in the future, but for now, this is a limitation.
 You always have your editor, Git and the SCMs (GitHub, Gitlab etc) for state management in the meantime.
 
-Each of these backends work by polling their sources (git, local directory or object store) and the interval can be configured.
+Each of these backends work by polling their sources (git, oci, local directory or object store) and the interval can be configured.
 Checkout the [Configuration: Storage: Declarative](/configuration/storage#declarative) for details on adjusting these intervals.
