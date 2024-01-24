@@ -1,7 +1,13 @@
 ---
-title: Preview Environments and Feature Flags
-description: Creating Preview Environments and Leveraging Feature Flags
+title: Evaluating with References
+description: Leveraging Flipt evaluation references for preview environments.
 ---
+
+## What are References in Flipt?
+
+References are a way to pass additional information to Flipt during an evaluation request. This allows you to serve different flag states based on the reference when using our [Git backend](/configuration/storage#git).
+
+References are especially useful when using Flipt in preview environments. You can use references to serve a different Git branch for each preview environment keeping your main branch safe from untested configurations.
 
 ## What are Preview Environments?
 
@@ -21,9 +27,11 @@ In this guide you will learn how to:
 
 ## Our Example Application
 
-We're going to be making a change to our internal organization sales dashboard. This dashboard is made up of simple [React](https://reactjs.org/) frontend and a Go backend. The frontend is a single page application that makes API calls to the backend to fetch data. The backend is a **new** API that returns a list of sales performance data.
+We're going to be making a change to our internal organization sales dashboard. This dashboard is made up of simple [React](https://reactjs.org/) frontend and a Go backend. The frontend is a single page application that makes API calls to the backend to fetch data. The backend is a **new** API that returns a list of sales performance data. The frontend will use this data to render a graph of our companies sales performance.
 
 Because this API is new and we're not sure how it will perform, we want to test it in a production-like environment before we merge it into our main branch. 
+
+![Our example application without our new graph](/images/guides/using-references/dashboard-main.png)
 
 We already use Flipt in our production environment, and we want to be able to use the same instance without having to deploy a new Flipt specifically for our preview environments.
 
@@ -33,12 +41,7 @@ We also make use of Flipt's GitOps integration to manage our feature flags in ou
   If you're not familiar with Flipt's GitOps integration, check out our <a href="/guides/get-going-with-gitops">GitOps guide</a> for more information.
 </Tip>
 
-### The Application
-
-<Note>
-  If you want to follow along you can fork our [gitops guide
-  repository](https://github.com/flipt-io/guides).
-</Note>
+### Structure
 
 Our application lives in a directory committed to a Git repository.
 For the example's sake, we assume the repository will be hosted on GitHub at `https://github.com/organization/repository.git`.
@@ -47,11 +50,17 @@ The application is made up of three directories:
 
 - `cmd/api` - contains our Go backend API and loads the UI
 - `ui` - contains our React frontend
-- `pkg/peformance` - contains our Flipt feature flag definition
+- `pkg/performance` - contains our Flipt feature flag definition
+
+<Note>
+  If you want to follow along you can fork our [guide
+  repository](https://github.com/flipt-io/guides).
+</Note>
+
 
 For the purpose of this guide, we'll mainly focus on the Go backend and the Flipt feature flag definition file.
 
-#### Go Backend
+### Go Backend
 
 The purpose of our Go backend is two-fold:
 
@@ -64,7 +73,7 @@ Because we're good engineers, we want to make sure that our new API is performan
 
 The main bit of code that we want to guard is where we mount the `/api/performance` endpoint:
 
-```go
+```go cmd/api/main.go
 	http.HandleFunc("/api/performance", func(w http.ResponseWriter, r *http.Request) {
 		logger := slog.With(
 			slog.String("namespace", "performance"),
@@ -103,11 +112,11 @@ Here you can see that we're using Flipt's Go client to evaluate the `showPerform
 
 Also of note, we're using the `FLIPT_CLIENT_REFERENCE` environment variable to pass in the reference to Flipt in the evaluation call. This is used to serve a different Git branch for each preview environment. We'll talk more about this later.
 
-#### Flipt Feature Flag Definition
+### Flipt Feature Flag Definition
 
 Our feature flag definition is stored in the `pkg/performance` directory. This directory contains a single file called `features.yml`. This file contains the definition of our `showPerformanceHistory` feature flag.
 
-```yaml
+```yaml pkg/performance/features.yml
 namespace: performance
 flags:
   - key: showPerformanceHistory
@@ -122,7 +131,7 @@ flags:
   state](/configuration/storage#locating-flag-state) to learn more.
 </Note>
 
-## Enabling Preview Environments
+## Creating Preview Environments
 
 For this guide, we're going to use [GitHub Actions](https://github.com/features/actions) to deploy our preview environments to [Koyeb](https://www.koyeb.com/).
 
@@ -152,7 +161,7 @@ Now that we have our preview environments setup, we can enable our feature flag 
 
 To enable our feature flag, we'll need to update our `features.yml` file to set the `enabled` field to `true`.
 
-```yaml
+```yaml pkg/performance/features.yml
 namespace: performance
 flags:
   - key: showPerformanceHistory
@@ -171,4 +180,57 @@ git push origin feature/enable-performance-history
 ```
 
 We'll also need to create a pull request for our preview branch. This will trigger our GitHub Actions workflow and deploy our preview environment.
+
+## Testing the Change
+
+Before checking on our preview environment, let's take a look at our Flipt instance. We can see that our feature flag is still showing as disabled in the UI.
+
+This is because Flipt is configured to track the `main` branch of our Git repository by default which is what it continues to show in the UI.
+
+![Our feature flag is still disabled in the UI](/images/guides/using-references/flag-disabled.png)
+
+<Tip>
+In an upcoming release, we'll be adding the ability to switch between references in the UI. This will allow you to see the state of your feature flags in each Git branch.
+</Tip>
+
+Now that our preview environment is deployed, we can test our new API. We can view our application deploy to Koyeb from the Koyeb dashboard.
+
+You can also view the application settings and see that the `FLIPT_CLIENT_REFERENCE` environment variable is set to the Git branch name.
+
+![Our application settings in Koyeb](/images/guides/using-references/koyeb-settings.png)
+
+Now we can click on the application URL to view our application. We can see that our new API is working and our graph is being rendered. 🎉 
+
+This means our feature flag is enabled successfully in our preview environment.
+
+![Our example application with our new graph](/images/guides/using-references/dashboard-preview.png)
+
+## Merging the Pull Request
+
+Now that we've tested our new API in our preview environment, we can merge our pull request and deploy our changed flag definition to production.
+
+Note that we don't have to make any code changes in our production application. This is because our application is already configured to track the HEAD of the `main` Git branch. This means that when we merge our pull request, our application will automatically start using the new flag state.
+
+![Our feature flag is now enabled in the UI](/images/guides/using-references/flag-enabled.png)
+
+## Recap
+
+In this guide, we learned how to use Flipt's GitOps integration and references to test changes in a production-like environment without affecting our production users.
+
+Using references allowed us to serve a different Git branch for each preview environment. This means that each of our developers can test their feature flag changes in a production-like environment without affecting other developers.
+
+There are likely many other ways to use references with Flipt. We'd love to hear how you're using references in your organization.
+
+### Further Considerations
+
+References are available for all of our GET API endpoints, (e.g. [`GET /api/v1/flags`](/reference/flags/list-flags)) as well as all of our evaluation endpoints (e.g. [`POST /evaluate/v1/boolean`](/reference/evaluation/boolean-evaluation)).
+
+We've also added support for references in all of our [server side REST SDKs](/integration/server/rest) and our [client side SDKs](/integration/client).
+
+References currently only work with Git, and our `git` backend, like all of the declarative storage backends, mandates that the UI is **read-only**.
+We've thoughts on how this could change in the future, but for now, this is a limitation.
+You always have your editor, Git and the SCMs (GitHub, Gitlab etc) for state management in the meantime.
+
+Flipt will automatically sync your feature flag definitions to Flipt in the background. Each of these backends work by polling their sources (git, oci, local directory or object store) and the interval can be configured.
+Checkout the [Configuration: Storage: Declarative](/configuration/storage#declarative) for details on adjusting these intervals.
 

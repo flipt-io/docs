@@ -109,7 +109,10 @@
       "pages": [
         {
           "group": "User Guides",
-          "pages": ["guides/get-going-with-gitops"]
+          "pages": [
+            "guides/get-going-with-gitops", 
+            "guides/using-references"
+          ]
         },
         {
           "group": "Operations Guides",
