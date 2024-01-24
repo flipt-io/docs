@@ -211,7 +211,7 @@ This means our feature flag is enabled successfully in our preview environment.
 
 Now that we've tested our new API in our preview environment, we can merge our pull request and deploy our changed flag definition to production.
 
-Note that we don't have to make any code changes in our production application. This is because our application is already configured to track the HEAD of the `main` Git branch. This means that when we merge our pull request, our application will automatically start using the new flag state.
+Note that we don't have to make any code changes in our production application. This is because our Flipt is already configured to track the HEAD of the `main` Git branch. This means that when we merge our pull request, our application will automatically start using the new flag state.
 
 ![Our feature flag is now enabled in the UI](/images/guides/using-references/flag-enabled.png)
 
