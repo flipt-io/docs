@@ -176,10 +176,48 @@ If your Kubernetes environment has short-lived service account tokens, care will
 
 The client token produced can be used in subsequent API requests with the rest of the Flipt API to gain authenticated access.
 
+### Via the SDK
+
+Some of our SDKs support automatic authentication via the Kubernetes authentication method.
+These clients do not require you to have to manually invoke the verify service account.
+Instead, they do this operation for you, and they ensure that the retrieved client token from Flipt is automatically refreshed.
+
+The SDKs that currently support this include:
+
+- Go
+
+<CodeGroup>
+```go sdk.go
+package main
+
+import (
+  http "go.flipt.io/flipt/sdk/go/http"
+  sdk "go.flipt.io/flipt/sdk/go"
+)
+
+func main() {
+  // The following constructs an instance of the SDK which communicates with
+  // instances of Flipt deployed in the same cluster.
+  // In this example, we assume Flipt is reachable via a k8s service named
+  // `flipt` deployed into the namespace `flipt`.
+  //
+  // The kubernetes provider automatically authenticates the client with this
+  // Flipt service. It also ensures that the credentials are kept up to date
+  // and automatically refreshed before they expire.
+  transport := http.NewTransport("http://flipt.flipt.svc.cluster.local:8080")
+  sdk := sdk.New(transport, sdk.WithAuthenticationProvider(
+    sdk.NewKubernetesAuthenticationProvider(transport),
+  ))
+}
+```
+
+</CodeGroup>
+
+
 ### Via the API
 
-The following can be issued from inside a pod with a valid service account token in the default location for Kubernetes.
-It assumes that Flipt is reachable and deployed in the same cluster with a service name of `flipt`.
+Acquiring a client token via this method can be performed manually from inside a pod.
+The following uses `curl` to illustrate how a local, valid service account token can be used in this way.
 
 <CodeGroup>
 ```bash client-token.sh
@@ -203,60 +241,6 @@ curl -s -X POST http://flipt:8080/auth/v1/method/kubernetes/serviceaccount \
       "io.flipt.auth.k8s.serviceaccount.uid": "8aeb28ad-66f0-4884-bafc-e606e5eda149"
     }
   }
-}
-```
-
-```go client_http.go
-package client
-
-import (
-	"fmt"
-	"encoding/json"
-	"net/http"
-	"os"
-)
-
-type Response struct {
-	ClientToken    string `json:"clientToken"`
-	Authentication struct {
-		ExpiresAt time.Time `json:"expiresAt"`
-	} `json:"authentication"`
-}
-
-func getClientToken(ctx context.Context) (*Response, error) {
-	saToken, err := os.ReadFile("/var/run/secrets/kubernetes.io/serviceaccount/token")
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequestWithContext(
-		ctx,
-		http.MethodPost,
-		"http://flipt:8080/auth/v1/method/kubernetes/serviceaccount",
-		map[string]string{
-			"service_account_token": saToken,
-		})
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := http.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	defer resp.Body.Close()
-
-	if resp.Status != http.StatusOK {
-		return nil, fmt.Errorf("unexpected status code: %q", resp.Status)
-	}
-
-	response := &Response{}
-	if err := json.NewDecoder(resp.Body).Decode(response); err != nil {
-		return nil, err
-	}
-
-	return response, nil
 }
 ```
 
