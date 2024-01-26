@@ -196,20 +196,21 @@ import (
 )
 
 func main() {
-  // The following constructs an instance of the SDK which communicates with
-  // instances of Flipt deployed in the same cluster.
-  // In this example, we assume Flipt is reachable via a k8s service named
-  // `flipt` deployed into the namespace `flipt`.
-  //
-  // The kubernetes provider automatically authenticates the client with this
-  // Flipt service. It also ensures that the credentials are kept up to date
-  // and automatically refreshed before they expire.
-  transport := http.NewTransport("http://flipt.flipt.svc.cluster.local:8080")
-  sdk := sdk.New(transport, sdk.WithAuthenticationProvider(
-    sdk.NewKubernetesAuthenticationProvider(transport),
-  ))
+// The following constructs an instance of the SDK which communicates with
+// instances of Flipt deployed in the same cluster.
+// In this example, we assume Flipt is reachable via a k8s service named
+// `flipt` deployed into the namespace `flipt`.
+//
+// The kubernetes provider automatically authenticates the client with this
+// Flipt service. It also ensures that the credentials are kept up to date
+// and automatically refreshed before they expire.
+transport := http.NewTransport("http://flipt.flipt.svc.cluster.local:8080")
+sdk := sdk.New(transport, sdk.WithAuthenticationProvider(
+sdk.NewKubernetesAuthenticationProvider(transport),
+))
 }
-```
+
+````
 
 </CodeGroup>
 
@@ -242,7 +243,7 @@ curl -s -X POST http://flipt:8080/auth/v1/method/kubernetes/serviceaccount \
     }
   }
 }
-```
+````
 
 </CodeGroup>
 
