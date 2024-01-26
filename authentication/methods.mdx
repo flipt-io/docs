@@ -206,8 +206,8 @@ func main() {
   // Flipt service. It also ensures that the credentials are kept up to date
   // and automatically refreshed before they expire.
   transport := http.NewTransport("http://flipt.flipt.svc.cluster.local:8080")
-    sdk := sdk.New(transport, sdk.WithAuthenticationProvider(
-  sdk.NewKubernetesAuthenticationProvider(transport),
+  sdk := sdk.New(transport, sdk.WithAuthenticationProvider(
+    sdk.NewKubernetesAuthenticationProvider(transport),
   ))
 }
 ```
