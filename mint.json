@@ -84,7 +84,6 @@
       "group": "Managed",
       "pages": [
         "managed/overview",
-        "managed/byoc",
         "managed/hybrid"
       ]
     },
