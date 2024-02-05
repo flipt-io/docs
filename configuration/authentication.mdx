@@ -24,14 +24,15 @@ See the [Authentication: Overview](/authentication/overview) documentation for m
 ## Exclusions
 
 Exclusions allow you to disable authentication for sections of the API.
-The Flipt API is made of up of top-level API sections, each with its own unique prefix:
+The Flipt API is made up of several top-level API sections, each with its own unique prefix. 
+
+For example:
 
 - `/api/v1` is the core feature flag state management section
-- `/meta` describes the configuration of the running Flipt instance
 - `/evaluate/v1` is the application facing flag state evaluation API
 
-Each of these API sections can be optionally omitted from requiring authentication.
-A common use case is to allow the evaluation API to be publicly accessible while still requiring authenticated users for managing feature-flag configuration and state.
+Several of these API sections can be optionally omitted from requiring authentication.
+A common use case is to allow the evaluation API to be publicly accessible while still requiring authenticated users to manage feature-flag configuration and state.
 
 By default, when authentication is configured as `required: true`, the effective configuration for the exclusions looks like this:
 
@@ -40,7 +41,6 @@ authentication:
   required: true
   exclude:
     management: false
-    metadata: false
     evaluation: false
 ```
 
