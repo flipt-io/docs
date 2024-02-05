@@ -1,0 +1,26 @@
+---
+title: Analytics
+description: This document describes various configuration mechanisms for controlling analytics for Flipt.
+---
+
+## Analytics
+
+Since [v1.37.0](https://github.com/flipt-io/flipt/releases/tag/v1.37.0) Flipt includes functionality for reporting analytical data to a configurable storage engine.
+
+Currently, Flipt has support for reporting data into:
+- [Clickhouse](https://clickhouse.com/)
+
+The data that gets reported into the storage backends are currently:
+- Flag Evaluation Count
+
+All of these analytics are viewable on the UI, and users can look back up to 12 hours of data for each metric.
+
+![UI For Analytics](/images/configuration/analytics_quick_view.png)
+
+The image above shows the past 30 minutes of evaluation(s) count for the flag `flag1`.
+
+## Considerations
+
+It is important to note that you are **required** to create a database called `flipt_analytics` so that Flipt will have a logically isolated instance to report data into without interrupting any of your possible existing data in other databases.
+
+The reason for this is not just a separation of concerns on a general level, but for possible data migrations and other related things via data on a technical level.

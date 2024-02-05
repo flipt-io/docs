@@ -132,13 +132,13 @@
         "configuration/observability",
         "configuration/storage",
         "configuration/telemetry",
+        "configuration/analytics",
         {
           "group": "Auditing",
           "pages": [
             "configuration/auditing/overview",
             "configuration/auditing/webhooks"
           ]
-
         }
       ]
     },
