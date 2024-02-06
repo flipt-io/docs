@@ -44,7 +44,7 @@ On first startup, Flipt will automatically create a random static token with the
 
 ![Bootstrap Token](/images/authentication/bootstrap-token.png)
 
-This token is intended to be used to create additional tokens to then be used for subsequent API requests. By default it has no expiration date, therefore it's recommended that this token be deleted once the initial bootstrapping is complete.
+This token is intended to be used to create additional tokens to be then used for subsequent API requests. By default it has no expiration date, therefore it's recommended that this token be deleted once the initial bootstrapping is complete.
 
 This token is output to the Flipt logs on startup and can be found by searching for `client_token` in the logs:
 
@@ -52,19 +52,19 @@ This token is output to the Flipt logs on startup and can be found by searching 
 INFO	access token created	{"server": "grpc", "client_token": "jWLUy8ChnVDs-Llgyj7cMIzB0PfplwbBy-B27a0p23I="}
 ```
 
-This initial bootstrap process can also be configured to use a known token by setting the `bootstrap.token` value in the configuration file. This is useful if you want to prevent having to search the logs after startup or if Flipt is deployed in an automated fashion, for example if you are using a configuration management tool.
+This initial bootstrap process can also be configured to use a known token by setting the `bootstrap.token` value in the configuration file. This is useful if you want to prevent having to search the logs after startup or if Flipt is deployed in an automated fashion, for example, if you are using a configuration management tool.
 
-The bootstrap token can also be configured to have an expiration date by setting the `bootstrap.expiration` value in the configuration file. This is useful if you want to ensure that the bootstrap token is only valid for a short period of time before automatically expiring.
+The bootstrap token can also be configured to have an expiration date by setting the `bootstrap.expiration` value in the configuration file. This is useful if you want to ensure that the bootstrap token is only valid for a short time before automatically expiring.
 
 See the [Configuration: Method Token](/configuration/overview#authentication-methods-token) documentation for more details.
 
 ### Token Expiration
 
-Tokens can be created with an optional expiration date. This can be used to ensure that a token is only valid for a short period of time before automatically expiring. Expired tokens will be automatically be deleted by Flipt. The interval and grace period for this cleanup process can be configured via the `token.cleanup.interval` and `token.cleanup.grace_period` values in the configuration.
+Tokens can be created with an optional expiration date. This can be used to ensure that a token is only valid for a short time before automatically expiring. Expired tokens will be automatically deleted by Flipt. The interval and grace period for this cleanup process can be configured via the `token.cleanup.interval` and `token.cleanup.grace_period` values in the configuration.
 
 ### Namespaced Tokens
 
-Tokens can be created with an optional namespace to allow for more granular control over access to resources. Namespaces allow for grouping resources such as flags, segments, etc. To learn more about namespaces, see the [Concepts: Namespaces](/concepts#namespaces) documentation.
+Tokens can be created with an optional namespace to allow for more granular control over resource access. Namespaces allow for grouping resources such as flags, segments, etc. To learn more about namespaces, see the [Concepts: Namespaces](/concepts#namespaces) documentation.
 
 Namespaced tokens are useful for the scenario when you want to limit the privileges of an integration such as a CI/CD pipeline or internal service.
 
@@ -83,11 +83,11 @@ This also means that namespaced tokens themselves cannot be used to create addit
 [OpenID Connect](https://openid.net/connect/) (OIDC) is a simple identity layer on top of the OAuth 2.0 protocol. It allows Clients to verify the identity of the End-User based on the authentication performed by an Authorization Server, as well as to obtain basic profile information about the End-User in an interoperable and REST-like manner.
 
 <Note>
-Flipt's own UI is designed to support this authentication method natively.
-Meaning, once enabled, the UI will support login and present each provider as a login button.
+Flipt's UI is designed to support this authentication method natively.
+Meaning, that once enabled, the UI will support login and present each provider as a login button.
 
 The rest of this information is mostly academic.
-It's mainly useful if you want to build your own browser application using cookie authentication or understand Flipt's OIDC flow at a lower level.
+It's mainly useful if you want to build your browser application using cookie authentication or understand Flipt's OIDC flow at a lower level.
 
 See the [OIDC Configuration](/configuration/authentication#oidc) documentation to learn how to configure your provider(s).
 
@@ -140,7 +140,7 @@ The `GitHub` authentication method is primarily designed to support browser-base
 However, it can be manually invoked if the need arises.
 
 Once enabled, the `/auth/v1/method/github` API prefix is mounted to Flipt's API.
-This section of the API supports a GitHub's OAuth 2.0 flow.
+This section of the API supports GitHub's OAuth 2.0 flow.
 
 This will lead to the following endpoints being available on Flipt:
 
@@ -176,12 +176,12 @@ The client token produced can be used in subsequent API requests with the rest o
 ### Via the SDK
 
 Some of our SDKs support automatic authentication via the Kubernetes authentication method.
-These clients do not require you to have to manually invoke the verify service account.
+These clients do not require you to have to manually invoke the verify service account API.
 Instead, they do this operation for you, and they ensure that the retrieved client token from Flipt is automatically refreshed.
 
 The SDKs that currently support this include:
 
-- Go
+- [Go Server SDK](https://pkg.go.dev/go.flipt.io/flipt/sdk/go)
 
 <CodeGroup>
 
@@ -250,13 +250,12 @@ The expiration can be used to schedule when to next request a new client token.
 
 ## JSON Web Tokens
 
-[JSON Web Tokens](https://jwt.io/) (JWT) are an open, industry standard RFC 7519 method for representing claims securely between two parties. Flipt supports the use of externally created and signed JWTs as a method of authentication.
+[JSON Web Tokens](https://jwt.io/) (JWT) are an open, industry-standard RFC 7519 method for representing claims securely between two parties. Flipt supports the use of externally created and signed JWTs as a method of authentication.
 
 JWT authentication is useful for scenarios where you want to integrate Flipt with an existing authentication system, or where you want to perform service to Flipt authentication without the need to manage static client tokens.
 
 <Note>
-  JWT authentication is **not** supported by the Flipt UI as it is not a session
-  compatible authentication method.
+  JWT authentication is **not** supported by the Flipt UI as it is not a session-compatible authentication method.
 </Note>
 
 ![JWT Authentication Flow](/images/authentication/jwt.svg)
