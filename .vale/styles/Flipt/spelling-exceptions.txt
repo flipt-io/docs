@@ -67,3 +67,5 @@ uncompromised
 URIs
 yaml
 zipkin
+clickhouse
+Clickhouse
