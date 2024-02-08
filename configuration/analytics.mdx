@@ -7,30 +7,35 @@ description: This document describes various configuration mechanisms for contro
 
 Since [v1.37.0](https://github.com/flipt-io/flipt/releases/tag/v1.37.0) Flipt includes functionality for reporting analytical data to a configurable storage engine.
 
-Currently, Flipt has support for reporting data into:
+Currently, Flipt has support for collecting data into:
 
 - [Clickhouse](https://clickhouse.com/)
 
-The data that gets reported into the storage backends are currently:
+The data that gets collected currently includes:
 
 - Flag Evaluation Count
 
-These analytics are viewable on the UI, and users can look back up to 24 hours of data for each metric.
+Once a storage backend is configured, these analytics are viewable in the UI allowing users to visualize up to 24 hours of data for each metric.
 
 ![UI For Analytics](/images/configuration/analytics_quick_view.png)
 
-The image above shows the past 30 minutes of evaluation(s) count for the flag `flag1`.
+The image above shows the past 30 minutes of the flag `flag1` evaluation counts.
 
 ## Considerations
 
 ### Database
 
-It's important to note that we do \*recommend\*\* for you to a separate database for analytics produced by Flipt so that the data can logically isolated from the rest of your Clickhouse data.
+We highly **recommend** using a separate database for analytics produced by Flipt. This ensures that Flipt analytic data can be logically isolated from the rest of your Clickhouse data.
 
-The reason for this isn't just a separation of concerns on a general level, but for possible data migrations and other related things via data on a technical level if changes do arise on our end.
+<Note>
+  The analytics database must be created before Flipt will be able to write
+  analytical data and run any migrations. See our
+  [migration](https://www.flipt.io/docs/configuration/storage#migrations)
+  section for more info.
+</Note>
 
 ### Origin of Analytics
 
-Analytics are only produced currently as they pass through the server. This means you will receive data in your analytics database if your use either the [server sdks](/integration/server/rest) or the various [grpc sdks](/integration/server/grpc).
+Analytics are currently only collected as they pass through the evaluation server. This means that analytics will be captured if you are using the REST or GRPC APIs via one of our [Server SDKs](/integration/server/rest) or [GRPC SDKs](/integration/server/grpc) for evaluations.
 
-For client-side evaluation no metrics will be sent into clickhouse, but we're working on a feature to get it supported.
+We have plans to support collecting analytics for [Client-Side](/integration/client) evaluations in the future.
