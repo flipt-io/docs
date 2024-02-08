@@ -236,7 +236,7 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | storage.git.authentication.basic.username               | The username to use for basic authentication                |         | v1.25.0 |
 | storage.git.authentication.basic.password               | The password to use for basic authentication                |         | v1.25.0 |
 | storage.git.authentication.token                        | The access token to use for authentication                  |         | v1.25.0 |
-| storage.git.authentication.ssh.password                 | Password used to generate the SSH keypair                   |         | v1.30.0 |
+| storage.git.authentication.ssh.password                 | Password used to generate the SSH key pair                  |         | v1.30.0 |
 | storage.git.authentication.ssh.private_key_path         | Path to private key on the filesystem                       |         | v1.30.0 |
 | storage.git.authentication.ssh.private_key_bytes        | (Alternative) Raw private key bytes                         |         | v1.30.0 |
 | storage.git.authentication.ssh.insecure_ignore_host_key | Skip verifying the known hosts key (avoid in production)    | false   | v1.30.0 |
@@ -328,12 +328,10 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 
 #### Analytics: Clickhouse
 
-| Property                      | Description                         | Default | Since   |
-| ----------------------------- | ----------------------------------- | ------- | ------- |
-| analytics.clickhouse.enabled  | Switch for connection to clickhouse | false   | v1.37.0 |
-| analytics.clickhouse.url      | URL for the clickhouse server       |         | v1.37.0 |
-| analytics.clickhouse.username | Username for the clickhouse server  |         | v1.37.0 |
-| analytics.clickhouse.password | Password for the clickhouse server  |         | v1.37.0 |
+| Property                             | Description                         | Default | Since   |
+| ------------------------------------ | ----------------------------------- | ------- | ------- |
+| analytics.storage.clickhouse.enabled | Enable Clickhouse support           | false   | v1.37.0 |
+| analytics.storage.clickhouse.url     | URL to connect to clickhouse server |         | v1.37.0 |
 
 ### Tracing
 
