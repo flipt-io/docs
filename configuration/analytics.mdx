@@ -15,7 +15,7 @@ The data that gets reported into the storage backends are currently:
 
 - Flag Evaluation Count
 
-All of these analytics are viewable on the UI, and users can look back up to 24 hours of data for each metric.
+These analytics are viewable on the UI, and users can look back up to 24 hours of data for each metric.
 
 ![UI For Analytics](/images/configuration/analytics_quick_view.png)
 
@@ -31,6 +31,6 @@ The reason for this isn't just a separation of concerns on a general level, but 
 
 ### Origin of Analytics
 
-Analytics are only produced currently as they pass through the server, which means if you use the [server sdks](/integration/server/rest) or the various [grpc sdks](/integration/server/grpc), analytical data will be sent to the backing store.
+Analytics are only produced currently as they pass through the server. This means you will receive data in your analytics database if your use either the [server sdks](/integration/server/rest) or the various [grpc sdks](/integration/server/grpc).
 
 For client-side evaluation no metrics will be sent into clickhouse, but we're working on a feature to get it supported.
