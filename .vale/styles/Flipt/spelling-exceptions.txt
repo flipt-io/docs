@@ -4,6 +4,7 @@ auditable
 backoff
 boolean
 caddy
+clickhouse
 codeowners
 codespaces
 config
@@ -52,7 +53,6 @@ protoc
 Quicksort
 redis
 regexes
-rflipt
 rollout
 rollouts
 SCMs
