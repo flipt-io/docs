@@ -110,3 +110,9 @@ tracing:
     headers:
       "X-Some-Header": "some-value"
 ```
+
+#### Environment Variables
+
+As of [v1.38.0](https://github.com/flipt-io/flipt/releases/tag/v1.38.0), we now allow users to provide OTLP specific resource environment variables, that are part of the [OTLP spec](https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/).
+
+There is no known exhaustive list of environment variables that the [opentelemetry-go](https://github.com/open-telemetry/opentelemetry-go) respects according to the spec, but if you search around in the repository you can see if any particular environment variables are respected.
