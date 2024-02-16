@@ -5,25 +5,31 @@ description: This document describes various configuration mechanisms for contro
 
 ## Analytics
 
-Since [v1.37.0](https://github.com/flipt-io/flipt/releases/tag/v1.37.0) Flipt includes functionality for reporting analytical data to a configurable storage engine.
+As of [v1.37.0](https://github.com/flipt-io/flipt/releases/tag/v1.37.0), Flipt includes functionality for reporting analytical data to a configurable storage engine.
 
-Currently, Flipt has support for collecting data into:
+Currently, Flipt has support for collecting data into the following storage engines:
 
-- [Clickhouse](https://clickhouse.com/)
+- [ClickHouse](https://clickhouse.com/)
 
 The data that gets collected currently includes:
 
 - Flag Evaluation Count
 
-Once a storage backend is configured, these analytics are viewable in the UI allowing users to visualize up to 24 hours of data for each metric.
+Once a storage engine is configured, these analytics are viewable in the UI allowing users to visualize up to 24 hours of data for each metric.
 
 ![UI For Analytics](/images/configuration/analytics_quick_view.png)
 
 The image above shows the past 30 minutes of the flag `flag1` evaluation counts.
 
-## Considerations
+### Origin
 
-### Database
+Analytics are currently only collected as they pass through the evaluation server. This means that analytics will be captured if you are using the REST or GRPC APIs via one of our [Server SDKs](/integration/server/rest) or [GRPC SDKs](/integration/server/grpc) for evaluations.
+
+We have plans to support collecting analytics for [Client-Side](/integration/client) evaluations in the future.
+
+## ClickHouse
+
+You can use a self-hosted ClickHouse instance or a [managed instance](https://clickhouse.com/cloud/) to store your analytics data.
 
 We highly **recommend** using a separate database for analytics produced by Flipt. This ensures that Flipt analytic data can be logically isolated from the rest of your Clickhouse data.
 
@@ -33,8 +39,35 @@ We highly **recommend** using a separate database for analytics produced by Flip
   [migration](/configuration/storage#migrations) section for more info.
 </Note>
 
-### Origin of Analytics
+To create a database for Flipt analytics, you can use the following SQL:
 
-Analytics are currently only collected as they pass through the evaluation server. This means that analytics will be captured if you are using the REST or GRPC APIs via one of our [Server SDKs](/integration/server/rest) or [GRPC SDKs](/integration/server/grpc) for evaluations.
+```sql
+CREATE DATABASE IF NOT EXISTS flipt_analytics;
+```
 
-We have plans to support collecting analytics for [Client-Side](/integration/client) evaluations in the future.
+See the [ClickHouse documentation](https://clickhouse.com/docs) for more information on how to get started with ClickHouse.
+
+### Configuration
+
+To configure Flipt to use ClickHouse for analytics, you will need to add the following configuration to your `config.yml` file or environment variables:
+
+<Tabs>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_ANALYTICS_CLICKHOUSE_ENABLED=true
+    FLIPT_ANALYTICS_CLICKHOUSE_URL=clickhouse://clickhouse:9000/flipt_analytics
+    ```
+
+  </Tab>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    analytics:
+      clickhouse:
+        enabled: true
+        url: clickhouse://clickhouse:9000/flipt_analytics
+    ```
+
+  </Tab>
+</Tabs>
