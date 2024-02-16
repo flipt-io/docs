@@ -55,8 +55,8 @@ To configure Flipt to use ClickHouse for analytics, you will need to add the fol
   <Tab title="Environment Variables">
 
     ```bash
-    FLIPT_ANALYTICS_CLICKHOUSE_ENABLED=true
-    FLIPT_ANALYTICS_CLICKHOUSE_URL=clickhouse://clickhouse:9000/flipt_analytics
+    FLIPT_ANALYTICS_STORAGE_CLICKHOUSE_ENABLED=true
+    FLIPT_ANALYTICS_STORAGE_CLICKHOUSE_URL=clickhouse://clickhouse:9000/flipt_analytics
     ```
 
   </Tab>
@@ -64,9 +64,10 @@ To configure Flipt to use ClickHouse for analytics, you will need to add the fol
 
     ```yaml
     analytics:
-      clickhouse:
-        enabled: true
-        url: clickhouse://clickhouse:9000/flipt_analytics
+      storage:
+        clickhouse:
+          enabled: true
+          url: clickhouse://clickhouse:9000/flipt_analytics
     ```
 
   </Tab>
