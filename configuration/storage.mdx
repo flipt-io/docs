@@ -153,7 +153,7 @@ This is particularly useful for local development and validation of flag state c
 Flipt will periodically rebuild its state from the local disk every 10 seconds.
 
 <Tabs>
-  <Tab title="Environment Variable">
+  <Tab title="Environment Variables">
 
     ```bash
     FLIPT_STORAGE_TYPE="local"
@@ -161,7 +161,7 @@ Flipt will periodically rebuild its state from the local disk every 10 seconds.
     ```
 
   </Tab>
-  <Tab title="Configuration Yaml">
+  <Tab title="Configuration YAML">
 
     ```yaml
     storage:
@@ -184,7 +184,7 @@ This cadence is also configurable and defaults to 30 seconds.
 Flipt will follow the configured reference (e.g. branch name) and keep up to date with new changes.
 
 <Tabs>
-  <Tab title="Environment Variable">
+  <Tab title="Environment Variables">
 
     ```bash
     FLIPT_STORAGE_TYPE="git"
@@ -197,7 +197,7 @@ Flipt will follow the configured reference (e.g. branch name) and keep up to dat
     ```
 
   </Tab>
-  <Tab title="Configuration Yaml">
+  <Tab title="Configuration YAML">
 
     ```yaml
     storage:
@@ -302,7 +302,7 @@ The AWS S3 backend can be configured to serve state from a single bucket from a 
 The following is an example of how to configure Flipt to leverage this backend type:
 
 <Tabs>
-  <Tab title="Environment Variable">
+  <Tab title="Environment Variables">
 
     ```bash
     FLIPT_STORAGE_TYPE="object"
@@ -317,7 +317,7 @@ The following is an example of how to configure Flipt to leverage this backend t
     ```
 
   </Tab>
-  <Tab title="Configuration Yaml">
+  <Tab title="Configuration YAML">
 
     ```yaml
     storage:
@@ -356,7 +356,7 @@ The Azure Blob Storage backend can be configured to serve state from a single co
 The following is an example of how to configure Flipt to leverage this backend type:
 
 <Tabs>
-  <Tab title="Environment Variable">
+  <Tab title="Environment Variables">
 
     ```bash
     FLIPT_STORAGE_TYPE="object"
@@ -368,7 +368,7 @@ The following is an example of how to configure Flipt to leverage this backend t
     ```
 
   </Tab>
-  <Tab title="Configuration Yaml">
+  <Tab title="Configuration YAML">
 
     ```yaml
     storage:
@@ -414,7 +414,7 @@ The Google Cloud Storage backend can be configured to serve state from a single 
 The following is an example of how to configure Flipt to leverage this backend type:
 
 <Tabs>
-  <Tab title="Environment Variable">
+  <Tab title="Environment Variables">
 
     ```bash
     FLIPT_STORAGE_TYPE="object"
@@ -426,7 +426,7 @@ The following is an example of how to configure Flipt to leverage this backend t
     ```
 
   </Tab>
-  <Tab title="Configuration Yaml">
+  <Tab title="Configuration YAML">
 
     ```yaml
     storage:
@@ -462,7 +462,7 @@ Since `v1.31.0`, Flipt supports using any [OCI](https://opencontainers.org/) com
 Flipt has its own custom OCI manifest format (we call them `bundles`), which can be built and managed using the [Flipt CLI](/cli/commands/bundle).
 
 <Tabs>
-  <Tab title="Environment Variable">
+  <Tab title="Environment Variables">
 
     ```bash
     FLIPT_STORAGE_TYPE="oci"
@@ -476,7 +476,7 @@ Flipt has its own custom OCI manifest format (we call them `bundles`), which can
     ```
 
   </Tab>
-  <Tab title="Configuration Yaml">
+  <Tab title="Configuration YAML">
 
     ```yaml
     storage:

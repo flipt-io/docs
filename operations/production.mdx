@@ -19,14 +19,14 @@ You should tweak that number to be above 0, and to whatever fits your use case.
 This can be altered either via the Flipt configuration file or environment variables:
 
 <Tabs>
-  <Tab title="Environment Variable">
+  <Tab title="Environment Variables">
 
     ```bash
     FLIPT_DB_MAX_OPEN_CONN=5
     ```
 
   </Tab>
-  <Tab title="Configuration Yaml">
+  <Tab title="Configuration YAML">
 
     ```yaml
     db:
@@ -45,14 +45,14 @@ If MaxOpenConns is greater than 0 but less than the new MaxIdleConns, then the n
 Keep in mind that tuning `MaxOpenConn` may lead to tuning `MaxIdleConn` as well.
 
 <Tabs>
-  <Tab title="Environment Variable">
+  <Tab title="Environment Variables">
 
     ```bash
     FLIPT_DB_MAX_IDLE_CONN=5
     ```
 
   </Tab>
-  <Tab title="Configuration Yaml">
+  <Tab title="Configuration YAML">
 
     ```yaml
     db:
@@ -71,14 +71,14 @@ For instance, PGBouncer doesn't support prepared statements in its [transaction 
 You can disable prepared statements for the database client using:
 
 <Tabs>
-  <Tab title="Environment Variable">
+  <Tab title="Environment Variables">
 
     ```bash
     FLIPT_DB_PREPARED_STATEMENTS_ENABLED=false
     ```
 
   </Tab>
-  <Tab title="Configuration Yaml">
+  <Tab title="Configuration YAML">
 
     ```yaml
     db:
@@ -95,14 +95,14 @@ Debug logging can be useful if you are actively developing or trying to fix prob
 It's recommended to disable Flipt's debug logging in a production environment by increasing the log level:
 
 <Tabs>
-  <Tab title="Environment Variable">
+  <Tab title="Environment Variables">
 
     ```bash
     FLIPT_LOG_LEVEL=info
     ```
 
   </Tab>
-  <Tab title="Configuration Yaml">
+  <Tab title="Configuration YAML">
 
     ```yaml
     log:
@@ -119,14 +119,14 @@ Flipt exposes profiling endpoints (`/debug/pprof`) that can be useful for debugg
 You can disable these endpoints by setting the following configuration options:
 
 <Tabs>
-  <Tab title="Environment Variable">
+  <Tab title="Environment Variables">
 
     ```bash
     FLIPT_DIAGNOSTICS_PROFILING_ENABLED=false
     ```
 
   </Tab>
-  <Tab title="Configuration Yaml">
+  <Tab title="Configuration YAML">
 
     ```yaml
     diagnostics:
