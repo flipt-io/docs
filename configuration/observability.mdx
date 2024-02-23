@@ -110,3 +110,12 @@ tracing:
     headers:
       "X-Some-Header": "some-value"
 ```
+
+#### Environment Variables
+
+As of [v1.38.0](https://github.com/flipt-io/flipt/releases/tag/v1.38.0), we now allow users to provide OTLP specific resource environment variables that are part of the [OTLP spec](https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/).
+
+The following environment variables are supported:
+
+- `OTEL_SERVICE_NAME` - Sets the value of the `service.name` resource attribute (default: `flipt`)
+- `OTEL_RESOURCE_ATTRIBUTES` - Key-value pairs to be used as [resource attributes](https://opentelemetry.io/docs/specs/semconv/resource/#semantic-attributes-with-dedicated-environment-variable).
