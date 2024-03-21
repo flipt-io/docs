@@ -78,6 +78,8 @@ You can use the following script to download and install the latest Flipt binary
 curl -fsSL https://github.com/flipt-io/flipt/raw/main/install.sh | sh
 ```
 
+This will install Flipt to `/usr/local/bin/flipt` on Mac and Linux systems.
+
 View the [install.sh](https://github.com/flipt-io/flipt/blob/main/install.sh) source for more details.
 
 ### Running
@@ -85,7 +87,7 @@ View the [install.sh](https://github.com/flipt-io/flipt/blob/main/install.sh) so
 Run the Flipt binary with:
 
 ```console
-./flipt [--config OPTIONAL_PATH_TO_YOUR_CONFIG]
+flipt [--config OPTIONAL_PATH_TO_YOUR_CONFIG]
 ```
 
 Flipt will check in a few different locations for server configuration (in order):

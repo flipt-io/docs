@@ -27,19 +27,20 @@ In this guide you will learn how to:
 
 ## Our Example Application
 
-We're going to be making a change to our internal organization sales dashboard. This dashboard is made up of simple [React](https://reactjs.org/) frontend and a Go backend. The frontend is a single page application that makes API calls to the backend to fetch data. The backend is a **new** API that returns a list of sales performance data. The frontend will use this data to render a graph of our companies sales performance.
+We're going to be making a change to our internal organization sales dashboard. This dashboard is made up of simple [React](https://reactjs.org/) frontend and a Go backend. The frontend is a single-page application that makes API calls to the backend to fetch data. The backend is a **new** API that returns a list of sales performance data. The frontend will use this data to render a graph of our company's sales performance.
 
 Because this API is new and we're not sure how it will perform, we want to test it in a production-like environment before we merge it into our main branch.
 
 ![Our example application without our new graph](/images/guides/using-references/dashboard-main.png)
 
-We already use Flipt in our production environment, and we want to be able to use the same instance without having to deploy a new Flipt specifically for our preview environments.
+We already use Flipt in our production environment, and we want to use the same instance without having to deploy a new Flipt specifically for our preview environments.
 
 We also make use of Flipt's GitOps integration to manage our feature flags in our Git repository. This allows us to manage our feature flags in a declarative format, and have them automatically synced to Flipt in the background.
 
 <Tip>
   If you're not familiar with Flipt's GitOps integration, check out our{" "}
-  <a href="/guides/get-going-with-gitops">GitOps guide</a> for more information.
+  <a href="/docs/guides/get-going-with-gitops">GitOps guide</a> for more
+  information.
 </Tip>
 
 ### Structure
@@ -58,7 +59,7 @@ The application is made up of three directories:
   repository](https://github.com/flipt-io/guides).
 </Note>
 
-For the purpose of this guide, we'll mainly focus on the Go backend and the Flipt feature flag definition file.
+For this guide, we'll mainly focus on the Go backend and the Flipt feature flag definition file.
 
 ### Go Backend
 
