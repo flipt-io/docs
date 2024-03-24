@@ -320,6 +320,34 @@ authentication:
   the user is a member of.
 </Note>
 
+#### Allowed Teams
+
+As of version [1.39.0](https://github.com/flipt-io/flipt/releases/tag/v1.39.0) of Flipt, the GitHub authentication method also supports the ability to restrict access to a set of GitHub teams. This is important if you want to limit access to Flipt to only members of a specific team within an organization as opposed to all members of the organization.
+
+To enable this feature, set the `github.allowed_teams` configuration value to a list of GitHub teams within existing allowed organizations. For example:
+
+```yaml config.yaml
+authentication:
+  methods:
+    github:
+      enabled: true
+      scopes:
+        - read:org
+      allowed_organizations:
+        - my-org
+        - my-other-org
+      allowed_teams:
+        my-org:
+          - my-team
+        my-other-org:
+          - my-other-team
+```
+
+<Note>
+  The organizations to check for team membership must be included in the
+  `allowed_organizations` list.
+</Note>
+
 ### Kubernetes
 
 The `kubernetes` method provides the ability to exchange Kubernetes service account tokens for client tokens.
