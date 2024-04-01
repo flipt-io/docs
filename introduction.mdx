@@ -25,6 +25,31 @@ For more information on any of the concepts described, please see the
 Before getting started, make sure the Flipt server is up and running on your
 host on your chosen ports. See [Installation](/installation) for more.
 
+<CodeGroup>
+
+```console Binary
+curl -fsSL https://get.flipt.io/install | sh
+```
+
+```console Docker
+docker run -d \
+    -p 8080:8080 \
+    -p 9000:9000 \
+    -v $HOME/flipt:/var/opt/flipt \
+    docker.flipt.io/flipt/flipt:latest
+```
+
+```console Kubernetes/Helm
+helm repo add flipt https://helm.flipt.io
+helm install flipt flipt/flipt
+```
+
+```console Homebrew
+brew install flipt-io/brew/flipt
+```
+
+</CodeGroup>
+
 In this example, we'll use the default location of http://localhost:8080.
 
 ## Flags and Variants
