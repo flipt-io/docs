@@ -31,7 +31,7 @@
   },
   "topbarCtaButton": {
     "type": "github",
-    "url": "https://github.com/flipt-io/flipt"
+    "url": "https://git.new/flipt"
   },
   "anchors": [
     {
@@ -42,7 +42,7 @@
     {
       "name": "Blog",
       "icon": "newspaper",
-      "url": "https://www.flipt.io/blog"
+      "url": "https://blog.flipt.io"
     },
     {
       "name": "Changelog",
@@ -321,7 +321,7 @@
     "website": "https://www.flipt.io/",
     "twitter": "https://twitter.com/flipt_io",
     "discord": "https://www.flipt.io/discord",
-    "github": "https://github.com/flipt-io/flipt"
+    "github": "https://git.new/flipt"
   },
   "backgroundImage": "/background.png",
   "analytics": {
