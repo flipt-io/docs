@@ -99,15 +99,15 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 
 ### Logging
 
-| Property         | Description                                                                             | Default | Since   |
-| ---------------- | --------------------------------------------------------------------------------------- | ------- | ------- |
-| log.level        | Level at which messages are logged (trace, debug, info, warn, error, fatal, panic)      | info    |         |
-| log.grpc_level   | Level at which gRPC messages are logged (trace, debug, info, warn, error, fatal, panic) | error   | v1.12.0 |
-| log.file         | File to log to instead of STDOUT                                                        |         | v0.10.0 |
-| log.encoding     | Encoding to use for logging (json, console)                                             | console | v1.12.0 |
-| log.keys.time    | Structured logging key used when outputting log timestamp                               | T       | v1.18.1 |
-| log.keys.level   | Structured logging key used when outputting log level                                   | L       | v1.18.1 |
-| log.keys.message | Structured logging key used when outputting log message                                 | M       | v1.18.1 |
+| Property         | Description                                                                      | Default | Since   |
+| ---------------- | -------------------------------------------------------------------------------- | ------- | ------- |
+| log.level        | Level at which messages are logged (debug, info, warn, error, fatal, panic)      | info    |         |
+| log.grpc_level   | Level at which gRPC messages are logged (debug, info, warn, error, fatal, panic) | error   | v1.12.0 |
+| log.file         | File to log to instead of STDOUT                                                 |         | v0.10.0 |
+| log.encoding     | Encoding to use for logging (json, console)                                      | console | v1.12.0 |
+| log.keys.time    | Structured logging key used when outputting log timestamp                        | T       | v1.18.1 |
+| log.keys.level   | Structured logging key used when outputting log level                            | L       | v1.18.1 |
+| log.keys.message | Structured logging key used when outputting log message                          | M       | v1.18.1 |
 
 ### Server
 
