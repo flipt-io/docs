@@ -377,8 +377,9 @@ In this situation, the default OIDC discovery URL is not appropriate for fetchin
 Instead, you should locate your clusters OIDC URL and use that instead.
 
 <Note>
-Your cluster's OIDC URL will vary between Kubernetes providers.
-For example, here is some documentation which should help for EKS: [EKS troubleshoot OIDC and IRSA](https://repost.aws/knowledge-center/eks-troubleshoot-oidc-and-irsa).
+  Your cluster's OIDC URL will vary between Kubernetes providers. For example,
+  here is some documentation which should help for EKS: [EKS troubleshoot OIDC
+  and IRSA](https://repost.aws/knowledge-center/eks-troubleshoot-oidc-and-irsa).
 </Note>
 
 It is also important to note that custom OIDC providers likely will use HTTPS which has been signed with certificates not authorized by the cluster TLS certificate authority.
@@ -394,7 +395,7 @@ authentication:
       ca_path: /etc/ssl/certs/ca-certificates.crt # this can be enough if your OIDC provider TLS certificates have been signed by a public certificate authority
 ```
 
-See [this issue](https://github.com/flipt-io/flipt/issues/2942) for more context. 
+See [this issue](https://github.com/flipt-io/flipt/issues/2942) for more context.
 
 ### JSON Web Token
 
