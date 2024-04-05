@@ -504,6 +504,15 @@ See [this issue](https://github.com/flipt-io/flipt/issues/2907) for more informa
 
 </Note>
 
+Starting from version `1.40.0, Flipt offers two authentication methods:
+
+- **Static**: This is the default method that uses a username and password for authentication.
+- **AWS ECR**: If you're using Flipt on AWS with a private ECR repository, you could configure authentication differently.
+  Set either the FLIPT_STORAGE_OCI_AUTHENTICATION_TYPE environment variable or the storage.oci.authentication.type configuration property to `aws-ecr`.
+  Additionally, make sure your compute instance or container has an role with permissions to pull from ECR.
+
+See [this issue](https://github.com/flipt-io/flipt/issues/2938) for more information.
+
 ### Flag State Configuration
 
 Each of Flipt's filesystem backends expects you to represent your feature flag configuration via a set of YAML files.
