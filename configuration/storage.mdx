@@ -496,19 +496,21 @@ Flipt has its own custom OCI manifest format (we call them `bundles`), which can
 </Tabs>
 
 <Note>
-  Certain OCI registries may require setting the OCI manifest version to something other than the default (`1.1`) to work correctly. 
-  
+  Certain OCI registries may require setting the OCI manifest version to something other than the default (`1.1`) to work correctly.
+
   In this case, you can set the `FLIPT_STORAGE_OCI_MANIFEST_VERSION` environment variable or `storage.oci.manifest_version` configuration property to the desired version (e.g. `1.0`).
 
 See [this issue](https://github.com/flipt-io/flipt/issues/2907) for more information.
 
 </Note>
 
-Starting from version `1.40.0, Flipt offers two authentication methods:
+#### Authentication
+
+Starting from version `1.40.0`, Flipt offers two authentication methods:
 
 - **Static**: This is the default method that uses a username and password for authentication.
 - **AWS ECR**: If you're using Flipt on AWS with a private ECR repository, you could configure authentication differently.
-  Set either the FLIPT_STORAGE_OCI_AUTHENTICATION_TYPE environment variable or the storage.oci.authentication.type configuration property to `aws-ecr`.
+  Set either the `FLIPT_STORAGE_OCI_AUTHENTICATION_TYPE` environment variable or the `storage.oci.authentication.type` configuration property to `aws-ecr`.
   Additionally, make sure your compute instance or container has an role with permissions to pull from ECR.
 
 See [this issue](https://github.com/flipt-io/flipt/issues/2938) for more information.
