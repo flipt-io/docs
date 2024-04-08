@@ -371,7 +371,7 @@ Further explanation for using this method can be found in the [Authentication: K
 **verifying service account: failed to verify signature: fetching keys oidc**
 
 In some managed Kubernetes cluster environments, the default cluster OIDC provider is replaced with the platform's managed alternative.
-For example, EKS clusters leverage this so that they can issue service accounts tokens which can assume the capabilites of AWS IAM roles.
+For example, EKS clusters leverage this so that they can issue service account tokens which can assume the capabilities of AWS IAM roles.
 
 In this situation, the default OIDC discovery URL is not appropriate for fetching key material from.
 Instead, you should locate your clusters OIDC URL and use that instead.
