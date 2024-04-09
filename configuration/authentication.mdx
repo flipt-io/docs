@@ -366,6 +366,37 @@ Once enabled, client tokens can be retrieved by sending a Kubernetes pod's servi
 
 Further explanation for using this method can be found in the [Authentication: Kubernetes](/authentication/methods#kubernetes) documentation.
 
+#### Troubleshooting
+
+**verifying service account: failed to verify signature: fetching keys oidc**
+
+In some managed Kubernetes cluster environments, the default cluster OIDC provider is replaced with the platform's managed alternative.
+For example, EKS clusters leverage this so that they can issue service account tokens which can assume the capabilities of AWS IAM roles.
+
+In this situation, the default OIDC discovery URL isn't appropriate for fetching key material from.
+Instead, you should locate your clusters OIDC URL and use that instead.
+
+<Note>
+  Your cluster's OIDC URL will vary between Kubernetes providers. For example,
+  here is some documentation which should help for EKS: [EKS troubleshoot OIDC
+  and IRSA](https://repost.aws/knowledge-center/eks-troubleshoot-oidc-and-irsa).
+</Note>
+
+It's also important to note that custom OIDC providers likely will use HTTPS which has been signed with certificates not authorized by the cluster TLS certificate authority.
+In this situation, you can override the `kubernetes` auth providers `ca_path` field with relevant key material.
+The `flipt` distributed Docker image has valid and trusted certificates in `/etc/ssl/certs/ca-certificates.crt`, which can be appropriate if your OIDC provider has certificates granted by a valid public certificate authority.
+
+```yaml example-config-for-eks.yaml
+authentication:
+  methods:
+    kubernetes:
+      enabled: true
+      discovery_url: https://oidc.eks.us-west-2.amazonaws.com/id/EXAMPLED539D4633E53DE1B716D3041E # note: yours will be different
+      ca_path: /etc/ssl/certs/ca-certificates.crt # this can be enough if your OIDC provider TLS certificates have been signed by a public certificate authority
+```
+
+See [this issue](https://github.com/flipt-io/flipt/issues/2942) for more context.
+
 ### JSON Web Token
 
 The `jwt` method provides the ability to authenticate with Flipt using an externally issued JSON Web Token. This method is useful for integrating with other authentication systems that can issue JWTs (e.g. [Auth0](https://auth0.com/docs/tokens/json-web-tokens)) or by generating your own signed JWTs on the fly.
