@@ -498,7 +498,7 @@ Flipt has its own custom OCI manifest format (we call them `bundles`), which can
 <Note>
   Certain OCI registries may require setting the OCI manifest version to something other than the default (`1.1`) to work correctly.
 
-In this case, you can set the `FLIPT_STORAGE_OCI_MANIFEST_VERSION` environment variable or `storage.oci.manifest_version` configuration property to the desired version (e.g. `1.0`).
+  In this case, you can set the `FLIPT_STORAGE_OCI_MANIFEST_VERSION` environment variable or `storage.oci.manifest_version` configuration property to the desired version (e.g. `1.0`).
 
 See [this issue](https://github.com/flipt-io/flipt/issues/2907) for more information.
 
@@ -618,7 +618,7 @@ segments: [] # [Segment] list of Segment definitions
 
 Flipt supports both in-memory cache as well as [Redis](https://redis.io/) to enable faster reads and
 evaluations. Enabling caching has been shown to speed up read performance by
-several orders of magnitude.
+several orders of magnitude if you are using a relational database.
 
 <Warning>
   Enabling in-memory caching when running more than one instance of Flipt isn't
@@ -631,7 +631,7 @@ Caching works as follows:
 - All flag reads and evaluation requests go through the cache
 - Flag cache entries are purged whenever a write to a flag or its variants
   occur or the TTL expires
-- Evaluation cache entries are purged after the TTL expires only
+- Cache entries are purged after the TTL expires only
 - A cache miss will fetch the item from the database and add the item to the
   cache for the next read
 - A cache hit will simply return the item from the cache, not interacting with
