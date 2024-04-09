@@ -373,7 +373,7 @@ Further explanation for using this method can be found in the [Authentication: K
 In some managed Kubernetes cluster environments, the default cluster OIDC provider is replaced with the platform's managed alternative.
 For example, EKS clusters leverage this so that they can issue service account tokens which can assume the capabilities of AWS IAM roles.
 
-In this situation, the default OIDC discovery URL is not appropriate for fetching key material from.
+In this situation, the default OIDC discovery URL isn't appropriate for fetching key material from.
 Instead, you should locate your clusters OIDC URL and use that instead.
 
 <Note>
@@ -382,7 +382,7 @@ Instead, you should locate your clusters OIDC URL and use that instead.
   and IRSA](https://repost.aws/knowledge-center/eks-troubleshoot-oidc-and-irsa).
 </Note>
 
-It is also important to note that custom OIDC providers likely will use HTTPS which has been signed with certificates not authorized by the cluster TLS certificate authority.
+It's also important to note that custom OIDC providers likely will use HTTPS which has been signed with certificates not authorized by the cluster TLS certificate authority.
 In this situation, you can override the `kubernetes` auth providers `ca_path` field with relevant key material.
 The `flipt` distributed Docker image has valid and trusted certificates in `/etc/ssl/certs/ca-certificates.crt`, which can be appropriate if your OIDC provider has certificates granted by a valid public certificate authority.
 
