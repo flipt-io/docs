@@ -337,6 +337,20 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | analytics.storage.clickhouse.enabled | Enable Clickhouse support           | false   | v1.37.0 |
 | analytics.storage.clickhouse.url     | URL to connect to clickhouse server |         | v1.37.0 |
 
+### Metrics
+
+| Property         | Description                            | Default    | Since   |
+| ---------------- | -------------------------------------- | ---------- | ------- |
+| metrics.enabled  | Enable metrics support                 | true       | v1.41.0 |
+| metrics.exporter | The exporter to use (prometheus, otlp) | prometheus | v1.41.0 |
+
+#### Metrics: OTLP
+
+| Property              | Description                                                       | Default               | Since   |
+| --------------------- | ----------------------------------------------------------------- | --------------------- | ------- |
+| metrics.otlp.endpoint | The OTLP receiver address (supports: grpc, http, https)           | grpc://localhost:4317 | v1.41.0 |
+| metrics.otlp.headers  | Additional headers to send with OTLP requests (map[string]string) |                       | v1.41.0 |
+
 ### Tracing
 
 | Property         | Description                                | Default | Since   |
