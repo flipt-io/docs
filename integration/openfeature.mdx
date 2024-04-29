@@ -26,19 +26,29 @@ OpenFeature is a CNCF Sandbox project. You can learn more about OpenFeature on t
 
 As a feature flag management tool, Flipt provides our own OpenFeature integrations (providers). This means that you can use the OpenFeature API with Flipt.
 
-<Note>
-  We currently only provide server-side OpenFeature providers. Once the
-  OpenFeature client-side specification is finalized, we will provide
-  client-side OpenFeature providers as well.
-</Note>
-
 From the [OpenFeature Specification](https://docs.openfeature.dev/docs/specification/sections/providers):
 
 > Providers are the "translator" between the flag evaluation calls made in application code, and the flag management system that stores flags and in some cases evaluates flags.
 
-We currently provide the following OpenFeature server-side providers:
+We currently provide the following OpenFeature providers:
 
 <CardGroup cols={2}>
+  <Card
+    title="Node"
+    href="https://github.com/open-feature/js-sdk-contrib/tree/main/libs/providers/flipt"
+    icon="node"
+    color="#68a063"
+  >
+    The official Flipt OpenFeature Provider using the OpenFeature Node SDK.
+  </Card>
+  <Card
+    title="Browser"
+    href="https://github.com/open-feature/js-sdk-contrib/tree/main/libs/providers/flipt-web"
+    icon="js"
+    color="#f7e018"
+  >
+    The official Flipt OpenFeature Provider using the OpenFeature Web SDK.
+  </Card>
   <Card
     href="https://github.com/open-feature/go-sdk-contrib/tree/main/providers/flipt"
     title="Go"
@@ -54,14 +64,6 @@ We currently provide the following OpenFeature server-side providers:
     color="#e41f23"
   >
     The official Flipt OpenFeature Provider using the OpenFeature Java SDK.
-  </Card>
-  <Card
-    title="JavaScript/TypeScript"
-    href="https://github.com/open-feature/js-sdk-contrib/tree/main/libs/providers/flipt"
-    icon="js"
-    color="#cad929"
-  >
-    The official Flipt OpenFeature Provider using the OpenFeature JS SDK.
   </Card>
   <Card title="PHP (In Progress)" icon="php" color="#4c8abe">
     The official Flipt OpenFeature Provider using the OpenFeature PHP SDK.
