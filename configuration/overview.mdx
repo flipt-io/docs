@@ -40,6 +40,28 @@ The server will check in a few different locations for server configuration (in 
 You can edit any of these properties to your liking, and on restart Flipt will
 pick up the new changes.
 
+### Remote Configuration
+
+As of `v1.41.0`, Flipt supports fetching configuration from a remote source. This is useful for managing configuration across multiple instances of Flipt. The remote configuration source can be a URL to a configuration file stored in one of the following object storage services:
+
+- S3 (eg: `s3://bucket-name/path/to/config.yml`)
+- Azure Blob Storage (eg: `azblob://container-name/path/to/config.yml`)
+- Google Cloud Storage (eg: `googlecloud://bucket-name/path/to/config.yml`)
+
+To load Flipt configuration from a remote source, replace the `config.yml` file with the URL to the remote configuration file in the `--config` flag when starting Flipt.
+
+```console
+flipt --config s3://bucket-name/path/to/config.yml
+```
+
+For authenticating with the object storage service, you can use the following environment variables depending on the service:
+
+- `AWS_ACCESS_KEY_ID` and `AWS_SECRET`
+- `AZURE_STORAGE_ACCOUNT` and `AZURE_STORAGE_KEY` or `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_CLIENT_SECRET`
+- `GOOGLE_APPLICATION_CREDENTIALS`
+
+These environment variables are used by the underlying object storage client libraries to authenticate with the object storage service and are the same values used in our [object storage configuration](/configuration/storage#object).
+
 ## Environment Variables
 
 All options in the configuration file can be overridden using environment
