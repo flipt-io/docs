@@ -451,6 +451,7 @@ Flipt supports validating the following claims:
 
 - `iss` (issuer)
 - `aud` (audience)
+- `sub` (subject)
 - `exp` (expiration time)
 - `nbf` (not before)
 - `iat` (issued at)
@@ -466,6 +467,7 @@ authentication:
       enabled: true
       validate_claims:
         issuer: https://auth0.com/
+        subject: user@domain.com
         audiences: https://flipt.io/, https://flipt.com/ # at least one audience must match
 ```
 
