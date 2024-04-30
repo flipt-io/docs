@@ -40,7 +40,7 @@ Custom headers can be used to provide authentication information to the collecto
 
 These can be configured via the `metrics.otlp` configuration section.
 
-````yaml
+```yaml
 metrics:
   enabled: true
   exporter: "otlp"
@@ -48,6 +48,7 @@ metrics:
     endpoint: "https://{your-collector-url}"
     headers:
       "X-Some-Header": "some-value"
+```
 
 ### Dashboards
 
@@ -69,7 +70,7 @@ The format can be configured via the `log.encoding` configuration option.
 ```yaml
 log:
   encoding: json
-````
+```
 
 For production deployments, we recommend using the JSON format as it's easier to parse and ingest into log aggregation systems such as Elasticsearch, Splunk, Loki, or DataDog.
 
