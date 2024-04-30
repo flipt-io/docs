@@ -5,7 +5,9 @@ description: This document describes how to configure Flipt's observability mech
 
 ## Metrics
 
-Flipt exposes [Prometheus](https://prometheus.io/) metrics at the `/metrics`
+### Prometheus
+
+Flipt exposes [Prometheus](https://prometheus.io/) metrics by default at the `/metrics`
 HTTP endpoint. To see which metrics are currently supported, point your browser
 to `FLIPT_HOST/metrics` (ex: `localhost:8080/metrics`).
 
@@ -25,6 +27,28 @@ go_gc_duration_seconds{quantile="1"} 0.00026651 go_gc_duration_seconds_sum
 
 An [example](https://github.com/flipt-io/flipt/tree/main/examples/metrics)
 showing how to set up Flipt with Prometheus can be found in the GitHub repository.
+
+As of `v1.41.0` you can disable the Prometheus metrics collection by setting the `metrics.enabled` configuration option to `false`.
+
+### OTLP
+
+Flipt supports sending metrics to an [OTLP](https://opentelemetry.io/docs/concepts/data-collection/) collector as of `v1.41.0`.
+
+OTLP supports additional configuration such as specifying the protocol to use (gRPC or HTTP) as well as providing custom headers to send with the request.
+
+Custom headers can be used to provide authentication information to the collector which may be required if you are using a hosted collector such as [NewRelic](https://docs.newrelic.com/docs/more-integrations/open-source-telemetry-integrations/opentelemetry/get-started/opentelemetry-set-up-your-app/), [DataDog](https://docs.datadoghq.com/opentelemetry/otlp_ingest_in_the_agent/?tab=host), or [Honeycomb](https://docs.honeycomb.io/getting-data-in/opentelemetry-overview/#instrumenting-with-opentelemetry).
+
+These can be configured via the `metrics.otlp` configuration section.
+
+```yaml
+metrics:
+  enabled: true
+  exporter: "otlp"
+  otlp:
+    endpoint: "https://{your-collector-url}"
+    headers:
+      "X-Some-Header": "some-value"
+```
 
 ### Dashboards
 
@@ -105,6 +129,8 @@ These can be configured via the `tracing.otlp` configuration section.
 
 ```yaml
 tracing:
+  enabled: true
+  exporter: "otlp"
   otlp:
     endpoint: "https://{your-collector-url}"
     headers:

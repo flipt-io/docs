@@ -47,6 +47,7 @@ PGBouncer
 pluggable
 postgres
 pprof
+prometheus
 Promtail
 protobuf
 protoc
