@@ -219,6 +219,7 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | authentication.methods.jwt.public_key_file           | Path to public key file for JWT validation          |         | v1.35.0 |
 | authentication.methods.jwt.validate_claims.issuer    | The issuer claim to validate on JWT tokens          |         | v1.35.0 |
 | authentication.methods.jwt.validate_claims.audiences | The audience claim (list) to validate on JWT tokens |         | v1.35.0 |
+| authentication.methods.jwt.validate_claims.subject   | The subject claim to validate on JWT tokens         |         | v1.41.0 |
 
 ### Database
 
@@ -255,7 +256,9 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | ------------------------------------------------------- | ----------------------------------------------------------- | ------- | ------- |
 | storage.git.repository                                  | The URL of the git repository to use                        |         | v1.25.0 |
 | storage.git.ref                                         | The git ref to use                                          | main    | v1.25.0 |
+| storage.git.ref_type                                    | How to parse the git ref (static, semver)                   | static  | v1.41.0 |
 | storage.git.poll_interval                               | The interval to poll the git repository and ref for changes | 30s     | v1.25.0 |
+| storage.git.directory                                   | The root directory to search in the repository              |         | v1.40.0 |
 | storage.git.authentication.basic.username               | The username to use for basic authentication                |         | v1.25.0 |
 | storage.git.authentication.basic.password               | The password to use for basic authentication                |         | v1.25.0 |
 | storage.git.authentication.token                        | The access token to use for authentication                  |         | v1.25.0 |
@@ -375,10 +378,12 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 
 ### Tracing
 
-| Property         | Description                                | Default | Since   |
-| ---------------- | ------------------------------------------ | ------- | ------- |
-| tracing.enabled  | Enable tracing support                     | false   | v1.18.2 |
-| tracing.exporter | The exporter to use (jaeger, zipkin, otlp) | jaeger  | v1.18.2 |
+| Property               | Description                                                                                                                             | Default               | Since   |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | --------------------- | ------- |
+| tracing.enabled        | Enable tracing support                                                                                                                  | false                 | v1.18.2 |
+| tracing.exporter       | The exporter to use (jaeger, zipkin, otlp)                                                                                              | jaeger                | v1.18.2 |
+| tracing.sampling_ratio | The sampling ratio to use for exporting spans                                                                                           | 1.0                   | v1.41.0 |
+| tracing.propogators    | The [propagators](https://opentelemetry.io/docs/specs/otel/context/api-propagators/) to use for tracing (tracecontext, b3, jaeger, etc) | tracecontext, baggage | v1.41.0 |
 
 #### Tracing: Jaeger
 

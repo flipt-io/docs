@@ -181,7 +181,12 @@ The configuration contains fields for addressing the repository, configuring the
 Once a target repository and reference are configured, Flipt will poll the source repository on a periodic cadence.
 This cadence is also configurable and defaults to 30 seconds.
 
-Flipt will follow the configured reference (e.g. branch name) and keep up to date with new changes.
+Flipt will follow the configured [reference](https://git-scm.com/book/en/v2/Git-Internals-Git-References) and keep up to date with new changes.
+
+As of v1.41.0, Flipt supports the following reference types:
+
+- `static` (default): Flipt will use the reference provided in the configuration.
+- `semver`: Flipt will use the latest reference that matches the [semver](https://semver.org/) pattern (e.g. `v1.0.*`).
 
 <Tabs>
   <Tab title="Environment Variables">
