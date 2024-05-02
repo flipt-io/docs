@@ -33,6 +33,15 @@
     "type": "github",
     "url": "https://git.new/flipt"
   },
+  "tabs": [
+    {
+      "name": "Hybrid Cloud",
+      "url": "cloud"
+    }
+  ],
+  "primaryTab": {
+    "name": "Open Source"
+  },
   "anchors": [
     {
       "name": "API Reference",
@@ -56,6 +65,36 @@
     }
   ],
   "navigation": [
+    {
+      "group": "Overview",
+      "pages": [
+        "cloud/overview",
+        "cloud/why"
+      ]
+    },
+    {
+      "group": "Features",
+      "pages": [
+        "cloud/features/authentication",
+        "cloud/features/authorization",
+        "cloud/features/sso",
+        "cloud/features/audit-logs",
+        "cloud/features/directory-sync"
+      ]
+    },
+    {
+      "group": "Setup",
+      "pages": [
+        "cloud/setup/getting-started",
+        "cloud/setup/production"
+      ]
+    },
+    {
+      "group": "Architecture",
+      "pages": [
+        "cloud/architecture/overview"
+      ]
+    },
     {
       "group": "Overview",
       "pages": [
@@ -83,8 +122,7 @@
     {
       "group": "Managed",
       "pages": [
-        "managed/overview",
-        "managed/hybrid"
+        "managed/overview"
       ]
     },
     {
@@ -315,6 +353,10 @@
     { 
       "source": "/integration/grpc",
       "destination": "/integration/server/grpc"
+    },
+    {
+      "source": "/managed/hybrid",
+      "destination": "/cloud/overview"
     }
   ],
   "footerSocials": {
