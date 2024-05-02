@@ -3,7 +3,11 @@ title: Moving to Production
 description: Learn how to get started with Flipt Hybrid Cloud
 ---
 
-<Info>Flipt Hybrid Cloud is in Active Beta. We are currently onboarding organizations one by one. If you are interested in joining the beta, please [sign up here](https://1ld82idjvlr.typeform.com/to/s7YfGviE).</Info>
+<Info>
+  Flipt Hybrid Cloud is in Active Beta. We are currently onboarding
+  organizations one by one. If you are interested in joining the beta, please
+  [sign up here](https://1ld82idjvlr.typeform.com/to/s7YfGviE).
+</Info>
 
 ## Prerequisites
 
@@ -25,6 +29,7 @@ To quickly get started with Flipt Hybrid Cloud, follow these steps:
     ```
 
     This command will open a browser on your local machine and allow you to authenticate with your Flipt Hybrid Cloud account.
+
   </Step>
   <Step title="Connect Your Local Instance">
     Connect your local Flipt instance to your Flipt Hybrid Cloud account using the following command:
@@ -36,34 +41,42 @@ To quickly get started with Flipt Hybrid Cloud, follow these steps:
     This command will register your local Flipt instance temporarily with Flipt Hybrid Cloud. This allows you to test the integration without affecting your production environments.
 
     After following the prompts in the CLI, you should see a success message indicating that your local instance is connected to Flipt Hybrid Cloud along with a unique address for your local instance.
+
   </Step>
   <Step title="Login to Hybrid Cloud">
   Next, log in to the Flipt Hybrid Cloud web interface using the unique address provided in the previous step. You can access the web interface by navigating to the provided address in your browser.
 
-  ![Cloud Login](/images/cloud/login.png)
+![Cloud Login](/images/cloud/login.png)
+
   </Step>
   <Step title="View Your Instance">
 
-  Once you are logged in, you will see the Flipt Hybrid Cloud dashboard. Click on the "Dashboard" tab in the sidebar to view your connected instances.
+Once you are logged in, you will see the Flipt Hybrid Cloud dashboard. Click on the "Dashboard" tab in the sidebar to view your connected instances.
 
-  You should see your local instance listed here. Click on the instance to view more details and manage your instance settings.
+You should see your local instance listed here. Click on the instance to view more details and manage your instance settings.
 
-  ![Cloud Dashboard](/images/cloud/dashboard.png)
+![Cloud Dashboard](/images/cloud/dashboard.png)
+
   </Step>
   <Step title="Route to Your Instance">
   Click on the your instance address to route to your local instance. The address will look something like `https://{instance}-{organization}.flipt.cloud`.
 
-  This will open your local Flipt instance in your browser.
+This will open your local Flipt instance in your browser.
 
-  ![Flipt Onboarding](/images/cloud/onboarding.png)
+![Flipt Onboarding](/images/cloud/onboarding.png)
+
   </Step>
 </Steps>
 
 ## What Just Happened?
 
-You have successfully connected your local Flipt instance to Flipt Hybrid Cloud! 🎉 
+You have successfully connected your local Flipt instance to Flipt Hybrid Cloud! 🎉
 
-<Check>Note that you didn't have to mess with DNS or firewall settings to enable the connection between Flipt and your instance. Flipt Hybrid Cloud takes care of all the networking for you.</Check>
+<Check>
+  Note that you didn't have to mess with DNS or firewall settings to enable the
+  connection between Flipt and your instance. Flipt Hybrid Cloud takes care of
+  all the networking for you.
+</Check>
 
 ### Details
 
@@ -76,7 +89,8 @@ You have successfully connected your local Flipt instance to Flipt Hybrid Cloud!
 The unique address provided in the CLI is a temporary route to your local instance. You can access your local instance through this address until the connection expires or your local instance is disconnected.
 
 <Note>
-The connection between your local instance and Flipt Hybrid Cloud is temporary and will expire after about 24 hours.
+  The connection between your local instance and Flipt Hybrid Cloud is temporary
+  and will expire after about 24 hours.
 </Note>
 
 ## What's Next?
