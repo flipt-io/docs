@@ -69,17 +69,8 @@
       "group": "Overview",
       "pages": [
         "cloud/overview",
-        "cloud/why"
-      ]
-    },
-    {
-      "group": "Features",
-      "pages": [
-        "cloud/features/authentication",
-        "cloud/features/authorization",
-        "cloud/features/sso",
-        "cloud/features/audit-logs",
-        "cloud/features/directory-sync"
+        "cloud/why",
+        "cloud/features"
       ]
     },
     {
