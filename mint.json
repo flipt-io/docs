@@ -69,15 +69,21 @@
       "group": "Overview",
       "pages": [
         "cloud/overview",
-        "cloud/why",
-        "cloud/features"
+        {
+          "group": "Features",
+          "pages": [
+            "cloud/features/authentication",
+            "cloud/features/user-management",
+            "cloud/features/audit-logs"
+          ]
+        }
       ]
     },
     {
-      "group": "Setup",
+      "group": "Guides",
       "pages": [
-        "cloud/setup/getting-started",
-        "cloud/setup/production"
+        "cloud/guides/getting-started",
+        "cloud/guides/production"
       ]
     },
     {
@@ -113,7 +119,8 @@
     {
       "group": "Managed",
       "pages": [
-        "managed/overview"
+        "managed/overview",
+        "managed/hybrid"
       ]
     },
     {
