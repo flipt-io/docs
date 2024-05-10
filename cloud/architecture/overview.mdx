@@ -60,8 +60,14 @@ All of which is done without you having to provide TLS certificates, and without
 Your connections are made using an API key credential obtained from our Flipt Cloud UI, or via the `flipt cloud login` subcommand of the Flipt CLI.
 This credential is used in an initial handshake to identify your Flipt Cloud organization and the logical instance your Flipt is joining.
 
-<img className="block dark:hidden" src="/images/cloud/architecture/handshake-light.svg" />
-<img className="hidden dark:block" src="/images/cloud/architecture/handshake-dark.svg" />
+<img
+  className="block dark:hidden"
+  src="/images/cloud/architecture/handshake-light.svg"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/cloud/architecture/handshake-dark.svg"
+/>
 
 Once registered and associated with Flipt Cloud, your Flipt instance is added to our remote load balancer pool for your logical instance.
 Now when you visit your new Flipt Cloud instance subdomain, your requests are routed to the instance(s) deployed on your infrastructure.
