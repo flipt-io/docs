@@ -1,0 +1,100 @@
+---
+title: Getting Started
+description: Learn how to get started with Flipt Hybrid Cloud
+---
+
+<Info>
+  Flipt Hybrid Cloud is in Active Beta. We're currently onboarding organizations
+  one by one. If you are interested in joining the beta, please [sign up
+  here](https://tally.so/r/mV0zWM).
+</Info>
+
+## Prerequisites
+
+Before you get started with Flipt Hybrid Cloud, you need to have the following:
+
+1. An active Flipt Hybrid Cloud account. If you don't have an account yet, [sign up here](https://tally.so/r/mV0zWM) and we'll get you set up.
+2. The Flipt CLI installed on your local machine. You can install the CLI by following the instructions in the [Flipt CLI documentation](/cli/overview).
+
+## Trying It Out
+
+To quickly get started with Flipt Hybrid Cloud, follow these steps:
+
+<Steps>
+  <Step title="Authenticate with CLI">
+    Authenticate with the Flipt CLI using the following command:
+
+    ```bash
+    flipt cloud login
+    ```
+
+    This command will open a browser on your local machine and allow you to authenticate with your Flipt Hybrid Cloud account.
+
+  </Step>
+  <Step title="Connect Your Local Instance">
+    Connect your local Flipt instance to your Flipt Hybrid Cloud account using the following command:
+
+    ```bash
+    flipt cloud serve
+    ```
+
+    This command will register your local Flipt instance temporarily with Flipt Hybrid Cloud. This allows you to test the integration without affecting your production environments.
+
+    After following the prompts in the CLI, you should see a success message indicating that your local instance is connected to Flipt Hybrid Cloud along with a unique address for your local instance.
+
+  </Step>
+  <Step title="Login to Hybrid Cloud">
+  Next, log in to the Flipt Hybrid Cloud web interface using the unique address provided in the previous step. You can access the web interface by navigating to the provided address in your browser.
+
+![Cloud Login](/images/cloud/guides/getting-started/login.png)
+
+  </Step>
+  <Step title="View Your Instance">
+
+Once you are logged in, you will see the Flipt Hybrid Cloud dashboard. Click on the "Dashboard" tab in the sidebar to view your connected instances.
+
+You should see your local instance listed here. Click on the instance to view more details and manage your instance settings.
+
+![Cloud Dashboard](/images/cloud/guides/getting-started/dashboard.png)
+
+  </Step>
+  <Step title="Route to Your Instance">
+  Click on the your instance address to route to your local instance. The address will look something like `https://{instance}-{organization}.flipt.cloud`.
+
+This will open your local Flipt instance in your browser.
+
+![Flipt](/images/cloud/guides/getting-started/flipt.png)
+
+  </Step>
+</Steps>
+
+## What Just Happened?
+
+You have successfully connected your local Flipt instance to Flipt Hybrid Cloud! 🎉
+
+<Check>
+  Note that you didn't have to mess with DNS or firewall settings to enable the
+  connection between Flipt and your instance. Flipt Hybrid Cloud takes care of
+  all the networking for you.
+</Check>
+
+### Details
+
+- You now have a fully functional Flipt instance running on your local machine that's protected behind authentication provided by Flipt Hybrid Cloud. 🔒
+
+- You can now access your local instance through the Flipt Hybrid Cloud web interface from anywhere in the world! 🌍
+
+- Only users in your organization with the appropriate permissions can access your instance through Flipt Hybrid Cloud. 🛡️
+
+The unique address provided in the CLI is a temporary route to your local instance. You can access your local instance through this address until the connection expires or your local instance is disconnected.
+
+<Note>
+  The connection between your local instance and Flipt Hybrid Cloud is temporary
+  and will expire after about 24 hours.
+</Note>
+
+## What's Next?
+
+Now that you have successfully connected your local Flipt instance to Flipt Hybrid Cloud, you can start creating feature flags and managing your feature flag configurations.
+
+After you've had a chance to play around with Flipt Hybrid Cloud and your local instance, you can learn more about the advanced features and capabilities available to you in the [Flipt Hybrid Cloud documentation](/cloud/overview) and how to take your configuration to production.

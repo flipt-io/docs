@@ -1,0 +1,179 @@
+---
+title: Moving to Production
+description: Learn how go to production with Flipt Hybrid Cloud
+---
+
+<Info>
+  Flipt Hybrid Cloud is in Active Beta. We're currently onboarding organizations
+  one by one. If you are interested in joining the beta, please [sign up
+  here](https://1ld82idjvlr.typeform.com/to/s7YfGviE).
+</Info>
+
+## Prerequisites
+
+Before you get started with Flipt Hybrid Cloud, you need to have the following:
+
+1. An active Flipt Hybrid Cloud account. If you don't have an account yet, [sign up here](https://1ld82idjvlr.typeform.com/to/s7YfGviE) and we'll get you set up.
+2. Completed the [Getting Started](/cloud/guides/getting-started) guide to setup your local Flipt instance and authenticate with the Flipt CLI.
+
+## Create a New Instance
+
+To move your local Flipt instance to production, you need to create a new instance in Flipt Hybrid Cloud. This instance will be used to manage your feature flags and configurations in a production environment.
+
+<Steps>
+  <Step title="Login to Hybrid Cloud">
+  First, log in to the Flipt Hybrid Cloud web interface. You can access the login page at [https://flipt.cloud](https://flipt.cloud).
+  
+  </Step>
+  <Step title="Create a New Instance">
+
+Once you are logged in, you will see the Flipt Hybrid Cloud dashboard. Click on the `Create Your First Instance` button to create a new instance.
+
+![Cloud Dashboard](/images/cloud/guides/production/dashboard.png)
+
+  </Step>
+  <Step title="Start the Wizard">
+
+You will be taken to the instance creation wizard. Follow the prompts to create a new instance.
+
+![Instance Wizard](/images/cloud/guides/production/wizard-1.png)
+
+  </Step>
+  <Step title="Name Your Instance">
+
+Give your instance a name and description to help you identify it later. Click `Next` to continue.
+
+![Instance Wizard](/images/cloud/guides/production/wizard-2.png)
+
+  </Step>
+  <Step title="View Instance">
+
+After you've created your instance, go back to the Dashboard and you should see your instance in the list.
+
+![Instances Dashboard](/images/cloud/guides/production/instances.png)
+
+Next, click on the instance to view more details.
+
+Here you can view your instance settings and manage your instance.
+
+![Instance Details](/images/cloud/guides/production/instance-details.png)
+
+  </Step>
+  <Step title="Create an Instance API Key">
+
+In order authenticate your running Flipt instance with the Flipt Hybrid Cloud, you will need to create an API token for your instance.
+
+Click on the `Configuration` tab in the instance details page and then click on the `Instance API Key` button.
+
+![Instance API Key](/images/cloud/guides/production/instance-api-key.png)
+
+Copy the API key and save it for later.
+
+<Warning>
+  The API key is a secret token that allows your Flipt instance to authenticate with the Flipt Hybrid Cloud. Keep it secure and do not share it with anyone.
+
+If you lose your API key, you can always generate a new one by following the same steps.
+
+</Warning>
+
+  </Step>
+  <Step title="Download Configuration">
+
+Next, click on the `Download Configuration` button to download the configuration file for your instance.
+
+This configuration file contains the required settings for your instance to connect to the Flipt Hybrid Cloud.
+
+Move the configuration file to your local [Flipt instance directory](/configuration/overview#configuration-file)
+
+```bash
+mv ~/downloads/flipt.yaml /path/to/your/flipt/directory
+```
+
+  </Step>
+
+  <Step title="Update Configuration">
+
+Open the configuration file you downloaded in the previous step and update the `cloud` section with the API key you generated in the previous step for your instance.
+
+```yaml
+cloud:
+  authentication:
+    api_key: "YOUR API KEY HERE"
+```
+
+  </Step>
+
+  <Step title="Start Flipt">
+
+Start your Flipt instance with the updated configuration file.
+
+```bash
+flipt
+```
+
+or if you have a custom configuration file:
+
+```bash
+# if your configuration file is in a different location than the default
+flipt -f /path/to/your/configuration.yaml
+```
+
+  </Step>
+
+  <Step title="Refresh Instance Details">
+
+After you've started your Flipt instance, go back to the Flipt Hybrid Cloud dashboard and refresh the instance details page.
+
+You should see that your instance is now connected and showing one active connection.
+
+![Instance Details](/images/cloud/guides/production/instance-details-connected.png)
+
+  </Step>
+
+  <Step title="Route to Your Instance">
+
+Click on the your instance address to route to your instance. The address will look something like `https://{instance}-{organization}.flipt.cloud`.
+
+This will open your local Flipt instance in your browser.
+
+![Flipt](/images/cloud/guides/production/flipt.png)
+
+You are automatically authenticated with your Flipt Hybrid Cloud account and can start managing your feature flags and configurations in your production environment.
+
+<Info>
+  The address provided in the Flipt Hybrid Cloud dashboard is a permanent route to your instance. You can access your instance through this address at any time.
+  </Info>
+  </Step>
+</Steps>
+
+## What Just Happened?
+
+You have successfully and permanently connected your Flipt instance to Flipt Hybrid Cloud! 🎉
+
+<Check>
+  Note that you didn't have to mess with DNS or firewall settings to enable the
+  connection between Flipt and your instance. Flipt Hybrid Cloud takes care of
+  all the networking for you.
+</Check>
+
+### Details
+
+- You now have a fully functional Flipt instance running in your infrastructure that's protected behind authentication provided by Flipt Hybrid Cloud. 🔒
+
+- You can now access this instance through the Flipt Hybrid Cloud web interface from anywhere in the world! 🌍
+
+- Only users in your organization with the appropriate permissions can access your instance through Flipt Hybrid Cloud. 🛡️
+
+Unlike in the [Getting Started](/cloud/guides/getting-started) guide, the address provided in the Flipt Hybrid Cloud dashboard is a permanent route to your instance. You can access your instance through this address at any time and it will not expire.
+
+<Note>
+  The connection is valid as long as your API Key stays the same. If you need to
+  regenerate your API Key, you can generate a new one by following the same
+  steps.
+</Note>
+
+## What's Next?
+
+Now that you have successfully connected your permanent instance to Flipt Hybrid Cloud, you can start creating feature flags and managing your feature flag configurations.
+
+You can now learn more about the advanced features and capabilities available to you such as [Single Sign-On](/cloud/features/authentication) and [Audit Logs](/cloud/features/audit-logs).

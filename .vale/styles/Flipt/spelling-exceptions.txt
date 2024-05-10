@@ -25,6 +25,7 @@ hostname
 http
 httplug
 https
+hyperscaler
 javascript
 jq
 json
@@ -36,12 +37,15 @@ mintlify
 namespace
 namespaced
 namespaces
+NATs
 nginx
 ngrok
 oauth
 oidc
 okta
+onboarding
 otlp
+passwordless
 performant
 PGBouncer
 pluggable
@@ -54,6 +58,7 @@ protoc
 Quicksort
 redis
 regexes
+reverst
 rollout
 rollouts
 SCMs

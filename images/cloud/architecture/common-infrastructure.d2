@@ -1,0 +1,68 @@
+vars: {
+  d2-config: {
+    layout-engine: elk
+  }
+}
+
+direction: right
+
+style.fill: transparent
+
+internet: {
+  shape: image
+  icon: https://icons.terrastruct.com/essentials%2F140-internet.svg
+}
+
+internet -> user.zone.elb
+
+user: Your Infrastructure {
+  style: {
+    stroke: transparent
+    fill: transparent
+  }
+
+  zone: DNS Zone {
+    icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-Route-53_Hosted-Zone_light-bg.svg
+
+    style: {
+      fill: transparent
+    }
+
+    elb: Load Balancer {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FElastic-Load-Balancing-ELB_Network-load-balancer_light-bg.svg
+    }
+
+    keys: TLS Credentials {
+      shape: image
+      icon: https://icons.terrastruct.com/essentials%2F216-key.svg
+    }
+
+    elb -> keys
+
+    fapi: "" {
+      icon: https://assets-global.website-files.com/659480aa07716c37f0fd8dee/6597f2baa456ff33c9f13a07_logo%201.svg
+    }
+
+    ftwo: "" {
+      icon: https://assets-global.website-files.com/659480aa07716c37f0fd8dee/6597f2baa456ff33c9f13a07_logo%201.svg
+    }
+
+    fthree: "" {
+      icon: https://assets-global.website-files.com/659480aa07716c37f0fd8dee/6597f2baa456ff33c9f13a07_logo%201.svg
+    }
+
+    elb -> fapi
+    elb -> ftwo
+    elb -> fthree
+
+    db: Database {
+      shape: image
+      icon: https://icons.terrastruct.com/essentials%2F117-database.svg
+    }
+
+    fapi -> db
+    ftwo -> db
+    fthree -> db
+  }
+}

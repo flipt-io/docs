@@ -33,6 +33,15 @@
     "type": "github",
     "url": "https://git.new/flipt"
   },
+  "tabs": [
+    {
+      "name": "Hybrid Cloud",
+      "url": "cloud"
+    }
+  ],
+  "primaryTab": {
+    "name": "Open Source"
+  },
   "anchors": [
     {
       "name": "API Reference",
@@ -56,6 +65,33 @@
     }
   ],
   "navigation": [
+    {
+      "group": "Overview",
+      "pages": [
+        "cloud/overview",
+        {
+          "group": "Features",
+          "pages": [
+            "cloud/features/authentication",
+            "cloud/features/user-management",
+            "cloud/features/audit-logs"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Guides",
+      "pages": [
+        "cloud/guides/getting-started",
+        "cloud/guides/production"
+      ]
+    },
+    {
+      "group": "Architecture",
+      "pages": [
+        "cloud/architecture/overview"
+      ]
+    },
     {
       "group": "Overview",
       "pages": [
@@ -315,6 +351,10 @@
     { 
       "source": "/integration/grpc",
       "destination": "/integration/server/grpc"
+    },
+    {
+      "source": "/managed/hybrid",
+      "destination": "/cloud/overview"
     }
   ],
   "footerSocials": {
