@@ -1,0 +1,22 @@
+shape: sequence_diagram
+
+style.fill: transparent
+
+client_one: Flipt
+tunnel: Flipt Cloud
+
+register: Flipt registers on flipt.cloud {
+  client_one -> tunnel.handshake: Register Tunnel
+  tunnel.handshake -> client_one: Registered
+}
+
+user: Flipt User
+
+instance: Instance served on flipt.cloud {
+  user -> tunnel.req: instance-org.flipt.cloud
+  tunnelled request: {
+    tunnel -> client_one.req: Request
+    client_one.req -> tunnel: Response
+  }
+  tunnel.req -> user: Response
+}
