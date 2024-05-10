@@ -3,17 +3,17 @@ title: Technical Details
 description: Learn the technical details of how Flipt Hybrid Cloud works
 ---
 
-This page details how Flipt Cloud is architected to provide a simple and scalable solution for accessing and securing your internal, self-hosted deployments of Flipt.
+This page details how Flipt Cloud is built to provide a simple and scalable solution for accessing and securing your internal, self-hosted deployments of Flipt.
 
 Flipt comes baked with lots of critical features for scale and security, including:
 
-- Ability to scale hoizontally
+- Ability to scale horizontally
 - HTTPS/TLS support
 - Configurable authentication mechanisms (Static Token, OIDC, GitHub, JWT and Kubernetes)
 - API and UI with session management and termination
 
 These capabilities are super important for deploying Flipt into your infrastructure and making it secure for your users.
-However, enabling and integrating these features is not free of complexities, infrastructure, and time investment.
+However, enabling and integrating these features isn't free of complexities, infrastructure, and time investment.
 In order to take advantage of these, you're likely going to have to perform one or many of the following:
 
 - Enable networking and routing to your Flipt instance
@@ -57,7 +57,7 @@ All of which is done without you having to provide TLS certificates, and without
 
 ## Tunnel Registration
 
-Your connections are made using an API key credential obtained from our Flipt Cloud UI, or via the `flipt cloud login` subcommand of the Flipt CLI.
+Your connections are made using an API key credential obtained from our Flipt Cloud UI, or via the `flipt cloud login` sub-command of the Flipt CLI.
 This credential is used in an initial handshake to identify your Flipt Cloud organization and the logical instance your Flipt is joining.
 
 <img
@@ -70,7 +70,7 @@ This credential is used in an initial handshake to identify your Flipt Cloud org
 />
 
 Once registered and associated with Flipt Cloud, your Flipt instance is added to our remote load balancer pool for your logical instance.
-Now when you visit your new Flipt Cloud instance subdomain, your requests are routed to the instance(s) deployed on your infrastructure.
+Now when you visit your new Flipt Cloud instance subdomain, your requests are routed to the instances deployed on your infrastructure.
 
 The majority of the tunneling functionality we perform is now open-source in our project [Reverst](https://github.com/flipt-io/reverst).
 Reverst is unique in that it leverages HTTP/3 and the QUIC protocol to establish secure, reliable, and performant connections for tunnels.
