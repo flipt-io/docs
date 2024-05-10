@@ -42,6 +42,8 @@ oauth
 oidc
 okta
 otlp
+onboarding
+passwordless
 performant
 PGBouncer
 pluggable
