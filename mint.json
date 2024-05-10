@@ -93,8 +93,7 @@
     {
       "group": "Managed",
       "pages": [
-        "managed/overview",
-        "managed/hybrid"
+        "managed/overview"
       ]
     },
     {
@@ -213,6 +212,7 @@
       "group": "Overview",
       "pages": [
         "cloud/overview",
+        "cloud/benefits",
         {
           "group": "Features",
           "pages": [
