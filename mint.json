@@ -174,6 +174,14 @@
                 "cli/commands/bundle/push"
               ]
             },
+            {
+              "group": "cloud",
+              "pages":[
+                "cli/commands/cloud/login",
+                "cli/commands/cloud/logout",
+                "cli/commands/cloud/serve"
+              ]
+            },
             "cli/commands/evaluate",
             "cli/commands/export",
             "cli/commands/import",
