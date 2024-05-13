@@ -1,0 +1,38 @@
+---
+title: "cloud login"
+description: "Authenticate with Flipt Hybrid Cloud"
+---
+
+```
+flipt cloud login [flags]
+```
+
+## Prerequisites
+
+Before you get started with Flipt Hybrid Cloud, you need to have the following:
+
+1. An active Flipt Hybrid Cloud account. If you don't have an account yet, [sign up here](https://tally.so/r/mV0zWM) and we'll get you set up.
+2. Enable the `cloud` experimental feature in the Flipt configuration file. You can enable the `cloud` feature by adding the following configuration to your `flipt.yaml` file:
+
+```yaml
+experimental:
+  cloud:
+    enabled: true
+```
+
+### Options
+
+```
+  -h, --help   help for edit
+```
+
+### Inherited Options
+
+```
+  -u, --url string   Flipt Cloud URL (default "https://flipt.cloud")
+```
+
+### More Info
+
+See the [cloud](/cloud/overview) section of the documentation for more information on Flipt Hybrid Cloud.
+

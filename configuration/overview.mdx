@@ -417,3 +417,18 @@ be logged in the Flipt logs when a deprecated configuration option is used.
 
 All deprecated options are listed in the [DEPRECATIONS](https://github.com/flipt-io/flipt/blob/main/DEPRECATIONS.md) file
 in the Flipt repository as well as the [CHANGELOG](https://github.com/flipt-io/flipt/blob/main/CHANGELOG.md).
+
+
+## Experiments
+
+From time to time, Flipt may introduce new features that are not considered fully supported. These features are considered experimental and may change or be removed in future releases.
+
+We put experimental features behind a configuration setting that can be enabled in the configuration file. To enable experimental features, set the `experimental.{feature}.enabled` configuration option to `true`.
+
+Example: To enable the experimental cloud feature, add the following to your configuration file:
+
+```yaml
+experimental:
+  cloud:
+    enabled: true
+```
