@@ -135,6 +135,14 @@
             "guides/login-with-google",
             "guides/login-with-github"
           ]
+        },
+        {
+          "group": "Migration Guides",
+          "pages": [
+            "guides/migration/launchdarkly/overview",
+            "guides/migration/launchdarkly/openfeature",
+            "guides/migration/launchdarkly/flipt"
+          ]
         }
       ]
     },

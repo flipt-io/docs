@@ -1,0 +1,75 @@
+---
+title: Switching from LaunchDarkly to Flipt
+description: Install Flipt and migrate your flags from LaunchDarkly to Flipt
+mode: "wide"
+---
+
+The next steps in migrating from LaunchDarkly to Flipt include:
+
+<Steps>
+  <Step title="Adding the Flipt OpenFeature Provider" />
+  <Step title="Installing Flipt" />
+  <Step title="Migrate State from LaunchDarkly to Flipt" />
+</Steps>
+
+The rest of this guide will cover these steps in more detail.
+
+## Adding the Flipt OpenFeature Provider
+
+Flipt supports the OpenFeature standard which makes it easy to switch from LaunchDarkly to Flipt.
+
+Continuing with the Node.js example from the previous section, you can replace the LaunchDarkly provider with the [Flipt provider](https://github.com/open-feature/js-sdk-contrib/tree/main/libs/providers/flipt) in your codebase:
+
+```javascript
+import { FliptProvider } from "@openfeature/flipt";
+
+const provider = new FliptProvider("default", {
+  url: "http://your.flipt.host",
+});
+OpenFeature.setProvider(provider);
+
+const client = OpenFeature.getClient();
+```
+
+## Installing Flipt
+
+Flipt is a single binary that can be run on any Linux or macOS (arm64) host. You can install and try out Flipt in a few different ways:
+
+<CodeGroup>
+
+```console Binary
+curl -fsSL https://get.flipt.io/install | sh
+```
+
+```console Docker
+docker run -d \
+    -p 8080:8080 \
+    -p 9000:9000 \
+    -v $HOME/flipt:/var/opt/flipt \
+    docker.flipt.io/flipt/flipt:latest
+```
+
+```console Kubernetes/Helm
+helm repo add flipt https://helm.flipt.io
+helm install flipt flipt/flipt
+```
+
+```console Homebrew
+brew install flipt-io/brew/flipt
+```
+
+</CodeGroup>
+
+For more details, see our [installation documentation](/self-hosted/overview).
+
+## Migrate State from LaunchDarkly to Flipt
+
+Generally speaking, it’s preferable to open up new flags individually when migrating to a new feature flagging platform. This allows you to test each flag in isolation and ensure that the new platform is working as expected.
+
+If you need assistance with migrating your flags from LaunchDarkly to Flipt, join our [Discord community](https://flipt.io/discord) and ask for help in the #migration channel.
+
+<Note>
+  Flipt offers flag state migration services for any paid user of our [Hybrid
+  Cloud](/cloud/overview) offering. We’re working on extending this offer to the
+  rest of the ecosystem as well!
+</Note>
