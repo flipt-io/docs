@@ -1,0 +1,39 @@
+---
+title: Migrating from LaunchDarkly
+description: Migrate from LaunchDarkly to Flipt in 4 simple steps
+mode: "wide"
+---
+
+If you’re already a LaunchDarkly user, migrating from LaunchDarkly to Flipt is a simple, 4-step process.
+
+We suggest you follow the steps one after the other, in the order they’re listed. This will allow you to rollback changes easily, in case of a migration error.
+
+<Steps>
+  <Step title="Migrating from LaunchDarkly SDK to OpenFeature SDK">
+    First, we’ll identify all flag instances in your codebase, and migrate them
+    from the traditional LaunchDarkly SDK to the OpenFeature SDK. This will
+    enable us to make as little modifications as possible to your codebase, and
+    allow you to replace feature flagging vendors with ease.
+  </Step>
+  <Step title="Adding the Flipt OpenFeature Provider">
+    Since Flipt supports OpenFeature, migrating to Flipt is as easy as changing
+    the LaunchDarkly OpenFeature provider to the Flipt OpenFeature provider.
+  </Step>
+  <Step title="Installing Flipt">
+    In order to use Flipt, you would need to install it in your infrastructure.
+    If you want us to handle security and user management for you, you can
+    choose to use our Hybrid Cloud offering in addition to installing your Flipt
+    instance.
+  </Step>
+  <Step title="Migrate State from LaunchDarkly to Flipt">
+    The last part is to migrate all of your existing flags from the LaunchDarkly
+    interface to your Flipt instance.
+  </Step>
+</Steps>
+
+<Tip>
+  Flipt has a [new cloud offering](/cloud/overview) that allows you to run your
+  own Flipt instance, without worrying about managing authentication and users.
+  It has no limits - and we'll assist you in LaunchDarkly to Flipt migration
+  services for free, for all of our paying users.
+</Tip>
