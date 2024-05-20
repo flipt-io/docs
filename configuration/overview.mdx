@@ -44,9 +44,9 @@ pick up the new changes.
 
 As of `v1.41.0`, Flipt supports fetching configuration from a remote source. This is useful for managing configuration across multiple instances of Flipt. The remote configuration source can be a URL to a configuration file stored in one of the following object storage services:
 
-- S3 (eg: `s3://bucket-name/path/to/config.yml`)
-- Azure Blob Storage (eg: `azblob://container-name/path/to/config.yml`)
-- Google Cloud Storage (eg: `googlecloud://bucket-name/path/to/config.yml`)
+- S3 (e.g.: `s3://bucket-name/path/to/config.yml`)
+- Azure Blob Storage (e.g.: `azblob://container-name/path/to/config.yml`)
+- Google Cloud Storage (e.g.: `googlecloud://bucket-name/path/to/config.yml`)
 
 To load Flipt configuration from a remote source, replace the `config.yml` file with the URL to the remote configuration file in the `--config` flag when starting Flipt.
 

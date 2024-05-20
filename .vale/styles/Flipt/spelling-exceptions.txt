@@ -16,9 +16,12 @@ dep
 deps
 dev
 dex
+enum
+flagd
 flipt
 flipt's
 Gitlab
+gitops
 grafana
 grpc
 hostname
@@ -29,7 +32,9 @@ hyperscaler
 javascript
 jq
 json
+jwts
 keycloak
+koyeb
 linux
 memcached
 Minio
@@ -41,6 +46,7 @@ NATs
 nginx
 ngrok
 oauth
+oci
 oidc
 okta
 onboarding
@@ -61,11 +67,14 @@ regexes
 reverst
 rollout
 rollouts
+rpcs
 SCMs
 sdk
 sdks
+semver
 Splunk
 sqlite
+tracecontext
 Turso
 unary
 uncomment

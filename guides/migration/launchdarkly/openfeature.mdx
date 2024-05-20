@@ -198,9 +198,9 @@ ldClient
   );
 ```
 
-Now, when you're migrating to the OpenFeature SDK, it provides two client functions instead of three: `getBooleanValue()` and `getBooleanDetails()`. Note that it doesn't provide the equivalent of LaunchDarkly SDK's general-purpose `variation()` function. This means that when migrating, you'll need to choose a function corresponding to the specific type of flag you're using.
+Now, when you're migrating to the OpenFeature SDK, it provides two client functions instead of three: `getBooleanValue()` and `getBooleanDetails()`. Note that it doesn't provide the equivalent of LaunchDarkly SDKs general-purpose `variation()` function. This means that when migrating, you'll need to choose a function corresponding to the specific type of flag you're using.
 
-To sum it up, below are code snippets representing the usage of the three LaunchDarkly SDK's functions that you can use to get boolean flag values, along with the OpenFeature SDK code that you'd end up with after migration.
+To sum it up, below are code snippets representing the usage of the three LaunchDarkly SDKs functions that you can use to get boolean flag values, along with the OpenFeature SDK code that you'd end up with after migration.
 
 When migrating a `boolVariation()` call,
 
@@ -667,7 +667,7 @@ ldClient.on("error", (error) => {
 });
 ```
 
-In OpenFeature SDK's terms, the equivalent listener looks like this:
+In OpenFeature SDK terms, the equivalent listener looks like this:
 
 ```javascript
 OpenFeature.addHandler(ProviderEvents.Error, (error) => {
