@@ -3,16 +3,16 @@ title: Overview
 description: This document describes how to enable and use authentication with Flipt.
 ---
 
-Flipt supports the ability to secure its core API routes.
+Flipt supports the ability to secure its core API routes with authentication.
 
 <Info>
 Flipt authentication is **disabled** (not required) by default.
 
-Head to the [Configuration: Authentication](/configuration/authentication) section to enable it.
+Head to the [Configuration: Authentication](/configuration/authentication) section to learn how to enable it.
 
 </Info>
 
-Once enabled, all routes beneath the following API prefixes will require a [client token](#client-tokens) to authenticate requests:
+Once enabled, all routes beneath the following API prefixes will require a [client token](#client-tokens) or [JWT](#json-web-tokens) to authenticate requests:
 
 - `/api/v1/`
 - `/auth/v1/`
@@ -27,6 +27,7 @@ The following URLs aren't protected by authentication:
 - `/health`
 
 They're currently unprotected to support backward compatibility.
+
 We're exploring ways to support protecting these endpoints going forward.
 For now, we recommend excluding these API prefixes from your load-balancer.
 
@@ -34,7 +35,8 @@ For now, we recommend excluding these API prefixes from your load-balancer.
 
 Apart from `/auth/v1/` itself, the rest of the top-level API prefixes can be optionally excluded from authentication.
 Allowing for sections, such as the evaluations API, to be publicly accessible while still protecting the management and metadata APIs.
-Checkout the [Configuration: Authentication Exclusions](/configuration/authentication#exclusions) documentation for details.
+
+See the [Configuration: Authentication Exclusions](/configuration/authentication#exclusions) documentation for details.
 
 ## Client Tokens
 
@@ -57,10 +59,3 @@ Flipt can also authenticate requests using externally created and signed [JSON W
 To enable JWT authentication, you will need to configure Flipt with the public key used to verify the JWT signature.
 
 See the [Configuration: JWT Authentication](/configuration/authentication#json-web-token) documentation for details.
-
-## Authorization
-
-Currently, Flipt only supports authentication without any extended authorization capabilities.
-Authorization is something we're actively exploring and we will update this section as we settle on a design.
-
-We would appreciate your input into designing authorization. Head over to [our Discord](https://flipt.io/discord) and let us know what you need from Flipt.

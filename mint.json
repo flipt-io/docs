@@ -214,6 +214,13 @@
       ]
     },
     {
+      "group": "Authorization",
+      "pages": [
+        "authorization/overview",
+        "authorization/rbac"
+      ]
+    },
+    {
       "group": "Operations",
       "pages": [
         "operations/architecture",

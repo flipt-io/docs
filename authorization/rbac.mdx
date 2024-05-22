@@ -1,0 +1,51 @@
+---
+title: Role-Based Access Control (RBAC)
+description: This document describes how to configure and use role-based access control (RBAC) with Flipt.
+---
+
+As described in the [Authorization Overview](/authorization/overview), Flipt supports the ability to secure its core API routes with authorization in a flexible and extensible way. 
+
+This document will cover how to configure and use role-based access control (RBAC) with Flipt with a Rego policy configured for an imaginary organization and authentication provider.
+
+<Note>
+Role-based access control (RBAC) is not a feature of Flipt itself but rather a pattern that can be implemented using Flipt's authorization system via OPA.
+</Note>
+
+## Configuring RBAC
+
+To configure RBAC with Flipt, you will need to define a Rego policy that enforces the roles and permissions for your organization.
+
+Here's an example of a simple policy that checks whether a user has the `admin` role:
+
+```rego
+package flipt.authz
+
+default allow = false
+
+allow {
+    input.authentication.roles[_] == "admin"
+}
+```
+
+In this example, the policy checks if the user has the `admin` role. If the user has the `admin` role, the policy will allow the request. Otherwise, the request will be denied.
+
+The `authentication` input is provided by Flipt to OPA and contains the authentication information for the request. This information is specific to the authentication method used to authenticate the request.
+
+More complex policies can be defined to enforce fine-grained access control based on your organization's requirements. For example, you could define policies that check for specific roles and permissions for different resources or actions.
+
+An example policy that allows users with the `admin` role to have full access to the Management API and users with the `viewer` role to have read-only access might look like this:
+
+```rego
+package flipt.authz
+
+default allow = false
+
+allow {
+    input.authentication.roles[_] == "admin"
+}
+
+allow {
+    input.authentication.roles[_] == "viewer"
+    input.request.verb = "read"
+}
+```
