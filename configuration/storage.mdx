@@ -279,6 +279,22 @@ storage:
 
 See our [GitOps Guide](/guides/get-going-with-gitops) for an example of how to set up a GitHub repository as a flag state backend.
 
+#### Repository Storage
+
+The `git` backend also supports configuring where the Git repository is cloned to. 
+
+By default, Flipt will clone the repository to an in-memory filesystem, but you can configure a local directory to clone the repository to which is useful for relieving memory pressure especially for large repositories.
+
+```yaml
+storage:
+  type: git
+  git:
+    repository: git@github.com:flipt-io/some-private-repo.git
+    backend:
+      type: local
+      path: /var/opt/flipt/git
+```
+
 ### Object
 
 The object storage type supports using a hosted object storage service as the source of truth for Flipt state configuration.
