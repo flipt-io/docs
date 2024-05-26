@@ -1,15 +1,33 @@
 ---
-title: Role-Based Access Control (RBAC)
-description: This document describes how to configure and use role-based access control (RBAC) with Flipt.
+title: Role-Based Access Control
+description: Configure and use role-based access control (RBAC) with Flipt and OPA.
 ---
 
 As described in the [Authorization Overview](/authorization/overview), Flipt supports the ability to secure its core API routes with authorization in a flexible and extensible way. 
 
-This document will cover how to configure and use role-based access control (RBAC) with Flipt with a Rego policy configured for an imaginary organization and authentication provider.
+This guide will cover how to configure and use role-based access control (RBAC) with Flipt with a Rego policy configured for an imaginary organization using Keycloak for authentication.
 
 <Note>
 Role-based access control (RBAC) is not a feature of Flipt itself but rather a pattern that can be implemented using Flipt's authorization system via OPA.
 </Note>
+
+## What You'll Learn
+
+- 🔒 How to set up Keycloak for authentication
+- 🔑 How to create a Rego policy for RBAC with Flipt
+- ⚙️ How to configure Flipt to use the policy for authorization
+
+## Prerequisites
+
+For this guide, you will need:
+
+- [Docker](https://www.docker.com/)
+
+## Setting Up Keycloak
+
+To set up Keycloak for authentication, you will need to create a new realm, client, and user.
+
+TODO
 
 ## Configuring RBAC
 

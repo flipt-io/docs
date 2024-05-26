@@ -123,17 +123,18 @@
         {
           "group": "User Guides",
           "pages": [
-            "guides/get-going-with-gitops", 
-            "guides/using-references"
+            "guides/user/get-going-with-gitops", 
+            "guides/user/using-references"
           ]
         },
         {
           "group": "Operations Guides",
           "pages": [
-            "guides/deploy-to-flyio",
-            "guides/deploy-to-kubernetes",
-            "guides/login-with-google",
-            "guides/login-with-github"
+            "guides/operation/deploy-to-flyio",
+            "guides/operation/deploy-to-kubernetes",
+            "guides/operation/login-with-google",
+            "guides/operation/login-with-github",
+            "guides/operation/rbac"
           ]
         },
         {
@@ -217,7 +218,8 @@
       "group": "Authorization",
       "pages": [
         "authorization/overview",
-        "authorization/rbac"
+        "authorization/writing-policies"
+
       ]
     },
     {
@@ -384,6 +386,30 @@
     {
       "source": "/managed/hybrid",
       "destination": "/cloud/overview"
+    },
+    {
+      "source":"/guides/get-going-with-gitops",
+      "destination": "/guides/user/get-going-with-gitops"
+    },
+    {
+      "source": "/guides/using-references",
+      "destination": "/guides/user/using-references"
+    },
+    {
+      "source": "/guides/deploy-to-flyio",
+      "destination": "/guides/operation/deploy-to-flyio"
+    },
+    {
+      "source": "/guides/deploy-to-kubernetes",
+      "destination": "/guides/operation/deploy-to-kubernetes"
+    },
+    {
+      "source": "/guides/login-with-google",
+      "destination": "/guides/operation/login-with-google"
+    },
+    {
+      "source": "/guides/login-with-github",
+      "destination": "/guides/operation/login-with-github"
     }
   ],
   "footerSocials": {
