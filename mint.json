@@ -130,11 +130,27 @@
         {
           "group": "Operations Guides",
           "pages": [
-            "guides/operation/deploy-to-flyio",
-            "guides/operation/deploy-to-kubernetes",
-            "guides/operation/login-with-google",
-            "guides/operation/login-with-github",
-            "guides/operation/rbac"
+            {
+              "group": "Deployment",
+              "pages": [
+                "guides/operation/deployment/deploy-to-flyio",
+                "guides/operation/deployment/deploy-to-kubernetes"
+              ]
+            },
+            {
+              "group": "Authentication",
+              "pages": [
+                "guides/operation/authentication/login-with-google",
+                "guides/operation/authentication/login-with-github",
+                "guides/operation/authentication/login-with-keycloak"
+              ]
+            },
+            {
+              "group": "Authorization",
+              "pages": [
+                "guides/operation/authorization/rbac-with-keycloak"
+              ]
+            }
           ]
         },
         {
@@ -217,9 +233,7 @@
     {
       "group": "Authorization",
       "pages": [
-        "authorization/overview",
-        "authorization/writing-policies"
-
+        "authorization/overview"
       ]
     },
     {
@@ -397,19 +411,19 @@
     },
     {
       "source": "/guides/deploy-to-flyio",
-      "destination": "/guides/operation/deploy-to-flyio"
+      "destination": "/guides/operation/deployment/deploy-to-flyio"
     },
     {
       "source": "/guides/deploy-to-kubernetes",
-      "destination": "/guides/operation/deploy-to-kubernetes"
+      "destination": "/guides/operation/deployment/deploy-to-kubernetes"
     },
     {
       "source": "/guides/login-with-google",
-      "destination": "/guides/operation/login-with-google"
+      "destination": "/guides/operation/authentication/login-with-google"
     },
     {
       "source": "/guides/login-with-github",
-      "destination": "/guides/operation/login-with-github"
+      "destination": "/guides/operation/authentication/login-with-github"
     }
   ],
   "footerSocials": {

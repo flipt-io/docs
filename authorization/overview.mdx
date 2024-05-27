@@ -16,7 +16,20 @@ Once enabled, all routes beneath the Management API prefix will require a [clien
 
 - `/api/v1/`
 
-### Policies
+## Open Policy Agent (OPA)
+
+[Open Policy Agent (OPA)](https://www.openpolicyagent.org/) is a general-purpose policy engine that can be used to configure and enforce authorization policies. OPA provides a unified toolset and framework for policy across the cloud native stack. Open Policy Agent is a [CNCF](https://www.cncf.io/) project and is used by many organizations to enforce policies across their cloud-native environments.
+
+Flipt embeds OPA to evaluate policies that determine whether a request should be allowed or denied. This means that no additional infrastructure or services are required to use OPA with Flipt.
+
+<Tip>
+  Check out our [Role-Based Access Control with Keycloak
+  guide](/guides/operation/authorization/rbac-with-keycloak) for an example on
+  how to configure and use role-based access control (RBAC) with Flipt and
+  Keycloak using OPA.
+</Tip>
+
+## Policies
 
 Flipt uses OPA to enforce authorization policies for the Management API. The policies are defined in a `policy.rego` file located in the Flipt configuration directory by default. The path to this file can be customized as described in the [Configuration: Authorization](/configuration/authorization) section.
 
@@ -30,13 +43,17 @@ package flipt.authz
 default allow = false
 
 allow {
-    input.authentication.roles[_] == "admin"
+    input.authentication.metadata["io.flipt.auth.claims"].roles[_] == "admin"
 }
 ```
+
 You can find more information on how to write Rego policies in the [OPA documentation](https://www.openpolicyagent.org/docs/latest/policy-language/).
 
 <Tip>
-OPA has a rich set of built-in functions that can be used to write complex policies. They also provide a [Rego Playground](https://play.openpolicyagent.org/) where you can test your policies before deploying them.
+  OPA has a rich set of built-in functions that can be used to write complex
+  policies. They also provide a [Rego
+  Playground](https://play.openpolicyagent.org/) where you can test your
+  policies before deploying them.
 </Tip>
 
 It's up to you to define the policies that make sense for your organization. During policy evaluation, Flipt will pass the incoming request context to OPA, which will then evaluate the policy against that context.
@@ -48,19 +65,28 @@ The context provided to OPA includes the following fields:
 
 ### Authentication Information
 
-Flipt provides the raw authentication information to OPA for evaluation. This information is specific to the authentication method used to authenticate the request. For example, if you're using the [OIDC authentication method](/authentication/methods#openid-connect), the `input.authentication` field may contain the user's roles, email, etc., as provided by the OIDC provider.
+Flipt provides the raw authentication information to OPA for evaluation. This information is specific to the authentication method used to authenticate the request.
 
-Here is an example of the `input.authentication` field for a request authenticated using a example OIDC provider:
+For example, if you're using the [OIDC authentication method](/authentication/methods#openid-connect), the `input.authentication.metadata` field may contain the user's name and email as well as custom claims assigned to the user.
+
+Here is an example of the `input.authentication.metadata` field for a request authenticated using a example OIDC provider:
 
 ```json
 {
-    "roles": ["admin", "editor"],
-    "email": "user@email.com",
-    "name": "John Doe"
+    "io.flipt.auth.email": "user@email.com",
+    "io.flipt.auth.name": "John Doe"
+    "io.flipt.auth.claims": {
+        "roles": ["admin", "viewer"]
+    }
 }
 ```
 
-The above example policy would allow this request since the user has the `admin` role.
+The following fields are available in the `input.authentication` field:
+
+- `metadata`: A map of authentication metadata provided by the authentication method. This can include the user's email, name, roles, etc.
+  - `io.flipt.auth.email`: The user's email address.
+  - `io.flipt.auth.name`: The user's name.
+  - `io.flipt.auth.claims`: A map of **all** claims provided by the authentication method. This can include the user's roles, groups, etc. These claims are marshaled into a JSON string before being passed to OPA for evaluation.
 
 #### Mapping User Information
 
@@ -79,18 +105,11 @@ For example, [Okta](https://www.okta.com/) allows you to add custom claims using
   "iat": 1574201516,
   "exp": 1574205116,
   "jti": "ID.ewMNfSvcpuqyS93OgVeCN3F2LseqROkyYjz7DNb9yhs",
-  "amr": [
-    "pwd",
-    "mfa",
-    "kba"
-  ],
+  "amr": ["pwd", "mfa", "kba"],
   "idp": "00oixa26ycdNcX0VT0h7",
   "nonce": "UBGW",
   "auth_time": 1574201433,
-  "groups": [
-    "Everyone",
-    "IT"
-  ]
+  "groups": ["Everyone", "IT"]
 }
 ```
 
@@ -102,17 +121,26 @@ package flipt.authz
 default allow = false
 
 allow {
-    "IT" in input.authentication.groups
+    claims := json.unmarshal(input.authentication.metadata["io.flipt.auth.claims"])
+    "IT" in claims.groups
 }
 ```
 
-Further documentation on how to configure custom claims and groups in Okta can be found in the [Okta Developer documentation](https://developer.okta.com/docs/guides/customize-tokens-returned-from-okta/main/).
+<Note>
+The Rego builtin [`json.unmarshal`](https://www.openpolicyagent.org/docs/latest/policy-reference/#builtin-encoding-jsonunmarshal) function is used to convert the `groups` claim from a string to a JSON object that can be queried in the policy.
 
+Flipt encodes the raw authentication claims as a JSON string to pass them to OPA for evaluation.
+
+</Note>
+
+Further documentation on how to configure custom claims and groups in Okta can be found in the [Okta Developer documentation](https://developer.okta.com/docs/guides/customize-tokens-returned-from-okta/main/).
 
 Roles or groups are not a requirement for writing policies. You can write policies that check for any information provided by the authentication method, such as the user's email, id, name, etc.
 
 <Info>
-Flipt has no notion of users or roles internally, it simply passes the raw authentication information along with other request metadata to OPA for evaluation.
+  Flipt has no notion of users or roles internally, it simply passes the raw
+  authentication information along with other request metadata to OPA for
+  evaluation.
 </Info>
 
 ### Request Information
@@ -135,9 +163,9 @@ Here's an example of the `input.request` field for a request to list flags in th
 
 ```json
 {
-    "namespace": "default",
-    "resource": "flag",
-    "verb": "read"
+  "namespace": "default",
+  "resource": "flag",
+  "verb": "read"
 }
 ```
 
@@ -163,9 +191,60 @@ package flipt.authz
 default allow = false
 
 allow {
-    "IT" in input.authentication.groups
+    "IT" in input.authentication.metadata["io.flipt.auth.claims"].groups
     input.request.namespace == "default"
     input.request.resource == "flag"
     input.request.verb == "delete"
 }
 ```
+
+## External Data
+
+OPA policies can also use external data sources to make decisions. This can be useful when you need to make decisions based on data that is not available in the request context.
+
+For example, if your authentication method does not provide user roles, you could use an external data source to map user IDs to roles.
+
+Here is an example policy that uses an external data source to check if the user has the `admin` role:
+
+```rego
+package flipt.authz
+
+default allow = false
+
+allow {
+    role := data.roles[input.authentication.id]
+    role == "admin"
+}
+```
+
+And here is an example of the external data source that maps user IDs to roles:
+
+```json
+{
+  "roles": {
+    "user1": "admin",
+    "user2": "viewer"
+  }
+}
+```
+
+Flipt allows you to define external data sources in the configuration file. You can find more information on how to configure external data sources in the [Configuration: Authorization](/configuration/authorization) section.
+
+The combination of OPA's flexible policy language and the ability to use external data sources makes it possible to define complex authorization policies that can adapt to your organization's needs.
+
+## Authoring Policies
+
+While the examples provided in this document are simple, you can write policies that are as complex as you need. OPA provides a rich set of built-in functions that can be used to write complex policies.
+
+Learning how to write policies in Rego can be challenging at first, but OPA provides extensive documentation on the [Rego Language](https://www.openpolicyagent.org/docs/latest/policy-language/) as well as a [Rego Playground](https://play.openpolicyagent.org/) where you can test your policies before deploying them.
+
+OPA also provides a testing framework that you can use to write unit tests for your policies. This can help ensure that your policies are working as expected before deploying them to production.
+
+Here are some resources to help you get started with writing and testing policies:
+
+- [Rego Language Reference](https://www.openpolicyagent.org/docs/latest/policy-language/)
+- [Rego Playground](https://play.openpolicyagent.org/)
+- [Policy Testing](https://www.openpolicyagent.org/docs/latest/policy-testing/)
+- [Policy Performance](https://www.openpolicyagent.org/docs/latest/policy-performance/)
+
+If you have any questions or need help writing policies for Flipt, feel free to reach out to us in our [Discord](https://flipt.io/discord) community.

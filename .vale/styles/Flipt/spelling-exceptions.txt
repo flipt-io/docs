@@ -64,6 +64,7 @@ protoc
 Quicksort
 redis
 regexes
+rego
 reverst
 rollout
 rollouts
