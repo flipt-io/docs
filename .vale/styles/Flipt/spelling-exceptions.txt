@@ -75,6 +75,7 @@ sdks
 semver
 Splunk
 sqlite
+toolset
 tracecontext
 Turso
 unary

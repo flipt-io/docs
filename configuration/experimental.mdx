@@ -1,0 +1,91 @@
+---
+title: Experimental
+description: This document describes our current experimental features and how to enable them.
+---
+
+## Introduction
+
+From time to time, we may introduce new features that are not yet ready for general availability. These features are considered experimental and may change or be removed in future releases. We encourage you to try these features and provide feedback to help us improve them.
+
+## Enabling Experimental Features
+
+These features are disabled by default. To enable them, you can set the `experimental.{feature}.enabled` configuration option to `true` in your Flipt [configuration file](/configuration/overview#configuration-file).
+
+For example to enable the `foo` experimental feature:
+
+```yaml config.yaml
+experimental:
+  foo:
+    enabled: true
+```
+
+<Tip>
+  You can also enable experimental features using [environment
+  variables](/overview#environment-variables). For example, to enable the `foo`
+  experimental feature, you can set the `FLIPT_EXPERIMENTAL_FOO_ENABLED`
+  environment variable to `true`.
+</Tip>
+
+## Current Experimental Features
+
+The following is a list of our current experimental features and a brief description of each.
+
+<Note>
+  Make sure you have the [latest
+  version](https://github.com/flipt-io/flipt/releases/latest) of the Flipt CLI
+  installed on your local machine.
+</Note>
+
+### Cloud
+
+Introduced in `v1.42.0`.
+
+[Flipt Hybrid Cloud](cloud/overview) enables you to continue to use Flipt's feature management capabilities while keeping your feature data on-premises but still benefiting from our cloud-based management console.
+
+With Flipt Hybrid Cloud you get the following benefits:
+
+- [Managed Authentication](/cloud/features/authentication): Securely authenticate your users with Flipt's managed authentication service, which supports email/password, magic link, social login, and SSO with popular providers.
+- [User Management](/cloud/features/user-management): Manage your users and teams with Flipt's user management service, which supports roles, permissions, and role-based access control.
+- [Hosted Audit Logs](/cloud/features/audit-logs): Keep track of changes to your feature data with Flipt's hosted audit logs service, which provides a detailed history of all changes made to your feature data with 30 days of retention by default (custom retention periods are available).
+
+To enable the Flipt Hybrid Cloud experimental feature, set the `experimental.cloud.enabled` configuration option to `true`.
+
+```yaml config.yaml
+experimental:
+  cloud:
+    enabled: true
+```
+
+<Note>
+  You must have a valid Flipt Hybrid Cloud subscription to use this feature. To
+  learn more about Flipt Hybrid Cloud and request access, please fill out our
+  [contact form](https://tally.so/r/mV0zWM).
+</Note>
+
+### Authorization
+
+Introduced in `v1.43.0`.
+
+[Flipt Authorization](/authorization/overview) enables you to control access to your feature data with fine-grained permissions and infinite flexibility.
+
+Our authorization system leverages Open Policy Agent (OPA), which gives you the power to define custom policies that control who can access your feature data and what actions they can perform.
+
+To enable the Flipt Authorization experimental feature, set the `experimental.authorization.enabled` configuration option to `true`.
+
+```yaml config.yaml
+experimental:
+  authorization:
+    enabled: true
+```
+
+To learn more about Flipt Authorization, see the [Authorization](/authorization/overview) documentation.
+
+## Deprecations
+
+Once an experimental feature is promoted to a stable feature or is removed, it will move to a deprecated status. Depending on the feature, you may need to take action to migrate to the new stable feature or remove the deprecated feature from your configuration.
+
+If an enabled experimental feature has been deprecated, you will see a warning message in the CLI output when you start the Flipt server, such as:
+
+```bash
+Warning: 'experimental.filesystem_storage' has been deprecated and will be removed in a future release.
+```

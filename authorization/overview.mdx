@@ -6,13 +6,15 @@ description: This document describes how to enable and use authorization with Fl
 Flipt supports the ability to secure its core API routes with authorization.
 
 <Info>
-Flipt authorization is **disabled** (not required) by default.
+Flipt authorization is **experimental** and **disabled** (not required) by default.
 
-Head to the [Configuration: Authorization](/configuration/authorization) section to learn how to enable it.
+To enable authorization, you must set the `experimental.authorization.enabled` configuration option to `true` in your Flipt [configuration file](/configuration/overview#configuration-file).
+
+See the [Experimental](/configuration/experimental) section for more information on how to enable experimental features.
 
 </Info>
 
-Once enabled, all routes beneath the Management API prefix will require a [client token](#client-tokens) or [JWT](#json-web-tokens) to authenticate requests along with the required permissions:
+Once enabled, all routes beneath the Management API prefix will require a [client token](/authentication/overview#client-tokens) or [JWT](/authentication/overview#json-web-tokens) to authenticate requests along with the required permissions:
 
 - `/api/v1/`
 
@@ -37,8 +39,8 @@ Part of the power of OPA is that it's extremely flexible as it allows you to def
 
 Here's an example of a simple policy that checks whether a user has the `admin` role:
 
-```rego
-package flipt.authz
+```rego policy.rego
+package flipt.authz.v1
 
 default allow = false
 
@@ -115,8 +117,8 @@ For example, [Okta](https://www.okta.com/) allows you to add custom claims using
 
 In this example, the `groups` claim is used to provide the user's organizational groups. You can then write a policy that checks for the presence of specific groups to determine whether the user should be allowed to access a particular resource.
 
-```rego
-package flipt.authz
+```rego policy.rego
+package flipt.authz.v1
 
 default allow = false
 
@@ -148,11 +150,26 @@ Roles or groups are not a requirement for writing policies. You can write polici
 The `input.request` field contains information about the incoming request. This includes the `namespace`, `resource`, and `verb` of the request.
 
 - `namespace`: The [namespace](/concepts#namespaces) in Flipt of the resource being accessed. If no namespace is provided, the default namespace is used.
+
 - `resource`: The resource being accessed. This can be one of:
-  - `flag`: Access to flag resources and sub-resources (e.g., listing or creating flags, variants, rules or rollouts).
-  - `segment`: Access to segment resources and sub-resources (e.g., listing or creating segments, constraints or distributions).
-  - `namespace`: Access to namespace resource (e.g., listing or creating namespaces).
-  - `token`: Access to client token resources (e.g., listing or creating client tokens).
+
+  - `namespace`: Access to [namespace](/concepts#namespaces) resources (e.g., listing or creating namespaces).
+  - `flag`: Access to [flag](/concepts#flags) resources and sub-resources (e.g., listing or creating flags, variants, rules or rollouts).
+  - `segment`: Access to [segment](/concepts#segments) resources and sub-resources (e.g., listing or creating segments, constraints or distributions).
+  - `authentication`: Access to authentication resources (e.g., listing or creating client tokens).
+
+- `subject`: The (optional) nested subject of the request. This can be one of:
+
+  - `namespace`: Access to [namespace](/concepts#namespaces) resources.
+  - `flag`: Access to [flag](/concepts#flags) resources.
+    - `variant`: Access to flag [variant](/concepts#variant-flags) resources.
+    - `rule`: Access to flag [rule](/concepts#rules) resources.
+    - `rollout`: Access to flag [rollout](/concepts#rollouts) resources.
+  - `segment`: Access to [segment](/concepts#segments) resources.
+    - `constraint`: Access to segment [constraint](/concepts#constraints) resources.
+    - `distribution`: Access to segment [distribution](/concepts#distributions) resources.
+  - `token`: Access to client token resources.
+
 - `verb`: The action being performed on the resource. This can be one of:
   - `create`: Access to create resources.
   - `read`: Access to list or read resources.
@@ -165,14 +182,15 @@ Here's an example of the `input.request` field for a request to list flags in th
 {
   "namespace": "default",
   "resource": "flag",
+  "subject": "flag",
   "verb": "read"
 }
 ```
 
 Here is an example policy that allows a user to list flags in the default namespace:
 
-```rego
-package flipt.authz
+```rego policy.rego
+package flipt.authz.v1
 
 default allow = false
 
@@ -185,13 +203,14 @@ allow {
 
 Combining the above policy with the user information policy from the previous example, you can create a policy that allows users with the `IT` group to delete flags in the default namespace:
 
-```rego
-package flipt.authz
+```rego policy.rego
+package flipt.authz.v1
 
 default allow = false
 
 allow {
-    "IT" in input.authentication.metadata["io.flipt.auth.claims"].groups
+    claims := json.unmarshal(input.authentication.metadata["io.flipt.auth.claims"])
+    "IT" in claims.groups
     input.request.namespace == "default"
     input.request.resource == "flag"
     input.request.verb == "delete"
@@ -206,8 +225,8 @@ For example, if your authentication method does not provide user roles, you coul
 
 Here is an example policy that uses an external data source to check if the user has the `admin` role:
 
-```rego
-package flipt.authz
+```rego policy.rego
+package flipt.authz.v1
 
 default allow = false
 
@@ -219,7 +238,7 @@ allow {
 
 And here is an example of the external data source that maps user IDs to roles:
 
-```json
+```json data.json
 {
   "roles": {
     "user1": "admin",
@@ -235,6 +254,13 @@ The combination of OPA's flexible policy language and the ability to use externa
 ## Authoring Policies
 
 While the examples provided in this document are simple, you can write policies that are as complex as you need. OPA provides a rich set of built-in functions that can be used to write complex policies.
+
+<Tip>
+  Check out our [Role-Based Access Control with Keycloak
+  guide](/guides/operation/authorization/rbac-with-keycloak) for an example on
+  how to configure and use role-based access control (RBAC) with Flipt and
+  Keycloak using OPA.
+</Tip>
 
 Learning how to write policies in Rego can be challenging at first, but OPA provides extensive documentation on the [Rego Language](https://www.openpolicyagent.org/docs/latest/policy-language/) as well as a [Rego Playground](https://play.openpolicyagent.org/) where you can test your policies before deploying them.
 

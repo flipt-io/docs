@@ -23,7 +23,7 @@ This guide will cover how to configure and use role-based access control (RBAC) 
 For this guide, you will need:
 
 - [Docker](https://www.docker.com/)
-- [Follow the Login with Keycloak guide](/guides/operation/authentication/login-with-keycloak) to set up Keycloak for authentication
+- Follow the [Login with Keycloak guide](/guides/operation/authentication/login-with-keycloak) to set up Keycloak for authentication
 
 ## Setting Up Keycloak
 
@@ -79,13 +79,16 @@ To configure RBAC with Flipt, you will need to define a Rego policy that enforce
 
 Here's an example of a simple policy that checks whether a user has the `developer` role:
 
-```rego
-package flipt.authz
+```rego policy.rego
+package flipt.authz.v1
 
-default allow = false
+import rego.v1
 
-allow {
-    input.authentication.metadata[_].roles[_] == "developer"
+default allow := false
+
+allow if {
+    claims := json.unmarshal(input.authentication.metadata["io.flipt.auth.claims"])
+    "developer" in claims.roles
 }
 ```
 
@@ -97,17 +100,97 @@ More complex policies can be defined to enforce fine-grained access control base
 
 An example policy that allows users with the `developer` role to have full access to the Management API and users with the `viewer` role to have read-only access might look like this:
 
-```rego
-package flipt.authz
+```rego policy.rego
+package flipt.authz.v1
 
-default allow = false
+import rego.v1
 
-allow {
-    input.authentication.metadata[_].roles[_] == "developer"
+default allow := false
+
+allow if {
+    claims := json.unmarshal(input.authentication.metadata["io.flipt.auth.claims"])
+    "developer" in claims.roles
 }
 
-allow {
-    input.authentication.metadata[_].roles[_] == "viewer"
+allow if {
+    claims := json.unmarshal(input.authentication.metadata["io.flipt.auth.claims"])
+    "viewer" in claims.roles
     input.request.verb = "read"
 }
 ```
+
+### Step 1: Write the Rego Policy
+
+1. Create a new file called `policy.rego` with the following content:
+
+```rego policy.rego
+package flipt.authz.v1
+
+import rego.v1
+
+default allow := false
+
+allow if {
+	claims := json.unmarshal(input.authentication.metadata["io.flipt.auth.claims"])
+	"developer" in claims.roles
+}
+```
+
+### Step 2: Configure Flipt to Use the Policy
+
+Update the `flipt.yaml` configuration file from the [Login with Keycloak guide](/guides/operation/authentication/login-with-keycloak) to enable authorization and specify the path to the Rego policy file:
+
+```yaml flipt.yaml
+authentication:
+  required: true
+  session:
+    domain: localhost:8081
+  methods:
+    oidc:
+      enabled: true
+      providers:
+        keycloak:
+          issuer_url: "< issuer URL from Keycloak >"
+          client_id: "< client ID from Keycloak (e.g., `flipt`) >"
+          client_secret: "< client secret from Keycloak >"
+          redirect_address: "http://localhost:8081"
+
+authorization:
+  required: true
+  policy:
+    backend: local
+    local:
+      path: "policy.rego"
+```
+
+### Step 3: Run Flipt
+
+You can now start your Flipt instance using the following command:
+
+```sh
+docker run -it --rm \
+  -p 8080:8080 \
+  -v "$(pwd)/config.yml:/config.yml" \
+  -v "$(pwd)/policy.rego:/policy.rego" \
+  flipt/flipt:latest --config /config.yml
+```
+
+## Testing the Policy
+
+To test the policy, login to Flipt using the user you created in Keycloak. If the user has the `developer` role, they should be able to access the Flipt Management API.
+
+You can create a new user in Keycloak that does not have the `developer` role to test that the policy is working as expected.
+
+If the user does not have the `developer` role, they should receive an error message in the UI or API response.
+
+![Unauthorized Access](/images/guides/rbac-with-keycloak/unauthorized.png)
+
+## Conclusion
+
+In this guide, you learned how to configure and use role-based access control (RBAC) with Flipt using a Rego policy and Keycloak for authentication.
+
+By defining a Rego policy that enforces the roles and permissions for your organization, you can secure your Flipt instance and control access to your feature data with fine-grained permissions and infinite flexibility.
+
+For more information on Flipt's authorization system and how to configure and use it, see the [Authorization Overview](/authorization/overview).
+
+In the future we plan to provide more examples and best practices for using Flipt's authorization system with different authentication providers and use cases. If you have any feedback or suggestions for how we can improve this guide, please let us know!

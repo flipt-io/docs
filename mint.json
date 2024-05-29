@@ -167,10 +167,6 @@
       "group": "Configuration",
       "pages": [
         "configuration/overview",
-        "configuration/authentication",
-        "configuration/observability",
-        "configuration/storage",
-        "configuration/telemetry",
         "configuration/analytics",
         {
           "group": "Auditing",
@@ -178,7 +174,13 @@
             "configuration/auditing/overview",
             "configuration/auditing/webhooks"
           ]
-        }
+        },
+        "configuration/authentication",
+        "configuration/authorization",
+        "configuration/observability",
+        "configuration/storage",
+        "configuration/telemetry",
+        "configuration/experimental"
       ]
     },
     {
