@@ -37,6 +37,10 @@
     {
       "name": "Hybrid Cloud",
       "url": "cloud"
+    },
+    {
+      "name": "API Reference",
+      "url": "reference"
     }
   ],
   "primaryTab": {
@@ -44,19 +48,19 @@
   },
   "anchors": [
     {
-      "name": "API Reference",
+      "name": "Hybrid Cloud",
       "icon": "cloud",
+      "url": "cloud"
+    },
+    {
+      "name": "API Reference",
+      "icon": "code",
       "url": "reference"
     },
     {
       "name": "Blog",
       "icon": "newspaper",
       "url": "https://blog.flipt.io"
-    },
-    {
-      "name": "Changelog",
-      "icon": "timer",
-      "url": "https://features.flipt.io/changelog"
     },
     {
       "name": "Community",
@@ -75,7 +79,6 @@
     }
   ],
   "navigation": [
-
     {
       "group": "Overview",
       "pages": [
