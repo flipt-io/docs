@@ -59,9 +59,14 @@
       "url": "https://features.flipt.io/changelog"
     },
     {
+      "name": "Community",
+      "icon": "discourse",
+      "url": "https://community.flipt.io"
+    },
+    {
       "name": "Discord",
       "icon": "discord",
-      "url": "https://www.flipt.io/discord"
+      "url": "https://flipt.io/discord"
     },
     {
       "name": "GitHub",
