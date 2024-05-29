@@ -10,11 +10,11 @@ Flipt authorization is **experimental** and **disabled** (not required) by defau
 
 To enable authorization, you must set the `experimental.authorization.enabled` configuration option to `true` in your Flipt [configuration file](/configuration/overview#configuration-file).
 
-See the [Experimental](/configuration/experimental) section for more information on how to enable experimental features.
+See the [experimental](/configuration/experimental) section for more information on how to enable experimental features.
 
 </Info>
 
-Once enabled, all routes beneath the Management API prefix will require a [client token](/authentication/overview#client-tokens) or [JWT](/authentication/overview#json-web-tokens) to authenticate requests along with the required permissions:
+Once enabled, all routes beneath the Management API prefix will require a [policy](#policies) to be evaluated before the request is allowed to proceed. The policy must evaluate to `allowed == true` for the request to be allowed.
 
 - `/api/v1/`
 
@@ -37,15 +37,18 @@ Flipt uses OPA to enforce authorization policies for the Management API. The pol
 
 Part of the power of OPA is that it's extremely flexible as it allows you to define fine-grained policies tailored to your exact needs.
 
-Here's an example of a simple policy that checks whether a user has the `admin` role:
+Here's an example of a simple policy that checks whether custom claims provided at authentication time include a key `roles` containing a value `admin`:
 
 ```rego policy.rego
 package flipt.authz.v1
 
+import rego.v1
+
 default allow = false
 
-allow {
-    input.authentication.metadata["io.flipt.auth.claims"].roles[_] == "admin"
+allow if {
+    claims := json.unmarshal(input.authentication.metadata["io.flipt.auth.claims"])
+    "admin" in claims.roles
 }
 ```
 
@@ -71,7 +74,7 @@ Flipt provides the raw authentication information to OPA for evaluation. This in
 
 For example, if you're using the [OIDC authentication method](/authentication/methods#openid-connect), the `input.authentication.metadata` field may contain the user's name and email as well as custom claims assigned to the user.
 
-Here is an example of the `input.authentication.metadata` field for a request authenticated using a example OIDC provider:
+Here is an example of the `input.authentication.metadata` field for a request authenticated using an example OIDC provider:
 
 ```json
 {
@@ -83,6 +86,10 @@ Here is an example of the `input.authentication.metadata` field for a request au
 }
 ```
 
+<Note>
+The `io.flipt.auth.claims` field is a JSON object that contains custom claims provided by the authentication provider. Each authentication provider may provide different claims, so it's up to you to map these claims as needed in your policies.
+</Note>
+
 The following fields are available in the `input.authentication` field:
 
 - `metadata`: A map of authentication metadata provided by the authentication method. This can include the user's email, name, roles, etc.
@@ -90,9 +97,9 @@ The following fields are available in the `input.authentication` field:
   - `io.flipt.auth.name`: The user's name.
   - `io.flipt.auth.claims`: A map of **all** claims provided by the authentication method. This can include the user's roles, groups, etc. These claims are marshaled into a JSON string before being passed to OPA for evaluation.
 
-#### Mapping User Information
+#### Mapping Identity
 
-Each authentication method used to authenticate requests with Flipt will provide different information about the user. It's up to you to map this information to roles that can be used in your policies.
+Each authentication method configurable within Flipt will provide different information depending on the identity. It's up to you to combine identity information (`authentication`) with the requested resource (`request`) to make an authorization decision whether or not the request should be allowed (`allow`).
 
 Some authentication methods provide user details such as roles directly, while others may provide a user ID or email that you can use to look up roles in your own system. Many authentication providers support adding custom claims to the JWT token, which can be used to provide additional information about the user.
 
@@ -120,9 +127,11 @@ In this example, the `groups` claim is used to provide the user's organizational
 ```rego policy.rego
 package flipt.authz.v1
 
+import rego.v1
+
 default allow = false
 
-allow {
+allow if {
     claims := json.unmarshal(input.authentication.metadata["io.flipt.auth.claims"])
     "IT" in claims.groups
 }
@@ -149,7 +158,7 @@ Roles or groups are not a requirement for writing policies. You can write polici
 
 The `input.request` field contains information about the incoming request. This includes the `namespace`, `resource`, and `verb` of the request.
 
-- `namespace`: The [namespace](/concepts#namespaces) in Flipt of the resource being accessed. If no namespace is provided, the default namespace is used.
+- `namespace`: The [namespace](/concepts#namespaces) in Flipt of the resource being accessed. If no namespace is provided, the default namespace is used, or it is not applicable as the resource is not namespace scoped (e.g. authentication)
 
 - `resource`: The resource being accessed. This can be one of:
 
@@ -192,9 +201,11 @@ Here is an example policy that allows a user to list flags in the default namesp
 ```rego policy.rego
 package flipt.authz.v1
 
+import rego.v1
+
 default allow = false
 
-allow {
+allow if {
     input.request.namespace == "default"
     input.request.resource == "flag"
     input.request.verb == "read"
@@ -206,9 +217,11 @@ Combining the above policy with the user information policy from the previous ex
 ```rego policy.rego
 package flipt.authz.v1
 
+import rego.v1
+
 default allow = false
 
-allow {
+allow if {
     claims := json.unmarshal(input.authentication.metadata["io.flipt.auth.claims"])
     "IT" in claims.groups
     input.request.namespace == "default"
@@ -228,10 +241,12 @@ Here is an example policy that uses an external data source to check if the user
 ```rego policy.rego
 package flipt.authz.v1
 
+import rego.v1
+
 default allow = false
 
-allow {
-    role := data.roles[input.authentication.id]
+allow if {
+    role := data.roles[input.authentication.metadata["io.flipt.auth.name"]]
     role == "admin"
 }
 ```

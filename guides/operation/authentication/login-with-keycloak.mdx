@@ -5,7 +5,7 @@ description: Configuring Flipt to enable login with Keycloak via OIDC
 
 ![Flipt UI presenting login with Keycloak button](/images/guides/login-with-keycloak/login-with-keycloak.png)
 
-If you've read the [Login With Google guide](/guides/login-with-google), you would have learned that Flipt supports many methods of authentication for users to control who has access to Flipt.
+If you've read the [Login With Google guide](/guides/operation/authentication/login-with-google), you would have learned that Flipt supports many methods of authentication for users to control who has access to Flipt.
 
 [Keycloak](https://www.keycloak.org/) is an open-source identity and access management solution that supports OpenID Connect (OIDC). This guide will serve as a walk-through on how to set up Keycloak for authentication of users of Flipt in your organization.
 
@@ -23,7 +23,7 @@ By the end of this guide, we will have:
 For this guide you're going to need the following:
 
 - [Docker](https://www.docker.com/)
-- Read the [Login With Google guide](/guides/login-with-google)
+- Read the [Login With Google guide](/guides/operation/authentication/login-with-google)
 
 ## Setting Up Keycloak
 
@@ -183,4 +183,6 @@ Once you successfully authenticate with the username/password you created earlie
 
 🎉 Congratulations, you've successfully run Flipt and enabled login with Keycloak as the OIDC provider.
 
-Many of the same production considerations from the [Login With Google guide](/guides/login-with-google) apply here. You should follow the same steps to secure your Flipt instance and ensure that only authorized users can access it.
+Many of the same production considerations from the [Login With Google guide](/guides/operation/authentication/login-with-google) apply here. You should follow the same steps to secure your Flipt instance and ensure that only authorized users can access it.
+
+Next, you might want to consider enabling authorization and setting up policies to control who can access what in Flipt. You can learn more about this in the [Role-Based Access Control with Keycloak guide](/guides/operation/authorization/rbac-with-keycloak).
