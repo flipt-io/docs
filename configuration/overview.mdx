@@ -323,18 +323,21 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 
 #### Cache: Redis
 
-| Property                       | Description                                     | Default   | Since   |
-| ------------------------------ | ----------------------------------------------- | --------- | ------- |
-| cache.redis.host               | Host to access the Redis database               | localhost | v1.10.0 |
-| cache.redis.port               | Port to access the Redis database               | 6379      | v1.10.0 |
-| cache.redis.db                 | Redis database to use                           | 0         | v1.10.0 |
-| cache.redis.username           | Username to access the Redis database           |           | v1.40.1 |
-| cache.redis.password           | Password to access the Redis database           |           | v1.10.0 |
-| cache.redis.require_tls        | Require TLS to access the Redis database        | false     | v1.25.0 |
-| cache.redis.pool_size          | Max number of socket connections per CPU        | 10        | v1.25.0 |
-| cache.redis.min_idle_conn      | Minimum number of idle connections in the pool  | 0         | v1.25.0 |
-| cache.redis.conn_max_idle_time | Maximum amount of time a connection can be idle | 30m       | v1.25.0 |
-| cache.redis.net_timeout        | Network timeout for Redis connections           | 0         | v1.25.0 |
+| Property                       | Description                                                         | Default   | Since   |
+| ------------------------------ | ------------------------------------------------------------------- | --------- | ------- |
+| cache.redis.host               | Host to access the Redis database                                   | localhost | v1.10.0 |
+| cache.redis.port               | Port to access the Redis database                                   | 6379      | v1.10.0 |
+| cache.redis.db                 | Redis database to use                                               | 0         | v1.10.0 |
+| cache.redis.username           | Username to access the Redis database                               |           | v1.40.1 |
+| cache.redis.password           | Password to access the Redis database                               |           | v1.10.0 |
+| cache.redis.require_tls        | Require TLS to access the Redis database                            | false     | v1.25.0 |
+| cache.redis.pool_size          | Max number of socket connections per CPU                            | 10        | v1.25.0 |
+| cache.redis.min_idle_conn      | Minimum number of idle connections in the pool                      | 0         | v1.25.0 |
+| cache.redis.conn_max_idle_time | Maximum amount of time a connection can be idle                     | 30m       | v1.25.0 |
+| cache.redis.net_timeout        | Network timeout for Redis connections                               | 0         | v1.25.0 |
+| cache.redis.ca_cert_path       | Path to custom certificate authority (CA) certificate               |           | v1.43.0 |
+| cache.redis.ca_cert_bytes      | (Alternative) Raw certificate authority (CA) certificate bytes      |           | v1.43.0 |
+| cache.redis.insecure_skip_tls  | Skip verifying the server's certificate chain (avoid in production) | false     | v1.43.0 |
 
 ### Audit Events
 
