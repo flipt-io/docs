@@ -131,17 +131,34 @@
         {
           "group": "User Guides",
           "pages": [
-            "guides/get-going-with-gitops", 
-            "guides/using-references"
+            "guides/user/get-going-with-gitops", 
+            "guides/user/using-references"
           ]
         },
         {
           "group": "Operations Guides",
           "pages": [
-            "guides/deploy-to-flyio",
-            "guides/deploy-to-kubernetes",
-            "guides/login-with-google",
-            "guides/login-with-github"
+            {
+              "group": "Deployment",
+              "pages": [
+                "guides/operation/deployment/deploy-to-flyio",
+                "guides/operation/deployment/deploy-to-kubernetes"
+              ]
+            },
+            {
+              "group": "Authentication",
+              "pages": [
+                "guides/operation/authentication/login-with-google",
+                "guides/operation/authentication/login-with-github",
+                "guides/operation/authentication/login-with-keycloak"
+              ]
+            },
+            {
+              "group": "Authorization",
+              "pages": [
+                "guides/operation/authorization/rbac-with-keycloak"
+              ]
+            }
           ]
         },
         {
@@ -158,10 +175,6 @@
       "group": "Configuration",
       "pages": [
         "configuration/overview",
-        "configuration/authentication",
-        "configuration/observability",
-        "configuration/storage",
-        "configuration/telemetry",
         "configuration/analytics",
         {
           "group": "Auditing",
@@ -169,7 +182,13 @@
             "configuration/auditing/overview",
             "configuration/auditing/webhooks"
           ]
-        }
+        },
+        "configuration/authentication",
+        "configuration/authorization",
+        "configuration/observability",
+        "configuration/storage",
+        "configuration/telemetry",
+        "configuration/experimental"
       ]
     },
     {
@@ -219,6 +238,12 @@
         "authentication/methods",
         "authentication/using-tokens",
         "authentication/using-jwts"
+      ]
+    },
+    {
+      "group": "Authorization",
+      "pages": [
+        "authorization/overview"
       ]
     },
     {
@@ -385,6 +410,30 @@
     {
       "source": "/managed/hybrid",
       "destination": "/cloud/overview"
+    },
+    {
+      "source":"/guides/get-going-with-gitops",
+      "destination": "/guides/user/get-going-with-gitops"
+    },
+    {
+      "source": "/guides/using-references",
+      "destination": "/guides/user/using-references"
+    },
+    {
+      "source": "/guides/deploy-to-flyio",
+      "destination": "/guides/operation/deployment/deploy-to-flyio"
+    },
+    {
+      "source": "/guides/deploy-to-kubernetes",
+      "destination": "/guides/operation/deployment/deploy-to-kubernetes"
+    },
+    {
+      "source": "/guides/login-with-google",
+      "destination": "/guides/operation/authentication/login-with-google"
+    },
+    {
+      "source": "/guides/login-with-github",
+      "destination": "/guides/operation/authentication/login-with-github"
     }
   ],
   "footerSocials": {
