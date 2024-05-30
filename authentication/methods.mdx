@@ -149,6 +149,21 @@ This will lead to the following endpoints being available on Flipt:
 
 These two endpoints are necessary to support the different legs of the OAuth flow. The first can be requested to obtain an authorization URL directed at GitHub. The latter is the destination that GitHub will redirect the client back to. When using HTTP, this callback endpoint will establish a cookie named `flipt_client_token` and return it via the `Set-Cookie` response header.
 
+### GitHub Enterprise Server
+
+Flipt also supports GitHub Enterprise Server as an authentication provider.
+
+To configure Flipt to use GitHub Enterprise Server, you will need to provide both the server URL and API URL of your GitHub Enterprise Server instance in the configuration file.
+
+```yaml
+authentication:
+  methods:
+    github:
+      enabled: true
+      server_url: "https://github.example.com"
+      api_url: "https://api.github.example.com"
+```
+
 ## Kubernetes
 
 <Note>
