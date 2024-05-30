@@ -264,20 +264,22 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 
 #### Storage Git
 
-| Property                                                | Description                                                 | Default | Since   |
-| ------------------------------------------------------- | ----------------------------------------------------------- | ------- | ------- |
-| storage.git.repository                                  | The URL of the git repository to use                        |         | v1.25.0 |
-| storage.git.ref                                         | The git ref to use                                          | main    | v1.25.0 |
-| storage.git.ref_type                                    | How to parse the git ref (static, semver)                   | static  | v1.41.0 |
-| storage.git.poll_interval                               | The interval to poll the git repository and ref for changes | 30s     | v1.25.0 |
-| storage.git.directory                                   | The root directory to search in the repository              |         | v1.40.0 |
-| storage.git.authentication.basic.username               | The username to use for basic authentication                |         | v1.25.0 |
-| storage.git.authentication.basic.password               | The password to use for basic authentication                |         | v1.25.0 |
-| storage.git.authentication.token                        | The access token to use for authentication                  |         | v1.25.0 |
-| storage.git.authentication.ssh.password                 | Password used to generate the SSH key pair                  |         | v1.30.0 |
-| storage.git.authentication.ssh.private_key_path         | Path to private key on the filesystem                       |         | v1.30.0 |
-| storage.git.authentication.ssh.private_key_bytes        | (Alternative) Raw private key bytes                         |         | v1.30.0 |
-| storage.git.authentication.ssh.insecure_ignore_host_key | Skip verifying the known hosts key (avoid in production)    | false   | v1.30.0 |
+| Property                                                | Description                                                            | Default | Since   |
+| ------------------------------------------------------- | ---------------------------------------------------------------------- | ------- | ------- |
+| storage.git.repository                                  | The URL of the git repository to use                                   |         | v1.25.0 |
+| storage.git.ref                                         | The git ref to use                                                     | main    | v1.25.0 |
+| storage.git.ref_type                                    | How to parse the git ref (static, semver)                              | static  | v1.41.0 |
+| storage.git.poll_interval                               | The interval to poll the git repository and ref for changes            | 30s     | v1.25.0 |
+| storage.git.directory                                   | The root directory to search in the repository                         |         | v1.40.0 |
+| storage.git.authentication.basic.username               | The username to use for basic authentication                           |         | v1.25.0 |
+| storage.git.authentication.basic.password               | The password to use for basic authentication                           |         | v1.25.0 |
+| storage.git.authentication.token                        | The access token to use for authentication                             |         | v1.25.0 |
+| storage.git.authentication.ssh.password                 | Password used to generate the SSH key pair                             |         | v1.30.0 |
+| storage.git.authentication.ssh.private_key_path         | Path to private key on the filesystem                                  |         | v1.30.0 |
+| storage.git.authentication.ssh.private_key_bytes        | (Alternative) Raw private key bytes                                    |         | v1.30.0 |
+| storage.git.authentication.ssh.insecure_ignore_host_key | Skip verifying the known hosts key (avoid in production)               | false   | v1.30.0 |
+| storage.git.backend.type                                | The backend to use for git repository storage (options: memory, local) | memory  | v1.43.0 |
+| storage.git.backend.local.path                          | The path to the local storage directory for git backend                |         | v1.43.0 |
 
 #### Storage Object
 
