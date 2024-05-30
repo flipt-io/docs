@@ -50,6 +50,7 @@ oci
 oidc
 okta
 onboarding
+OPA's
 otlp
 passwordless
 performant
@@ -64,6 +65,7 @@ protoc
 Quicksort
 redis
 regexes
+rego
 reverst
 rollout
 rollouts
@@ -74,6 +76,7 @@ sdks
 semver
 Splunk
 sqlite
+toolset
 tracecontext
 Turso
 unary

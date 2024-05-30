@@ -3,7 +3,7 @@ title: Login with Google
 description: Configuring Flipt to enable login with Google via OIDC
 ---
 
-![Flipt UI presenting login with google button](/images/guides/login-with-google/login-with-google.png)
+![Flipt UI presenting login with Google button](/images/guides/login-with-google/login-with-google.png)
 
 In a production environment it's often important to control who has access to your systems and feature flagging is no different.
 Flipt ships with built-in mechanisms and configuration for service-to-Flipt and user-to-Flipt authentication.
@@ -46,17 +46,7 @@ It also gives Flipt the option to obtain and present user profile pictures and e
 
 For the purpose of this guide, we will start by configuring and running Flipt with a minimal configuration file.
 
-### 1. Create a New Directory
-
-Creating a new directory is an optional step, however, we suggest you create a blank directory in which to experiment with Flipt.
-
-```sh
-mkdir ~/flipt-with-google
-
-cd ~/flipt-with-google
-```
-
-### 2. Define a Flipt `config.yml`
+### 1. Define a Flipt `config.yml`
 
 We're going to create a configuration file named `config.yml` in the current directory.
 This file will tell Flipt to increase its logging level to the maximum to aid in debugging.
@@ -74,7 +64,7 @@ authentication:
   required: true
 ```
 
-### 3. Run Flipt as a Docker container
+### 2. Run Flipt as a Docker container
 
 In this step, we run Flipt and mount our local `config.yml` file into the running container.
 
@@ -91,7 +81,7 @@ docker run -it --rm \
   flipt/flipt:latest --config /config.yml
 ```
 
-### 4. Navigate to the Flipt UI
+### 3. Navigate to the Flipt UI
 
 Once you visit Flipt's UI, you should be greeted by a message stating that there are no login providers configured.
 As mentioned before, once authentication is required, a session-compatible method is needed to enable login.
@@ -190,7 +180,7 @@ we can begin configuring Flipt to leverage it.
 
 ### 1. Add `google` provider to `config.yml`
 
-Open your `config.yml` we created in the [beginning of the guide](#2-define-a-flipt-config-yml).
+Open your `config.yml` we created in the [beginning of the guide](#1-define-a-flipt-config-yml).
 Now we're going to update your configuration with the details we obtained from Google.
 
 The configuration below does the following for Flipt:

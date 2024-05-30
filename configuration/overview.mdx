@@ -221,6 +221,18 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | authentication.methods.jwt.validate_claims.audiences | The audience claim (list) to validate on JWT tokens |         | v1.35.0 |
 | authentication.methods.jwt.validate_claims.subject   | The subject claim to validate on JWT tokens         |         | v1.41.0 |
 
+### Authorization
+
+| Property                           | Description                                            | Default | Since   |
+| ---------------------------------- | ------------------------------------------------------ | ------- | ------- |
+| authorization.required             | Enable or disable authorization validation on requests | false   | v1.43.0 |
+| authorization.policy.backend       | The backend to use for authorization policies (local)  | local   | v1.43.0 |
+| authorization.policy.local.path    | Path to the local policy file                          |         | v1.43.0 |
+| authorization.policy.poll_interval | Interval to poll the policy file for changes           | 5m      | v1.43.0 |
+| authorization.data.backend         | The backend to use for authorization data (local)      | local   | v1.43.0 |
+| authorization.data.local.path      | Path to the local data file                            |         | v1.43.0 |
+| authorization.data.poll_interval   | Interval to poll the data file for changes             | 30s     | v1.43.0 |
+
 ### Database
 
 | Property                       | Description                                                         | Default                             | Since                  |
@@ -313,18 +325,21 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 
 #### Cache: Redis
 
-| Property                       | Description                                     | Default   | Since   |
-| ------------------------------ | ----------------------------------------------- | --------- | ------- |
-| cache.redis.host               | Host to access the Redis database               | localhost | v1.10.0 |
-| cache.redis.port               | Port to access the Redis database               | 6379      | v1.10.0 |
-| cache.redis.db                 | Redis database to use                           | 0         | v1.10.0 |
-| cache.redis.username           | Username to access the Redis database           |           | v1.40.1 |
-| cache.redis.password           | Password to access the Redis database           |           | v1.10.0 |
-| cache.redis.require_tls        | Require TLS to access the Redis database        | false     | v1.25.0 |
-| cache.redis.pool_size          | Max number of socket connections per CPU        | 10        | v1.25.0 |
-| cache.redis.min_idle_conn      | Minimum number of idle connections in the pool  | 0         | v1.25.0 |
-| cache.redis.conn_max_idle_time | Maximum amount of time a connection can be idle | 30m       | v1.25.0 |
-| cache.redis.net_timeout        | Network timeout for Redis connections           | 0         | v1.25.0 |
+| Property                       | Description                                                         | Default   | Since   |
+| ------------------------------ | ------------------------------------------------------------------- | --------- | ------- |
+| cache.redis.host               | Host to access the Redis database                                   | localhost | v1.10.0 |
+| cache.redis.port               | Port to access the Redis database                                   | 6379      | v1.10.0 |
+| cache.redis.db                 | Redis database to use                                               | 0         | v1.10.0 |
+| cache.redis.username           | Username to access the Redis database                               |           | v1.40.1 |
+| cache.redis.password           | Password to access the Redis database                               |           | v1.10.0 |
+| cache.redis.require_tls        | Require TLS to access the Redis database                            | false     | v1.25.0 |
+| cache.redis.pool_size          | Max number of socket connections per CPU                            | 10        | v1.25.0 |
+| cache.redis.min_idle_conn      | Minimum number of idle connections in the pool                      | 0         | v1.25.0 |
+| cache.redis.conn_max_idle_time | Maximum amount of time a connection can be idle                     | 30m       | v1.25.0 |
+| cache.redis.net_timeout        | Network timeout for Redis connections                               | 0         | v1.25.0 |
+| cache.redis.ca_cert_path       | Path to custom certificate authority (CA) certificate               |           | v1.43.0 |
+| cache.redis.ca_cert_bytes      | (Alternative) Raw certificate authority (CA) certificate bytes      |           | v1.43.0 |
+| cache.redis.insecure_skip_tls  | Skip verifying the server's certificate chain (avoid in production) | false     | v1.43.0 |
 
 ### Audit Events
 
@@ -426,10 +441,10 @@ From time to time, Flipt may introduce new features that are not considered full
 
 We put experimental features behind a configuration setting that can be enabled in the configuration file. To enable experimental features, set the `experimental.{feature}.enabled` configuration option to `true`.
 
-Example: To enable the experimental cloud feature, add the following to your configuration file:
-
 ```yaml
 experimental:
-  cloud:
+  foo:
     enabled: true
 ```
+
+See the [Experimental](/configuration/experimental) documentation for more information on the current experimental features and how to enable them.
