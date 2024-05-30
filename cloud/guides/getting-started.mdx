@@ -55,6 +55,8 @@ To quickly get started with Flipt Hybrid Cloud, follow these steps:
 
     After following the prompts in the CLI, you should see a success message indicating that your local instance is connected to Flipt Hybrid Cloud along with a unique address for your local instance.
 
+    Behind the scenes, Flipt Hybrid Cloud will create a secure tunnel to your local instance via what we call a gateway, allowing you to access it from anywhere in the world.
+
   </Step>
   <Step title="Login to Hybrid Cloud">
   Next, log in to the Flipt Hybrid Cloud web interface using the unique address provided in the previous step. You can access the web interface by navigating to the provided address in your browser.
@@ -62,19 +64,19 @@ To quickly get started with Flipt Hybrid Cloud, follow these steps:
 ![Cloud Login](/images/cloud/guides/getting-started/login.png)
 
   </Step>
-  <Step title="View Your Instance">
+  <Step title="View Your Gateway">
 
-Once you are logged in, you will see the Flipt Hybrid Cloud dashboard. Click on the "Dashboard" tab in the sidebar to view your connected instances.
+Once you are logged in, you will see the Flipt Hybrid Cloud dashboard. Click on the "Dashboard" tab in the sidebar to view your gateways.
 
-You should see your local instance listed here. Click on the instance to view more details and manage your instance settings.
+You should see your new gateway address listed here. Click on the gateway name to view more details and manage it's settings.
 
 ![Cloud Dashboard](/images/cloud/guides/getting-started/dashboard.png)
 
   </Step>
   <Step title="Route to Your Instance">
-  Click on the your instance address to route to your local instance. The address will look something like `https://{instance}-{organization}.flipt.cloud`.
+  Click on the your gateway address to route to your local instance. The address will look something like `https://{gateway}-{organization}.flipt.cloud`.
 
-This will open your local Flipt instance in your browser.
+This will route to your local Flipt instance via your browser.
 
 ![Flipt](/images/cloud/guides/getting-started/flipt.png)
 
@@ -83,7 +85,7 @@ This will open your local Flipt instance in your browser.
 
 ## What Just Happened?
 
-You have successfully connected your local Flipt instance to Flipt Hybrid Cloud! 🎉
+You have successfully connected your local Flipt instance to Flipt Hybrid Cloud via our secure gateway! 🎉
 
 <Check>
   Note that you didn't have to mess with DNS or firewall settings to enable the
@@ -110,4 +112,6 @@ The unique address provided in the CLI is a temporary route to your local instan
 
 Now that you have successfully connected your local Flipt instance to Flipt Hybrid Cloud, you can start creating feature flags and managing your feature flag configurations.
 
-After you've had a chance to play around with Flipt Hybrid Cloud and your local instance, you can learn more about the advanced features and capabilities available to you in the [Flipt Hybrid Cloud documentation](/cloud/overview) and how to take your configuration to production.
+After you've had a chance to play around with Flipt Hybrid Cloud and your local instance, you can learn more about the advanced features and capabilities available to you in the [Flipt Hybrid Cloud documentation](/cloud/overview).
+
+Finally, consider connecting your production instance to Flipt Hybrid Cloud to manage your feature flags and configurations in your production environment. You can learn more about how to do this in the [Production Guide](/cloud/guides/production).
