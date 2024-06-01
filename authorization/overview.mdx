@@ -33,7 +33,7 @@ Flipt embeds OPA to evaluate policies that determine whether a request should be
 
 ## Policies
 
-Flipt uses OPA to enforce authorization policies for the Management API. The policies are defined in a `policy.rego` file located in the Flipt configuration directory by default. The path to this file can be customized as described in the [Configuration: Authorization](/configuration/authorization) section.
+Flipt uses OPA to enforce authorization policies for the Management API. The policies are written in [Rego](https://www.openpolicyagent.org/docs/latest/policy-language/), a powerful, declarative policy language. The path to this file is provided as described in the [Configuration: Authorization](/configuration/authorization) section.
 
 Part of the power of OPA is that it's extremely flexible as it allows you to define fine-grained policies tailored to your exact needs.
 
