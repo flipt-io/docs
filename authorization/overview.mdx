@@ -44,7 +44,7 @@ package flipt.authz.v1
 
 import rego.v1
 
-default allow = false
+default allow := false
 
 allow if {
     claims := json.unmarshal(input.authentication.metadata["io.flipt.auth.claims"])
@@ -132,7 +132,7 @@ package flipt.authz.v1
 
 import rego.v1
 
-default allow = false
+default allow := false
 
 allow if {
     claims := json.unmarshal(input.authentication.metadata["io.flipt.auth.claims"])
@@ -206,7 +206,7 @@ package flipt.authz.v1
 
 import rego.v1
 
-default allow = false
+default allow := false
 
 allow if {
     input.request.namespace == "default"
@@ -222,7 +222,7 @@ package flipt.authz.v1
 
 import rego.v1
 
-default allow = false
+default allow := false
 
 allow if {
     claims := json.unmarshal(input.authentication.metadata["io.flipt.auth.claims"])
@@ -246,7 +246,7 @@ package flipt.authz.v1
 
 import rego.v1
 
-default allow = false
+default allow := false
 
 allow if {
     role := data.roles[input.authentication.metadata["io.flipt.auth.name"]]
