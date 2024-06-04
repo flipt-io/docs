@@ -267,6 +267,7 @@
       "pages": [
         "cloud/overview",
         "cloud/benefits",
+        "cloud/concepts",
         {
           "group": "Features",
           "pages": [

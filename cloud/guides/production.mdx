@@ -29,61 +29,54 @@ experimental:
   installed on your local machine.
 </Note>
 
-## Create a New Gateway
+## Create a New Environment
 
-To move your local Flipt instance to production, you need to create a new gateway in Flipt Hybrid Cloud. This gateway will be used to manage your feature flags and configurations in a production environment.
+To move your local Flipt instance to production, you need to create a new environment in Flipt Hybrid Cloud. This environment will be used to manage your feature flags and configurations in a production.
 
 <Steps>
   <Step title="Login to Hybrid Cloud">
   First, log in to the Flipt Hybrid Cloud web interface. You can access the login page at [https://flipt.cloud](https://flipt.cloud).
   
   </Step>
-  <Step title="Create a New Gateway">
+  <Step title="Create a New Environment">
 
-Once you are logged in, you will see the Flipt Hybrid Cloud dashboard. Click on the `Create Your First Gateway` button to create a new gateway.
+Once you are logged in, you will see the Flipt Hybrid Cloud dashboard. Click on the `Create Environment` to create a new environment.
 
 ![Cloud Dashboard](/images/cloud/guides/production/dashboard.png)
 
   </Step>
-  <Step title="Start the Wizard">
+  <Step title="Name Your Environment">
 
-You will be taken to the gateway creation wizard. Follow the prompts to create a new gateway.
+Give your environment a name and description to help you identify it later. Click `Next` to continue.
 
-![Gateway Wizard](/images/cloud/guides/production/wizard-1.png)
-
-  </Step>
-  <Step title="Name Your Gateway">
-
-Give your gateway a name and description to help you identify it later. Click `Next` to continue.
-
-![Gateway Wizard](/images/cloud/guides/production/wizard-2.png)
+![Name Environment](/images/cloud/guides/production/environment-form.png)
 
   </Step>
-  <Step title="View Gateway">
+  <Step title="View Environment">
 
-After you've created your gateway, go back to the Dashboard and you should it in the list.
+After you've created your environment, go back to the dashboard and you should it in the list.
 
-![Gateway Dashboard](/images/cloud/guides/production/gateways.png)
+![Environment Dashboard](/images/cloud/guides/production/environments.png)
 
-Next, click on the gateway name to view more details.
+Next, click on the environment name to view more details.
 
-Here you can view it's settings and manage your gateway.
+Here you can view it's settings and manage your environment.
 
-![Gateway Details](/images/cloud/guides/production/gateway-details.png)
+![Environment Details](/images/cloud/guides/production/environment-details.png)
 
   </Step>
-  <Step title="Create a Gateway API Key">
+  <Step title="Create an Environment API Key">
 
-In order authenticate your running Flipt instance with your new gateway in Flipt Hybrid Cloud, you'll need to create a gateway API token.
+In order authenticate your running Flipt instance with your new environment in Flipt Hybrid Cloud, you'll need to create an API token.
 
-Click on the `Configuration` tab in the gateway details page and then click on the `Gateway API Key` button.
+Click on the `Configuration` tab in the environment details page and then click on the `Environment API Key` button.
 
-![Gateway API Key](/images/cloud/guides/production/gateway-api-key.png)
+![Environment API Key](/images/cloud/guides/production/environment-api-key.png)
 
 Copy the API key and save it for later.
 
 <Warning>
-  The API key is a secret token that allows your Flipt instances to authenticate with your gateway in Flipt Hybrid Cloud. Keep it secure and do not share it with anyone.
+  The API key is a secret token that allows your Flipt instances to authenticate with your environment in Flipt Hybrid Cloud. Keep it secure and do not share it with anyone.
 
 If you lose your API key, you can always generate a new one by following the same steps.
 
@@ -94,7 +87,7 @@ If you lose your API key, you can always generate a new one by following the sam
 
 Next, click on the `Download Configuration` button to download the configuration file for your instance.
 
-This configuration file contains the required settings for your instance to connect to your gateway in Flipt Hybrid Cloud.
+This configuration file contains the required settings for your instance to connect to your environment in Flipt Hybrid Cloud.
 
 Move the configuration file to your local [Flipt instance directory](/configuration/overview#configuration-file)
 
@@ -133,19 +126,19 @@ flipt -f /path/to/your/configuration.yaml
 
   </Step>
 
-  <Step title="Refresh Gateway Details">
+  <Step title="Refresh Environment Details">
 
 After you've started your Flipt instance, go back to the Flipt Hybrid Cloud dashboard and refresh the page.
 
-You should see that your gateway is now connected and showing one active connection.
+You should see that your environment is now connected and showing one active connection.
 
-![Gateway Details](/images/cloud/guides/production/gateway-connected.png)
+![Environment Details](/images/cloud/guides/production/environment-connected.png)
 
   </Step>
 
   <Step title="Route to Your Instance">
 
-Click on the your gateway address to route to your instance. The address will look something like `https://{gateway}-{organization}.flipt.cloud`.
+Click on the URL to route to your instance. The address will look something like `https://{environment}-{organization}.flipt.cloud`.
 
 This will route to your local Flipt instance in your browser.
 
