@@ -83,6 +83,7 @@ Create a new client called `flipt`:
 1. Ensure the `Standard flow` and `Direct access grants` are enabled and click on `Next`.
 1. Set the `Valid Redirect URIs` to `http://localhost:8081/auth/vl/method/oidc/keycloak/callback`.
 1. Set the `Web Origins` to `http://localhost:8081`.
+1. Ensure `Client authentication` is set to `ON`.
 1. Click on `Save`.
 
 ![Keycloak create client](/images/guides/login-with-keycloak/create-keycloak-client.png)
@@ -98,7 +99,7 @@ Create a new client called `flipt`:
 1. In another browser tab, paste the following URL into the address bar:
 
 ```
-http://localhost:8080/auth/realms/flipt/.well-known/openid-configuration
+http://localhost:8080/realms/flipt/.well-known/openid-configuration
 ```
 
 2. Copy the `issuer` URL from the JSON response. This will be used as the `issuer_url` in the Flipt configuration.
