@@ -1,0 +1,95 @@
+---
+title: Sending Audit Events to Datadog
+description: Configure Flipt to send audit event logs to Datadog
+---
+
+As described in the [Auditing Overview](/configuration/auditing/overview) configuration section, Flipt supports the ability to send audit events to configured sinks.
+
+This guide will cover how to configure Flipt to send audit events to Datadog using our [Webhook Sink](/configuration/auditing/webhooks) along with our templating feature.
+
+## What You'll Learn
+
+- 📊 How to create an API key in Datadog
+- 📡 How to configure Flipt to send audit events to Datadog
+
+## Prerequisites
+
+For this guide, you will need:
+
+- A [Datadog](https://datadoghq.com) account
+- A Datadog plan that supports [Log Management](https://docs.datadoghq.com/logs/)
+- [Docker](https://www.docker.com/)
+
+## API Configuration in Datadog
+
+### Step 1: Generate an API Key
+
+To send logs to Datadog, you will need to create an API key in your Datadog account.
+
+![Datadog API Keys](/images/guides/operation/log-webhooks-datadog/datadog-api-keys.png)
+
+1. Navigate to the [API Keys](https://app.datadoghq.com/organization-settings/api-keys) section of your Datadog organization settings.
+1. Click on the `+ New Key` button.
+1. Enter a name for your API key and click `Create Key`.
+1. Copy the API key somewhere safe, as you will need it later.
+
+![Datadog Create API Key](/images/guides/operation/log-webhooks-datadog/datadog-new-api-key.png)
+
+### Step 2: Find your Datadog Log Ingestion URL
+
+To send logs to Datadog, you will need to find your Log Ingestion URL.
+
+1. Navigate to the [Send Logs](https://docs.datadoghq.com/api/latest/logs/?code-lang=curl&site=us5#send-logs) documentation for the Datadog API.
+1. Copy the URL under the `Send logs` section. Save this URL, as you will need it later.
+
+![Datadog Log Ingestion URL](/images/guides/operation/log-webhooks-datadog/datadog-logs-api.png)
+
+## Configuring Audit Events in Flipt
+
+### Step 1: Define a Flipt `config.yml`
+
+1. Define a configuration file `config.yml` with the following configuration:
+
+```yaml
+audit:
+  sinks:
+    webhook:
+      enabled: true
+      templates:
+        - url: "< Datadog log ingestion URL >"
+          headers:
+            Content-Type: "application/json"
+            Content-Encoding: "gzip"
+            Authorization: "DD-API-KEY < Datadog API key >"
+          body: |
+            {
+              "type": "{{ .Type }}",
+              "action": "{{ .Action }}",
+              "payload": {{ toJson .Payload }}
+            }
+```
+
+### Step 2: Start Flipt
+
+You can now start your Flipt instance using the following command:
+
+```bash
+docker run -it --rm \
+  -p 8080:8080 \
+  -v "$(pwd)/config.yml:/config.yml" \
+  docker.flipt.io/flipt/flipt:latest --config /config.yml
+```
+
+Once Flipt has started you can to navigate your browser to the [UI](http://localhost:8080).
+
+### Step 3: Interact with Flipt
+
+When you interact with Flipt and change state, you should see audit events being sent to Datadog.
+
+## Conclusion
+
+🎉 You have successfully configured Flipt to send audit events to Datadog. You can now monitor and analyze your audit events in Datadog.
+
+You can modify the template to configure how you want your audit event logs to be structured in Datadog. For more information on the template structure, see the [Webhook Sink: Templating](/configuration/auditing/webhooks#templates) documentation.
+
+Learn more about [Auditing in Flipt](/configuration/auditing/overview) and how to configure and use it.

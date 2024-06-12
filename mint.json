@@ -158,6 +158,12 @@
               "pages": [
                 "guides/operation/authorization/rbac-with-keycloak"
               ]
+            },
+            {
+              "group": "Auditing",
+              "pages": [
+                "guides/operation/auditing/log-webhooks-datadog"
+              ]
             }
           ]
         },

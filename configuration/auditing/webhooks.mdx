@@ -76,7 +76,7 @@ audit:
           body: |
             {
               "type": "{{ .Type }}",
-              "action": "{{ .Action }}"
+              "action": "{{ .Action }}",
               "payload": {{ toJson .Payload }}
             }
 ```
@@ -104,6 +104,12 @@ type Event struct {
 ```
 
 Any of the values that are [exposed](https://github.com/flipt-io/flipt/blob/v1.28.0/internal/server/audit/audit.go#L51-L61) by Flipt are available for inclusion in your HTTP body template.
+
+<Tip>
+  Read our [Sending Audit Events to
+  Datadog](/guides/operation/auditing/log-webhooks-datadog) guide for a more
+  in-depth walk-through setting up a webhook sink with templating.
+</Tip>
 
 ### Example: Slack
 

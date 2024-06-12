@@ -36,7 +36,7 @@ Flipt supports sending metrics to an [OTLP](https://opentelemetry.io/docs/concep
 
 OTLP supports additional configuration such as specifying the protocol to use (gRPC or HTTP) as well as providing custom headers to send with the request.
 
-Custom headers can be used to provide authentication information to the collector which may be required if you are using a hosted collector such as [NewRelic](https://docs.newrelic.com/docs/more-integrations/open-source-telemetry-integrations/opentelemetry/get-started/opentelemetry-set-up-your-app/), [DataDog](https://docs.datadoghq.com/opentelemetry/otlp_ingest_in_the_agent/?tab=host), or [Honeycomb](https://docs.honeycomb.io/getting-data-in/opentelemetry-overview/#instrumenting-with-opentelemetry).
+Custom headers can be used to provide authentication information to the collector which may be required if you are using a hosted collector such as [NewRelic](https://docs.newrelic.com/docs/more-integrations/open-source-telemetry-integrations/opentelemetry/get-started/opentelemetry-set-up-your-app/), [Datadog](https://docs.datadoghq.com/opentelemetry/otlp_ingest_in_the_agent/?tab=host), or [Honeycomb](https://docs.honeycomb.io/getting-data-in/opentelemetry-overview/#instrumenting-with-opentelemetry).
 
 These can be configured via the `metrics.otlp` configuration section.
 
@@ -72,7 +72,7 @@ log:
   encoding: json
 ```
 
-For production deployments, we recommend using the JSON format as it's easier to parse and ingest into log aggregation systems such as Elasticsearch, Splunk, Loki, or DataDog.
+For production deployments, we recommend using the JSON format as it's easier to parse and ingest into log aggregation systems such as Elasticsearch, Splunk, Loki, or Datadog.
 
 We've prepared an [example](https://github.com/flipt-io/flipt/tree/main/examples/audit/log) showing how to set up Flipt with Grafana Loki and Promtail to ingest and query logs.
 
@@ -119,11 +119,11 @@ Enable tracing via the values described in the [Tracing configuration](/configur
 
 ### OTLP
 
-![DataDog OTLP](/images/configuration/datadog_otlp.png)
+![Datadog OTLP](/images/configuration/datadog_otlp.png)
 
 OTLP supports additional configuration such as specifying the protocol to use (gRPC or HTTP) as well as providing custom headers to send with the request.
 
-Custom headers can be used to provide authentication information to the collector which may be required if you are using a hosted collector such as [NewRelic](https://docs.newrelic.com/docs/more-integrations/open-source-telemetry-integrations/opentelemetry/get-started/opentelemetry-set-up-your-app/), [DataDog](https://docs.datadoghq.com/opentelemetry/otlp_ingest_in_the_agent/?tab=host), or [Honeycomb](https://docs.honeycomb.io/getting-data-in/opentelemetry-overview/#instrumenting-with-opentelemetry).
+Custom headers can be used to provide authentication information to the collector which may be required if you are using a hosted collector such as [NewRelic](https://docs.newrelic.com/docs/more-integrations/open-source-telemetry-integrations/opentelemetry/get-started/opentelemetry-set-up-your-app/), [Datadog](https://docs.datadoghq.com/opentelemetry/otlp_ingest_in_the_agent/?tab=host), or [Honeycomb](https://docs.honeycomb.io/getting-data-in/opentelemetry-overview/#instrumenting-with-opentelemetry).
 
 These can be configured via the `tracing.otlp` configuration section.
 
@@ -139,7 +139,7 @@ tracing:
 
 #### Environment Variables
 
-As of [v1.38.0](https://github.com/flipt-io/flipt/releases/tag/v1.38.0), we now allow users to provide OTLP specific resource environment variables that are part of the [OTLP spec](https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/).
+Flipt supports specific resource environment variables that are part of the [OTLP spec](https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/).
 
 The following environment variables are supported:
 
