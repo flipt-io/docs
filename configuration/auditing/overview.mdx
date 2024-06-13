@@ -3,7 +3,7 @@ title: Overview
 description: This document describes Flipt's auditing capabilities.
 ---
 
-Audit Events are pieces of data that describe a particular thing that has happened in a system. At Flipt, we provide the functionality of processing and batching these audit events and an abstraction for sending these audit events to a sink.
+Audit Events are pieces of data that describe a particular thing that has happened in a system. Flipt provides the functionality of processing and batching these audit events and an abstraction for sending these audit events to a sink.
 
 ## Events
 
@@ -11,9 +11,10 @@ Flipt supports sending audit events to configured sinks. Audit events have the f
 
 ```json
 {
-  "version": "0.1",
+  "version": "0.2",
   "type": "flag",
   "action": "created",
+  "status": "success",
   "metadata": {
     "actor": {
       "authentication": "none",
@@ -31,24 +32,25 @@ Flipt supports sending audit events to configured sinks. Audit events have the f
 }
 ```
 
-- `version` : the version of the audit event structure. We don't expect too many changes to the structure of the audit event
+- `version` : the version of the audit event structure.
 - `type` : the type of the entity being acted upon (flag, variant, constraint, etc.)
 - `action` : the action taken upon the entity (created, deleted, updated, etc.)
 - `metadata` : extra information related to the audit event as a whole. The `actor` field will always be present containing some identity information of the source which initiated the audit event
 - `payload` : the actual payload used to interact with the `Flipt` server for certain auditable events
 - `timestamp`: the time the event was created
+- `status`: the status of the event (success, denied, etc.)
 
 Currently, we support the following sinks for audit events:
 
-- Log File: the audit events are JSON encoded and new-line delimited. You can find the configuration in the [Audit Events - Log File](/configuration/overview#audit-events-log-file) section of the Configuration documentation.
+- [Log](/configuration/overview#audit-events-log): the audit events are output as either `json` or `console` depending on configuration. The default output is to STDOUT, however, the log sink can also be output to a file.
 
-- Webhook: the audit events are sent to a URL of your choice. You can find the configuration in the [Audit Events - Webhook](/configuration/overview#audit-events-webhook) section of the Configuration documentation.
+- [Webhook](/configuration/overview#audit-events-webhook): the audit events are sent to a URL of your choice.
 
 You can find [examples](https://github.com/flipt-io/flipt/tree/main/examples/audit) in the main GitHub repository on how to enable audit events and how to tune configuration for it.
 
 ## Event Filtering
 
-Starting from [v1.27.0](https://github.com/flipt-io/flipt/releases/tag/v1.27.0), you can specify configuration for which events you would like to receive on your audit sink.
+You can specify configuration for which events you would like to receive on your audit sink.
 
 An always up to date list of events supported is available in our [GitHub repository](https://github.com/flipt-io/flipt/blob/main/internal/server/audit/README.md).
 
@@ -64,3 +66,9 @@ rollout:deleted
 rule:deleted
 *:updated
 ```
+
+## Authentication / Authorization
+
+If [authentication](/authentication) is enabled, the actor field will contain the identity information of the source which initiated the audit event. This information may contain the user's email, IP address, and other relevant information.
+
+If [authorization](/authorization) is enabled, the audit event will contain the result of the authorization check in the `status` field. The status field will be set to `success` if the authorization check passed, and `denied` if the check failed. This information can be used to determine if an unauthorized user attempted to perform an action.

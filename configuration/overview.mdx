@@ -351,12 +351,13 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | audit.buffer.flush_period | Duration to wait before sending events to sinks    | 2m      | v1.21.0 |
 | audit.events              | Type of events user would like to receive on sinks | ["*:*"] | v1.27.0 |
 
-#### Audit Events: Log File
+#### Audit Events: Log
 
-| Property                | Description                                                              | Default | Since   |
-| ----------------------- | ------------------------------------------------------------------------ | ------- | ------- |
-| audit.sinks.log.enabled | Enable log file sink                                                     | false   | v1.21.0 |
-| audit.sinks.log.file    | File path to write audit events to. Required if log file sink is enabled |         | v1.21.0 |
+| Property                 | Description                                          | Default | Since   |
+| ------------------------ | ---------------------------------------------------- | ------- | ------- |
+| audit.sinks.log.enabled  | Enable log sink                                      | false   | v1.21.0 |
+| audit.sinks.log.file     | File path to write audit events to instead of STDOUT |         | v1.21.0 |
+| audit.sinks.log.encoding | Encoding to use for logging (json, console)          | inherit | v1.44.0 |
 
 #### Audit Events: Webhook
 
