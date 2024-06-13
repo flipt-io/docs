@@ -19,8 +19,8 @@ This file is read when Flipt starts up and configures several important
 properties for the server.
 
 <Tip>
-  You can generate a default configuration file by running `flipt config init`
-  as of v1.28.0. See the [CLI](/cli) documentation for more information.
+  You can generate a default configuration file by running `flipt config init`.
+  See the [CLI](/cli) documentation for more information.
 </Tip>
 
 The server will check in a few different locations for server configuration (in order):
@@ -42,7 +42,7 @@ pick up the new changes.
 
 ### Remote Configuration
 
-As of `v1.41.0`, Flipt supports fetching configuration from a remote source. This is useful for managing configuration across multiple instances of Flipt. The remote configuration source can be a URL to a configuration file stored in one of the following object storage services:
+Flipt supports fetching configuration from a remote source. This is useful for managing configuration across multiple instances of Flipt. The remote configuration source can be a URL to a configuration file stored in one of the following object storage services:
 
 - S3 (e.g.: `s3://bucket-name/path/to/config.yml`)
 - Azure Blob Storage (e.g.: `azblob://container-name/path/to/config.yml`)

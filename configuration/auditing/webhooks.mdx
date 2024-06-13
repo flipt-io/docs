@@ -81,11 +81,10 @@ audit:
             }
 ```
 
-<Note>
-  As of [v1.39.0](https://github.com/flipt-io/flipt/releases/tag/v1.39.0), the
-  Go template contains a `toJson` utility method that will transform an input
-  into JSON if it fits the structure.
-</Note>
+<Tip>
+  The Go template contains a `toJson` utility function that will transform an
+  input into JSON if it fits the structure.
+</Tip>
 
 This configuration tells Flipt to send a `POST` request when events need to be emitted to the URL `https://example.com` with the HTTP headers, `Content-Type` and `Authorization`, and the body which is a [Go template](https://pkg.go.dev/text/template) that will be executed when an event comes in.
 
