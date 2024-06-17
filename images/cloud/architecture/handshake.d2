@@ -12,9 +12,9 @@ register: Flipt registers on flipt.cloud {
 
 user: Flipt User
 
-instance: Instance served on flipt.cloud {
-  user -> tunnel.req: instance-org.flipt.cloud
-  tunnelled request: {
+environment: Instance served on flipt.cloud {
+  user -> tunnel.req: environment-org.flipt.cloud
+  Tunnelled request: {
     tunnel -> client_one.req: Request
     client_one.req -> tunnel: Response
   }
