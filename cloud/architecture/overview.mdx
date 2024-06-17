@@ -56,13 +56,17 @@ When you register your instance in this way with Flipt Cloud, we issue you with 
 
 Using this DNS name, requests for your instances will flow though our API gateways, load-balancers and then only reach your instances once fully authenticated.
 
+<Info>
+Instances, environments, gateways.. what's the difference? Check out our [concepts](/cloud/concepts) page for more details.
+</Info>
+
 This entire process is performed over secure TLS connections from your end users back to your instances.
 All of which is done without you having to provide TLS certificates, and without having to manage certificate rotation.
 
 ## Tunnel Registration
 
 Your connections are made using an API key credential obtained from our Flipt Cloud UI, or via the `flipt cloud login` sub-command of the Flipt CLI.
-This credential is used in an initial handshake to identify your Flipt Cloud organization and the logical instance your Flipt is joining.
+This credential is used in an initial handshake to identify your Flipt Cloud organization and the logical environment your Flipt is joining.
 
 <img
   className="block dark:hidden"
@@ -73,14 +77,14 @@ This credential is used in an initial handshake to identify your Flipt Cloud org
   src="/images/cloud/architecture/handshake-dark.svg"
 />
 
-Once registered and associated with Flipt Cloud, your Flipt instance is added to our remote load balancer pool for your logical instance.
-Now when you visit your new Flipt Cloud instance subdomain, your requests are routed to the instances deployed on your infrastructure.
+Once registered and associated with Flipt Cloud, your Flipt instance is added to our remote load balancer pool for your logical environment.
+Now when you visit your new Flipt Cloud environment subdomain, your requests are routed to the instances deployed on your infrastructure.
 
 The majority of the tunneling functionality we perform is provided by our open-source project [Reverst](https://github.com/flipt-io/reverst).
 Reverst is unique in that it leverages HTTP/3 and the QUIC protocol to establish secure, reliable, and performant connections for tunnels.
 
 Check out our [blog post](https://blog.flipt.io/so-we-built-reverst) on how and why we chose to build our reverse tunnels in this way.
 
-We deploy and scale multiple instances of Reverst on our infrastructure for establishing and managing these tunnels for you, all while tightly integrating them with the Flipt Cloud user interface, authentication, and instance management system.
+We deploy and scale multiple instances of Reverst on our infrastructure for establishing and managing these tunnels for you, all while tightly integrating them with the Flipt Cloud user interface, authentication, and environment management system.
 
 Have more questions about how Flipt Cloud works? Join our [Discord](https://flipt.io/discord) and ask away! We're always happy to help.
