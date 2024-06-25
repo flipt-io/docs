@@ -62,24 +62,6 @@ experimental:
   sign up for an account.
 </Note>
 
-### Authorization
-
-Introduced in `v1.43.0`.
-
-[Flipt Authorization](/authorization/overview) enables you to control access to your feature data with fine-grained permissions and infinite flexibility.
-
-Our authorization system leverages Open Policy Agent (OPA), which gives you the power to define custom policies that control who can access your feature data and what actions they can perform.
-
-To enable the Flipt Authorization experimental feature, set the `experimental.authorization.enabled` configuration option to `true`.
-
-```yaml config.yaml
-experimental:
-  authorization:
-    enabled: true
-```
-
-To learn more about Flipt Authorization, see the [Authorization](/authorization/overview) documentation.
-
 ## Deprecations
 
 Once an experimental feature is promoted to a stable feature or is removed, it will move to a deprecated status. Depending on the feature, you may need to take action to migrate to the new stable feature or remove the deprecated feature from your configuration.
