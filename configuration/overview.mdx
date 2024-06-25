@@ -40,6 +40,27 @@ The server will check in a few different locations for server configuration (in 
 You can edit any of these properties to your liking, and on restart Flipt will
 pick up the new changes.
 
+### Environment Substitution
+
+The configuration file also supports environment variable substitution as of `v1.45.0`.
+
+This allows you to use environment variables in your configuration file. For example, you can use the `FLIPT_CUSTOM_DB_URL` environment variable in the configuration file like this:
+
+```yaml
+db:
+  url: ${FLIPT_CUSTOM_DB_URL}
+```
+
+This will replace `${FLIPT_CUSTOM_DB_URL}` with the value of the `FLIPT_CUSTOM_DB_URL` environment variable. The format for environment variable substitution is `${ENV_VAR}`.
+
+<Tip>
+  This can be used to provide sensitive information to Flipt without storing it
+  in the configuration file. For example, you can use environment variables to
+  store the database URL, API keys, or other sensitive information without
+  having to conform to the pre-defined Flipt [environment variable
+  format](#environment-variables).
+</Tip>
+
 ### Remote Configuration
 
 Flipt supports fetching configuration from a remote source. This is useful for managing configuration across multiple instances of Flipt. The remote configuration source can be a URL to a configuration file stored in one of the following object storage services:
