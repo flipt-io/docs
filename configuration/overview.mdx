@@ -252,15 +252,40 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 
 ### Authorization
 
-| Property                           | Description                                            | Default | Since   |
-| ---------------------------------- | ------------------------------------------------------ | ------- | ------- |
-| authorization.required             | Enable or disable authorization validation on requests | false   | v1.43.0 |
-| authorization.policy.backend       | The backend to use for authorization policies (local)  | local   | v1.43.0 |
-| authorization.policy.local.path    | Path to the local policy file                          |         | v1.43.0 |
-| authorization.policy.poll_interval | Interval to poll the policy file for changes           | 5m      | v1.43.0 |
-| authorization.data.backend         | The backend to use for authorization data (local)      | local   | v1.43.0 |
-| authorization.data.local.path      | Path to the local data file                            |         | v1.43.0 |
-| authorization.data.poll_interval   | Interval to poll the data file for changes             | 30s     | v1.43.0 |
+| Property               | Description                                                           | Default | Since   |
+| ---------------------- | --------------------------------------------------------------------- | ------- | ------- |
+| authorization.required | Enable or disable authorization validation on requests                | false   | v1.43.0 |
+| authorization.backend  | The backend to use for authorization policies (local, bundle, object) | local   | v1.45.0 |
+
+#### Authorization Backend: Local
+
+| Property                                 | Description                                  | Default | Since   |
+| ---------------------------------------- | -------------------------------------------- | ------- | ------- |
+| authorization.local.policy.path          | Path to the local policy file                |         | v1.45.0 |
+| authorization.local.policy.poll_interval | Interval to poll the policy file for changes | 5m      | v1.45.0 |
+| authorization.local.data.path            | Path to the local data file                  |         | v1.45.0 |
+| authorization.local.data.poll_interval   | Interval to poll the data file for changes   | 30s     | v1.45.0 |
+
+#### Authorization Backend: Bundle
+
+| Property                           | Description                          | Default | Since   |
+| ---------------------------------- | ------------------------------------ | ------- | ------- |
+| authorization.bundle.configuration | Configuration for the bundle service |         | v1.45.0 |
+
+#### Authorization Backend: Object
+
+| Property                  | Description                   | Default | Since   |
+| ------------------------- | ----------------------------- | ------- | ------- |
+| authorization.object.type | The type of object store (s3) | s3      | v1.45.0 |
+
+##### Authorization Backend Object: S3
+
+| Property                         | Description                                 | Default | Since   |
+| -------------------------------- | ------------------------------------------- | ------- | ------- |
+| authorization.object.s3.region   | The AWS region to use for S3 object storage |         | v1.45.0 |
+| authorization.object.s3.bucket   | The S3 bucket to use for object storage     |         | v1.45.0 |
+| authorization.object.s3.prefix   | The S3 prefix to use for object storage     |         | v1.45.0 |
+| authorization.object.s3.endpoint | The S3 endpoint to use for object storage   |         | v1.45.0 |
 
 ### Database
 
@@ -312,9 +337,9 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 
 #### Storage Object
 
-| Property            | Description                            | Default | Since   |
-| ------------------- | -------------------------------------- | ------- | ------- |
-| storage.object.type | The type of object storage to use (s3) | s3      | v1.25.0 |
+| Property            | Description                                                  | Default | Since   |
+| ------------------- | ------------------------------------------------------------ | ------- | ------- |
+| storage.object.type | The type of object storage to use (s3, azblob, googlecloud ) | s3      | v1.25.0 |
 
 ##### Storage Object: S3
 
@@ -325,6 +350,22 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | storage.object.s3.prefix        | The S3 prefix to use for object storage     |         | v1.25.0 |
 | storage.object.s3.endpoint      | The S3 endpoint to use for object storage   |         | v1.25.0 |
 | storage.object.s3.poll_interval | The interval to poll S3 for changes         | 30s     | v1.25.0 |
+
+##### Storage Object: Azure Blob
+
+| Property                            | Description                                              | Default | Since   |
+| ----------------------------------- | -------------------------------------------------------- | ------- | ------- |
+| storage.object.azblob.endpoint      | The Azure Blob Store endpoint to use for object storage  |         | v1.34.0 |
+| storage.object.azblob.container     | The Azure Blob Store container to use for object storage |         | v1.34.0 |
+| storage.object.azblob.poll_interval | The interval to poll Azure Blob Store for changes        | 30s     | v1.34.0 |
+
+##### Storage Object: Google Cloud Storage
+
+| Property                                 | Description                                               | Default | Since   |
+| ---------------------------------------- | --------------------------------------------------------- | ------- | ------- |
+| storage.object.googlecloud.bucket        | The Google Cloud Storage bucket to use for object storage |         | v1.35.0 |
+| storage.object.googlecloud.prefix        | The Google Cloud Storage prefix to use for object storage |         | v1.35.0 |
+| storage.object.googlecloud.poll_interval | The interval to poll Google Cloud Storage for changes     | 30s     | v1.35.0 |
 
 #### Storage OCI
 

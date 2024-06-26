@@ -1,6 +1,7 @@
 affordance
 APIs
 auditable
+azblob
 backoff
 boolean
 caddy
@@ -23,6 +24,7 @@ flipt
 flipt's
 Gitlab
 gitops
+googlecloud
 grafana
 grpc
 hostname

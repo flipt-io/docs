@@ -6,11 +6,9 @@ description: This document describes how to enable and use authorization with Fl
 Flipt supports the ability to secure its core API routes with authorization.
 
 <Info>
-Flipt authorization is **experimental** and **disabled** (not required) by default.
+Flipt authorization is **disabled** (not required) by default.
 
-To enable authorization, you must set the `experimental.authorization.enabled` configuration option to `true` in your Flipt [configuration file](/configuration/overview#configuration-file).
-
-See the [experimental](/configuration/experimental) section for more information on how to enable experimental features.
+Head to the [Configuration: Authorization](/configuration/authorization) section to learn how to enable it.
 
 </Info>
 
@@ -61,7 +59,7 @@ You can find more information on how to write Rego policies in the [OPA document
   policies before deploying them.
 </Tip>
 
-It's up to you to define the policies that make sense for your organization. During policy evaluation, Flipt will pass the incoming request context to OPA, which will then evaluate the policy against that context.
+It's up to you to define the policies that make sense for your organization. During policy evaluation, Flipt will pass the incoming request context to the built in Open Policy Agent, which will then evaluate the policy against that context.
 
 The context provided to OPA includes the following fields:
 

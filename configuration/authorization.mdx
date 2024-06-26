@@ -4,10 +4,6 @@ description: This document describes how to configure Flipt's authorization mech
 ---
 
 <Warning>
-Flipt authorization is **experimental** and **disabled** (not required) by default.
-
-To enable authorization, you must set the `experimental.authorization.enabled` configuration option to `true` in your Flipt [configuration file](/configuration/overview#configuration-file).
-
 Once authorization has been set to `required: true` all management API routes will require a valid authentication session as well.
 
 The UI will require a session-compatible authentication method (e.g. [OIDC](/authentication/methods#openid-connect)) to be enabled.
@@ -19,30 +15,29 @@ Flipt supports the ability to secure its core API routes by setting the `require
 ```yaml config.yaml
 authorization:
   required: true
-
-# required while authorization is still experimental
-experimental:
-  authorization:
-    enabled: true
 ```
 
 When authorization is set to `required`, the API will ensure valid credentials are present on all management API requests.
 
 See the [Authorization: Overview](/authorization/overview) documentation for more details on Flipt's API authorization handling.
 
-## Policies
+## Backends
 
 Flipt uses [Open Policy Agent (OPA)](https://www.openpolicyagent.org/) to enforce authorization policies. OPA is a general-purpose policy engine that can be used to enforce policies across the stack.
 
-### Local
+Flipt supports sourcing policies and external data from various backends. Currently, Flipt supports the following backends:
 
-Currently, Flipt only supports local policy files. These policy files must be valid [Rego](https://www.openpolicyagent.org/docs/latest/policy-language/) files.
+- [Local](#local)
+- [Bundle](#bundle)
+- [Object Store](#object)
 
-<Note>
-  In the future we plan to support other policy source backends such as git,
-  object store, and others. If you have a specific use case, please get in
-  touch!
-</Note>
+## Local
+
+Flipt supports loading policy and external data from the local filesystem.
+
+### Policies
+
+For configuring policies, the files must be valid [Rego](https://www.openpolicyagent.org/docs/latest/policy-language/) files.
 
 You can specify the path to the policy file in the `policy` object in the `authorization` configuration object.
 
@@ -63,63 +58,126 @@ package flipt.authz.v1
 
 You can learn more about policies in our [Authorization: Overview](/authorization/overview#policies) documentation.
 
-### Polling Interval
+#### Polling Interval
 
 Flipt will poll the policy file for changes at a regular interval. By default, Flipt will poll the policy file every 5 minutes. You can adjust this interval by setting the `poll_interval` field in the `policy` object.
 
 ```yaml
 authorization:
   required: true
-  policy:
-    backend: local
-    local:
+  backend: local
+  local:
+    policy:
       path: "policy.rego"
       poll_interval: "1m"
 ```
 
-## External Data
+### External Data
 
-In addition to policies that can be used to enforce authorization rules, Flipt also provides a way to pass external data to the policy evaluation.
+In addition to policies that can be used to enforce authorization rules, Flipt also provides a way to pass external data to the policy evaluation from the local filesystem. These data objects **must be valid JSON objects**.
 
 This can be done by setting the `data` object in the `authorization` configuration object.
-
-### Local
-
-Currently, Flipt only supports local data objects. These data objects **must be valid JSON objects**.
-
-<Note>
-  In the future we plan to support other data source backends such as git,
-  object store, and others. If you have a specific use case, please get in
-  touch!
-</Note>
-
-You can specify the path to the data file in the `data` object in the `authorization` configuration object.
 
 ```yaml
 authorization:
   required: true
-  policy:
-    backend: local
-    local:
+  backend: local
+  local:
+    policy:
       path: "policy.rego"
-  data:
-    backend: local
-    local:
+    data:
       path: "data.json"
 ```
 
 You can learn more about using data with policies in our [Authorization: Overview](/authorization/overview#external-data) documentation.
 
-### Polling Interval
+#### Polling Interval
 
 Like policies, Flipt will poll data files for changes at a regular interval. By default, Flipt will poll the data file every 30 seconds. You can adjust this interval by setting the `poll_interval` field in the `data` object.
 
 ```yaml
 authorization:
   required: true
-  data:
-    backend: local
-    local:
+  backend: local
+  local:
+    data:
       path: "data.json"
       poll_interval: "1m"
 ```
+
+## Bundle
+
+Flipt supports loading policy and external data from OPA bundles. Bundles are a way to package policy and data files together as a single unit.
+
+You can read more about creating and using OPA bundles in the [OPA documentation](https://www.openpolicyagent.org/docs/latest/management-bundles/).
+
+Bundles can be hosted on a remote server and downloaded by Flipt at regular intervals. Some of the services that OPA bundles support out of the box include:
+
+- [HTTP](https://www.openpolicyagent.org/docs/latest/management-bundles/#bundle-service-api)
+- [S3](https://www.openpolicyagent.org/docs/latest/management-bundles/#amazon-s3)
+- [Azure Blob Storage](https://www.openpolicyagent.org/docs/latest/management-bundles/#azure-blob-storage)
+- [Google Cloud Storage](https://www.openpolicyagent.org/docs/latest/management-bundles/#google-cloud-storage)
+- [OCI Registry](https://www.openpolicyagent.org/docs/latest/management-bundles/#oci-registry)
+
+Bundle support is enabled by setting the `backend` field to `bundle` in the `authorization` configuration object.
+
+The `bundle` backend requires a valid `configuration` object to be set. This configuration definition is the same as the OPA bundle [service configuration](https://www.openpolicyagent.org/docs/latest/configuration/).
+
+```yaml
+authorization:
+  required: true
+  backend: bundle
+  bundle:
+    configuration: |
+      services:
+      - name: acmecorp
+        url: https://example.com/service/v1
+        credentials:
+          bearer:
+            token: "bGFza2RqZmxha3NkamZsa2Fqc2Rsa2ZqYWtsc2RqZmtramRmYWxkc2tm"
+
+      bundles:
+        authz:
+          service: acmecorp
+          resource: somedir/bundle.tar.gz
+          polling:
+            min_delay_seconds: 10
+            max_delay_seconds: 20
+```
+
+## Object
+
+Similar to our [object storage](/configuration/storage#object) support for Flipt flag data, Flipt also supports loading policy and external data from object storage.
+
+Technically, this is a subset of the bundle backend, but it is useful for those who want to provide a simplified configuration for loading policy and data from object storage, without the need to configure the bundle service directly.
+
+The `object` backend requires a valid `type` to be configured. This is similar to the object storage configuration for Flipt flag data as it also requires valid credentials to access the object storage service.
+
+The credentials are read from environment variables at Flipt start time.
+
+```bash
+AWS_ACCESS_KEY_ID=...
+AWS_SECRET_ACCESS_KEY=...
+```
+
+```yaml
+authorization:
+  required: true
+  backend: object
+  object:
+    type: s3
+    s3:
+      region: us-east-1
+      bucket: flipt_policy_bundles
+      # optional: bucket prefix for locating bundle files
+      prefix: production
+      # optional: for non-AWS hosted S3
+      endpoint: http://localhost:9009
+```
+
+<Note>
+Currently Flipt only supports the `s3` object storage type directly. If you require support for other object storage types, please [let us know](https://github.com/flipt-io/flipt/issues/new).
+
+Alternatively as a workaround, you can use the bundle backend to load policy and data from other object storage types. Follow the [OPA bundle documentation](https://www.openpolicyagent.org/docs/latest/management-bundles/) for more information.
+
+</Note>
