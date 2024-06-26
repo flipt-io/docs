@@ -273,6 +273,7 @@
           "pages": [
             "cloud/features/authentication",
             "cloud/features/user-management",
+            "cloud/features/rbac",
             "cloud/features/audit-logs"
           ]
         }
