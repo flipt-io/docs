@@ -1,0 +1,46 @@
+---
+title: Role Based Access Control
+description: Learn about the role-based access control options available with Flipt Hybrid Cloud
+mode: "wide"
+---
+
+Role-based access control allows you to define custom roles and permissions for your team members.
+
+![Roles](/images/cloud/features/roles.png)
+
+You can create roles with specific permissions, such as read-only access to feature flags or the ability to create new flags. This gives you fine-grained control over who can do what in Flipt Hybrid Cloud and your Flipt instances.
+
+## Built-in Roles
+
+Flipt Hybrid Cloud comes with several built-in roles that you can assign to your team members:
+
+- **Admin**: Full access to all resources and settings
+- **Editor**: Can create and update most resources, but cannot delete them. Cannot access organization settings.
+- **Viewer**: Read-only access to most resources, cannot create or update them. Cannot access organization settings.
+
+![Built-In Roles](/images/cloud/features/roles-built-in.png)
+
+Built-in roles cannot be modified or deleted, but you can create custom roles with specific permissions to meet your organization's needs.
+
+## Custom Roles
+
+You can create custom roles with any permissions you need. For example, you can create a role that allows users to create and update feature flags and segments, but not delete them.
+
+![Custom Roles](/images/cloud/features/roles-custom.png)
+
+## Assigning Roles
+
+You can assign roles to team members after you invite them to your organization from the [user management](/cloud/features/user-management) page.
+
+<Note>
+  By default, all team members are assigned the `Viewer` role when they are
+  invited to your organization.
+</Note>
+
+![Assign Roles](/images/cloud/features/roles-assign.png)
+
+## Role Scope
+
+Roles are global across your organization, so a team member's role applies to all environments and instances in your organization.
+
+When your team members route to a Flipt instance through Flipt Hybrid Cloud, their permissions are enforced based on the role assigned to them in the organization.
