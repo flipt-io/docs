@@ -1,6 +1,7 @@
 affordance
 APIs
 auditable
+avro
 azblob
 backoff
 boolean
