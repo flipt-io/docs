@@ -1,30 +1,26 @@
 ---
 title: Concepts
-description: This document describes the basic concepts of Flipt Hybrid Cloud.
+description: This document describes the basic concepts of Flipt Enterprise Cloud.
 ---
 
-Flipt Hybrid Cloud is our managed service offering that allows you to run Flipt on your infrastructure with the added benefits of a managed service. This document describes the basic concepts of Flipt Hybrid Cloud.
+Flipt Enterprise Cloud allows you to run Flipt on your infrastructure with the added benefits of a managed service. This document describes the basic concepts of Flipt Enterprise Cloud.
 
-## Hybrid Cloud
+## Enterprise Cloud
 
-Why do we call it Hybrid Cloud? Because it's a blend of the best of both worlds: With Flipt Hybrid Cloud, you deploy open-source Flipt on your infrastructure or cloud provider of choice as you always have, and we provide you with effortless ingress, enterprise-grade authentication and authorization. Experience a seamless transition with enhanced features that fit perfectly into your existing setup.
+With Flipt Enterprise Cloud, you deploy open-source Flipt on your infrastructure or cloud provider of choice as you always have, and we provide you with effortless ingress, enterprise-grade authentication and authorization. Experience a seamless transition with enhanced features that fit perfectly into your existing setup.
 
 ## Gateways
 
-A gateway is a secure tunnel that allows Flipt Hybrid Cloud to connect to your local Flipt instance. When you run `flipt cloud serve`, Flipt Hybrid Cloud creates a secure tunnel to your local instance via a gateway, allowing you to access it from anywhere in the world.
+A gateway is a secure tunnel that allows Flipt Enterprise Cloud to connect to your local Flipt instance. When you run `flipt` with Enterprise Cloud, we create a secure tunnel to your local instance via a gateway, allowing you to access it from anywhere in the world.
 
 <Tip>
-Our [Getting Started](/cloud/guides/getting-started) guide covers how to connect your local instance to Flipt Hybrid Cloud for testing purposes.
-
-See our [Production Guide](/cloud/guides/production) for more information on how to connect your long-lived instances to Flipt Hybrid Cloud.
-
+  See our [Production Guide](/cloud/guides/production) for more information on
+  how to connect your instances to Flipt Enterprise Cloud.
 </Tip>
-
-When connecting your long-lived instances to Flipt Hybrid Cloud, the same gateway technology is used to securely connect your instances to the Flipt Hybrid Cloud service. The only difference is that these gateway connections do not expire like those created by `flipt cloud serve`.
 
 ## Environments
 
-An environment is a logical grouping of your Flipt instances. When you connect your Flipt instance to Flipt Hybrid Cloud, you are connecting it to a named environment. You can think of environments as a way to group your instances by purpose, such as development, staging, or production.
+An environment is a logical grouping of your Flipt instances. When you connect your Flipt instance to Flipt Enterprise Cloud, you are connecting it to a named environment. You can think of environments as a way to group your instances by purpose, such as development, staging, or production.
 
 Multiple instances can be connected to the same environment if you wish. However, traffic will be routed round-robin style to each instance in the environment.
 
@@ -32,6 +28,6 @@ Environments and gateways can be thought of as logically the same. When you conn
 
 ## Instances
 
-An instance is a single running instance of Flipt. When you connect your Flipt instance to Flipt Hybrid Cloud, you are connecting a single instance to an environment.
+An instance is a single running instance of Flipt. When you connect your Flipt instance to Flipt Enterprise Cloud, you are connecting a single instance to an environment.
 
-Instances run in your infrastructure or cloud provider of choice. Flipt Hybrid Cloud provides a secure tunnel to your instance via a gateway, allowing you to access it from anywhere in the world securely and easily.
+Instances run in your infrastructure or cloud provider of choice. Flipt Enterprise Cloud provides a secure tunnel to your instance via a gateway, allowing you to access it from anywhere in the world securely and easily.
