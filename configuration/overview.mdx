@@ -437,6 +437,20 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | audit.sinks.webhook.max_backoff_duration | Max exponential backoff duration for sending webhook upon failure  | 15s     | v1.27.0 |
 | audit.sinks.webhook.templates[]          | List of webhook templates for Flipt to send audit events to        |         | v1.28.0 |
 
+#### Audit Events: Kafka
+
+| Property                                  | Description                                          | Default  | Since   |
+| ----------------------------------------- | ---------------------------------------------------- | -------- | ------- |
+| audit.sinks.kafka.enabled                 | Enable Kafka sink                                    | false    | v1.46.0 |
+| audit.sinks.kafka.topic                   | Kafka topic to send audit events to                  |          | v1.46.0 |
+| audit.sinks.kafka.bootstrap_servers       | Kafka bootstrap servers                              |          | v1.46.0 |
+| audit.sinks.kafka.encoding                | Encoding to use for events in Kafka (protobuf, avro) | protobuf | v1.46.0 |
+| audit.sinks.kafka.schema_registry.url     | URL to the schema registry for encoding              |          | v1.46.0 |
+| audit.sinks.kafka.require_tls             | Require TLS to access the Kafka broker               | false    | v1.46.0 |
+| audit.sinks.kafka.insecure_skip_tls       | Skip verifying the server's certificate chain        | false    | v1.46.0 |
+| audit.sinks.kafka.authentication.username | SASL/SCRAM username to access the Kafka broker       |          | v1.46.0 |
+| audit.sinks.kafka.authentication.password | SASL/SCRAM password to access the Kafka broker       |          | v1.46.0 |
+
 ### Analytics
 
 | Property                      | Description                                     | Default | Since   |
