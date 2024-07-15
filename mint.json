@@ -35,7 +35,7 @@
   },
   "tabs": [
     {
-      "name": "Hybrid Cloud",
+      "name": "Enterprise Cloud",
       "url": "cloud"
     },
     {
@@ -48,7 +48,7 @@
   },
   "anchors": [
     {
-      "name": "Hybrid Cloud",
+      "name": "Enterprise Cloud",
       "icon": "cloud",
       "url": "cloud"
     },
@@ -101,12 +101,6 @@
         "self-hosted/overview",
         "self-hosted/docker",
         "self-hosted/kubernetes"
-      ]
-    },
-    {
-      "group": "Managed",
-      "pages": [
-        "managed/overview"
       ]
     },
     {
@@ -218,8 +212,7 @@
               "group": "cloud",
               "pages":[
                 "cli/commands/cloud/login",
-                "cli/commands/cloud/logout",
-                "cli/commands/cloud/serve"
+                "cli/commands/cloud/logout"
               ]
             },
             "cli/commands/evaluate",
@@ -282,7 +275,6 @@
     {
       "group": "Guides",
       "pages": [
-        "cloud/guides/getting-started",
         "cloud/guides/production"
       ]
     },
