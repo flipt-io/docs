@@ -44,9 +44,9 @@ You can specify the path to the policy file in the `policy` object in the `autho
 ```yaml
 authorization:
   required: true
-  policy:
-    backend: local
-    local:
+  backend: local
+  local:
+    policy:
       path: "policy.rego"
 ```
 
@@ -176,8 +176,8 @@ authorization:
 ```
 
 <Note>
-Currently Flipt only supports the `s3` object storage type directly. If you require support for other object storage types, please [let us know](https://github.com/flipt-io/flipt/issues/new).
+Currently, Flipt only supports the `s3` object storage type directly. If you require support for other object storage types, please [let us know](https://github.com/flipt-io/flipt/issues/new).
 
-Alternatively as a workaround, you can use the bundle backend to load policy and data from other object storage types. Follow the [OPA bundle documentation](https://www.openpolicyagent.org/docs/latest/management-bundles/) for more information.
+Alternatively, as a workaround, you can use the bundle backend to load policy and data from other object storage types. Follow the [OPA bundle documentation](https://www.openpolicyagent.org/docs/latest/management-bundles/) for more information.
 
 </Note>
