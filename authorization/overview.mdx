@@ -64,7 +64,7 @@ It's up to you to define the policies that make sense for your organization. Dur
 The context provided to OPA includes the following fields:
 
 - `input.authentication`: The authentication information for the request. These are specific to each authentication provider/method and can include things like the user's roles, email, etc.
-- `input.request`: The incoming request details, such as the `namespace`, `resource`, and `verb`.
+- `input.request`: The incoming request details, such as the `namespace`, `resource`, and `action`.
 
 ### Authentication Information
 
@@ -157,7 +157,7 @@ Roles or groups are not a requirement for writing policies. You can write polici
 
 ### Request Information
 
-The `input.request` field contains information about the incoming request. This includes the `namespace`, `resource`, and `verb` of the request.
+The `input.request` field contains information about the incoming request. This includes the `namespace`, `resource`, and `action` of the request.
 
 - `namespace`: The [namespace](/concepts#namespaces) in Flipt of the resource being accessed. If no namespace is provided, the default namespace is used, or it is not applicable as the resource is not namespace scoped (e.g. authentication)
 
@@ -180,7 +180,7 @@ The `input.request` field contains information about the incoming request. This 
     - `distribution`: Access to segment [distribution](/concepts#distributions) resources.
   - `token`: Access to client token resources.
 
-- `verb`: The action being performed on the resource. This can be one of:
+- `action`: The action being performed on the resource. This can be one of:
   - `create`: Access to create resources.
   - `read`: Access to list or read resources.
   - `update`: Access to update resources.
@@ -193,7 +193,7 @@ Here's an example of the `input.request` field for a request to list flags in th
   "namespace": "default",
   "resource": "flag",
   "subject": "flag",
-  "verb": "read"
+  "action": "read"
 }
 ```
 
@@ -209,7 +209,7 @@ default allow := false
 allow if {
     input.request.namespace == "default"
     input.request.resource == "flag"
-    input.request.verb == "read"
+    input.request.action == "read"
 }
 ```
 
@@ -227,7 +227,7 @@ allow if {
     "IT" in claims.groups
     input.request.namespace == "default"
     input.request.resource == "flag"
-    input.request.verb == "delete"
+    input.request.action == "delete"
 }
 ```
 
