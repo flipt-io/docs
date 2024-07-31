@@ -122,11 +122,6 @@ Currently 5 constraint types are available:
 
 ## Rules
 
-<Info>
-  Rules are only available for [Variant](#variants) flags. This was the only
-  flag type available pre-v1.24.0 of Flipt.
-</Info>
-
 Rules allow you to tie your flags, variants and segments together by specifying
 which segments are targeted by which variants.
 
@@ -141,6 +136,14 @@ for all entities in the `new-users` segment. This would be configured like so:
 Rules are evaluated in order per their rank from 1-N. The first rule that
 matches wins. Once created, rules can be re-ordered to change how they're
 evaluated.
+
+### Default Rule
+
+<Info>Default Rules are available since v1.74.0 of Flipt.</Info>
+
+If no rules match for a given flag, the default rule value is returned. This value is optional and can be set to any variant that exists for the flag.
+
+![Default Rule Example](/images/concepts/default_rule.png)
 
 ### Distributions
 
@@ -157,14 +160,9 @@ The ability to manage distributions, as illustrated in the image above, is an ex
 
 ## Rollouts
 
-<Info>
-  Rollouts are only available for [Boolean](#boolean) flags. Rollouts were
-  introduced in v1.24.0 of Flipt.
-</Info>
+Rollouts allow you to potentially change the result of a boolean flag value at request time.
 
-Boolean flags return `true` or `false` based on the flags `enabled` property. Rollouts allow you to potentially change this value at request time.
-
-Rollouts are a sequence of conditions which when one is matched for a request context, overrides the flag's `enabled` property.
+Rollouts are a sequence of conditions which when one is matched for a request context, overrides the default rollout property.
 
 Current rollout types include:
 
@@ -174,6 +172,10 @@ Current rollout types include:
 ![Rollouts Example](/images/concepts/rollouts.png)
 
 Rollouts work similar to [Rules](#rules) in that they're evaluated in order per their rank from 1-N. The first rollout that matches wins. Once created, rollouts can be re-ordered to change how they're evaluated.
+
+### Default Rollout
+
+If no rollouts match for a given flag, the default rollout value is returned. This value is the same as the 'enabled' value for the flag for backward compatibility reasons.
 
 ## Evaluation
 
