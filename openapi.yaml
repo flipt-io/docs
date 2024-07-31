@@ -1755,6 +1755,8 @@ components:
             $ref: "#/components/schemas/Variant"
         type:
           $ref: "#/components/schemas/FlagType"
+        defaultVariant:
+          $ref: "#/components/schemas/Variant"
       required:
         - namespaceKey
         - key
@@ -1796,6 +1798,8 @@ components:
           type: string
         enabled:
           type: boolean
+        defaultVariantId:
+          type: string
       required:
         - name
     NamespaceList:
