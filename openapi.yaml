@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: api
-  version: 1.47.0
+  version: 1.46.0
 paths:
   /evaluate/v1/boolean:
     post:
@@ -489,14 +489,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EvaluatebatchEvaluationResponse"
+                $ref: "#/components/schemas/BatchEvaluationResponse"
       security: *ref_0
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EvaluatebatchEvaluationRequest"
+              $ref: "#/components/schemas/BatchEvaluationRequest"
   /api/v1/namespaces/{namespaceKey}/flags:
     get:
       operationId: FlagsService.list
