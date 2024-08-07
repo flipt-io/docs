@@ -1,0 +1,26 @@
+---
+title: Overview
+---
+
+OpenFeature Remote Evaluation Protocol (OFREP) is an API specification for feature flagging that allows the use of generic providers to connect to any feature flag management systems that supports the protocol.
+
+Currently, OFREP is still in the early stages of development so the specification is subject to change. Flipt is one of the early adopters of the OFREP protocol and has implemented the protocol in its API.
+
+For more information on the OFREP protocol, see the [OpenFeature Remote Evaluation Protocol](https://github.com/open-feature/protocol) repository on GitHub.
+
+## Endpoints
+
+The OFREP protocol is implemented in the Flipt API. The following endpoints are available:
+
+- [Configuration](/reference/openfeature/configuration) - Supplies information about the remote flag management system to set up the OpenFeature SDK providers.
+- [Single Flag Evaluation](/reference/openfeature/flag-evaluation) - Called by the server providers to perform single flag evaluation.
+
+## Providers
+
+Providers are the entities that implement the OFREP protocol from the caller. Providers are responsible for evaluating feature flags and returning the results to the client.
+
+Current providers include:
+
+- [Go](https://github.com/open-feature/go-sdk-contrib/tree/main/providers/ofrep)
+- [JS Server](https://github.com/open-feature/js-sdk-contrib/tree/main/libs/providers/ofrep)
+- [JS Web](https://github.com/open-feature/js-sdk-contrib/tree/main/libs/providers/ofrep-web)
