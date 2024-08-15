@@ -1,18 +1,19 @@
 ---
-title: "Flag Evaluation"
-openapi: "POST /ofrep/v1/evaluate/flags/{key}"
+title: "Bulk Evaluation"
+openapi: "POST /ofrep/v1/evaluate/flags"
 ---
 
 <RequestExample>
 
 ```bash cURL
 curl --request POST \
-  --url https://try.flipt.io/ofrep/v1/evaluate/flags/<flagKey> \
+  --url https://try.flipt.io/ofrep/v1/evaluate/flags \
   --header 'Content-Type: application/json' \
   --header 'Accept: application/json' \
   --header 'X-Flipt-Namespace: <namespaceKey>' \
   --data '{
   "context": {
+    "flags": ["flagKey1", "flagKey2", "flagKey3"],
     "targetingKey": "targetingKey1"
   },
 }'
