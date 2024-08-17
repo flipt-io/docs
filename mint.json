@@ -259,8 +259,15 @@
           "group": "Features",
           "pages": [
             "cloud/features/authentication",
-            "cloud/features/user-management",
-            "cloud/features/rbac"
+            "cloud/features/git-backed-storage",
+            "cloud/features/rbac",
+            "cloud/features/user-management"
+          ]
+        },
+        {
+          "group": "Guides",
+          "pages": [
+            "cloud/guides/getting-started"
           ]
         }
       ]
