@@ -30,13 +30,13 @@ Before you move to production, you need to have the following:
 
   <Step title="Navigate to your Environment">
 
-  From the Flipt Managed Cloud dashboard, find the environment you want to create an API key for and hover over the environment name.
+From the Flipt Managed Cloud dashboard, find the environment you want to create an API key for and hover over the environment name.
 
   </Step>
 
   <Step title="Click on the Edit link">
 
-  Click on the `Edit` link.
+Click on the `Edit` link.
 
 ![Edit Environment](/images/cloud/guides/production/edit-environment.png)
 
@@ -44,7 +44,7 @@ Before you move to production, you need to have the following:
 
   <Step title="Create an API Key">
 
-  Click on the `Security` tab and then click on the `Create API Key` button.
+Click on the `Security` tab and then click on the `Create API Key` button.
 
 ![Security](/images/cloud/guides/production/security.png)
 
@@ -52,11 +52,11 @@ Before you move to production, you need to have the following:
 
   <Step title="Name your API Key">
 
-  Give your API a name to help you identify it later and click on the `Create` button.
+Give your API a name to help you identify it later and click on the `Create` button.
 
 ![Name API Key](/images/cloud/guides/production/name-api-key.png)
 
-  Copy the API key to your clipboard and save it in a secure location. You will not be able to access the API key after you leave this page.
+Copy the API key to your clipboard and save it in a secure location. You will not be able to access the API key after you leave this page.
 
 ![API Key Created](/images/cloud/guides/production/api-key-created.png)
 
@@ -69,7 +69,8 @@ Before you move to production, you need to have the following:
 Currently, Flipt Managed Cloud only support client-side SDKs for direct evaluation via the Flipt Cloud API.
 
 <Note>
-For more information on the architecture of Flipt Managed Cloud, see the [architecture overview](/cloud/architecture).
+  For more information on the architecture of Flipt Managed Cloud, see the
+  [architecture overview](/cloud/architecture).
 </Note>
 
 <Steps>
@@ -87,11 +88,12 @@ For more information on the architecture of Flipt Managed Cloud, see the [archit
 
     ```go
     evaluationClient, _ := flipt.NewClient(
-        flipt.WithURL("https://<environment>-<organization>.flipt.cloud"), 
+        flipt.WithURL("https://<environment>-<organization>.flipt.cloud"),
         flipt.WithClientTokenAuthentication(<api-key>),
         flipt.WithNamespace(<namespace>)
     )
     ```
+
   </Step>
 
   <Step title="Use the SDK">
@@ -124,11 +126,13 @@ Here's how you can configure your Flipt instances to use the Git repository data
             token:
                 access_token: <git-access-token>
     ```
+
   </Step>
 
-  <Step title="Restart the Flipt instances">
-    Restart the Flipt instances to apply the changes.
-  </Step>
+{" "}
+<Step title="Restart the Flipt instances">
+  Restart the Flipt instances to apply the changes.
+</Step>
 
   <Step title="Install the SDK">
     Chose the SDK that matches your application's language and install it. All Server-side SDKs are documented [here](/integration/server).
@@ -136,6 +140,7 @@ Here's how you can configure your Flipt instances to use the Git repository data
     <Note>
     You can also use any of our [OpenFeature SDKs](/integration/openfeature) or [OpenFeature Remote Evaluation Protocol implementations](/integration/openfeature#remote-evaluation-protocol) to evaluate feature flags within your infrastructure.
     </Note>
+
   </Step>
 
   <Step title="Configure the SDK">
@@ -156,17 +161,19 @@ Here's how you can configure your Flipt instances to use the Git repository data
         },
     ))
     ```
+
   </Step>
   <Step title="Scale">
     That's it! 🎉 You can now scale your feature flagging operations with Flipt Managed Cloud and Flipt Open Source.
 
     All changes to the feature flags and configurations are automatically propagated to your Flipt instances within your infrastructure through the Git repository data source.
+
   </Step>
 </Steps>
 
 ## What's Next?
 
-You can now start using Flipt Managed Cloud to scale your feature flagging operations. 
+You can now start using Flipt Managed Cloud to scale your feature flagging operations.
 
 As your organization grows, check out some of our enterprise features including:
 
@@ -176,4 +183,4 @@ As your organization grows, check out some of our enterprise features including:
 
 ## Questions?
 
-If you have any questions or need further assistance, please ask in either our [Discord channel](https://flipt.io/discord) or [Flipt Community Discourse](https://community.flipt.io/c/flipt-cloud/6). 
+If you have any questions or need further assistance, please ask in either our [Discord channel](https://flipt.io/discord) or [Flipt Community Discourse](https://community.flipt.io/c/flipt-cloud/6).
