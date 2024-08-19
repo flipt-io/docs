@@ -301,7 +301,8 @@
       "pages": [
         "reference/openfeature/overview",
         "reference/openfeature/configuration",
-        "reference/openfeature/flag-evaluation"
+        "reference/openfeature/flag-evaluation",
+        "reference/openfeature/bulk-evaluation"
       ]
     },
     {
