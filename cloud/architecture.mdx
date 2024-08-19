@@ -1,0 +1,74 @@
+---
+title: Architecture
+description: Learn about the architecture of Flipt Managed Cloud and how it scales to meet your needs
+mode: "wide"
+---
+
+This section describes the high-level architecture of Flipt Managed Cloud and how you can also run you own Flipt instances for evaluation purposes while still leveraging the managed service.
+
+## Overview
+
+Each Flipt Managed Cloud instance is a fully managed Flipt instance that is hosted and operated by the Flipt team.
+
+Each organization gets a dedicated Flipt instance, eliminating the noisy neighbor problem.
+
+Each environment is a logical grouping of feature flags and namespaces that share the same backend Flipt instance.
+
+Feature flags in each environment are isolated from each other, preventing naming conflicts and improving organization. You have the option to have multiple environments share the same underlying Git repository, allowing you to manage your feature flags in a single location, or have each environment have its own Git repository.
+
+This allows Flipt Managed Cloud to work for both monorepo and polyrepo architectures.
+
+<img
+  className="block dark:hidden"
+  src="/images/cloud/architecture/overview-light.svg"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/cloud/architecture/overview-dark.svg"
+/>
+
+## Control Plane
+
+Flipt Managed Cloud operates as a control plane for your Flipt environments, providing a single point of entry for all of your feature flagging needs. You login to the Flipt Managed Cloud UI and create and manage your feature flags through the UI. Feature flag data is stored in the Git repository you specify in the Flipt Managed Cloud UI.
+
+Flipt Managed Cloud also handles authentication and authorization for your Flipt environments. Flipt managed Cloud works with many popular identity and single sign-on providers, including Google, Okta, and Auth0.
+
+## Data Plane
+
+Each Flipt environment is backed by a Flipt instance. The Flipt instance is hosted and operated by the Flipt team. This means you don't need to deploy or manage Flipt instances yourself.
+
+These environments act as the data plane to serve feature flag data to your applications. When you create a feature flag in the Flipt Managed Cloud UI, it is stored in the Git repository you specify in the Flipt Managed Cloud UI. When you make a request to evaluate a feature flag, the Flipt instance in the Flipt Managed Cloud environment serves the feature flag data to your application.
+
+Each Flipt environment get's its own unique URL that you use to serve feature flag data to your applications. Our SDKs and API clients use this URL to connect to the Flipt instance in the Flipt Managed Cloud environment.
+
+## Evaluation
+
+Flipt Managed Cloud supports evaluation for our [client-side SDKs](/integration/client) out of the box. These SDKs are available for many popular programming languages, including JavaScript, TypeScript, Go, Java, Ruby, Python, and more. These client-side SDKs are designed with performance in mind, and store feature flag data in memory to serve feature flag evaluations quickly.
+
+<img
+  className="block dark:hidden"
+  src="/images/cloud/architecture/client-evaluation-light.svg"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/cloud/architecture/client-evaluation-dark.svg"
+/>
+
+[Server-side SDKs](/integration/server) including [OpenFeature SDKs](/integration/openfeature) are also supported, but currently require you to run your own Flipt instance. 
+
+This is useful if you want to use Flipt Managed Cloud for configuring and managing your feature flags, while still using your own Flipt instance for evaluation, allowing you to maintain control over your own data and infrastructure.
+
+### Scaling
+
+To scale evaluation requests and serve feature flag evaluations via our server-side SDKs, you can deploy Flipt Open Source in your infrastructure and configure it to source flag data from your Git repository.
+
+<img
+  className="block dark:hidden"
+  src="/images/cloud/architecture/server-evaluation-light.svg"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/cloud/architecture/server-evaluation-dark.svg"
+/>
+
+For more information on how to deploy Flipt Open Source and configure it to source flag data from your Git repository, please refer to the [Moving to Production](/cloud/guides/moving-to-production) guide.

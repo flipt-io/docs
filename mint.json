@@ -255,6 +255,7 @@
         "cloud/overview",
         "cloud/benefits",
         "cloud/concepts",
+        "cloud/architecture",
         {
           "group": "Features",
           "pages": [
