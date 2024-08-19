@@ -47,28 +47,45 @@ Flipt Managed Cloud supports evaluation for our [client-side SDKs](/integration/
 
 <img
   className="block dark:hidden"
-  src="/images/cloud/architecture/client-evaluation-light.svg"
+  src="/images/cloud/architecture/client-evaluation-cloud-light.svg"
 />
 <img
   className="hidden dark:block"
-  src="/images/cloud/architecture/client-evaluation-dark.svg"
+  src="/images/cloud/architecture/client-evaluation-cloud-dark.svg"
 />
 
-[Server-side SDKs](/integration/server) including [OpenFeature SDKs](/integration/openfeature) are also supported, but currently require you to run your own Flipt instance. 
+[Server-side SDKs](/integration/server) including [OpenFeature SDKs](/integration/openfeature) are also supported, but currently require you to run your own Flipt instances. 
 
-This is useful if you want to use Flipt Managed Cloud for configuring and managing your feature flags, while still using your own Flipt instance for evaluation, allowing you to maintain control over your own data and infrastructure.
+This is useful if you want to use Flipt Managed Cloud for configuring and managing your feature flags, while still using your own Flipt instances for evaluation, allowing you to maintain control over your own data and infrastructure.
 
-### Scaling
+### Self-hosted Flipt
 
-To scale evaluation requests and serve feature flag evaluations via our server-side SDKs, you can deploy Flipt Open Source in your infrastructure and configure it to source flag data from your Git repository.
+[Open Source Flipt](/) is available for self-hosting and can mirror your feature flag configurations from Flipt Managed Cloud.
+
+### Server-side Evaluation
+
+To scale evaluation requests and serve feature flag evaluations via our server-side SDKs, you can deploy Flipt Open Source and configure it to source flag data from your Git repository.
 
 <img
   className="block dark:hidden"
-  src="/images/cloud/architecture/server-evaluation-light.svg"
+  src="/images/cloud/architecture/server-evaluation-self-hosted-light.svg"
 />
 <img
   className="hidden dark:block"
-  src="/images/cloud/architecture/server-evaluation-dark.svg"
+  src="/images/cloud/architecture/server-evaluation-self-hosted-dark.svg"
+/>
+
+### Client-side Evaluation
+
+You can also run your own Flipt Open Source instances and configure our client-side SDKs to connect to your Flipt instances. This again allows you to use Flipt Managed Cloud for managing your feature flags, while still using your own Flipt instances for evaluation for performance and/or security reasons.
+
+<img
+  className="block dark:hidden"
+  src="/images/cloud/architecture/client-evaluation-self-hosted-light.svg"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/cloud/architecture/client-evaluation-self-hosted-dark.svg"
 />
 
 For more information on how to deploy Flipt Open Source and configure it to source flag data from your Git repository, please refer to the [Moving to Production](/cloud/guides/moving-to-production) guide.
