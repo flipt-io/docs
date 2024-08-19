@@ -1,13 +1,12 @@
 name: CI
 
-on:
-  - pull_request
+on: [pull_request]
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -19,3 +18,8 @@ jobs:
 
       - name: Lint
         run: yarn lint
+
+      - name: Check for Broken Links
+        run: |
+          yarn global add mintlify
+          mintlify broken-links
