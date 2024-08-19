@@ -23,6 +23,7 @@ enum
 flagd
 flipt
 flipt's
+git's
 Gitlab
 gitops
 googlecloud
@@ -43,6 +44,8 @@ linux
 memcached
 Minio
 mintlify
+monorepo
+multi-repo
 namespace
 namespaced
 namespaces

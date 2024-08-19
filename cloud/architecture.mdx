@@ -16,7 +16,7 @@ Each environment is a logical grouping of feature flags and namespaces that shar
 
 Feature flags in each environment are isolated from each other, preventing naming conflicts and improving organization. You have the option to have multiple environments share the same underlying Git repository, allowing you to manage your feature flags in a single location, or have each environment have its own Git repository.
 
-This allows Flipt Managed Cloud to work for both monorepo and polyrepo architectures.
+This allows Flipt Managed Cloud to work for both monorepo and multi-repo architectures.
 
 <img
   className="block dark:hidden"
@@ -56,13 +56,11 @@ Flipt Managed Cloud supports evaluation for our [client-side SDKs](/integration/
 
 [Server-side SDKs](/integration/server) including [OpenFeature SDKs](/integration/openfeature) are also supported, but currently require you to run your own Flipt instances.
 
-This is useful if you want to use Flipt Managed Cloud for configuring and managing your feature flags, while still using your own Flipt instances for evaluation, allowing you to maintain control over your own data and infrastructure.
+### Self-Hosted Flipt
 
-### Self-hosted Flipt
+[Open Source Flipt](/) is available for self-hosting and can mirror your feature flag configurations from Flipt Managed Cloud. This is useful if you want to use Flipt Managed Cloud for configuring and managing your feature flags, while still using your own Flipt instances for evaluation, allowing you to maintain control over your own data and infrastructure.
 
-[Open Source Flipt](/) is available for self-hosting and can mirror your feature flag configurations from Flipt Managed Cloud.
-
-### Server-side Evaluation
+### Server-Side Evaluation
 
 To scale evaluation requests and serve feature flag evaluations via our server-side SDKs, you can deploy Flipt Open Source and configure it to source flag data from your Git repository.
 
@@ -75,7 +73,7 @@ To scale evaluation requests and serve feature flag evaluations via our server-s
   src="/images/cloud/architecture/server-evaluation-self-hosted-dark.svg"
 />
 
-### Client-side Evaluation
+### Client-Side Evaluation
 
 You can also run your own Flipt Open Source instances and configure our client-side SDKs to connect to your Flipt instances. This again allows you to use Flipt Managed Cloud for managing your feature flags, while still using your own Flipt instances for evaluation for performance and/or security reasons.
 
