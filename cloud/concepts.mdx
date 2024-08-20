@@ -1,33 +1,58 @@
 ---
 title: Concepts
-description: This document describes the basic concepts of Flipt Enterprise Cloud.
+description: This document describes the basic concepts of Flipt Managed Cloud.
 ---
 
-Flipt Enterprise Cloud allows you to run Flipt on your infrastructure with the added benefits of a managed service. This document describes the basic concepts of Flipt Enterprise Cloud.
+<Info>
+  Flipt Managed Cloud is currently in beta. Some functionality may be subject to
+  change.
 
-## Enterprise Cloud
+Interested in joining the beta? [Request access here](https://flipt.cloud).
 
-With Flipt Enterprise Cloud, you deploy open-source Flipt on your infrastructure or cloud provider of choice as you always have, and we provide you with effortless ingress, enterprise-grade authentication and authorization. Experience a seamless transition with enhanced features that fit perfectly into your existing setup.
+</Info>
 
-## Gateways
+Flipt Managed Cloud is a fully managed solution where we host and operate Flipt for you. You no longer need to deploy or manage Flipt instances yourself. We provide a secure, scalable, and feature-rich environment with enterprise-grade authentication and authorization built-in.
 
-A gateway is a secure tunnel that allows Flipt Enterprise Cloud to connect to your local Flipt instance. When you run `flipt` with Enterprise Cloud, we create a secure tunnel to your local instance via a gateway, allowing you to access it from anywhere in the world.
+While Flipt Managed Cloud is a completely managed service, it works hand in hand with Flipt Open Source. You can still deploy Flipt Open Source in your own infrastructure to scale as needed, while still using Flipt Managed Cloud for feature flag management.
 
-<Tip>
-  See our [Production Guide](/cloud/guides/production) for more information on
-  how to connect your instances to Flipt Enterprise Cloud.
-</Tip>
+Here are some of the basic concepts in Flipt Managed Cloud:
+
+## Git-Backed Storage
+
+Flipt Managed Cloud leverages Git repositories as the backbone for storing and managing your feature flag configurations. This innovative approach allows you to store your feature flag data in your own GitHub repositories, providing a unique blend of managed service convenience and data ownership.
+
+See the [Git-Backed Storage](/cloud/features/git-backed-storage) page for more information.
 
 ## Environments
 
-An environment is a logical grouping of your Flipt instances. When you connect your Flipt instance to Flipt Enterprise Cloud, you are connecting it to a named environment. You can think of environments as a way to group your instances by purpose, such as development, staging, or production.
+Environments in Flipt Managed Cloud are high-level groupings of feature flags and namespaces. They provide a way to organize and manage your feature flags across different stages of your development lifecycle or across various applications within your organization.
 
-Multiple instances can be connected to the same environment if you wish. However, traffic will be routed round-robin style to each instance in the environment.
+Key points about environments:
 
-Environments and gateways can be thought of as logically the same. When you connect your Flipt instance to an environment, you are creating a secure tunnel to your instance via a gateway.
+- **Logical Separation**: Environments allow you to logically separate your feature flags, making it easier to manage flags for different purposes (e.g., development, staging, production).
+- **Independent Configuration**: Each environment can have its own set of feature flags, namespaces, and configurations, allowing for independent management and testing.
 
-## Instances
+## Namespaces
 
-An instance is a single running instance of Flipt. When you connect your Flipt instance to Flipt Enterprise Cloud, you are connecting a single instance to an environment.
+Within each environment, Flipt Managed Cloud uses namespaces to further organize and group related feature flags.
 
-Instances run in your infrastructure or cloud provider of choice. Flipt Enterprise Cloud provides a secure tunnel to your instance via a gateway, allowing you to access it from anywhere in the world securely and easily.
+Key points about namespaces:
+
+- **Granular Organization**: Namespaces allow you to group related flags together, such as by team, feature set, or application component.
+- **Isolation**: Flags in different namespaces are isolated from each other, preventing naming conflicts and improving organization.
+- **Flexible Hierarchy**: You can create multiple namespaces within an environment, allowing for a flexible hierarchy that suits your organizational needs.
+- **Managed Access Control**: Roles can be scoped to limit access to specific sets of namespaces.
+
+By utilizing environments and namespaces effectively, you can create a well-organized and scalable feature flag management system that grows with your organization's needs.
+
+## Sources
+
+Sources in Flipt Managed Cloud are the connection points between your environments and our managed storage, implemented as Git repositories on GitHub. They play a crucial role in how your feature flag data is stored, versioned, and managed.
+
+Key points about sources:
+
+- **Git-Backed Storage**: Each source maps an environment to a specific Git repository, leveraging the power of version control for your feature flag configurations.
+- **Data Sovereignty**: By using your own GitHub repositories, you maintain full control over your feature flag data, ensuring compliance with data regulations and internal policies.
+- **Version Control**: Sources provide a comprehensive audit trail for all feature flag changes, making it easy to track who made what changes, when, and why.
+
+Sources in Flipt Managed Cloud combine the benefits of Git-based version control with the ease of use of a managed service, providing a flexible and powerful foundation for your feature flag management.

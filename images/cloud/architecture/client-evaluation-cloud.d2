@@ -1,0 +1,72 @@
+vars: {
+  d2-config: {
+    layout-engine: elk
+  }
+}
+
+style: {
+  fill: transparent
+}
+
+direction: right
+
+infrastructure: "Your Infrastructure" {
+  style: {
+    fill: transparent
+  }
+
+  clients: "Client-Side SDKs" {
+    style: {
+      fill: transparent
+      stroke: "#000000"
+      stroke-dash: 3
+    }
+  
+    typescript: "" {
+      shape: image
+      icon: https://icons.terrastruct.com/dev%2Ftypescript.svg
+      style.font-size: 32
+    }
+
+    go: "" {
+      shape: image
+      icon: https://icons.terrastruct.com/dev%2Fgo.svg
+      style.font-size: 32
+    }
+
+    java: "" {
+      shape: image
+      icon: https://icons.terrastruct.com/dev%2Fjava.svg
+      style.font-size: 32
+    }
+  }
+}
+
+
+cloud: "" {
+  style: {
+    fill: transparent
+  }
+
+  cloudInstance: Flipt Cloud {
+    shape: image
+    icon: https://flipt.cloud/icon.svg?3c7bba14eb804cba
+    style.font-size: 32
+  }
+
+  environments: Environments {
+    style: {
+        fill: transparent
+        stroke: "#000000"
+        stroke-dash: 3
+    }
+
+    fone: "" {
+        icon: https://assets-global.website-files.com/659480aa07716c37f0fd8dee/6597f2baa456ff33c9f13a07_logo%201.svg
+    }
+  }
+}
+
+infrastructure.clients.typescript <-> cloud.environments.fone
+infrastructure.clients.go <-> cloud.environments.fone: environment-org.flipt.cloud
+infrastructure.clients.java <-> cloud.environments.fone

@@ -52,7 +52,7 @@ We also use a [custom style](https://docs.errata.ai/vale/styles) to lint our doc
 
 ### Spelling Errors
 
-If Vale detects a spelling error, it will output it as an error to the console. If you want to ignore a spelling error, you can add the word to the [spelling-execeptions](./vale/styles/Flipt/spelling-exceptions.txt) file in our custom style.
+If Vale detects a spelling error, it will output it as an error to the console. If you want to ignore a spelling error, you can add the word to the spelling-execeptions (`.vale/styles/Flipt/spelling-exceptions.txt`) file in our custom style.
 
 ℹ The words in this file are case-insensitive, please add the word in lowercase and in alphabetical order.
 

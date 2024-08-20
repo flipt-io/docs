@@ -36,7 +36,7 @@
   },
   "tabs": [
     {
-      "name": "Enterprise Cloud",
+      "name": "Managed Cloud",
       "url": "cloud"
     },
     {
@@ -49,7 +49,7 @@
   },
   "anchors": [
     {
-      "name": "Enterprise Cloud",
+      "name": "Managed Cloud",
       "icon": "cloud",
       "url": "cloud"
     },
@@ -209,13 +209,6 @@
                 "cli/commands/bundle/push"
               ]
             },
-            {
-              "group": "cloud",
-              "pages":[
-                "cli/commands/cloud/login",
-                "cli/commands/cloud/logout"
-              ]
-            },
             "cli/commands/evaluate",
             "cli/commands/export",
             "cli/commands/import",
@@ -262,27 +255,23 @@
         "cloud/overview",
         "cloud/benefits",
         "cloud/concepts",
+        "cloud/architecture",
         {
           "group": "Features",
           "pages": [
             "cloud/features/authentication",
-            "cloud/features/user-management",
+            "cloud/features/git-backed-storage",
             "cloud/features/rbac",
-            "cloud/features/audit-logs"
+            "cloud/features/user-management"
+          ]
+        },
+        {
+          "group": "Guides",
+          "pages": [
+            "cloud/guides/getting-started",
+            "cloud/guides/production"
           ]
         }
-      ]
-    },
-    {
-      "group": "Guides",
-      "pages": [
-        "cloud/guides/production"
-      ]
-    },
-    {
-      "group": "Architecture",
-      "pages": [
-        "cloud/architecture/overview"
       ]
     },
     {
@@ -410,10 +399,6 @@
     { 
       "source": "/integration/grpc",
       "destination": "/integration/server/grpc"
-    },
-    {
-      "source": "/managed/hybrid",
-      "destination": "/cloud/overview"
     },
     {
       "source":"/guides/get-going-with-gitops",

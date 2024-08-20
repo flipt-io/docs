@@ -1,0 +1,139 @@
+---
+title: Getting Started
+description: Learn how to get started with Flipt Managed Cloud
+---
+
+<Info>
+  Flipt Managed Cloud is currently in beta. Some functionality may be subject to
+  change.
+
+Interested in joining the beta? [Request access here](https://flipt.cloud).
+
+</Info>
+
+## Prerequisites
+
+Before you get started with Flipt Managed Cloud, you need to have the following:
+
+1. An active Flipt Managed Cloud account. If you don't have an account yet, [request access here](https://flipt.cloud).
+2. An active GitHub account. If you don't have an account yet, [sign up on GitHub](https://github.com).
+
+## Create a New Environment
+
+<Steps>
+  <Step title="Login to Managed Cloud">
+  First, log in to the Flipt Managed Cloud web interface. You can access the login page at [https://flipt.cloud](https://flipt.cloud).
+  
+  </Step>
+  <Step title="Create a New Environment">
+
+Once you are logged in, you will see the Flipt Managed Cloud dashboard. Click on `Create Environment`.
+
+![Create Environment](/images/cloud/guides/getting-started/dashboard.png)
+
+  </Step>
+
+  <Step title="Name Your Environment">
+
+Give your environment a name and description to help you identify it later.
+
+![Name Environment](/images/cloud/guides/getting-started/environment-form.png)
+
+  </Step>
+
+  <Step title="Authorize GitHub">
+
+If you haven't already connected your GitHub account, you'll be prompted to install our GitHub App in your organization.
+
+![Authorize GitHub](/images/cloud/guides/getting-started/authorize-github.png)
+
+Select the repositories you want to allow Flipt Managed Cloud to access, or select all repositories.
+
+  </Step>
+
+  <Step title="Select a Repository">
+
+Select the repository you want to store your feature flags and configurations in, or create a new one.
+
+![Select Repository](/images/cloud/guides/getting-started/select-repository.png)
+
+You can also specify a branch or use the default branch.
+
+  </Step>
+
+  <Step title="(Optional) Choose a Path">
+
+Optionally choose a path for your feature flags and configurations.
+
+<Note>
+  If you don't specify a path, your feature flags and configurations will be
+  stored in the root of your repository.
+</Note>
+
+You can choose to store your feature flags and configurations in the root of your repository, or in a subdirectory. If it doesn't exist, it will be created.
+
+![Choose Path](/images/cloud/guides/getting-started/choose-path.png)
+
+  </Step>
+
+  <Step title="Create Environment">
+
+Finally, click on `Done` to create your environment.
+
+![Create Environment](/images/cloud/guides/getting-started/done.png)
+
+  </Step>
+
+  <Step title="Environment Created">
+
+You will be redirected to the environment dashboard.
+
+Click on your new environment to open up the Flipt UI.
+
+![Flipt UI](/images/cloud/guides/getting-started/flipt-ui.png)
+
+  </Step>
+
+  <Step title="Create a Feature Flag">
+
+    Create a new feature flag by clicking on the `Flags` menu and then clicking on the `New Flag` button.
+
+    ![Create Feature Flag](/images/cloud/guides/getting-started/create-flag.png)
+
+    See the [Getting Started](/introduction#create-a-flag) guide in Open Source for more information on how to create a feature flag.
+
+    Click on `Create`.
+
+  </Step>
+
+  <Step title="Go to your Repository">
+
+    Go to your repository in GitHub and you will see the feature flag you created.
+
+    ![Repository](/images/cloud/guides/getting-started/repository.png)
+
+    The feature flag will be stored in the path you specified, or in the root of your repository if you didn't specify a path.
+
+<Tip>
+  Each namespace within Flipt Managed Cloud is represented as an additional
+  subdirectory in your repository.
+</Tip>
+
+    ![Feature Flag in Repository](/images/cloud/guides/getting-started/feature-flag-in-repository.png)
+
+  </Step>
+</Steps>
+
+## What's Next?
+
+You can now start using Flipt Managed Cloud to manage your feature flags and configurations. 🎉
+
+After you've created your feature flags, you can start using them in your application.
+
+You can also invite other users to your environment in the Flipt Managed Cloud control plane and manage their permissions.
+
+See the [Moving to Production](/cloud/guides/production) guide for more information on how to manage users, permissions, and how to connect your code to your Flipt Managed Cloud environment for evaluation.
+
+## Questions?
+
+If you have any questions or need further assistance, please ask in either our [Discord channel](https://flipt.io/discord) or [Flipt Community Discourse](https://community.flipt.io/c/flipt-cloud/6).

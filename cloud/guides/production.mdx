@@ -1,155 +1,187 @@
 ---
 title: Moving to Production
-description: Learn how go to production with Flipt Enterprise Cloud
+description: Learn how to scale your feature flagging operations with Flipt Managed Cloud
 ---
 
 <Info>
-  Flipt Enterprise Cloud is currently in beta. Visit our
-  [website](https://flipt.io/cloud) to learn more and sign up today!
+  Flipt Managed Cloud is currently in beta. Some functionality may be subject to
+  change.
+
+Interested in joining the beta? [Request access here](https://flipt.cloud).
+
 </Info>
 
 ## Prerequisites
 
-Before you get started with Flipt Enterprise Cloud, you need to have the following:
+Before you move to production, you need to have the following:
 
-1. An active Flipt Enterprise Cloud account. If you don't have an account yet, [sign up here](https://flipt.cloud).
-2. Enable the `cloud` [experimental feature](/configuration/experimental) in the Flipt configuration file. You can enable the `cloud` feature by adding the following configuration to your `flipt.yaml` file:
+1. An active Flipt Managed Cloud account. If you don't have an account yet, [request access here](https://flipt.cloud).
+2. An active GitHub account. If you don't have an account yet, [sign up on GitHub](https://github.com).
+3. A configured Flipt environment in Flipt Managed Cloud. If you don't have an environment yet, [follow the getting started guide](/cloud/guides/getting-started).
+4. Deployed Flipt instances in your infrastructure. If you don't have Flipt instances yet, [deploy Flipt Open Source](https://docs.flipt.io/self-hosted/overview).
 
-```yaml
-experimental:
-  cloud:
-    enabled: true
-```
-
-<Note>
-  Make sure you have the [latest
-  version](https://github.com/flipt-io/flipt/releases/latest) of the Flipt CLI
-  installed on your local machine.
-</Note>
-
-## Create a New Environment
-
-To move your local Flipt instance to production, you need to create a new environment in Flipt Enterprise Cloud. This environment will be used to manage your feature flags and configurations in a production.
+## Create an API Key
 
 <Steps>
-  <Step title="Login to Enterprise Cloud">
-  First, log in to the Flipt Enterprise Cloud web interface. You can access the login page at [https://flipt.cloud](https://flipt.cloud).
+  <Step title="Login to Managed Cloud">
+  First, log in to the Flipt Managed Cloud web interface. You can access the login page at [https://flipt.cloud](https://flipt.cloud).
   
   </Step>
-  <Step title="Create a New Environment">
 
-Once you are logged in, you will see the Flipt Enterprise Cloud dashboard. Click on one of our suggested environments named either `Staging` or `Production`, or click on `Or something else` to create a custom environment.
+  <Step title="Navigate to your Environment">
 
-![Cloud Dashboard](/images/cloud/guides/production/dashboard.png)
-
-  </Step>
-  <Step title="Name Your Environment">
-
-Give your environment a name and description to help you identify it later.
-
-![Name Environment](/images/cloud/guides/production/environment-form.png)
-
-  </Step>
-  <Step title="Download Configuration">
-
-Next, click on the `Download` button to download the configuration file for your instance.
-
-![Download Configuration](/images/cloud/guides/production/download-configuration.png)
-
-This configuration file contains the required settings for your instance to connect to your environment in Flipt Enterprise Cloud.
-
-Move the configuration file to your local [Flipt instance directory](/configuration/overview#configuration-file)
-
-```bash
-mv ~/downloads/flipt.yaml /path/to/your/flipt/directory
-```
+From the Flipt Managed Cloud dashboard, find the environment you want to create an API key for and hover over the environment name.
 
   </Step>
 
-  <Step title="Update Configuration">
+  <Step title="Click on the Edit link">
 
-Open the configuration file you downloaded in the previous step and update the `cloud` section with the API key you generated in the previous step for your instance.
+Click on the `Edit` link.
 
-```yaml
-cloud:
-  authentication:
-    api_key: "YOUR API KEY HERE"
-```
+![Edit Environment](/images/cloud/guides/production/edit-environment.png)
 
   </Step>
 
-  <Step title="Start Flipt">
+  <Step title="Create an API Key">
 
-Start your Flipt instance with the updated configuration file.
+Click on the `Security` tab and then click on the `Create API Key` button.
 
-```bash
-flipt
-```
-
-or if you have a custom configuration file:
-
-```bash
-# if your configuration file is in a different location than the default
-flipt -f /path/to/your/configuration.yaml
-```
+![Security](/images/cloud/guides/production/security.png)
 
   </Step>
 
-  <Step title="Connection Successful">
+  <Step title="Name your API Key">
 
-After you've started your Flipt instance, go back to the Flipt Enterprise Cloud dashboard and you should see a successful connection message.
+Give your API a name to help you identify it later and click on the `Create` button.
 
-![Environment Connected](/images/cloud/guides/production/environment-connected.png)
+![Name API Key](/images/cloud/guides/production/name-api-key.png)
+
+Copy the API key to your clipboard and save it in a secure location. You will not be able to access the API key after you leave this page.
+
+![API Key Created](/images/cloud/guides/production/api-key-created.png)
 
   </Step>
 
-  <Step title="Route to Your Instance">
+</Steps>
 
-Click on the `All done!` button to be taken back to the Flipt Enterprise Cloud dashboard.
+## Configure a Client-Side SDK
 
-![Dashboard Connected](/images/cloud/guides/production/dashboard-connected.png)
+Currently, Flipt Managed Cloud only support client-side SDKs for direct evaluation via the Flipt Cloud API.
 
-Click on the URL in the `Host` column to route to your instance.
+<Note>
+  For more information on the architecture of Flipt Managed Cloud, see the
+  [architecture overview](/cloud/architecture).
+</Note>
 
-![Flipt](/images/cloud/guides/production/flipt.png)
+<Steps>
+  <Step title="Install the SDK">
+    Chose the SDK that matches your application's language and install it. All Client-side SDKs are documented [here](/integration/client).
+  </Step>
 
-You are automatically authenticated with your Flipt Enterprise Cloud account and can start managing your feature flags and configurations in your production environment.
+  <Step title="Configure the SDK">
+    Configure the SDK with the API key you created in the previous step and set the following options:
+    - `URL`: The URL of the Flipt Cloud API.
+    - `Authentication`: The API key authentication method configured with the API key you created in the previous step.
+    - (Optional) `Namespace`: The namespace to use for the SDK. (Default: `default`)
 
-  <Info>
-    The address provided in the Flipt Enterprise Cloud dashboard is a permanent route to your instance. You can access your instance through this address at any time.
-  </Info>
+    For example, here's how you can configure the SDK for a Go application:
+
+    ```go
+    evaluationClient, _ := flipt.NewClient(
+        flipt.WithURL("https://<environment>-<organization>.flipt.cloud"),
+        flipt.WithClientTokenAuthentication(<api-key>),
+        flipt.WithNamespace(<namespace>)
+    )
+    ```
+
+  </Step>
+
+  <Step title="Use the SDK">
+    That's it! 🎉 You can now use the SDK to evaluate feature flags and configurations.
   </Step>
 </Steps>
 
-## What Just Happened?
+## Scale and Configure Server-Side SDKs
 
-You have successfully and permanently connected your Flipt instance to Flipt Enterprise Cloud! 🎉
+As mentioned in the [architecture overview](/cloud/architecture), Flipt Managed Cloud is designed to be used in conjunction with Flipt Open Source. This means that you can still use your existing Flipt instances and configurations while leveraging the security and user friendly features of Flipt Managed Cloud.
 
-<Check>
-  Note that you didn't have to mess with DNS or firewall settings to enable the
-  connection between Flipt and your instance. Flipt Enterprise Cloud takes care
-  of all the networking for you.
-</Check>
+Here's how you can configure your Flipt instances to use the Git repository data source and then use our server-side SDKs to evaluate feature flags within your infrastructure.
 
-### Details
+<Steps>
+  <Step title="Configure the Flipt instances">
+    Configure the Flipt instances to use the Git repository data source.
 
-- You now have a fully functional Flipt instance running in your infrastructure that's protected behind authentication provided by Flipt Enterprise Cloud. 🔒
+    As described in the Flipt Open Source [storage documentation](/configuration/storage#git), you can configure the Flipt instances to use the Git repository data source.
 
-- You can now access this instance through the Flipt Enterprise Cloud web interface from anywhere in the world! 🌍
+    Here you can use the same repository and branch as you used when creating the Flipt Managed Cloud environment.
 
-- Only users in your organization with the appropriate permissions can access your instance through Flipt Enterprise Cloud. 🛡️
+    ```yaml
+    storage:
+    type: git
+    git:
+        repository: "https://github.com/<git-organization>/<git-repository>"
+        ref: "main"
+        poll_interval: "30s"
+        authentication:
+            token:
+                access_token: <git-access-token>
+    ```
 
-The address provided in the Flipt Enterprise Cloud dashboard is a permanent route to your instance. You can access your instance through this address at any time and it will not expire.
+  </Step>
 
-<Note>
-  The connection is valid as long as your API Key stays the same. 
-  
-  If you need to regenerate your API Key, you can generate a new one by clicking on the environment in the Flipt Enterprise Cloud dashboard and clicking on the `Configuration` tab.
+{" "}
 
-</Note>
+<Step title="Restart the Flipt instances">
+  Restart the Flipt instances to apply the changes.
+</Step>
+
+  <Step title="Install the SDK">
+    Chose the SDK that matches your application's language and install it. All Server-side SDKs are documented [here](/integration/server).
+
+    <Note>
+    You can also use any of our [OpenFeature SDKs](/integration/openfeature) or [OpenFeature Remote Evaluation Protocol implementations](/integration/openfeature#remote-evaluation-protocol) to evaluate feature flags within your infrastructure.
+    </Note>
+
+  </Step>
+
+  <Step title="Configure the SDK">
+    Configure the SDK with the URL of your Flipt instance within your infrastructure.
+    - `URL`: The URL of the Flipt instance.
+
+    For example, here's how you can configure the OpenFeature SDK for a Go application:
+
+    ```go
+    provider := flipt.NewProvider(flipt.WithAddress("https://localhost:443")) // Replace with the URL of your Flipt instance
+    openfeature.SetProvider(provider)
+
+    client := openfeature.NewClient("my-app")
+    value, err := client.BooleanValue(context.Background(), "v2_enabled", false, openfeature.NewEvaluationContext(
+        "tim@apple.com",
+        map[string]interface{}{
+            "favorite_color": "blue",
+        },
+    ))
+    ```
+
+  </Step>
+  <Step title="Scale">
+    That's it! 🎉 You can now scale your feature flagging operations with Flipt Managed Cloud and Flipt Open Source.
+
+    All changes to the feature flags and configurations are automatically propagated to your Flipt instances within your infrastructure through the Git repository data source.
+
+  </Step>
+</Steps>
 
 ## What's Next?
 
-Now that you have successfully connected your permanent instance to Flipt Enterprise Cloud, you can start creating feature flags and managing your feature flag configurations.
+You can now start using Flipt Managed Cloud to scale your feature flagging operations.
 
-You can now learn more about the advanced features and capabilities available to you such as [Single Sign-On](/cloud/features/authentication), [Role-Based Access Control](/cloud/features/rbac), and [Audit Logs](/cloud/features/audit-logs).
+As your organization grows, check out some of our enterprise features including:
+
+- [Single Sign-On](/cloud/features/authentication#single-sign-on)
+- [Role Based Access Control](/cloud/features/rbac)
+- [User Management](/cloud/features/user-management)
+
+## Questions?
+
+If you have any questions or need further assistance, please ask in either our [Discord channel](https://flipt.io/discord) or [Flipt Community Discourse](https://community.flipt.io/c/flipt-cloud/6).
