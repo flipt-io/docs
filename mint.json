@@ -31,8 +31,8 @@
     }
   },
   "topbarCtaButton": {
-    "type": "github",
-    "url": "https://git.new/flipt"
+    "name": "Login to Flipt Cloud",
+    "url": "https://flipt.cloud/login"
   },
   "tabs": [
     {
