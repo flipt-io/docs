@@ -249,29 +249,30 @@
         "tooling/github-actions"
       ]
     },
+    
     {
       "group": "Overview",
       "pages": [
         "cloud/overview",
         "cloud/benefits",
         "cloud/concepts",
-        "cloud/architecture",
-        {
-          "group": "Features",
-          "pages": [
-            "cloud/features/authentication",
-            "cloud/features/git-backed-storage",
-            "cloud/features/rbac",
-            "cloud/features/user-management"
-          ]
-        },
-        {
-          "group": "Guides",
-          "pages": [
-            "cloud/guides/getting-started",
-            "cloud/guides/production"
-          ]
-        }
+        "cloud/architecture"
+      ]
+    },
+    {
+      "group": "Features",
+      "pages": [
+        "cloud/features/authentication",
+        "cloud/features/git-backed-storage",
+        "cloud/features/rbac",
+        "cloud/features/user-management"
+      ]
+    },
+    {
+      "group": "Guides",
+      "pages": [
+        "cloud/guides/getting-started",
+        "cloud/guides/production"
       ]
     },
     {
