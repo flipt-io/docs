@@ -36,7 +36,7 @@
   },
   "tabs": [
     {
-      "name": "Managed Cloud",
+      "name": "Flipt Cloud",
       "url": "cloud"
     },
     {
@@ -49,7 +49,7 @@
   },
   "anchors": [
     {
-      "name": "Managed Cloud",
+      "name": "Flipt Cloud",
       "icon": "cloud",
       "url": "cloud"
     },
