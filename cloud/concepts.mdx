@@ -1,31 +1,31 @@
 ---
 title: Concepts
-description: This document describes the basic concepts of Flipt Managed Cloud.
+description: This document describes the basic concepts of Flipt Cloud.
 ---
 
 <Info>
-  Flipt Managed Cloud is currently in beta. Some functionality may be subject to
+  Flipt Cloud is currently in beta. Some functionality may be subject to
   change.
 
 Interested in joining the beta? [Request access here](https://flipt.cloud).
 
 </Info>
 
-Flipt Managed Cloud is a fully managed solution where we host and operate Flipt for you. You no longer need to deploy or manage Flipt instances yourself. We provide a secure, scalable, and feature-rich environment with enterprise-grade authentication and authorization built-in.
+Flipt Cloud is a fully solution where we host and operate Flipt for you. You no longer need to deploy or manage Flipt instances yourself. We provide a secure, scalable, and feature-rich environment with enterprise-grade authentication and authorization built-in.
 
-While Flipt Managed Cloud is a completely managed service, it works hand in hand with Flipt Open Source. You can still deploy Flipt Open Source in your own infrastructure to scale as needed, while still using Flipt Managed Cloud for feature flag management.
+While Flipt Cloud is a completely service, it works hand in hand with Flipt Open Source. You can still deploy Flipt Open Source in your own infrastructure to scale as needed, while still using Flipt Cloud for feature flag management.
 
-Here are some of the basic concepts in Flipt Managed Cloud:
+Here are some of the basic concepts in Flipt Cloud:
 
 ## Git-Backed Storage
 
-Flipt Managed Cloud leverages Git repositories as the backbone for storing and managing your feature flag configurations. This innovative approach allows you to store your feature flag data in your own GitHub repositories, providing a unique blend of managed service convenience and data ownership.
+Flipt Cloud leverages Git repositories as the backbone for storing and managing your feature flag configurations. This innovative approach allows you to store your feature flag data in your own GitHub repositories, providing a unique blend of service convenience and data ownership.
 
 See the [Git-Backed Storage](/cloud/features/git-backed-storage) page for more information.
 
 ## Environments
 
-Environments in Flipt Managed Cloud are high-level groupings of feature flags and namespaces. They provide a way to organize and manage your feature flags across different stages of your development lifecycle or across various applications within your organization.
+Environments in Flipt Cloud are high-level groupings of feature flags and namespaces. They provide a way to organize and manage your feature flags across different stages of your development lifecycle or across various applications within your organization.
 
 Key points about environments:
 
@@ -34,20 +34,20 @@ Key points about environments:
 
 ## Namespaces
 
-Within each environment, Flipt Managed Cloud uses namespaces to further organize and group related feature flags.
+Within each environment, Flipt Cloud uses namespaces to further organize and group related feature flags.
 
 Key points about namespaces:
 
 - **Granular Organization**: Namespaces allow you to group related flags together, such as by team, feature set, or application component.
 - **Isolation**: Flags in different namespaces are isolated from each other, preventing naming conflicts and improving organization.
 - **Flexible Hierarchy**: You can create multiple namespaces within an environment, allowing for a flexible hierarchy that suits your organizational needs.
-- **Managed Access Control**: Roles can be scoped to limit access to specific sets of namespaces.
+- **Access Control**: Roles can be scoped to limit access to specific sets of namespaces.
 
 By utilizing environments and namespaces effectively, you can create a well-organized and scalable feature flag management system that grows with your organization's needs.
 
 ## Sources
 
-Sources in Flipt Managed Cloud are the connection points between your environments and our managed storage, implemented as Git repositories on GitHub. They play a crucial role in how your feature flag data is stored, versioned, and managed.
+Sources in Flipt Cloud are the connection points between your environments and our storage, implemented as Git repositories on GitHub. They play a crucial role in how your feature flag data is stored, versioned, and managed.
 
 Key points about sources:
 
@@ -55,4 +55,4 @@ Key points about sources:
 - **Data Sovereignty**: By using your own GitHub repositories, you maintain full control over your feature flag data, ensuring compliance with data regulations and internal policies.
 - **Version Control**: Sources provide a comprehensive audit trail for all feature flag changes, making it easy to track who made what changes, when, and why.
 
-Sources in Flipt Managed Cloud combine the benefits of Git-based version control with the ease of use of a managed service, providing a flexible and powerful foundation for your feature flag management.
+Sources in Flipt Cloud combine the benefits of Git-based version control with the ease of use of a service, providing a flexible and powerful foundation for your feature flag management.

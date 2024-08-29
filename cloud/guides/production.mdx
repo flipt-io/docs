@@ -1,10 +1,10 @@
 ---
 title: Moving to Production
-description: Learn how to scale your feature flagging operations with Flipt Managed Cloud
+description: Learn how to scale your feature flagging operations with Flipt Cloud
 ---
 
 <Info>
-  Flipt Managed Cloud is currently in beta. Some functionality may be subject to
+  Flipt Cloud is currently in beta. Some functionality may be subject to
   change.
 
 Interested in joining the beta? [Request access here](https://flipt.cloud).
@@ -15,22 +15,22 @@ Interested in joining the beta? [Request access here](https://flipt.cloud).
 
 Before you move to production, you need to have the following:
 
-1. An active Flipt Managed Cloud account. If you don't have an account yet, [request access here](https://flipt.cloud).
+1. An active Flipt Cloud account. If you don't have an account yet, [request access here](https://flipt.cloud).
 2. An active GitHub account. If you don't have an account yet, [sign up on GitHub](https://github.com).
-3. A configured Flipt environment in Flipt Managed Cloud. If you don't have an environment yet, [follow the getting started guide](/cloud/guides/getting-started).
+3. A configured Flipt environment in Flipt Cloud. If you don't have an environment yet, [follow the getting started guide](/cloud/guides/getting-started).
 4. Deployed Flipt instances in your infrastructure. If you don't have Flipt instances yet, [deploy Flipt Open Source](https://docs.flipt.io/self-hosted/overview).
 
 ## Create an API Key
 
 <Steps>
-  <Step title="Login to Managed Cloud">
-  First, log in to the Flipt Managed Cloud web interface. You can access the login page at [https://flipt.cloud](https://flipt.cloud).
+  <Step title="Login to Cloud">
+  First, log in to the Flipt Cloud web interface. You can access the login page at [https://flipt.cloud](https://flipt.cloud).
   
   </Step>
 
   <Step title="Navigate to your Environment">
 
-From the Flipt Managed Cloud dashboard, find the environment you want to create an API key for and hover over the environment name.
+From the Flipt Cloud dashboard, find the environment you want to create an API key for and hover over the environment name.
 
   </Step>
 
@@ -66,10 +66,10 @@ Copy the API key to your clipboard and save it in a secure location. You will no
 
 ## Configure a Client-Side SDK
 
-Currently, Flipt Managed Cloud only support client-side SDKs for direct evaluation via the Flipt Cloud API.
+Currently, Flipt Cloud only support client-side SDKs for direct evaluation via the Flipt Cloud API.
 
 <Note>
-  For more information on the architecture of Flipt Managed Cloud, see the
+  For more information on the architecture of Flipt Cloud, see the
   [architecture overview](/cloud/architecture).
 </Note>
 
@@ -103,7 +103,7 @@ Currently, Flipt Managed Cloud only support client-side SDKs for direct evaluati
 
 ## Scale and Configure Server-Side SDKs
 
-As mentioned in the [architecture overview](/cloud/architecture), Flipt Managed Cloud is designed to be used in conjunction with Flipt Open Source. This means that you can still use your existing Flipt instances and configurations while leveraging the security and user friendly features of Flipt Managed Cloud.
+As mentioned in the [architecture overview](/cloud/architecture), Flipt Cloud is designed to be used in conjunction with Flipt Open Source. This means that you can still use your existing Flipt instances and configurations while leveraging the security and user friendly features of Flipt Cloud.
 
 Here's how you can configure your Flipt instances to use the Git repository data source and then use our server-side SDKs to evaluate feature flags within your infrastructure.
 
@@ -113,7 +113,7 @@ Here's how you can configure your Flipt instances to use the Git repository data
 
     As described in the Flipt Open Source [storage documentation](/configuration/storage#git), you can configure the Flipt instances to use the Git repository data source.
 
-    Here you can use the same repository and branch as you used when creating the Flipt Managed Cloud environment.
+    Here you can use the same repository and branch as you used when creating the Flipt Cloud environment.
 
     ```yaml
     storage:
@@ -161,7 +161,7 @@ Here's how you can configure your Flipt instances to use the Git repository data
 
   </Step>
   <Step title="Scale">
-    That's it! 🎉 You can now scale your feature flagging operations with Flipt Managed Cloud and Flipt Open Source.
+    That's it! 🎉 You can now scale your feature flagging operations with Flipt Cloud and Flipt Open Source.
 
     All changes to the feature flags and configurations are automatically propagated to your Flipt instances within your infrastructure through the Git repository data source.
 
@@ -170,7 +170,7 @@ Here's how you can configure your Flipt instances to use the Git repository data
 
 ## What's Next?
 
-You can now start using Flipt Managed Cloud to scale your feature flagging operations.
+You can now start using Flipt Cloud to scale your feature flagging operations.
 
 As your organization grows, check out some of our enterprise features including:
 
