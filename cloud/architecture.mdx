@@ -8,15 +8,15 @@ This section describes the high-level architecture of Flipt Cloud and how you ca
 
 ## Overview
 
-Each Flipt Cloud instance is a fully Flipt instance that is hosted and operated by the Flipt team.
+Each Flipt Cloud instance is a fully managed Flipt instance hosted and operated by the Flipt team.
 
 Each organization gets a dedicated Flipt instance, eliminating the noisy neighbor problem.
 
 Each environment is a logical grouping of feature flags and namespaces that share the same backend Flipt instance.
 
-Feature flags in each environment are isolated from each other, preventing naming conflicts and improving organization. You have the option to have multiple environments share the same underlying Git repository, allowing you to manage your feature flags in a single location, or have each environment have its own Git repository.
+Feature flags in each environment are isolated, preventing naming conflicts and improving organization. You can have multiple environments share the same underlying Git repository, allowing you to manage your feature flags in a single location, or have each environment have its own Git repository.
 
-This allows Flipt Cloud to work for both monorepo and multi-repo architectures.
+This allows Flipt Cloud to work for both mono-repo and multi-repo architectures.
 
 <img
   className="block dark:hidden"
@@ -29,7 +29,7 @@ This allows Flipt Cloud to work for both monorepo and multi-repo architectures.
 
 ## Control Plane
 
-Flipt Cloud operates as a control plane for your Flipt environments, providing a single point of entry for all of your feature flagging needs. You login to the Flipt Cloud UI and create and manage your feature flags through the UI. Feature flag data is stored in the Git repository you specify in the Flipt Cloud UI.
+Flipt Cloud operates as a control plane for your Flipt environments, providing a single point of entry for all of your feature flagging needs. You log in to the Flipt Cloud UI and create and manage your feature flags through the UI. Feature flag data is stored in the Git repository you specify in the Flipt Cloud UI.
 
 Flipt Cloud also handles authentication and authorization for your Flipt environments. Flipt Cloud works with many popular identity and single sign-on providers, including Google, Okta, and Auth0.
 
@@ -54,7 +54,7 @@ Flipt Cloud supports evaluation for our [client-side SDKs](/integration/client) 
   src="/images/cloud/architecture/client-evaluation-cloud-dark.svg"
 />
 
-[Server-side SDKs](/integration/server) including [OpenFeature SDKs](/integration/openfeature) are also supported, but currently require you to run your own Flipt instances.
+[Server-side SDKs](/integration/server) including [OpenFeature SDKs](/integration/openfeature) are also supported but currently require you to run your own Flipt instances.
 
 ### Self-Hosted Flipt
 
@@ -86,4 +86,4 @@ You can also run your own Flipt Open Source instances and configure our client-s
   src="/images/cloud/architecture/client-evaluation-self-hosted-dark.svg"
 />
 
-For more information on how to deploy Flipt Open Source and configure it to source flag data from your Git repository, please refer to the [Moving to Production](/cloud/guides/production) guide.
+For more information on how to deploy Flipt Open Source and how to configure it to source flag data from your Git repository, please refer to the [Moving to Production](/cloud/guides/production) guide.
