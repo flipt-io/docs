@@ -97,8 +97,33 @@ The following fields are available in the `input.authentication` field:
   - `io.flipt.auth.email`: The user's email address.
   - `io.flipt.auth.name`: The user's name.
   - `io.flipt.auth.claims`: A map of **all** claims provided by the authentication method. This can include the user's roles, groups, etc. These claims are marshaled into a JSON string before being passed to OPA for evaluation.
+- `method`: The authentication method used to authenticate the request.
 
-#### Mapping Identity
+### Helper Functions
+
+To make it easier to write policies, Flipt provides a set of helper functions that are available to be used for the `input` field.
+
+`flipt.is_auth_method(input, method)`
+
+The helper function `flipt.is_auth_method(input, method)` can be used to check if the request was authenticated using the specified method.
+
+The `method` parameter is the authentication method name as it is registered in Flipt, e.g. `oidc`, `token`, `kubernetes`, `github`, `jwt`.
+
+Example:
+
+```rego policy.rego
+package flipt.authz.v1
+
+import rego.v1
+
+default allow := false
+
+allow if {
+	flipt.is_auth_method(input, "jwt")
+}
+```
+
+### Mapping Identity
 
 Each authentication method configurable within Flipt will provide different information depending on the identity. It's up to you to combine identity information (`authentication`) with the requested resource (`request`) to make an authorization decision whether or not the request should be allowed (`allow`).
 
