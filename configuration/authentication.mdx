@@ -62,6 +62,7 @@ In order to establish a browser session over HTTP (via a `Cookie` header) some c
 
 ```yaml config.yaml
 authentication:
+  required: true
   session:
     domain: "flipt.yourorg.com"
     secure: true
@@ -97,6 +98,7 @@ The `token` method provides the ability to create client tokens statically, with
 
 ```yaml config.yaml
 authentication:
+  required: true
   methods:
     token:
       enabled: true
@@ -123,6 +125,7 @@ Once enabled and configured, the UI will automatically leverage it and present a
 
 ```yaml config.yaml
 authentication:
+  required: true
   methods:
     oidc:
       enabled: true
@@ -237,6 +240,7 @@ We could create a provider definition in our configuration like so:
 
 ```yaml config.yaml
 authentication:
+  required: true
   methods:
     oidc:
       enabled: true
@@ -288,6 +292,7 @@ Once enabled and configured, the UI will automatically leverage it and present a
 
 ```yaml config.yaml
 authentication:
+  required: true
   methods:
     github:
       enabled: true
@@ -308,6 +313,7 @@ To enable this feature, set the `github.allowed_organizations` configuration val
 
 ```yaml config.yaml
 authentication:
+  required: true
   methods:
     github:
       enabled: true
@@ -331,6 +337,7 @@ To enable this feature, set the `github.allowed_teams` configuration value to a 
 
 ```yaml config.yaml
 authentication:
+  required: true
   methods:
     github:
       enabled: true
@@ -357,6 +364,7 @@ The `kubernetes` method provides the ability to exchange Kubernetes service acco
 
 ```yaml config.yaml
 authentication:
+  required: true
   methods:
     kubernetes:
       enabled: true
@@ -391,6 +399,7 @@ The `flipt` distributed Docker image has valid and trusted certificates in `/etc
 
 ```yaml example-config-for-eks.yaml
 authentication:
+  required: true
   methods:
     kubernetes:
       enabled: true
@@ -430,6 +439,7 @@ The `jwks_url` configuration value is a URL that points to a JWKS (JSON Web Key 
 
 ```yaml config.yaml
 authentication:
+  required: true
   methods:
     jwt:
       enabled: true
@@ -442,6 +452,7 @@ The `public_key_file` configuration value is the path to a PEM encoded public ke
 
 ```yaml config.yaml
 authentication:
+  required: true
   methods:
     jwt:
       enabled: true
@@ -465,6 +476,7 @@ To enable claim validation, configure the values in the `validate_claims` config
 
 ```yaml config.yaml
 authentication:
+  required: true
   methods:
     jwt:
       enabled: true
@@ -481,9 +493,11 @@ This object configures the periodic deletion of _expired_ authentications create
 
 ```yaml config.yaml
 authentication:
-  <method>:
-    cleanup:
-      interval: 10m
+  required: true
+  methods:
+    <method>:
+      cleanup:
+        interval: 10m
       grace_period: 24h
 ```
 
