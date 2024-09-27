@@ -264,6 +264,7 @@
       "pages": [
         "cloud/features/authentication",
         "cloud/features/git-backed-storage",
+        "cloud/features/approval-workflows",
         "cloud/features/rbac",
         "cloud/features/user-management"
       ]

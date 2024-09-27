@@ -1,0 +1,91 @@
+---
+title: Approval Workflows
+description: Learn about the built-in approval workflows available with Flipt Cloud
+mode: "wide"
+---
+
+Flipt Cloud provides a built-in approval workflow system that allows you to easily manage and track the proposal and approval process for your flags, ensuring that they are approved by the appropriate stakeholders before they are released to production.
+
+![Proposal Merged](/images/cloud/features/approval/proposal-merged.png)
+
+## Overview
+
+Flipt Cloud's approval workflow system is designed to be simple to use and understand. It is built on top of Flipt Cloud's [Git backed storage](/cloud/features/git-backed-storage) and integrates natively with your existing GitHub Pull Request (PR) process.
+
+Many teams have existing processes for managing PRs and ensuring code is reviewed by the appropriate stakeholders. We believe that feature flags should be no different and should follow the same process.
+
+Organizations may require that all flag changes are reviewed and approved by a specific set of approvers before they are released to production. This could be a team lead, tech lead, or even a cross functional team.
+
+The approval workflow system is designed to fit into this process, and to make it as easy as possible to configure and manage.
+
+<Info>
+  Proposals and approvals functionality is only available on our Team plan and
+  above. See our [pricing page](https://www.flipt.io/pricing) for more
+  information.
+</Info>
+
+## Protected Environments
+
+When you create an environment in Flipt Cloud, you can choose to protect the environment. This will require that all flag and other configuration changes go through a review and approval process before they are served from the environment.
+
+![Protected Environment](/images/cloud/features/approval/protected-environment.png)
+
+In our Git backed storage model, all environments have a default branch. If you chose an existing repository and branch when creating the environment and that branch is protected, the environment itself will be protected by default.
+
+<Note>
+  Many teams protect their `main` branch, but you can select a different branch
+  when creating the environment.
+</Note>
+
+Protected environments are read-only and can only be changed by going through the proposal/approval process. If you are in a protected environment, you will see the 'Protected' badge in the top right of the environment.
+
+![Protected Environment Badge](/images/cloud/features/approval/protected-badge.png)
+
+## Approval Process
+
+To make a change for a protected environment, you will need to put the environment into 'editing mode' by clicking on the 'Protected' badge. This will prompt a confirmation dialog asking you to confirm that you want to create a proposal branch to make your changes.
+
+![Create Branch Dialog](/images/cloud/features/approval/create-branch-dialog.png)
+
+Once you click 'Create Branch', you will be redirected to a new environment that is no longer protected. This environment is a full read/write replica of the protected environment, but any changes you make will not be deployed to the protected environment until they are approved and merged.
+
+![Unprotected Environment](/images/cloud/features/approval/unprotected-environment.png)
+
+You can make changes to the unprotected environment, and they will be captured in the proposal branch. Once you are ready to deploy your changes, you can create a pull request into the protected environment.
+
+## Creating a Proposal
+
+After making the changes you want to propose, you can create a proposal by clicking on the 'Propose' button in the top right of the screen. This will again prompt a confirmation dialog asking you to confirm that you want to create a new pull request in your repository and add it to the approval workflow.
+
+![Create Proposal Dialog](/images/cloud/features/approval/create-proposal-dialog.png)
+
+Once you click 'Create Proposal', you will see a badge in the top right of the screen indicating that a proposal is pending, with a link to the proposal pull request.
+
+![Proposal Pending Badge](/images/cloud/features/approval/proposal-pending.png)
+
+Clicking on the badge will take you to the proposal pull request.
+
+![Proposal Pull Request](/images/cloud/features/approval/proposal-pull-request.png)
+
+## Approve and Merge
+
+Your team can review the proposal and approve it by clicking on the 'Approve' button in the pull request. Once the proposal is approved, you will be able to merge the pull request into the protected environment.
+
+![Approve Pull Request](/images/cloud/features/approval/approve-pull-request.png)
+
+Once the pull request is merged, the changes will be deployed to the protected environment.
+
+![Deployed Changes](/images/cloud/features/approval/deployed-changes.png)
+
+<Tip>
+  You can leverage GitHub's existing [Code
+  Owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
+  feature to automatically request reviews from specific teams or individuals
+  when a proposal is created. This is a great way to automate requesting the relevant teams and individuals for their approval input.
+</Tip>
+
+## Evaluation
+
+Proposal environments are full-fledged environments and can be used for evaluation just like any other environment. This means that you can use the same SDKs, API keys, and other mechanisms to evaluate your flags in the proposal environment as you would in any other environment.
+
+You can simply change the URL of your evaluation requests to point to the proposal environment and you will be able to see the changes you made for evaluation.
