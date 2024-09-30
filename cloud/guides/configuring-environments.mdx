@@ -18,7 +18,7 @@ To override these templates you must provide a `flipt.yaml` file at the root of 
 ```
 
 <Info>
-  To recap: an environment is a combination of a Git `repository`, a `branch`
+  An environment is a combination of a Git `repository`, a `branch`
   name and `directory` path. These are selected when you create your environment
   in Flipt Cloud. The `flipt.yaml` must exist in this directory and branch in
   order to configure the relevant environment.
@@ -47,8 +47,7 @@ templates:
 ### Commit Message
 
 Commit message templates are supplied with a list of changes.
-Currently, Flipt only provides a single change.
-However, this may change in the future. As such, the template is provided a list of changes.
+Currently, Flipt only provides a single change, however, this may change in the future. As such, the template provides a list of changes.
 A change is a combination of a `verb` and `resource`.
 A resource is a combination of `type`, `namespace` (when relevant) and `key`.
 
