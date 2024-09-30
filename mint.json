@@ -273,7 +273,8 @@
       "group": "Guides",
       "pages": [
         "cloud/guides/getting-started",
-        "cloud/guides/production"
+        "cloud/guides/production",
+        "cloud/guides/configuring-environments"
       ]
     },
     {
