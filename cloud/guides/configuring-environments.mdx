@@ -7,11 +7,11 @@ description: Learn how to configure different aspects of your Flipt environments
 
 Flipt Cloud dynamically generates commit messages and pull-requests based on parameters of the changes being made.
 It passes these parameters through Go templates to produce the resulting messages.
-We have configured some sensible defaults, however, these can be overridden on a per Flipt environment basis.
+While cloud is configured some sensible defaults, these can be overridden on a per Flipt environment basis.
 
-In order to override these templates, a `flipt.yaml` file is provided at the root of your environment tree.
+To override these templates you must provide a `flipt.yaml` file at the root of your environment tree.
 
-```filetree
+```console
 .
 └─ production
     └─ flipt.yaml
@@ -24,7 +24,7 @@ In order to override these templates, a `flipt.yaml` file is provided at the roo
   order to configure the relevant environment.
 </Info>
 
-When this file is not provided, a default one is implicitly generated. The default is effectively the following:
+When this file isn't provided, a default one is implicitly generated. The default is effectively the following:
 
 ```yaml
 version: "1.0"
@@ -48,7 +48,7 @@ templates:
 
 Commit message templates are supplied with a list of changes.
 Currently, Flipt only provides a single change.
-However, we have assumed this can change in the future and so we provide a list of changes.
+However, this may change in the future. As such, the template is provided a list of changes.
 A change is a combination of a `verb` and `resource`.
 A resource is a combination of `type`, `namespace` (when relevant) and `key`.
 
@@ -72,14 +72,14 @@ The following is a pseudo-schema for the context passed to this template:
 }
 ```
 
-Simply printing out a change in the template (e.g. `{{ (index .Changes 0) }}`) results in the following format:
+Simply printing out a change in the template (for example,`{{ (index .Changes 0) }}`) results in the following format:
 
 ```
 <verb> <type> [<namespace>/]<key>
 ```
 
 <Accordion title="Example: semantic commit messages">
-The following gives an example of how you could change the above template to produce semantic commits:
+The following gives an example of how to change the above template to produce semantic commits:
 
 ```yaml
 version: "1.0"
@@ -125,7 +125,7 @@ The following is a pseudo-schema for the context passed to these templates:
 
 <AccordionGroup>
 <Accordion title="Example: Title in semantic commit message style">
-The following gives an example of how you could change the above template to produce semantic commits:
+The following gives an example of how to change the above template to produce semantic commits:
 
 ```yaml
 version: "1.0"
@@ -135,7 +135,7 @@ templates:
 
 </Accordion>
 <Accordion title="Example: Body with organization">
-The following gives an example of how you could change the above template to produce semantic commits:
+The following gives an example of how to change the above template to produce semantic commits:
 
 ```yaml
 version: "1.0"
@@ -147,5 +147,3 @@ templates:
 
 </Accordion>
 </AccordionGroup>
-
-### Proposal (Pull-Request) Bodies
