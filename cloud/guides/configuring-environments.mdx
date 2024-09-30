@@ -1,0 +1,148 @@
+---
+title: Configuring Environments
+description: Learn how to configure different aspects of your Flipt environments
+---
+
+## Commit Messages, Pull-Request Titles and Bodies
+
+Flipt Cloud dynamically generates commit messages and pull-requests based on parameters of the changes being made.
+It passes these parameters through Go templates to produce the resulting messages.
+While cloud is configured some sensible defaults, these can be overridden on a per Flipt environment basis.
+
+To override these templates you must provide a `flipt.yaml` file at the root of your environment tree.
+
+```console
+.
+└─ production
+    └─ flipt.yaml
+```
+
+<Info>
+  An environment is a combination of a Git `repository`, a `branch`
+  name and `directory` path. These are selected when you create your environment
+  in Flipt Cloud. The `flipt.yaml` must exist in this directory and branch in
+  order to configure the relevant environment.
+</Info>
+
+When this file isn't provided, a default one is implicitly generated. The default is effectively the following:
+
+```yaml
+version: "1.0"
+templates:
+  commit_message: |-
+    {{- if eq (len .Changes) 1 }}
+    {{- (index .Changes 0) }}
+    {{- else -}}
+    updated multiple resources
+    {{ range $change := .Changes }}
+    {{ $change }}
+    {{- end }}
+    {{- end }}
+  proposal_title: "Flipt: Update features in {{ .Base.Name }}"
+  proposal_body: |-
+    Update Flipt resources in [{{ .Base.Name }}]({{ .Base.HostURL }})
+    The branched environment can be viewed at [{{ .Branch.Name }}]({{ .Branch.HostURL }})
+```
+
+### Commit Message
+
+Commit message templates are supplied with a list of changes.
+Currently, Flipt only provides a single change, however, this may change in the future. As such, the template provides a list of changes.
+A change is a combination of a `verb` and `resource`.
+A resource is a combination of `type`, `namespace` (when relevant) and `key`.
+
+The following is a pseudo-schema for the context passed to this template:
+
+```go Context
+{
+  Changes: []Change{
+    {
+      Verb: string // e.g. create, update or delete
+      Resource: {
+        Type: {
+          Package: string // e.g. flipt.core
+          Name: string // e.g. Flag
+        }
+        Namespace: string // e.g. default
+        Key: string // e.g. my-flag-key
+      }
+    }
+  }
+}
+```
+
+Simply printing out a change in the template (for example,`{{ (index .Changes 0) }}`) results in the following format:
+
+```
+<verb> <type> [<namespace>/]<key>
+```
+
+<Accordion title="Example: semantic commit messages">
+The following gives an example of how to change the above template to produce semantic commits:
+
+```yaml
+version: "1.0"
+templates:
+  commit_message: |-
+    {{- if eq (len .Changes) 1 }}
+    {{- printf "feat(flipt/%s): %s" .Environment.Name (index .Changes 0) }}
+    {{- else -}}
+    updated multiple resources
+    {{ range $change := .Changes }}
+    {{- printf "feat(flipt/%s): %s" .Environment.Name $change }}
+    {{- end }}
+    {{- end }}
+```
+
+</Accordion>
+
+### Proposal (Pull-Request) Title and Body
+
+Proposals (generated Pull-Requests) have a configurable title and body templates.
+Both templates are provided with the `base` environment and the `branch` environment configuration.
+
+The following is a pseudo-schema for the context passed to these templates:
+
+```go Context
+{
+  Base: {
+    Name:         string // e.g. production
+    Organization: string // e.g. myorg
+    Host:         string // e.g. production-myorg.flipt.cloud
+    Branch:       string // e.g. main
+    Directory:    string // e.g. production
+  }
+  Branch: {
+    Name:         string // e.g. interestingcohen
+    Organization: string // e.g. myorg
+    Host:         string // e.g. interestingcohen-production-myorg.flipt.cloud
+    Branch:       string // e.g. flipt/production/interestingcohen
+    Directory:    string // e.g. production
+  }
+}
+```
+
+<AccordionGroup>
+<Accordion title="Example: Title in semantic commit message style">
+The following gives an example of how to change the above template to produce semantic commits:
+
+```yaml
+version: "1.0"
+templates:
+  proposal_title: "feat: update feature flags in {{ .Base.Name }}"
+```
+
+</Accordion>
+<Accordion title="Example: Body with organization">
+The following gives an example of how to change the above template to produce semantic commits:
+
+```yaml
+version: "1.0"
+templates:
+  proposal_body: |-
+    Update Flipt resources for the {{ .Base.Organization }} in [{{ .Base.Name }}]({{ .Base.HostURL }}).
+    The branched environment can be viewed at [{{ .Branch.Name }}]({{ .Branch.HostURL }}).
+```
+
+</Accordion>
+</AccordionGroup>
