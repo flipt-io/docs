@@ -6,8 +6,8 @@ description: Learn how to configure different aspects of your Flipt environments
 ## Commit Messages, Pull-Request Titles and Bodies
 
 Flipt Cloud dynamically generates commit messages and pull-requests based on parameters of the changes being made.
-It passes these parameters through Go templates to produce the resulting messages.
-While cloud is configured some sensible defaults, these can be overridden on a per Flipt environment basis.
+It passes these parameters through [Go templates](https://pkg.go.dev/text/template) to produce the resulting messages.
+While cloud is configured with some sensible defaults, these can be overridden on a per Flipt environment basis.
 
 To override these templates you must provide a `flipt.yaml` file at the root of your environment tree.
 
@@ -18,10 +18,14 @@ To override these templates you must provide a `flipt.yaml` file at the root of 
 ```
 
 <Info>
-  An environment is a combination of a Git `repository`, a `branch`
-  name and `directory` path. These are selected when you create your environment
-  in Flipt Cloud. The `flipt.yaml` must exist in this directory and branch in
-  order to configure the relevant environment.
+
+An environment is a combination of a Git `repository`, a `branch` name and
+`directory` path. These are selected when you create your environment in Flipt
+Cloud.
+
+The `flipt.yaml` file must exist in this directory and branch in order
+to configure the relevant environment.
+
 </Info>
 
 When this file isn't provided, a default one is implicitly generated. The default is effectively the following:
@@ -77,7 +81,7 @@ Simply printing out a change in the template (for example,`{{ (index .Changes 0)
 <verb> <type> [<namespace>/]<key>
 ```
 
-<Accordion title="Example: semantic commit messages">
+<Accordion title="Example: Semantic Commit Messages">
 The following gives an example of how to change the above template to produce semantic commits:
 
 ```yaml
@@ -123,7 +127,7 @@ The following is a pseudo-schema for the context passed to these templates:
 ```
 
 <AccordionGroup>
-<Accordion title="Example: Title in semantic commit message style">
+<Accordion title="Example: Title in Semantic Commit Message Style">
 The following gives an example of how to change the above template to produce semantic commits:
 
 ```yaml
@@ -133,7 +137,7 @@ templates:
 ```
 
 </Accordion>
-<Accordion title="Example: Body with organization">
+<Accordion title="Example: Body With Organization">
 The following gives an example of how to change the above template to produce semantic commits:
 
 ```yaml
