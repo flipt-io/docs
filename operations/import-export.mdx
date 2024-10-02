@@ -85,4 +85,11 @@ flipt export --namespaces production
   namespaces.
 </Tip>
 
+By default, Flipt exports resources in the _natural_ order of the selected storage type. While the output is typically consistent within the same storage type,
+import/export operations can yield varying results across different storage types. To enhance consistency during export, the --sort-by-key flag can be used.
+
+```yaml
+flipt export --sort-by-key --all-namespaces
+```
+
 See the [CLI reference](/cli/commands/export) for more information on the `export` command.
