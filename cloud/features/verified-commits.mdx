@@ -1,0 +1,42 @@
+---
+title: Verified Commits
+description: Learn about verifying Git commits with Flipt Cloud
+mode: "wide"
+---
+
+Verify Flipt's commits to your GitHub repository with SSH signing keys. This ensures that commits are authentic and have not been tampered with. You can be confident that the commits you see in your repository are indeed from Flipt.
+
+You can learn more about GitHub's commit verification in the [GitHub documentation](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification).
+
+![Signed Commits](/images/cloud/features/verified-commits/commits.png)
+
+<Info>
+  Verified Commits are only available on our Team plan and above. See our
+  [pricing page](https://www.flipt.io/pricing) for more information.
+</Info>
+
+## Creating a Signing Key
+
+![Signed Commits](/images/cloud/features/verified-commits/generate-key.png)
+
+To verify commits with Flipt Cloud, we'll need to create a
+signing key, as Flipt needs to be able to sign the commits it
+creates itself.
+
+To do this, head to your user settings in Flipt Cloud, and click 'Generate Key'.
+
+![Signed Commits](/images/cloud/features/verified-commits/signing-key.png)
+
+## Adding Your Key to GitHub
+
+Head to your [key settings](https://github.com/settings/keys) in GitHub, and add it
+as an SSH **Signing Key**.
+
+It's important that it should be a signing key, rather than an authentication
+key, as we don't want this key to be able to push to your repositories, just to
+verify commits.
+
+## How We Store Your Key
+
+Flipt uses [AWS Key Management Service (KMS)](https://aws.amazon.com/kms/) to generate and store your signing key. This means we don't
+ever have access to the private key, and instead ask the KMS API to sign commits using your key.

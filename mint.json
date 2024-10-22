@@ -82,10 +82,7 @@
   "navigation": [
     {
       "group": "Overview",
-      "pages": [
-        "introduction",
-        "concepts"
-      ]
+      "pages": ["introduction", "concepts"]
     },
     {
       "group": "Use Cases",
@@ -110,10 +107,7 @@
         "integration/overview",
         {
           "group": "Server-Side SDKs",
-          "pages": [
-            "integration/server/rest",
-            "integration/server/grpc"
-          ]
+          "pages": ["integration/server/rest", "integration/server/grpc"]
         },
         "integration/client",
         "integration/openfeature",
@@ -126,7 +120,7 @@
         {
           "group": "User Guides",
           "pages": [
-            "guides/user/get-going-with-gitops", 
+            "guides/user/get-going-with-gitops",
             "guides/user/using-references"
           ]
         },
@@ -150,9 +144,7 @@
             },
             {
               "group": "Authorization",
-              "pages": [
-                "guides/operation/authorization/rbac-with-keycloak"
-              ]
+              "pages": ["guides/operation/authorization/rbac-with-keycloak"]
             }
           ]
         },
@@ -192,17 +184,14 @@
         "cli/overview",
         {
           "group": "Commands",
-          "pages":[
+          "pages": [
             {
               "group": "config",
-              "pages":[
-                "cli/commands/config/init",
-                "cli/commands/config/edit"
-              ]
+              "pages": ["cli/commands/config/init", "cli/commands/config/edit"]
             },
             {
               "group": "bundle",
-              "pages":[
+              "pages": [
                 "cli/commands/bundle/build",
                 "cli/commands/bundle/list",
                 "cli/commands/bundle/pull",
@@ -229,9 +218,7 @@
     },
     {
       "group": "Authorization",
-      "pages": [
-        "authorization/overview"
-      ]
+      "pages": ["authorization/overview"]
     },
     {
       "group": "Operations",
@@ -245,11 +232,9 @@
     },
     {
       "group": "Tooling",
-      "pages": [
-        "tooling/github-actions"
-      ]
+      "pages": ["tooling/github-actions"]
     },
-    
+
     {
       "group": "Overview",
       "pages": [
@@ -266,7 +251,8 @@
         "cloud/features/git-backed-storage",
         "cloud/features/approval-workflows",
         "cloud/features/rbac",
-        "cloud/features/user-management"
+        "cloud/features/user-management",
+        "cloud/features/verified-commits"
       ]
     },
     {
@@ -293,7 +279,7 @@
       ]
     },
     {
-      "group": "Evaluation", 
+      "group": "Evaluation",
       "pages": [
         "reference/evaluation/boolean-evaluation",
         "reference/evaluation/variant-evaluation",
@@ -399,12 +385,12 @@
       "source": "/integration/rest",
       "destination": "/integration/server/rest"
     },
-    { 
+    {
       "source": "/integration/grpc",
       "destination": "/integration/server/grpc"
     },
     {
-      "source":"/guides/get-going-with-gitops",
+      "source": "/guides/get-going-with-gitops",
       "destination": "/guides/user/get-going-with-gitops"
     },
     {
