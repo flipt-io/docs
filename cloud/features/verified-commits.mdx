@@ -17,24 +17,28 @@ You can learn more about GitHub's commit verification in the [GitHub documentati
 
 ## Creating a Signing Key
 
-![Signed Commits](/images/cloud/features/verified-commits/generate-key.png)
-
 To verify commits with Flipt Cloud, we'll need to create a
 signing key, as Flipt needs to be able to sign the commits it
 creates itself.
 
+![Generate Key](/images/cloud/features/verified-commits/generate-key.png)
+
 To do this, head to your user settings in Flipt Cloud, and click 'Generate Key'.
 
-![Signed Commits](/images/cloud/features/verified-commits/signing-key.png)
+![Signing Key](/images/cloud/features/verified-commits/signing-key.png)
+
+Copy the key as you'll need to add it to GitHub in the next step.
 
 ## Adding Your Key to GitHub
 
 Head to your [key settings](https://github.com/settings/keys) in GitHub, and add it
-as an SSH **Signing Key**.
+as an **SSH Signing Key**.
 
 It's important that it should be a signing key, rather than an authentication
 key, as we don't want this key to be able to push to your repositories, just to
 verify commits.
+
+![Add Key](/images/cloud/features/verified-commits/add-signing-key.png)
 
 ## How We Store Your Key
 
