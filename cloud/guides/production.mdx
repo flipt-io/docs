@@ -79,6 +79,7 @@ Currently, Flipt Cloud only support client-side SDKs for direct evaluation via t
     - `URL`: The URL of the Flipt Cloud API.
     - `Authentication`: The API key authentication method configured with the API key you created in the previous step.
     - (Optional) `Namespace`: The namespace to use for the SDK. (Default: `default`)
+    - (Optional) `Fetch Mode`: Set to `streaming` to enable streaming mode. (Default: `polling`)
 
     For example, here's how you can configure the SDK for a Go application:
 
@@ -86,7 +87,8 @@ Currently, Flipt Cloud only support client-side SDKs for direct evaluation via t
     evaluationClient, _ := flipt.NewClient(
         flipt.WithURL("https://<environment>-<organization>.flipt.cloud"),
         flipt.WithClientTokenAuthentication(<api-key>),
-        flipt.WithNamespace(<namespace>)
+        flipt.WithNamespace(<namespace>),
+        flipt.WithFetchMode(flipt.FetchModeStreaming),
     )
     ```
 
