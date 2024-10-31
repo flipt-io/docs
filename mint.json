@@ -42,6 +42,10 @@
     {
       "name": "API Reference",
       "url": "reference"
+    },
+    {
+      "name": "Changelog",
+      "url": "changelog"
     }
   ],
   "primaryTab": {
@@ -83,6 +87,10 @@
     {
       "group": "Overview",
       "pages": ["introduction", "concepts"]
+    },
+    {
+      "group": "Changelog",
+      "pages": ["changelog/overview"]
     },
     {
       "group": "Use Cases",
@@ -234,7 +242,6 @@
       "group": "Tooling",
       "pages": ["tooling/github-actions"]
     },
-
     {
       "group": "Overview",
       "pages": [
