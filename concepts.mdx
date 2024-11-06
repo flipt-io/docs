@@ -54,10 +54,18 @@ Variants are options for flags. For example, if you have a flag `colorscheme`
 that determines which main colors your users see when they login to your
 application, then possible variants could include `dark`, `light` or `auto`.
 
-<Tip>
-  Variants can also have JSON attachments. This allows you to store additional
-  data about a variant that can be used in your application at runtime.
-</Tip>
+#### Variant Attachments
+
+Variants can also have JSON attachments. This allows you to store additional
+data about a variant that can be used in your application at runtime.
+
+<Warning>
+
+Variant attachments are not used for evaluation, they are only used for runtime configuration.
+
+The attachment size is limited to **1MB**.
+
+</Warning>
 
 ![Variant Flags Example](/images/concepts/flags_variants.png)
 
