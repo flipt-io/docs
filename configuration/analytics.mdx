@@ -10,6 +10,7 @@ Flipt includes functionality for reporting analytical data to a configurable sto
 Currently, Flipt has support for collecting data into the following storage engines:
 
 - [ClickHouse](https://clickhouse.com/)
+- [Prometheus](https://prometheus.io/)
 
 The data that gets collected currently includes:
 
@@ -68,6 +69,36 @@ To configure Flipt to use ClickHouse for analytics, you will need to add the fol
         clickhouse:
           enabled: true
           url: clickhouse://clickhouse:9000/flipt_analytics
+    ```
+
+  </Tab>
+</Tabs>
+
+## Prometheus
+
+You can use any [Prometheus](https://prometheus.io/docs/introduction/overview/) server to store your analytics data.
+
+### Configuration
+
+To configure Flipt to use Prometheus for analytics, you will need to add the following configuration to your `config.yml` file or environment variables:
+
+<Tabs>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_ANALYTICS_STORAGE_PROMETHEUS_ENABLED=true
+    FLIPT_ANALYTICS_STORAGE_PROMETHEUS_URL=http://prometheus:9090
+    ```
+
+  </Tab>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    analytics:
+      storage:
+        prometheus:
+          enabled: true
+          url: http://prometheus:9090
     ```
 
   </Tab>
