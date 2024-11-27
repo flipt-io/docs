@@ -103,3 +103,15 @@ To configure Flipt to use Prometheus for analytics, you will need to add the fol
 
   </Tab>
 </Tabs>
+
+### Custom Headers
+
+You can also add custom headers to the Prometheus requests by setting the `analytics.storage.prometheus.headers` configuration property. This can be useful if you are using a proxy or need to add additional authentication headers.
+
+```yaml
+analytics:
+  storage:
+    prometheus:
+      headers:
+        "Authorization": "Bearer <token>"
+```
