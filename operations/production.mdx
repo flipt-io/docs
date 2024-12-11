@@ -136,3 +136,8 @@ You can disable these endpoints by setting the following configuration options:
 
   </Tab>
 </Tabs>
+
+## Prometheus Metrics
+
+If your instance uses Prometheus as the storage engine for analytical data, Flipt will expose a metrics endpoint (`/metrics`) that can be scraped by Prometheus.
+Ensure that this endpoint is not publicly accessible, for example, by configuring your Istio Ingress setup appropriately.
