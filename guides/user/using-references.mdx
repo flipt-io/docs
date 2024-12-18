@@ -27,7 +27,7 @@ In this guide you will learn how to:
 
 ## Our Example Application
 
-We're going to be making a change to our internal organization sales dashboard. This dashboard is made up of simple [React](https://reactjs.org/) frontend and a Go backend. The frontend is a single-page application that makes API calls to the backend to fetch data. The backend is a **new** API that returns a list of sales performance data. The frontend will use this data to render a graph of our company's sales performance.
+We're going to be making a change to our internal organization sales dashboard. This dashboard is made up of a simple [React](https://reactjs.org/) frontend and a Go backend. The frontend is a single-page application that makes API calls to the backend to fetch data. The backend is a **new** API that returns a list of sales performance data. The frontend will use this data to render a graph of our company's sales performance.
 
 Because this API is new and we're not sure how it will perform, we want to test it in a production-like environment before we merge it into our main branch.
 
@@ -128,7 +128,7 @@ flags:
 
 <Note>
   You don't have to call your file `features.yml` and you can spread your flag
-  definitions across multiple files. Checkout our docs on [locating flag
+  definitions across multiple files. Check out our docs on [locating flag
   state](/configuration/storage#locating-flag-state) to learn more.
 </Note>
 
@@ -232,7 +232,7 @@ We've also added support for references in all of our [server side REST SDKs](/i
 
 References currently only work with Git, and our `git` backend, like all of the declarative storage backends, mandates that the UI is **read-only**.
 We have thoughts on how this could change in the future, but for now, this is a limitation.
-You always have your editor, Git and the SCMs (GitHub, Gitlab etc) for state management in the meantime.
+You always have your editor, Git and the SCMs (GitHub, GitLab etc) for state management in the meantime.
 
 Flipt will automatically sync your feature flag definitions to Flipt in the background. Each of these backends work by polling their sources (git, oci, local directory or object store) and the interval can be configured.
-Checkout the [Configuration: Storage: Declarative](/configuration/storage#declarative) for details on adjusting these intervals.
+Check out the [Configuration: Storage: Declarative](/configuration/storage#declarative) for details on adjusting these intervals.

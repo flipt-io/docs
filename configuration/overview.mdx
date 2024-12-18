@@ -34,10 +34,10 @@ The server will check in a few different locations for server configuration (in 
   schema](https://raw.githubusercontent.com/flipt-io/flipt/main/config/flipt.schema.json)
   and a [Cue
   schema](https://raw.githubusercontent.com/flipt-io/flipt/main/config/flipt.schema.cue)
-  that you can use to validate your configuration file and it's properties.
+  that you can use to validate your configuration file and its properties.
 </Note>
 
-You can edit any of these properties to your liking, and on restart Flipt will
+You can edit any of these properties to your liking, and on restart, Flipt will
 pick up the new changes.
 
 ### Environment Substitution
@@ -467,11 +467,11 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 
 #### Analytics: Prometheus
 
-| Property                             | Description                         | Default | Since   |
-| ------------------------------------ | ----------------------------------- | ------- | ------- |
-| analytics.storage.prometheus.enabled | Enable Prometheus support           | false   | v1.52.0 |
-| analytics.storage.prometheus.url     | URL to connect to prometheus server |         | v1.52.0 |
-| analytics.storage.prometheus.headers  | Additional headers to send with Prometheus requests (map[string]string) |                       | v1.52.1 |
+| Property                             | Description                                                             | Default | Since   |
+| ------------------------------------ | ----------------------------------------------------------------------- | ------- | ------- |
+| analytics.storage.prometheus.enabled | Enable Prometheus support                                               | false   | v1.52.0 |
+| analytics.storage.prometheus.url     | URL to connect to prometheus server                                     |         | v1.52.0 |
+| analytics.storage.prometheus.headers | Additional headers to send with Prometheus requests (map[string]string) |         | v1.52.1 |
 
 ### Metrics
 
