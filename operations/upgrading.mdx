@@ -6,7 +6,7 @@ description: This document describes how to upgrade Flipt.
 Flipt aims to provide an upgrade process which requires zero downtime with minimal steps.
 Currently, Flipt supports four relational database backends and uses a migration process to manage their schema.
 
-Each new release of Flipt, may or may not include updates to database migrations.
+Each new release of Flipt might include updates to database migrations.
 The release notes on GitHub for each Flipt release should signify whether it does or not.
 
 You can find the releases and release notes on [GitHub](https://github.com/flipt-io/flipt/releases).
@@ -65,6 +65,6 @@ We design our migrations to be compatible with older Flipt server versions, so i
 
 ## Downgrade Process
 
-As mentioned, we recommend you backup your database before performing any upgrades.
+As previously mentioned, we recommend you backup your database before performing any upgrades.
 Flipt doesn't currently come with any built-in downgrade tooling.
 Our suggestion, if you need to revert to an previous version of Flipt, is to restore your database using a backup from when it was backing the target older version.

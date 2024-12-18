@@ -45,13 +45,13 @@ Using SQLite in this way means Flipt can only be run as a single instance.
 
 In many scenarios, it's advantageous to run multiple instances of a service like Flipt. Doing so can provide redundancy during critical failures. It also allows an operator to scale the number of instances to meet throughput demands.
 
-An externally hosted relational database is required to scale Flipt horizontally (run multiple instances with a shared backend). PostgreSQL, MySQL and CockroachDB are the currently supported relational backends. Check out [Configuration: Storage](/configuration/storage) for more details on how to configure Flipt's available storage backends.
+An externally hosted relational database is required to scale Flipt horizontally (run multiple instances with a shared backend). PostgreSQL, MySQL, and CockroachDB are the currently supported relational backends. Check out [Configuration: Storage](/configuration/storage) for more details on how to configure Flipt's available storage backends.
 
 Once configured with one of these databases, you can run multiple instances safely. Flipt takes care of schema management and some state management operations (e.g. automated deletion of expired API client tokens).
 
 <Note>
   To run multiple instances of Flipt you will need to do so behind a
-  load-balancer. Nginx, Caddy and Envoy are examples of suitable load-balancer
+  load-balancer. Nginx, Caddy, and Envoy are examples of suitable load-balancer
   choices.
 </Note>
 
@@ -60,7 +60,7 @@ Once configured with one of these databases, you can run multiple instances safe
 Flipt supports both in-memory caching and the ability to use an external system such as Redis.
 Caching allows Flipt to reuse computed results made in a short period. This reduces the number of requests to the backing database and minimizes waste caused by excess evaluation.
 
-In-memory caching can be enabled via the “caching” section of the configuration file and requires no external dependencies.
+In-memory caching can be enabled via the "caching" section of the configuration file and requires no external dependencies.
 
 <Info>
   Details on these configuration options can be found in the [Configuration:
@@ -142,7 +142,7 @@ The `Flipt (master)` is the source of truth of all feature flag state where Flip
 
 The `Flipt Exporter` is a [Kubernetes CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) which uses the [flipt export](/cli/commands/export) command to upload potential changed state to a S3 bucket. Several instances of Flipt can then be run using the S3 bucket as a source of truth. One such example is the `Flipt Sidecar` in the diagram which is collocated with a main process (in the same Kubernetes pod) that uses a Flipt client.
 
-The overall idea is for the main process to achieve faster evaluations going over the "localhost" rather than through a central Flipt process which could be running anywhere in a distributed sense.
+The overall idea is for the main process to achieve faster evaluations going over "localhost" rather than through a central Flipt process which could be running anywhere in a distributed sense.
 
 ## Further Considerations
 
@@ -166,4 +166,4 @@ This has the potential for multiple benefits:
 </div>
 </Frame>
 
-Flipt ships with metrics, logging and tracing around both behavior and system performance metrics. These pieces of telemetry can be useful for understanding the constraints within your setup of Flipt. We recommend reading the [Configuration: Observability](/configuration/observability) section to understand more about how to extract these measurements.
+Flipt ships with metrics, logging, and tracing around both behavior and system performance metrics. These pieces of telemetry can be useful for understanding the constraints within your setup of Flipt. We recommend reading the [Configuration: Observability](/configuration/observability) section to understand more about how to extract these measurements.
