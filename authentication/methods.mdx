@@ -60,7 +60,7 @@ See the [Configuration: Method Token](/configuration/overview#authentication-met
 
 ### Token Expiration
 
-Tokens can be created with an optional expiration date. This can be used to ensure that a token is only valid for a short time before automatically expiring. Expired tokens will be automatically deleted by Flipt. The interval and grace period for this cleanup process can be configured via the `token.cleanup.interval` and `token.cleanup.grace_period` values in the configuration.
+Tokens can be created with an optional expiration date. This can be used to ensure that a token is only valid for a short time before automatically expiring. Expired tokens will be automatically deleted by Flipt. The interval and a grace period for this cleanup process can be configured via the `token.cleanup.interval` and `token.cleanup.grace_period` values in the configuration.
 
 ### Namespaced Tokens
 
@@ -90,7 +90,6 @@ The rest of this information is mostly academic.
 It's mainly useful if you want to build your browser application using cookie authentication or understand Flipt's OIDC flow at a lower level.
 
 See the [OIDC Configuration](/configuration/authentication#oidc) documentation to learn how to configure your provider(s).
-
 </Note>
 
 The `OIDC` authentication method is primarily designed to support browser-based authentication.

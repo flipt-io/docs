@@ -122,7 +122,7 @@ In a browser context this means subsequent API calls will be automatically authe
 
 ## GRPC
 
-For gRPC we use the [Metadata](https://grpc.io/docs/what-is-grpc/core-concepts/#metadata) functionality similar to HTTP Headers.
+For gRPC we use the metadata functionality similar to HTTP Headers.
 The lower-case `authorization` metadata key should be supplied with a single string `Bearer <client-token>` to any RPC calls.
 
 ### Example
@@ -148,6 +148,6 @@ func AuthUnaryClientInterceptor(optFuncs ...CallOption) grpc.UnaryClientIntercep
     return func(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
         ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "Bearer gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpofNCNnc=")
         return invoker(ctx, method, req, reply, cc, opts...)
-	}
+    }
 }
 ```

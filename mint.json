@@ -86,11 +86,16 @@
   "navigation": [
     {
       "group": "Overview",
-      "pages": ["introduction", "concepts"]
+      "pages": [
+        "introduction",
+        "concepts"
+      ]
     },
     {
       "group": "Changelog",
-      "pages": ["changelog/overview"]
+      "pages": [
+        "changelog/overview"
+      ]
     },
     {
       "group": "Use Cases",
@@ -115,7 +120,10 @@
         "integration/overview",
         {
           "group": "Server-Side SDKs",
-          "pages": ["integration/server/rest", "integration/server/grpc"]
+          "pages": [
+            "integration/server/rest",
+            "integration/server/grpc"
+          ]
         },
         "integration/client",
         "integration/openfeature",
@@ -152,7 +160,9 @@
             },
             {
               "group": "Authorization",
-              "pages": ["guides/operation/authorization/rbac-with-keycloak"]
+              "pages": [
+                "guides/operation/authorization/rbac-with-keycloak"
+              ]
             }
           ]
         },
@@ -195,7 +205,10 @@
           "pages": [
             {
               "group": "config",
-              "pages": ["cli/commands/config/init", "cli/commands/config/edit"]
+              "pages": [
+                "cli/commands/config/init",
+                "cli/commands/config/edit"
+              ]
             },
             {
               "group": "bundle",
@@ -226,7 +239,9 @@
     },
     {
       "group": "Authorization",
-      "pages": ["authorization/overview"]
+      "pages": [
+        "authorization/overview"
+      ]
     },
     {
       "group": "Operations",
@@ -240,7 +255,9 @@
     },
     {
       "group": "Tooling",
-      "pages": ["tooling/github-actions"]
+      "pages": [
+        "tooling/github-actions"
+      ]
     },
     {
       "group": "Overview",
@@ -272,7 +289,9 @@
     },
     {
       "group": "Overview",
-      "pages": ["reference/overview"]
+      "pages": [
+        "reference/overview"
+      ]
     },
     {
       "group": "Authentication",

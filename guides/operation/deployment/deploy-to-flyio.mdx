@@ -84,7 +84,7 @@ opening https://flipt-test.fly.dev/ ...
 
 ## Configuration
 
-You can configure Flipt with [environment variables](/configuration/overview#environment-variables) in the `fly.toml` file. For example, to configure Flipt to use a custom port and enable DEBUG logging you can add the following to the `fly.toml` file:
+You can configure Flipt with [environment variables](/configuration/overview#environment-variables) in the `fly.toml` file. For example, to configure Flipt to use a custom port and enable the DEBUG logging you can add the following to the `fly.toml` file:
 
 ```toml fly.toml
 # See https://fly.io/docs/reference/configuration/ for information
@@ -126,6 +126,6 @@ Enabling DEBUG logging as shown above can be helpful for troubleshooting any iss
 
 ## Conclusion
 
-Deploying Flipt to Fly.io allows you to get up and running with Flipt quickly. For production deployments however, you'll likely want to configure Flipt with [authentication](/configuration/authentication) as well as consider configuring [caching](/configuration/storage#caching), [observability](/configuration/observability), and using a [read replica](https://fly.io/docs/postgres/advanced-guides/high-availability-and-global-replication/) for your database.
+Deploying Flipt to Fly.io allows you to get up and running with Flipt quickly. For production deployments however, you'll likely want to configure Flipt with [authentication](/configuration/authentication) as well as consider configuring [caching](/configuration/storage#caching), [observability](/configuration/observability), and using a read-replica for your database.
 
 For more information on production deployments, refer to the [Deployment](/operations/deployment) section of the documentation.

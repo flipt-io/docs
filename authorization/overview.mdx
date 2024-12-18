@@ -24,7 +24,7 @@ Flipt embeds OPA to evaluate policies that determine whether a request should be
 
 <Tip>
   Check out our [Role-Based Access Control with Keycloak
-  guide](/guides/operation/authorization/rbac-with-keycloak) for an example on
+  guide](/guides/operation/authorization/rbac-with-keycloak) for an example of
   how to configure and use role-based access control (RBAC) with Flipt and
   Keycloak using OPA.
 </Tip>
@@ -59,7 +59,7 @@ You can find more information on how to write Rego policies in the [OPA document
   policies before deploying them.
 </Tip>
 
-It's up to you to define the policies that make sense for your organization. During policy evaluation, Flipt will pass the incoming request context to the built in Open Policy Agent, which will then evaluate the policy against that context.
+It's up to you to define the policies that make sense for your organization. During policy evaluation, Flipt will pass the incoming request context to the built-in Open Policy Agent, which will then evaluate the policy against that context.
 
 The context provided to OPA includes the following fields:
 
@@ -172,10 +172,10 @@ Flipt encodes the raw authentication claims as a JSON string to pass them to OPA
 
 Further documentation on how to configure custom claims and groups in Okta can be found in the [Okta Developer documentation](https://developer.okta.com/docs/guides/customize-tokens-returned-from-okta/main/).
 
-Roles or groups are not a requirement for writing policies. You can write policies that check for any information provided by the authentication method, such as the user's email, id, name, etc.
+Roles or groups are not a requirement for writing policies. You can write policies that check for any information provided by the authentication method, such as the user's email, ID, name, etc.
 
 <Info>
-  Flipt has no notion of users or roles internally, it simply passes the raw
+  Flipt has no notion of users or roles internally; it simply passes the raw
   authentication information along with other request metadata to OPA for
   evaluation.
 </Info>
@@ -184,7 +184,7 @@ Roles or groups are not a requirement for writing policies. You can write polici
 
 The `input.request` field contains information about the incoming request. This includes the `namespace`, `resource`, and `action` of the request.
 
-- `namespace`: The [namespace](/concepts#namespaces) in Flipt of the resource being accessed. If no namespace is provided, the default namespace is used, or it is not applicable as the resource is not namespace scoped (e.g. authentication)
+- `namespace`: The [namespace](/concepts#namespaces) in Flipt of the resource being accessed. If no namespace is provided, the default namespace is used, or it is not applicable as the resource is not namespace scoped (e.g., authentication)
 
 - `resource`: The resource being accessed. This can be one of:
 
@@ -298,7 +298,7 @@ While the examples provided in this document are simple, you can write policies 
 
 <Tip>
   Check out our [Role-Based Access Control with Keycloak
-  guide](/guides/operation/authorization/rbac-with-keycloak) for an example on
+  guide](/guides/operation/authorization/rbac-with-keycloak) for an example of
   how to configure and use role-based access control (RBAC) with Flipt and
   Keycloak using OPA.
 </Tip>

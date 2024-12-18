@@ -18,7 +18,7 @@ OAuth 2.0 is an authentication standard whose goal is to allow 3rd party applica
 
 ![OAuth 2.0 Flow Diagram](/images/guides/login-with-github/oauth-flow-diagram.png)
 
-In comparison to OIDC, OAuth 2.0 doesn't have an identity standard, so retrieving identity can vary drastically from provider to provider. Therefore, it's up to the user to consult the OAuth 2.0 provider's documentation to understand if and how identity information can be retrieved.
+Unlike OIDC, OAuth 2.0 does not have a standardized identity layer, which means the process of retrieving identity information varies between providers. Users should consult their OAuth 2.0 provider's documentation to understand the specific methods for retrieving identity information.
 
 ## Creating a GitHub OAuth 2.0 Application
 
@@ -112,6 +112,6 @@ After completion of the flow you should be taken to the normal Flipt homepage an
 
 ![Flipt Dashboard](/images/guides/login-with-github/flipt-dashboard.png)
 
-This guide shows the basics of getting Flipt running with GitHub OAuth 2.0 authentication in a development.
+This guide shows the basics of getting Flipt running with GitHub OAuth 2.0 authentication in a development environment.
 
 Now that you know the basics, you can tailor the configuration pieces to fit your exact use cases. For instance, you would not use `localhost:8080` in a production setting, but rather a custom domain. If you have a custom domain, you can modify the `Authorization Callback URL` value on the GitHub OAuth application page, the `redirect_address`, and `domain` configuration values for the Flipt configuration.

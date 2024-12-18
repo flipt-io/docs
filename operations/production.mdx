@@ -64,7 +64,7 @@ Keep in mind that tuning `MaxOpenConn` may lead to tuning `MaxIdleConn` as well.
 
 ## Prepared Statements
 
-By default, all queries are run as prepared statements. This could pose a problem in some environments.
+By default, all queries are run as prepared statements. This poses a problem in some environments.
 
 For instance, PGBouncer doesn't support prepared statements in its [transaction pooling mode](https://www.pgbouncer.org/faq.html#how-to-use-prepared-statements-with-transaction-pooling).
 

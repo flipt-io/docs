@@ -108,7 +108,7 @@ http://localhost:8080/realms/flipt/.well-known/openid-configuration
 
 ## Running Flipt
 
-Now that we've an OIDC client configured in our Keycloak instance, we can begin configuring Flipt to leverage it.
+Now that we have an OIDC client configured in our Keycloak instance, we can begin configuring Flipt to leverage it.
 
 ### 1. Define a Flipt `config.yml`
 
@@ -153,11 +153,11 @@ authentication:
 
 The session domain is required for session-compatible authentication methods. It's used by Flipt as the domain for storing authentication cookies.
 
-Note that we've enabled the `oidc` method, and it has a section called `providers`. Each key beneath the `providers` section is unique and can be whatever you want. However, the name is important as it effects the `redirect_url` generated for the particular provider.
+Note that we've enabled the `oidc` method, and it has a section called `providers`. Each key beneath the `providers` section is unique and can be whatever you want. However, the name is important as it affects the `redirect_url` generated for the particular provider.
 
 Each provider section has a consistent structure. You're required to provide the `issuer_url`, `client_id`, `client_secret` and `redirect_address`.
 
-The `scopes` section is optional, and allows Flipt the opportunity to obtain additional details on the authenticating caller (e.g. email and profile picture).
+The `scopes` section is optional and allows Flipt the opportunity to obtain additional details on the authenticating caller (e.g., email and profile picture).
 
 ### 3. Start Flipt
 
@@ -170,13 +170,13 @@ docker run -it --rm \
   flipt/flipt:latest --config /config.yml
 ```
 
-Once Flipt has started you can to navigate your browser to the [UI](http://localhost:8081) and attempt a login with Keycloak.
+Once Flipt has started, you can navigate your browser to the [UI](http://localhost:8081) and attempt a login with Keycloak.
 
-When you click `Login with Keycloak` you should be navigated away to your Keycloak instance to complete the authentication flow.
+When you click `Login with Keycloak`, you should be navigated away to your Keycloak instance to complete the authentication flow.
 
 ![Keycloak login screen](/images/guides/login-with-keycloak/keycloak-login.png)
 
-Once you successfully authenticate with the username/password you created earlier, you should return to Flipt and be logged into.
+Once you successfully authenticate with the username/password you created earlier, you should return to Flipt and be logged in.
 
 ![Flipt dashboard](/images/guides/login-with-keycloak/flipt-dashboard.png)
 

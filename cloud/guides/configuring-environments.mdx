@@ -14,7 +14,7 @@ To override these templates you must provide a `flipt.yaml` file at the root of 
 ```console
 .
 └─ production
-    └─ flipt.yaml
+    └─ flipt.yaml
 ```
 
 <Info>
@@ -51,13 +51,13 @@ templates:
 ### Commit Message
 
 Commit message templates are supplied with a list of changes.
-Currently, Flipt only provides a single change, however, this may change in the future. As such, the template provides a list of changes.
+Currently, Flipt only provides a single change; however, this may change in the future. As such, the template provides a list of changes.
 A change is a combination of a `verb` and `resource`.
 A resource is a combination of `type`, `namespace` (when relevant) and `key`.
 
-The following is a pseudo-schema for the context passed to this template:
+The following is a pseudo-schema for the context:
 
-```go Context
+```go
 {
   Changes: []Change{
     {
@@ -105,9 +105,9 @@ templates:
 Proposals (generated Pull-Requests) have a configurable title and body templates.
 Both templates are provided with the `base` environment and the `branch` environment configuration.
 
-The following is a pseudo-schema for the context passed to these templates:
+The following is a pseudo-schema for the context:
 
-```go Context
+```go
 {
   Base: {
     Name:         string // e.g. production

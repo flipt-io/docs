@@ -71,7 +71,7 @@ In this step, we run Flipt and mount our local `config.yml` file into the runnin
 This will start Flipt as a process in the foreground of your current terminal session.
 You can stop Flipt by entering `ctrl+C`.
 
-This particular command forwards your localhost port `8080` into the container's localhost post `8080`.
+This particular command forwards your localhost port `8080` into the container's localhost port `8080`.
 The `8080` port is the default for Flipt's HTTP service and can be changed via the `server` configuration parameter.
 
 ```sh
@@ -144,7 +144,7 @@ Once selected you will be presented with more input options.
 
 ![Google cloud create oauth client ID form](/images/guides/login-with-google/create-oauth-client-id-form.png)
 
-3. Configure the clients name and redirect URL.
+3. Configure the client's name and redirect URL.
 
 As shown in the screenshot, we'll want to enter the following values for the inputs:
 
@@ -221,7 +221,7 @@ It's used by Flipt as the domain for storing authentication cookies.
 
 Note that we've enabled the `oidc` method, and it has a section called `providers`.
 Each key beneath the `providers` section is unique and can be whatever you want.
-However, the name is important as it effects the `redirect_url` generated for the particular provider.
+However, the name is important as it affects the `redirect_url` generated for the particular provider.
 If you change this provider name from `google` to something else, then you will need to update your [OAuth client details](#3-configure-the-oauth-client) in Google Cloud.
 For example, changing it from `google` to `gcp` would result in the redirect URI changing like so:
 
@@ -232,13 +232,13 @@ For example, changing it from `google` to `gcp` would result in the redirect URI
 
 Each provider section has a consistent structure.
 You're required to provide the `issuer_url`, `client_id`, `client_secret` and `redirect_address`.
-The `scopes` section is optional, and allows Flipt the opportunity to obtain additional details on the authenticating caller (e.g. email and profile picture).
+The `scopes` section is optional, and allows Flipt the opportunity to obtain additional details on the authenticating caller (e.g., email and profile picture).
 
 ### 2. Restart Flipt
 
 You can now stop and start your Flipt instance using the Docker command we described in Section 1.
 
-Once Flipt has restarted you can to navigate your browser to the [UI](http://localhost:8080) and attempt a login with Google.
+Once Flipt has restarted you can navigate your browser to the [UI](http://localhost:8080) and attempt a login with Google.
 When you click `Login with Google` you should be navigated away to your Google consent screen.
 Once you grant consent, you should return to Flipt and be logged into Flipt.
 
@@ -302,14 +302,14 @@ authentication:
 Using browser session based authentication puts applications at risk of cross-site request forgery attacks.
 Flipt supports automatic CSRF prevention via signed token strings, using a shared signing key.
 
-Checkout our [Configuration: Session](/configuration/authentication#session) documentation for details on how to configure this.
+Check out our [Configuration: Session](/configuration/authentication#session) documentation for details on how to configure this.
 
 2. Move credentials to environment variables
 
 Sometimes for security purposes you don't want to be inserting your sensitive credentials (such as provider `client_secret` or your CSRF `key`) into a configuration file.
 Flipt supports defining configuration in its YAML file and as environment variables.
 
-Checkout our [Configuration: Environment Variables](/configuration/overview#environment-variables) section for details on how to provide configuration as environment variables.
+Check out our [Configuration: Environment Variables](/configuration/overview#environment-variables) section for details on how to provide configuration as environment variables.
 
 As a quick example, both the Google provider `client_secret` and the CSRF signing `key` can be presented to Flipt like so:
 
