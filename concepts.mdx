@@ -79,6 +79,21 @@ Boolean flags can be configured with [rollout](#rollouts) rules to determine whi
 
 ![Boolean Flags Example](/images/concepts/flags_boolean.png)
 
+### Metadata
+
+All flags can have metadata associated with them. This metadata is stored in the Flipt backend and can be used to add additional information about a flag.
+
+Metadata is stored as a JSON object and is not used for evaluation. You can retrieve flag metadata using the [Get Flag](/reference/flags/get-flag) API.
+
+In the Flipt UI, metadata is displayed in the flag details section. The UI allows you to add, edit, and delete metadata and provides a more user-friendly interface for managing metadata by specifying key-value pairs and their data types.
+
+Currently, the following data types are supported:
+
+- Primitive types: `String`, `Number`, `Boolean`
+- Complex types: `Array`, `Object`
+
+![Flag Metadata Example](/images/concepts/flags_metadata.png)
+
 ## Segments
 
 Segments allow you to split your user base or audience up into predefined
