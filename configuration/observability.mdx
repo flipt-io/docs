@@ -79,11 +79,30 @@ For production deployments, we recommend using the JSON format as it's easier to
 
 We've prepared an [example](https://github.com/flipt-io/flipt/tree/main/examples/audit/log) showing how to set up Flipt with Grafana Loki and Promtail to ingest and query logs.
 
-### Log Key Descriptions
+### JSON
 
-- `L`: Level (log level). Possible values include: debug, info, warn, error, fatal, panic.
-- `T`: Timestamp. The timestamp is in ISO 8601 format, which is a widely used format for representing date and time. It includes the date, time, and time zone information. For example, "2024-01-20T21:59:49-05:00" represents the date and time in the Eastern Time Zone (UTC-5).
-- `M`: Message. The message provides a description of the log event. It can include information about the operation being performed, any errors encountered, or other relevant details.
+```json
+{
+  "L": "INFO",
+  "T": "2024-01-20T21:59:49-05:00",
+  "M": "finished unary call with code OK",
+  "server": "grpc",
+  "grpc.start_time": "2024-01-20T21:59:49-05:00",
+  "system": "grpc",
+  "span.kind": "server",
+  "grpc.service": "flipt.evaluation.EvaluationService",
+  "grpc.method": "Boolean",
+  "peer.address": "127.0.0.1:52635",
+  "grpc.code": "OK",
+  "grpc.time_ms": 0.146
+}
+```
+
+#### Log Key Descriptions
+
+- `L`: Level (log level). Possible values include: debug, info, warn, error, fatal, and panic.
+- `T`: Timestamp. The timestamp is in ISO 8601 format, widely used for representing date and time. It includes the date, time, and time zone information. For example, "2024-01-20T21:59:49-05:00" represents the date and time in the Eastern Time Zone (UTC-5).
+- `M`: Message. The message describes the log event. It can include information about the operation, errors encountered, or other relevant details.
 
 More information about the available configuration options can be found in the [Logging configuration](/configuration/overview#logging) section.
 
