@@ -173,7 +173,7 @@ docker run -it --rm \
   -p 8080:8080 \
   -v "$(pwd)/config.yml:/config.yml" \
   -v "$(pwd)/policy.rego:/policy.rego" \
-  flipt/flipt:latest --config /config.yml
+  flipt/flipt:latest ./flipt --config /config.yml
 ```
 
 ## Testing the Policy

@@ -78,7 +78,7 @@ The `8080` port is the default for Flipt's HTTP service and can be changed via t
 docker run -it --rm \
   -p 8080:8080 \
   -v "$(pwd)/config.yml:/config.yml" \
-  flipt/flipt:latest --config /config.yml
+  flipt/flipt:latest ./flipt --config /config.yml
 ```
 
 ### 3. Navigate to the Flipt UI

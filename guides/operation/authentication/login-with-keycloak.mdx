@@ -167,7 +167,7 @@ You can now start your Flipt instance using the following command:
 docker run -it --rm \
   -p 8080:8080 \
   -v "$(pwd)/config.yml:/config.yml" \
-  flipt/flipt:latest --config /config.yml
+  flipt/flipt:latest ./flipt --config /config.yml
 ```
 
 Once Flipt has started you can to navigate your browser to the [UI](http://localhost:8081) and attempt a login with Keycloak.
