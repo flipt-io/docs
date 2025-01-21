@@ -65,8 +65,8 @@ You can find the dashboards in our [grafana-dashboards](https://github.com/flipt
 
 Flipt writes logs to STDOUT in two formats:
 
-- JSON
-- Console
+- [JSON](#json)
+- [Console](#console)
 
 The format can be configured via the `log.encoding` configuration option.
 
@@ -97,6 +97,12 @@ We've prepared an [example](https://github.com/flipt-io/flipt/tree/main/examples
   "grpc.time_ms": 0.146
 }
 ```
+
+#### Log Key Descriptions
+
+- `L`: Level (log level). Possible values include: debug, info, warn, error, fatal, and panic.
+- `T`: Timestamp. The timestamp is in ISO 8601 format, widely used for representing date and time. It includes the date, time, and time zone information. For example, "2024-01-20T21:59:49-05:00" represents the date and time in the Eastern Time Zone (UTC-5).
+- `M`: Message. The message describes the log event. It can include information about the operation, errors encountered, or other relevant details.
 
 ### Console
 
