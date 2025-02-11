@@ -2,7 +2,18 @@
 title: API Overview
 ---
 
-Flipt's API is the primary way to interact with Flipt outside of the UI. It's used to create, update, and delete entities such as namespaces, flags, segments, rules, and also to evaluate flags.
+Flipt's API is the primary way to interact with Flipt Open Source outside of the UI. It's used to create, update, and delete entities such as namespaces, flags, segments, rules, and also to evaluate flags.
+
+<Note>
+  Flipt Cloud is a fully managed feature management platform that
+  enables you to continue to use Flipt's feature management capabilities with
+  zero maintenance.
+
+Flipt Cloud only supports [Client-Side Evaluation](/integration/client) currently, so these API endpoints are not available if you are using Flipt Cloud.
+
+See the [Flipt Cloud Architecture](/cloud/architecture) section for more information.
+
+</Note>
 
 The Flipt UI is completely backed by this same API. This means that anything that can be done in the Flipt UI can also be done via the REST API.
 
