@@ -240,7 +240,10 @@
     },
     {
       "group": "Tooling",
-      "pages": ["tooling/github-actions"]
+      "pages": [
+        "tooling/github-actions",
+        "tooling/model-context-protocol"
+      ]
     },
     {
       "group": "Overview",
