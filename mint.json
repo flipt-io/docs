@@ -262,7 +262,8 @@
         "cloud/features/approval-workflows",
         "cloud/features/rbac",
         "cloud/features/user-management",
-        "cloud/features/verified-commits"
+        "cloud/features/verified-commits",
+        "cloud/features/custom-domains"
       ]
     },
     {

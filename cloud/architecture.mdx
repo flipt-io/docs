@@ -41,6 +41,12 @@ These environments act as the data plane to serve feature flag data to your appl
 
 Each Flipt environment gets its own unique URL that you use to serve feature flag data to your applications. Our SDKs and API clients use this URL to connect to the Flipt instance in the Flipt Cloud environment.
 
+<Tip>
+  You can now use your own custom domains with Flipt Cloud to serve feature flag
+  data to your applications. See the [Custom
+  Domains](/cloud/features/custom-domains) overview for more information.
+</Tip>
+
 ## Evaluation
 
 Flipt Cloud supports evaluation for our [client-side SDKs](/integration/client) out of the box. These SDKs are available for many popular programming languages, including JavaScript, TypeScript, Go, Java, Ruby, Python, and more. These client-side SDKs are designed with performance in mind, and store feature flag data in memory to serve feature flag evaluations quickly.
