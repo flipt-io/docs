@@ -37,7 +37,7 @@ There are a couple of reasons why you might want to use a custom domain with Fli
 
 By default when using Flipt Cloud, every environment gets its own subdomain at `{your-environment}-{your-organization}.flipt.cloud`. When configuring our SDKs to evaluate feature flags, this is the domain that you'll use.
 
-For example, if you have an environment called `dev` and an organization called `acme-corp`, the default domain for that environment will be `dev-acme-corp.flipt.cloud`.
+For example, if you have an environment called `dev` and an organization called `acme`, the default domain for that environment will be `dev-acme.flipt.cloud`.
 
 Normally this is no big deal, but if you're using Flipt Cloud to power a product that you're selling to your customers, you may want to use your own domain to provide a branded experience. Particularly if you're using Flipt Cloud to power a mobile or browser based product, it's relatively easy for your users to inspect the network requests and see `flipt.cloud` in the request.
 
@@ -46,7 +46,7 @@ By using your own domain, you can provide a more branded experience for your use
 Instead of:
 
 ```
-https://dev-acme-corp.flipt.cloud
+https://dev-acme.flipt.cloud
 ```
 
 You can use your own domain or subdomain:
@@ -96,5 +96,5 @@ const fliptEvaluationClient = await FliptEvaluationClient.init("default", {
 ## Limitations
 
 - Custom domains are a paid feature available on Team plans and above
-- Custom domains can only be used with Flipt Cloud SDKs for API calls
+- Custom domains can only be used with Flipt Cloud Client SDKs for evaluating feature flags
 - The Flipt Cloud UI will continue to use the `*.flipt.cloud` domain
