@@ -1,0 +1,100 @@
+---
+title: Custom Domains
+description: Learn how to use your own custom domains with Flipt Cloud
+mode: "wide"
+---
+
+<Note>
+  Custom domains are currently in beta. Contact us at
+  [support@flipt.io](mailto:support@flipt.io) to get access.
+</Note>
+
+## Overview
+
+Flipt Cloud allows you to use your own custom domains for evaluating feature flags against your Flipt Cloud instances. This means you can replace the default `*.flipt.cloud` domain with your own domain (like `features.acme.com`) when making API calls to Flipt.
+
+This is useful if you want to use a domain (or subdomain) that you already own in order to provide a branded experience for your users.
+
+<img
+  className="block dark:hidden"
+  src="/images/cloud/features/domains/client-evaluation-cloud-light.svg"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/cloud/features/domains/client-evaluation-cloud-dark.svg"
+/>
+
+<Info>
+  Custom domains are only available on our Team plan and above and incur a small
+  additional cost per month.
+</Info>
+
+## Why Use Custom Domains?
+
+There are a couple of reasons why you might want to use a custom domain with Flipt Cloud.
+
+### Professional Branding & White Labeling
+
+By default when using Flipt Cloud, every environment gets its own subdomain at `{your-environment}-{your-organization}.flipt.cloud`. When configuring our SDKs to evaluate feature flags, this is the domain that you'll use.
+
+For example, if you have an environment called `dev` and an organization called `acme-corp`, the default domain for that environment will be `dev-acme-corp.flipt.cloud`.
+
+Normally this is no big deal, but if you're using Flipt Cloud to power a product that you're selling to your customers, you may want to use your own domain to provide a branded experience. Particularly if you're using Flipt Cloud to power a mobile or browser based product, it's relatively easy for your users to inspect the network requests and see `flipt.cloud` in the request.
+
+By using your own domain, you can provide a more branded experience for your users, making the integration feel more seamless and professional.
+
+Instead of:
+
+```
+https://dev-acme-corp.flipt.cloud
+```
+
+You can use your own domain or subdomain:
+
+```
+https://features.acme.com
+```
+
+### Enhanced Security & Compliance
+
+Using custom domains can provide several security benefits:
+
+1. **Domain Allowlisting**: Many organizations maintain strict allowlists of approved domains for outbound network requests. Using your own domain makes it easier to comply with these security policies without having to allowlist `*.flipt.cloud`.
+
+2. **Network Isolation**: Some organizations use internal DNS to route traffic through security appliances or VPNs. Custom domains allow you to configure your DNS to route Flipt traffic through your existing security infrastructure.
+
+3. **Data Privacy**: Using your own domain helps mask the use of third-party services from end users, making it harder for potential attackers to identify which services your application depends on.
+
+## Setting Up Custom Domains
+
+<Tip>
+  We're working on a guide to walk you through the process of setting up a
+  custom domain. Check back soon for more details!
+</Tip>
+
+Using custom domains with Flipt Cloud is a simple three step process:
+
+1. **Configure the Domain**: Once enabled, you can add your custom domain to your Flipt Cloud environment in the Flipt Cloud UI.
+
+![Environment Domain](/images/cloud/features/domains/environment-domain.png)
+
+2. **Configure the DNS**: You'll need to configure the DNS for your custom domain to point to your existing Flipt Cloud environment.
+
+![DNS Configuration](/images/cloud/features/domains/dns-configuration.png)
+
+3. **Update Your SDKs**: Once the DNS has propagated, you simply need to update your SDKs to use the new domain.
+
+```typescript {2}
+const fliptEvaluationClient = await FliptEvaluationClient.init("default", {
+  url: "https://features.acme.com",
+  authentication: {
+    clientToken,
+  },
+});
+```
+
+## Limitations
+
+- Custom domains are a paid feature available on Team plans and above
+- Custom domains can only be used with Flipt Cloud SDKs for API calls
+- The Flipt Cloud UI will continue to use the `*.flipt.cloud` domain
