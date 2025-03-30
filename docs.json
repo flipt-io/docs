@@ -427,6 +427,10 @@
       "destination": "/configuration/storage"
     },
     {
+      "source": "/self-hosted",
+      "destination": "/installation"
+    },
+    {
       "source": "/self-hosted/overview",
       "destination": "/installation/overview"
     },
