@@ -116,6 +116,7 @@
                   "configuration/authorization",
                   "configuration/observability",
                   "configuration/storage",
+                  "configuration/caching",
                   "configuration/telemetry",
                   "configuration/experimental"
                 ]
