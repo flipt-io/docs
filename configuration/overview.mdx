@@ -403,6 +403,8 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | cache.redis.db                 | Redis database to use                                               | 0         | v1.10.0 |
 | cache.redis.username           | Username to access the Redis database                               |           | v1.40.1 |
 | cache.redis.password           | Password to access the Redis database                               |           | v1.10.0 |
+| cache.redis.mode               | Redis mode (single, cluster)                                        | single    | v1.57.0 |
+| cache.redis.prefix             | Prefix to add to all Redis cache keys                               | "flipt"   | v1.57.0 |
 | cache.redis.require_tls        | Require TLS to access the Redis database                            | false     | v1.25.0 |
 | cache.redis.pool_size          | Max number of socket connections per CPU                            | 10        | v1.25.0 |
 | cache.redis.min_idle_conn      | Minimum number of idle connections in the pool                      | 0         | v1.25.0 |
