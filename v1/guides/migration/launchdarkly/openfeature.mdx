@@ -1,0 +1,767 @@
+---
+title: Migrating from LaunchDarkly SDK to OpenFeature SDK
+description: Migrate a Node.js application from LaunchDarkly SDK to OpenFeature SDK
+mode: "wide"
+---
+
+<Tip>
+  This guide is focused on migrating a Node.js application from LaunchDarkly SDK
+  to OpenFeature SDK. The process is similar for other programming languages,
+  but the specifics of the SDKs and the APIs they provide may differ.
+</Tip>
+
+Feature flagging is a useful modern practice that lets you update the configuration of your application without redeploying it, setting your feature rollouts free from your deployment schedule. Feature flagging is used to roll out features gradually, enable different features for different groups of users, or test in production. It also saves you from sleepless nights by enabling rolling features back if they turn out to be degrading your application's production performance.
+
+There are lots of feature flagging service providers out there, and [LaunchDarkly](https://launchdarkly.com/) is one of the leaders in the space. While it's great to have burgeoning competition, it also introduces a bit of chaos into the customer experience. What if your existing feature flagging service goes out of market or raises pricing through the roof because its investors feel like getting their money back? Since every feature flagging service comes with its own bespoke SDK, you would need to allocate substantial development time each time you need to switch providers.
+
+Enter [OpenFeature](https://openfeature.dev/): an open specification that defines a vendor-agnostic API for feature flagging that works with a wide array of feature flag management tools. Every tool vendor creates an OpenFeature-compliant provider library for each supported programming language or technology. For instance, [OpenFeature providers for Node.js](https://openfeature.dev/ecosystem/?instant_search%5BrefinementList%5D%5Btype%5D%5B0%5D=Provider&instant_search%5BrefinementList%5D%5Bcategory%5D%5B0%5D=Server&instant_search%5BrefinementList%5D%5Btechnology%5D%5B0%5D=JavaScript) are currently available from the following vendors: CloudBees, ConfigCat, DevCycle, FeatBit, flagd, Flipt, Go Feature Flag, LaunchDarkly, PostHog, and Split.
+
+When you use an OpenFeature SDK to implement feature flagging in your application, you get the freedom to switch between feature flagging vendors quickly and easily. All it takes is installing and importing a new vendor's OpenFeature provider, and replacing usages of your old vendor's provider with the new one.
+
+Let's say you're maintaining a Node.js application that uses feature flagging from LaunchDarkly via their [Node server SDK](https://docs.launchdarkly.com/sdk/server-side/node-js). You want to minimize feature flagging vendor lock-in in case LaunchDarkly changes its pricing model to something that will be hard for your team to afford. To do that, you'd need to switch from LaunchDarkly's own SDK to the [OpenFeature Node.js SDK](https://openfeature.dev/docs/reference/technologies/server/javascript/) and use LaunchDarkly's OpenFeature provider. How hard would it be for you to make this switch? Read on to find out.
+
+## Types of Feature Flags in LaunchDarkly
+
+LaunchDarkly supports the following types of feature flags:
+
+- **Boolean flags**. This is the most common type of feature flag and the default type when you create a new flag in LaunchDarkly. These are useful for enabling and disabling a specific feature, helping target specific users or groups, or perform a progressive rollout of a feature.
+- **String flags**. These are helpful for multivariate testing of configuration values or text content. You can set as many string variations as you need.
+- **Number flags** are also used for multivariate testing like string flags, but variation values are numeric.
+- **JSON flags**. These are useful for testing groups of configuration values, as an alternative to putting all values in individual flags dependent on each other.
+
+All these types of flags are covered by the OpenFeature spec and available in OpenFeature's Node.js SDK. Let's see what you'd need to do specifically to perform the migration.
+
+## Finding Usages of LaunchDarkly SDK APIs
+
+First, you need to find where in your code base the LaunchDarkly SDK is used. You can do this in three steps.
+
+First, perform a textual search for `node-server-sdk` across your project. Ignore search results in _package.json_ and package manager lock files. What you're looking for are usages in import or require statements inside your .js and .ts files, such as this:
+
+```javascript
+import LaunchDarkly from "@launchdarkly/node-server-sdk";
+```
+
+Next, search for references of the `LaunchDarkly` import inside every file where this import is present. You're looking for a statement that creates a LaunchDarkly client:
+
+```javascript
+const ldClient = LaunchDarkly.init(sdkKey);
+```
+
+Finally, search for references of the LaunchDarkly client instance: in our example, `ldClient`. This will give you the list of all LaunchDarkly client API calls that are responsible for getting values of specific feature flags. For example, this is what you'd see if you invoke JetBrains WebStorm's _Show Usages_ command on `ldClient`:
+![Searching for usages of LaunchDarkly client instance in JetBrains WebStorm](/v1/images/guides/migration/launchdarkly/usages_webstorm.png)
+
+If you're using VS Code, this is what you'd see after calling _Go to References_ on `ldClient`:
+![Searching for usages of LaunchDarkly client instance in VS Code](/v1/images/guides/migration/launchdarkly/usages_vscode.png)
+
+## Installing and Importing OpenFeature Packages
+
+When you're using LaunchDarkly's own SDK, your application declares this package as a dependency:
+
+```json
+"@launchdarkly/node-server-sdk": "^9.4.1"
+```
+
+To make use of the OpenFeature Node.js SDK and LaunchDarkly's OpenFeature provider instead, you need to install the following two packages:
+
+```json
+"@launchdarkly/openfeature-node-server": "0.5.1",
+"@openfeature/server-sdk": "^1.6.3",
+```
+
+The next step is to go through the files in your project that import from LaunchDarkly's own SDK, and add new import statements to these files:
+
+```javascript
+import { OpenFeature } from "@openfeature/server-sdk";
+import { LaunchDarklyProvider } from "@launchdarkly/openfeature-node-server";
+```
+
+## Keys and Context
+
+The way you load the LaunchDarkly SDK key and feature flag keys stays the same when you're migrating to the OpenFeature SDK. For example, this code would not change for the purposes of migration:
+
+```javascript
+import credentials from "../credentials.json" assert { type: "json" };
+
+const sdkKey = credentials.launchDarkly.sdkKey;
+const featureFlags = {
+  booleanFlag: {
+    key: "boolean-flag",
+    type: "boolean",
+  },
+  stringFlag: {
+    key: "string-flag",
+    type: "string",
+  },
+  numberFlag: {
+    key: "number-flag",
+    type: "number",
+  },
+  jsonFlag: {
+    key: "json-flag",
+    type: "object",
+  },
+};
+```
+
+However, there's a subtle difference in setting up the context when you migrate to OpenFeature. Whereas with LaunchDarkly SDK you'd use the `key` property in the context object, you need to use `targetingKey` with the OpenFeature SDK.
+
+LaunchDarkly SDK:
+
+```javascript
+const context = {
+  kind: "user",
+  key: "example-user-key",
+  name: "Sandy",
+};
+```
+
+OpenFeature SDK:
+
+```javascript
+const context = {
+  kind: "user",
+  targetingKey: "example-user-key", // Note the change in property name
+  name: "Sandy",
+};
+```
+
+## Client Initialization
+
+The way you initialize the feature flag provider's client is going to be quite different. With LaunchDarkly SDK, you create a client instance first and then fire a `waitForInitialization()` call:
+
+```javascript
+const ldClient = LaunchDarkly.init(sdkKey);
+await ldClient.waitForInitialization();
+```
+
+When migrating to the OpenFeature SDK, this is when you're actually starting to use OpenFeature APIs. Also, the order of operations flips around: you start by making a call that sets a specific vendor provider, in this case the LaunchDarkly provider, and waits for its initialization. The second call gives you an instance of a client that you'll be using from now on:
+
+```javascript
+await OpenFeature.setProviderAndWait(new LaunchDarklyProvider(sdkKey));
+const client = OpenFeature.getClient();
+```
+
+## Migrating Boolean Flags
+
+In the LaunchDarkly SDK, here's how you fetch the value of a boolean flag:
+
+```javascript
+const booleanFlagValue = await ldClient.boolVariation(
+  featureFlags.booleanFlag.key,
+  context,
+  false
+);
+doSomethingDependingOnFeatureFlagValue(
+  featureFlags.booleanFlag.key,
+  booleanFlagValue
+);
+```
+
+If you're not a fan of the async/await syntax, you might as well resolve the promise returned by the `boolVariation()` call using a `then()` call:
+
+```javascript
+ldClient
+  .boolVariation(featureFlags.booleanFlag.key, context, false)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.booleanFlag.key,
+      flagValue
+    )
+  );
+```
+
+In addition to `boolVariation()`, there are two more LaunchDarkly client functions that you may be using with boolean flags: `variation()` and `boolVariationDetail()`.
+
+`variation()` is just a more generic function that you can use to get flag values of any type:
+
+```javascript
+ldClient
+  .variation(featureFlags.booleanFlag.key, context, false)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.booleanFlag.key,
+      flagValue
+    )
+  );
+```
+
+`boolVariationDetail()` is a function that returns an object that contains both the flag value and additional metadata: the reason of the flag being in a particular value and the variation index:
+
+```javascript
+ldClient
+  .boolVariationDetail(featureFlags.booleanFlag.key, context, false)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.booleanFlag.key,
+      flagValue
+    )
+  );
+```
+
+Now, when you're migrating to the OpenFeature SDK, it provides two client functions instead of three: `getBooleanValue()` and `getBooleanDetails()`. Note that it doesn't provide the equivalent of LaunchDarkly SDKs general-purpose `variation()` function. This means that when migrating, you'll need to choose a function corresponding to the specific type of flag you're using.
+
+To sum it up, below are code snippets representing the usage of the three LaunchDarkly SDKs functions that you can use to get boolean flag values, along with the OpenFeature SDK code that you'd end up with after migration.
+
+When migrating a `boolVariation()` call,
+
+```javascript
+ldClient
+  .boolVariation(featureFlags.booleanFlag.key, context, false)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.booleanFlag.key,
+      flagValue
+    )
+  );
+```
+
+becomes
+
+```javascript
+client
+  .getBooleanValue(featureFlags.booleanFlag.key, false, context)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.booleanFlag.key,
+      flagValue
+    )
+  );
+```
+
+When migrating a `variation()` call,
+
+```javascript
+ldClient
+  .variation(featureFlags.booleanFlag.key, context, false)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.booleanFlag.key,
+      flagValue
+    )
+  );
+```
+
+becomes
+
+```javascript
+client
+  .getBooleanValue(featureFlags.booleanFlag.key, false, context)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.booleanFlag.key,
+      flagValue
+    )
+  );
+```
+
+Finally, when migrating a `boolVariationDetail()` call,
+
+```javascript
+ldClient
+  .boolVariationDetail(featureFlags.booleanFlag.key, context, false)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.booleanFlag.key,
+      flagValue
+    )
+  );
+```
+
+becomes
+
+```javascript
+client
+  .getBooleanDetails(featureFlags.booleanFlag.key, false, context)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.booleanFlag.key,
+      flagValue
+    )
+  );
+```
+
+Note that functions in the two SDKs take arguments in a different order:
+
+- In LaunchDarkly SDK, the key goes first, followed by the context, and then by the default value.
+- In OpenFeature SDK, the key also goes first, but the default value goes in the second position, followed by the context as the third argument. OpenFeature SDK functions also take the fourth argument, `FlagEvaluationOptions`, but it's optional and for the purposes of migration, you should just omit it.
+
+## Migrating String Flags
+
+In the LaunchDarkly SDK, you fetch the value of a string flag as follows:
+
+```javascript
+ldClient
+  .stringVariation(featureFlags.stringFlag.key, context, "red")
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.stringFlag.key,
+      flagValue
+    )
+  );
+```
+
+or, using the async/await syntax:
+
+```javascript
+const stringFlagValue = await ldClient.stringVariation(
+  featureFlags.stringFlag.key,
+  context,
+  "red"
+);
+doSomethingDependingOnFeatureFlagValue(
+  featureFlags.stringFlag.key,
+  stringFlagValue
+);
+```
+
+Similar to boolean flags, with the LaunchDarkly SDK, you can also fetch values of string flags using the general-purpose `variation()` function, or fetch string flags along with their associated details using `stringVariationDetail()`.
+
+When migrating a `stringVariation()` call,
+
+```javascript
+ldClient
+  .stringVariation(featureFlags.stringFlag.key, context, "red")
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.stringFlag.key,
+      flagValue
+    )
+  );
+```
+
+becomes
+
+```javascript
+client
+  .getStringValue(featureFlags.stringFlag.key, "red", context)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.stringFlag.key,
+      flagValue
+    )
+  );
+```
+
+When migrating a `variation()` call,
+
+```javascript
+ldClient
+  .variation(featureFlags.stringFlag.key, context, "red")
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.stringFlag.key,
+      flagValue
+    )
+  );
+```
+
+becomes
+
+```javascript
+client
+  .getStringValue(featureFlags.stringFlag.key, "red", context)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.stringFlag.key,
+      flagValue
+    )
+  );
+```
+
+When migrating a `stringVariationDetail()` call,
+
+```javascript
+ldClient
+  .stringVariationDetail(featureFlags.stringFlag.key, context, "red")
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.stringFlag.key,
+      flagValue
+    )
+  );
+```
+
+becomes
+
+```javascript
+client
+  .getStringDetails(featureFlags.stringFlag.key, "red", context)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.stringFlag.key,
+      flagValue
+    )
+  );
+```
+
+## Migrating Number Flags
+
+In the LaunchDarkly SDK, you fetch the value of a number flag with the following promise chain syntax:
+
+```javascript
+ldClient
+  .numberVariation(featureFlags.numberFlag.key, context, 50)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.numberFlag.key,
+      flagValue
+    )
+  );
+```
+
+or using the async/await syntax:
+
+```javascript
+const numberFlagValue = await ldClient.numberVariation(
+  featureFlags.numberFlag.key,
+  context,
+  50
+);
+doSomethingDependingOnFeatureFlagValue(
+  featureFlags.numberFlag.key,
+  numberFlagValue
+);
+```
+
+The general-purpose `variation()` function is also available for fetching number flags, as well as the `numberVariationDetail()` function for fetching number flag details.
+
+When migrating a `numberVariation()` call,
+
+```javascript
+ldClient
+  .numberVariation(featureFlags.numberFlag.key, context, 50)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.numberFlag.key,
+      flagValue
+    )
+  );
+```
+
+becomes
+
+```javascript
+client
+  .getNumberValue(featureFlags.numberFlag.key, 50, context)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.numberFlag.key,
+      flagValue
+    )
+  );
+```
+
+When migrating a `variation()` call,
+
+```javascript
+ldClient
+  .variation(featureFlags.numberFlag.key, context, 50)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.numberFlag.key,
+      flagValue
+    )
+  );
+```
+
+becomes
+
+```javascript
+client
+  .getNumberValue(featureFlags.numberFlag.key, 50, context)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.numberFlag.key,
+      flagValue
+    )
+  );
+```
+
+When migrating a `numberVariationDetail()` call,
+
+```javascript
+ldClient
+  .numberVariationDetail(featureFlags.numberFlag.key, context, 50)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.numberFlag.key,
+      flagValue
+    )
+  );
+```
+
+becomes
+
+```javascript
+client
+  .getNumberDetails(featureFlags.numberFlag.key, 50, context)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.numberFlag.key,
+      flagValue
+    )
+  );
+```
+
+## Migrating JSON Flags
+
+If you have read this far, it should come as no surprise to you that the LaunchDarkly SDK provides three functions for working with JSON flags:
+
+1. `jsonVariation()`, a specialized function for fetching JSON flags.
+2. `variation()`, a general-purpose function that can be used to fetch all types of flags, including JSON flags.
+3. `jsonVariationDetail()`, a function that fetches JSON flags along with their associated metadata.
+
+You can call each of these functions with a promise call chain:
+
+```javascript
+ldClient
+  .jsonVariation(featureFlags.jsonFlag.key, context, {})
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(featureFlags.jsonFlag.key, flagValue)
+  );
+```
+
+or using the async/await syntax:
+
+```javascript
+const jsonFlagValue = await ldClient.jsonVariation(
+  featureFlags.jsonFlag.key,
+  context,
+  {}
+);
+doSomethingDependingOnFeatureFlagValue(
+  featureFlags.jsonFlag.key,
+  jsonFlagValue
+);
+```
+
+When migrating a `jsonVariation()` call to the OpenFeature SDK,
+
+```javascript
+ldClient
+  .jsonVariation(featureFlags.jsonFlag.key, context, {})
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(featureFlags.jsonFlag.key, flagValue)
+  );
+```
+
+becomes
+
+```javascript
+client
+  .getObjectValue(featureFlags.jsonFlag.key, {}, context)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(featureFlags.jsonFlag.key, flagValue)
+  );
+```
+
+When migrating a `variation()` call,
+
+```javascript
+ldClient
+  .variation(featureFlags.jsonFlag.key, context, {})
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(featureFlags.jsonFlag.key, flagValue)
+  );
+```
+
+also becomes
+
+```javascript
+client
+  .getObjectValue(featureFlags.jsonFlag.key, {}, context)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(featureFlags.jsonFlag.key, flagValue)
+  );
+```
+
+Finally, when migrating a `jsonVariationDetail()` call,
+
+```javascript
+ldClient
+  .jsonVariationDetail(featureFlags.jsonFlag.key, context, {})
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(featureFlags.jsonFlag.key, flagValue)
+  );
+```
+
+becomes
+
+```javascript
+client
+  .getObjectDetails(featureFlags.jsonFlag.key, {}, context)
+  .then((flagValue) =>
+    doSomethingDependingOnFeatureFlagValue(featureFlags.jsonFlag.key, flagValue)
+  );
+```
+
+## Migrating Event Listeners
+
+Apart from migrating functions that get values of flags, you may also want to migrate your event listening and handling code. This is especially important if during the lifetime of your application, you want to react to flag value changes that occur in LaunchDarkly. This wouldn't make too much sense for full-stack web applications where you can just get the current flag value on every page load, but it does make sense for APIs and other kinds of long-running processes.
+
+LaunchDarkly's Node server SDK allows you to listen to and handle events using the `on()` method that you call on the client instance, like this:
+
+```javascript
+ldClient.on("event_name", (eventInfo) => handleEvent(eventInfo));
+```
+
+There are [five event types](https://launchdarkly.github.io/js-core/packages/sdk/server-node/docs/interfaces/LDClient.html#on) that you can listen to: `ready`, `failed`, `error`, `update`, and `update:key`.
+
+### Initialization and Client Error Events
+
+The `ready` and `failed` events are only fired once, as a result of the client initialization. You can wrap the `await ldClient.waitForInitialization()` call in a try/catch block instead of listening to these two events. However, if you are listening to them explicitly, then your `ready` listener when using the LaunchDarkly SDK looks like this:
+
+```javascript
+ldClient.on("ready", () => {
+  console.log("We're connected to LaunchDarkly :)");
+});
+```
+
+If so, the following is the equivalent listener using the OpenFeature SDK:
+
+```javascript
+OpenFeature.addHandler(ProviderEvents.Ready, () => {
+  console.log("We're connected to LaunchDarkly through OpenFeature :)");
+});
+```
+
+When you start using OpenFeature's `addHandler()` function for event listening, don't forget to extend your OpenFeature SDK import statement to include the `ProviderEvents` enum:
+
+```javascript
+import { OpenFeature, ProviderEvents } from "@openfeature/server-sdk";
+```
+
+Here's LaunchDarkly's `failed` event listener:
+
+```javascript
+ldClient.on("failed", () => {
+  console.log("Failed to connect to LaunchDarkly :(");
+});
+```
+
+OpenFeature SDK doesn't provide the equivalent of LaunchDarkly's `failed` event, so if you want to handle a permanent client error in connecting to LaunchDarkly, you should do it in the catch clause of the try/catch block around the OpenFeature client initialization call:
+
+```javascript
+try {
+  await OpenFeature.setProviderAndWait(new LaunchDarklyProvider(sdkKey));
+  const client = OpenFeature.getClient();
+  // More code
+} catch (error) {
+  console.log(
+    `Failed to connect to LaunchDarkly :( Here's what the error says: ${JSON.stringify(
+      error
+    )}`
+  );
+}
+```
+
+LaunchDarkly also allows listening to the `error` event that signals an abnormal condition when the client is working:
+
+```javascript
+ldClient.on("error", (error) => {
+  console.log(
+    `The LaunchDarkly client has encountered an error. Here are the details: ${JSON.stringify(
+      error
+    )}`
+  );
+});
+```
+
+In OpenFeature SDK terms, the equivalent listener looks like this:
+
+```javascript
+OpenFeature.addHandler(ProviderEvents.Error, (error) => {
+  console.log(
+    `The OpenFeature client for LaunchDarkly has encountered an error. Here are the details: ${JSON.stringify(
+      error
+    )}`
+  );
+});
+```
+
+### Feature Flag Configuration Update Events
+
+The two most significant event listeners in the LaunchDarkly SDK are `update` and `update:key`. The former enables listening to configuration changes affecting any flag:
+
+```javascript
+ldClient.on("update", (keyObject) => {
+  console.log(`Configuration of flag ${keyObject.key} has changed`);
+  ldClient
+    .variation(keyObject.key, context, false)
+    .then((flagValue) =>
+      doSomethingDependingOnFeatureFlagValue(keyObject.key, flagValue)
+    );
+});
+```
+
+The `update:key` listener is more specific and serves to receive configuration updates affecting a single flag that you identify by its key:
+
+```javascript
+ldClient.on(`update:${featureFlags.booleanFlag.key}`, () => {
+  console.log(
+    `Configuration of flag ${featureFlags.booleanFlag.key} has changed`
+  );
+  ldClient
+    .variation(featureFlags.booleanFlag.key, context, false)
+    .then((flagValue) =>
+      doSomethingDependingOnFeatureFlagValue(
+        featureFlags.booleanFlag.key,
+        flagValue
+      )
+    );
+});
+```
+
+In the OpenFeature SDK, there's no equivalent to `update:key`. You can only listen to configuration changes affecting any flags, and here's how you do it:
+
+```javascript
+OpenFeature.addHandler(
+  ProviderEvents.ConfigurationChanged,
+  async (_eventDetails) => {
+    // your event handling code
+  }
+);
+```
+
+There's a tricky part about this event handler. As we've seen above, OpenFeature SDK doesn't provide a general-purpose API to get the value of a flag irrespective of its type. You need to use functions that are specific to a feature flag type: `client.getStringValue()`, `client.getBooleanValue()`, etc. This doesn't play well with the fact that OpenFeature SDK only provides a generic event update listener. When you receive an updated configuration event, you need to look up its type by key, and depending on the result, call a type-specific function. Here's what this may look like in practice:
+
+```javascript
+OpenFeature.addHandler(
+  ProviderEvents.ConfigurationChanged,
+  async (_eventDetails) => {
+    const changedFlag = _eventDetails.flagsChanged[0];
+    console.log(`Configuration of flag ${changedFlag} has changed`);
+    const flagType = Object.values(featureFlags).find(
+      (x) => x.key === changedFlag
+    ).type;
+
+    let flagValue;
+    if (flagType === "boolean") {
+      flagValue = await client.getBooleanValue(changedFlag, false, context);
+    } else if (flagType === "string") {
+      flagValue = await client.getStringValue(changedFlag, "red", context);
+    } else if (flagType === "number") {
+      flagValue = await client.getNumberValue(changedFlag, 50, context);
+    } else if (flagType === "object") {
+      flagValue = await client.getObjectValue(changedFlag, null, context);
+    } else {
+      console.log(
+        "Something went awry: we don't know the type of the updated flag"
+      );
+    }
+    doSomethingDependingOnFeatureFlagValue(changedFlag, flagValue);
+  }
+);
+```
+
+## Cleaning Up
+
+As soon as you have migrated all feature flag calls and event listeners from LaunchDarkly's own SDK to the OpenFeature Node.js SDK, remember to delete all code coming from LaunchDarkly's SDK, as well as the corresponding import/require statements. After this, you'll be able to uninstall LaunchDarkly's SDK package &mdash;`@launchdarkly/node-server-sdk`&mdash;by removing it from _package.json_ and running your package manager's install command.
+
+## Summary
+
+After reading this guide, you know what OpenFeature is and why using the OpenFeature SDK with your feature flagging logic instead of a particular vendor's SDK can benefit your team in the long run by reducing the vendor lock-in.
+
+As you can see, the APIs provided by LaunchDarkly's Node server SDK map well to those available in the OpenFeature Node.js SDK, and migrating from one to another shouldn't be hard should you decide to do so.
+
+Happy feature rollouts with feature flags no matter which vendor you're using!

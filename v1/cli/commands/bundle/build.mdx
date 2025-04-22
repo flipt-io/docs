@@ -1,0 +1,30 @@
+---
+title: "bundle build"
+description: "Build a new bundle"
+---
+
+```
+flipt bundle build [flags] <name>
+```
+
+This command builds a new bundle containing feature files identified via Flipt's feature index (see: [Locating flag state](/v1/configuration/storage#locating-flag-state)).
+
+Given the files are all valid the command should successfully create a new (local) OCI feature bundle, and its resulting SHA digest is printed.
+
+Bundles are named via the provided `name` argument. This argument supports an optional `tag` suffix.
+
+### Examples
+
+```
+$ flipt bundle build mybundle
+sha256:0e500a47bc26afcc91a1cea7abb39f55566bb99b709449a1752eea65000a663c
+
+$ flipt bundle build mybundle:latest
+sha256:0e500a47bc26afcc91a1cea7abb39f55566bb99b709449a1752eea65000a663c
+```
+
+### Options
+
+```
+  -h, --help   help for build
+```

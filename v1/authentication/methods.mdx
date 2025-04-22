@@ -1,0 +1,279 @@
+---
+title: Methods
+description: This document describes the various supported authentication methods.
+---
+
+<Note>
+  See [Configuration: Authentication
+  Methods](/configuration/authentication#methods) for details on how to
+  configure the various authentication methods.
+</Note>
+
+## Static Token
+
+The `token` authentication method supports statically creating authentication tokens.
+
+Once enabled, the `/auth/v1/method/token` API prefix is mounted to Flipt's API.
+This section of the API supports the creation of static tokens.
+
+### Token Management
+
+Tokens can be created and deleted via either the UI or API.
+
+#### API
+
+The following `curl` command creates a static token with no expiration.
+Given authentication is set to `required` then a prior client token will be required to perform this action.
+
+```console
+curl -X POST localhost:8080/auth/v1/method/token \
+    -H 'Authorization: Bearer gt6P_zIqTnCngfHDCpWb48ob5EBt3PqunUhpofNCNnc=' \
+    -H 'Content-Type: application/json' \
+    --data '{"name":"access_all_areas","description":"keys to the castle"}'
+```
+
+#### UI
+
+The UI also supports the creation and deletion of tokens. To access this functionality, navigate to `Settings` from the main menu and see the 'Static Tokens' section.
+
+![Create Token UI](/v1/images/authentication/create-token.png)
+
+### Bootstrapping
+
+On first startup, Flipt will automatically create a random static token with the name `initial_bootstrap_token` if one doesn't already exist and if `token` authentication is enabled.
+
+![Bootstrap Token](/v1/images/authentication/bootstrap-token.png)
+
+This token is intended to be used to create additional tokens to be then used for subsequent API requests. By default it has no expiration date, therefore it's recommended that this token be deleted once the initial bootstrapping is complete.
+
+This token is output to the Flipt logs on startup and can be found by searching for `client_token` in the logs:
+
+```console
+INFO	access token created	{"server": "grpc", "client_token": "jWLUy8ChnVDs-Llgyj7cMIzB0PfplwbBy-B27a0p23I="}
+```
+
+This initial bootstrap process can also be configured to use a known token by setting the `bootstrap.token` value in the configuration file. This is useful if you want to prevent having to search the logs after startup or if Flipt is deployed in an automated fashion, for example, if you are using a configuration management tool.
+
+The bootstrap token can also be configured to have an expiration date by setting the `bootstrap.expiration` value in the configuration file. This is useful if you want to ensure that the bootstrap token is only valid for a short time before automatically expiring.
+
+See the [Configuration: Method Token](/v1/configuration/overview#authentication-methods-token) documentation for more details.
+
+### Token Expiration
+
+Tokens can be created with an optional expiration date. This can be used to ensure that a token is only valid for a short time before automatically expiring. Expired tokens will be automatically deleted by Flipt. The interval and grace period for this cleanup process can be configured via the `token.cleanup.interval` and `token.cleanup.grace_period` values in the configuration.
+
+### Namespaced Tokens
+
+Tokens can be created with an optional namespace to allow for more granular control over resource access. Namespaces allow for grouping resources such as flags, segments, etc. To learn more about namespaces, see the [Concepts: Namespaces](/v1/concepts#namespaces) documentation.
+
+Namespaced tokens are useful for the scenario when you want to limit the privileges of an integration such as a CI/CD pipeline or internal service.
+
+<Info>
+  It's important to note that namespaced tokens offer limited access to the
+  Flipt API, as only API requests that can be scoped to a namespace are
+  supported.
+</Info>
+
+For example, the `/api/v1/namespaces/{namespace}/flags` endpoint supports a `namespace` parameter, therefore a namespaced token can be used to access this endpoint. However, the `/auth/v1/tokens` endpoint is not associated with a single `namespace`, so a namespaced token cannot be used to access this endpoint.
+
+This also means that namespaced tokens themselves cannot be used to create additional tokens. Tokens must be created using a non-namespaced (default) token.
+
+## OpenID Connect
+
+[OpenID Connect](https://openid.net/connect/) (OIDC) is a simple identity layer on top of the OAuth 2.0 protocol. It allows Clients to verify the identity of the End-User based on the authentication performed by an Authorization Server, as well as to obtain basic profile information about the End-User in an interoperable and REST-like manner.
+
+<Note>
+Flipt's UI is designed to support this authentication method natively.
+Meaning, that once enabled, the UI will support login and present each provider as a login button.
+
+The rest of this information is mostly academic.
+It's mainly useful if you want to build your browser application using cookie authentication or understand Flipt's OIDC flow at a lower level.
+
+See the [OIDC Configuration](/v1/configuration/authentication#oidc) documentation to learn how to configure your provider(s).
+
+</Note>
+
+The `OIDC` authentication method is primarily designed to support browser-based authentication.
+However, it can be manually invoked if such a use case presents itself.
+
+Once enabled, the `/auth/v1/method/oidc` API prefix is mounted to Flipt's API.
+This section of the API supports a generic OAuth 2.0 with OIDC flow.
+
+Flipt's configuration can be defined with multiple simultaneous OIDC providers.
+An operator of Flipt chooses a name for each provider and then configures the relevant secrets necessary to authenticate with an OIDC client.
+
+Numerous OIDC providers are available. For example, we've tested Flipt with:
+
+- Google
+- Auth0
+- GitLab
+- Dex
+- Okta
+- AzureAD
+- Keycloak
+
+Each provider has their own way of establishing clients and acquiring the relevant credentials.
+You can find further documentation on leveraging providers like these in our [OIDC Configuration](/v1/configuration/authentication#oidc) documentation.
+
+For illustration purposes, let us say we've configured a single provider with `Dex` and named it `dex` (lowercase) in our provider configuration.
+
+This will lead to the following endpoints being available on Flipt:
+
+- `GET /auth/v1/method/oidc/dex/authorize`
+- `GET /auth/v1/method/oidc/dex/callback`
+
+These two endpoints are necessary to support the different legs of the OAuth/OIDC flow.
+The first can be requested to obtain an authorization URL directed at the configured instance of Dex.
+The latter is the destination that Dex will redirect the client back to.
+When using HTTP, this callback endpoint will establish a cookie named `flipt_client_token` and return it via the `Set-Cookie` response header.
+
+## GitHub
+
+[GitHub](https://github.com) is an OAuth 2.0 implementation compatible with GitHub.
+
+<Note>
+  As with OIDC, the GitHub method works natively with the Flipt UI. Once
+  enabled, the UI will support a "Login with GitHub" login option.
+</Note>
+
+The `GitHub` authentication method is primarily designed to support browser-based authentication.
+However, it can be manually invoked if the need arises.
+
+Once enabled, the `/auth/v1/method/github` API prefix is mounted to Flipt's API.
+This section of the API supports GitHub's OAuth 2.0 flow.
+
+This will lead to the following endpoints being available on Flipt:
+
+- `GET /auth/v1/method/github/authorize`
+- `GET /auth/v1/method/github/callback`
+
+These two endpoints are necessary to support the different legs of the OAuth flow. The first can be requested to obtain an authorization URL directed at GitHub. The latter is the destination that GitHub will redirect the client back to. When using HTTP, this callback endpoint will establish a cookie named `flipt_client_token` and return it via the `Set-Cookie` response header.
+
+### GitHub Enterprise Server
+
+Flipt also supports GitHub Enterprise Server as an authentication provider.
+
+To configure Flipt to use GitHub Enterprise Server, you will need to provide both the server URL and API URL of your GitHub Enterprise Server instance in the configuration file.
+
+```yaml
+authentication:
+  methods:
+    github:
+      enabled: true
+      server_url: "https://github.example.com"
+      api_url: "https://api.github.example.com"
+```
+
+## Kubernetes
+
+<Note>
+  This method is designed for automatically authenticating applications with
+  Flipt.
+</Note>
+
+The `kubernetes` authentication method supports the ability to exchange [Kubernetes service account](https://kubernetes.io/docs/concepts/security/service-accounts) tokens with Flipt for client tokens.
+This allows services deployed into the same Kubernetes cluster as Flipt to automatically gain authenticated access to the Flipt API without additional management of static client tokens.
+
+![Kubernetes Authentication Flow](/v1/images/authentication/kubernetes.svg)
+
+When enabled (see our [Configuration: Method Kubernetes](/v1/configuration/authentication#kubernetes) documentation) a service deployed within Kubernetes can read their service account token from local disk and invoke the verify service account operation on the API.
+
+Given the service account is deemed valid for the surrounding cluster this operation will return a valid Flipt client token with a matching expiration as the service account.
+If your Kubernetes environment has short-lived service account tokens, care will be needed to periodically request a new client token using a newly issued service account token.
+
+<Tip>
+  Kubernetes refreshes service account tokens locally, all that's required is to
+  read the token from the disk again.
+</Tip>
+
+The client token produced can be used in subsequent API requests with the rest of the Flipt API to gain authenticated access.
+
+### Via the SDK
+
+Some of our SDKs support automatic authentication via the Kubernetes authentication method.
+These clients do not require you to have to manually invoke the verify service account API.
+Instead, they do this operation for you, and they ensure that the retrieved client token from Flipt is automatically refreshed.
+
+The SDKs that currently support this include:
+
+- [Go Server SDK](https://pkg.go.dev/go.flipt.io/flipt/sdk/go)
+
+<CodeGroup>
+
+```go sdk.go
+package main
+
+import (
+  http "go.flipt.io/flipt/sdk/go/http"
+  sdk "go.flipt.io/flipt/sdk/go"
+)
+
+func main() {
+  // The following constructs an instance of the SDK which communicates with
+  // instances of Flipt deployed in the same cluster.
+  // In this example, we assume Flipt is reachable via a k8s service named
+  // `flipt` deployed into the namespace `flipt`.
+  //
+  // The kubernetes provider automatically authenticates the client with this
+  // Flipt service. It also ensures that the credentials are kept up to date
+  // and automatically refreshed before they expire.
+  transport := http.NewTransport("http://flipt.flipt.svc.cluster.local:8080")
+  sdk := sdk.New(transport, sdk.WithAuthenticationProvider(
+    sdk.NewKubernetesAuthenticationProvider(transport),
+  ))
+}
+```
+
+</CodeGroup>
+
+### Via the API
+
+Acquiring a client token via this method can be performed manually from inside a pod.
+The following uses `curl` to illustrate how a local, valid service account token can be used in this way.
+
+<CodeGroup>
+
+```bash client-token.sh
+# assumes both curl and jq are installed
+curl -s -X POST http://flipt:8080/auth/v1/method/kubernetes/serviceaccount \
+  --data "{\"service_account_token\":\"$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)\"}" | \
+  jq .
+{
+  "clientToken": "pKkaEik40Nu4lJ7O37l92MNyyD38U8UlaagSmAfJoS0=",
+  "authentication": {
+    "id": "f191babc-57b8-4856-89b1-f324941403d7",
+    "method": "METHOD_KUBERNETES",
+    "expiresAt": "2024-02-20T13:39:14Z",
+    "createdAt": "2023-02-20T14:11:28.962841Z",
+    "updatedAt": "2023-02-20T14:11:28.962841Z",
+    "metadata": {
+      "io.flipt.auth.k8s.namespace": "default",
+      "io.flipt.auth.k8s.pod.name": "someservice-586bfb5b6b-fmh8g",
+      "io.flipt.auth.k8s.pod.uid": "b5217947-aeac-4b35-afd3-23f50d63eae9",
+      "io.flipt.auth.k8s.serviceaccount.name": "default",
+      "io.flipt.auth.k8s.serviceaccount.uid": "8aeb28ad-66f0-4884-bafc-e606e5eda149"
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+The client token found in the body of the response can then be used to authenticate with Flipt as outlined in [Using Client Tokens](/v1/authentication/using-tokens).
+
+The expiration can be used to schedule when to next request a new client token.
+
+## JSON Web Tokens
+
+[JSON Web Tokens](https://jwt.io/) (JWT) are an open, industry-standard RFC 7519 method for representing claims securely between two parties. Flipt supports the use of externally created and signed JWTs as a method of authentication.
+
+JWT authentication is useful for scenarios where you want to integrate Flipt with an existing authentication system, or where you want to perform service to Flipt authentication without the need to manage static client tokens.
+
+<Note>
+  JWT authentication is **not** supported by the Flipt UI as it is not a
+  session-compatible authentication method.
+</Note>
+
+![JWT Authentication Flow](/v1/images/authentication/jwt.svg)
+
+The JWT issued by the Authorization Server can then be used to authenticate with Flipt as outlined in [Using JSON Web Tokens](/v1/authentication/using-jwts).
