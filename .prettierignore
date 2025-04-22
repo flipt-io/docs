@@ -1,4 +1,3 @@
 openapi.yaml
-mint.json
-guides/user/get-going-with-gitops.mdx
+v1/guides/user/get-going-with-gitops.mdx
 cloud/guides/production.mdx

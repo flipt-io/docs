@@ -22,10 +22,7 @@
                 "groups": [
                   {
                     "group": "Overview",
-                    "pages": [
-                      "v1/introduction",
-                      "v1/concepts"
-                    ]
+                    "pages": ["v1/introduction", "v1/concepts"]
                   },
                   {
                     "group": "Use Cases",
@@ -170,9 +167,7 @@
                   },
                   {
                     "group": "Authorization",
-                    "pages": [
-                      "v1/authorization/overview"
-                    ]
+                    "pages": ["v1/authorization/overview"]
                   },
                   {
                     "group": "Operations",
@@ -198,9 +193,7 @@
                 "groups": [
                   {
                     "group": "Changelog",
-                    "pages": [
-                      "v1/changelog/overview"
-                    ]
+                    "pages": ["v1/changelog/overview"]
                   }
                 ]
               }
@@ -255,9 +248,7 @@
                 "groups": [
                   {
                     "group": "Overview",
-                    "pages": [
-                      "v1/reference/overview"
-                    ]
+                    "pages": ["v1/reference/overview"]
                   },
                   {
                     "group": "Authentication",
