@@ -1,0 +1,62 @@
+---
+title: Telemetry
+description: This document describes how to configure Flipt v2's telemetry outputs as well as what data is captured.
+---
+
+## Telemetry
+
+Flipt developers rely on anonymous usage data to help prioritize new features and improve the product. The information collected is completely anonymous,
+never shared with external entities, and you can opt-out at any time.
+
+The telemetry data is collected by default, but you can disable it by following the instructions below.
+
+Telemetry is only collected when Flipt is running, **once at startup** and then every **4 hours**.
+
+### What Kind of Data is Collected?
+
+- Flipt version (i.e.: v2.0.0)
+- Operating system (i.e.: Linux)
+- Architecture (i.e.: amd64)
+
+We use [Jitsu](https://jitsu.com/) to collect the data. Only the Flipt team has access to the raw data.
+
+Here is an example of the telemetry data sent to Jitsu:
+
+```json
+{
+  "version": "2.0",
+  "uuid": "1545d8a8-7a66-4d8d-a158-0a1c576c68a6",
+  "lastTimestamp": "2023-04-25T01:01:51Z",
+  "flipt": {
+    "version": "v2.0.0",
+    "os": "linux",
+    "arch": "amd64"
+  }
+}
+```
+
+You can always view the current schema of the telemetry data and see how it's collected on
+[GitHub](https://github.com/flipt-io/flipt/blob/main/internal/telemetry/telemetry.go).
+
+### How To Disable Telemetry
+
+Telemetry collection can be disabled in several ways:
+
+#### Configuration File
+
+```yaml
+meta:
+  telemetry_enabled: false
+```
+
+#### Environment Variables
+
+```shell
+export FLIPT_META_TELEMETRY_ENABLED=false
+```
+
+Telemetry can also be disabled by setting the [DO_NOT_TRACK](https://consoledonottrack.com/) environment variable to `true` or `1`:
+
+```shell
+export DO_NOT_TRACK=true
+```
