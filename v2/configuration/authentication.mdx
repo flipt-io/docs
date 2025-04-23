@@ -1,14 +1,9 @@
 ---
 title: Authentication
-description: This document describes how to configure Flipt's authentication mechanisms.
+description: This document describes how to configure the authentication mechanisms for Flipt v2.
 ---
 
-<Warning>
-Once authentication has been set to `required: true` all API routes will require a client token to be present.
 
-The UI will require a session-compatible authentication method (e.g. [OIDC](#method-oidc)) to be enabled.
-
-</Warning>
 
 Flipt supports the ability to secure its core API routes by setting the `required` field to `true` on the `authentication` configuration object.
 
@@ -19,7 +14,14 @@ authentication:
 
 When authentication is set to `required`, the API will ensure valid credentials are present on all API requests.
 
-See the [Authentication: Overview](/v1/authentication/overview) documentation for more details on Flipt's API authentication handling.
+<Info>
+Once authentication has been set to `required: true` all API routes will require a client token to be present.
+
+The UI will require a session-compatible authentication method (e.g. [OIDC](#method-oidc)) to be enabled.
+
+</Info>
+
+See the [Authentication: Overview](/v2/authentication/overview) documentation for more details on Flipt's API authentication handling.
 
 ## Exclusions
 
@@ -28,7 +30,6 @@ The Flipt API is made up of several top-level API sections, each with its own un
 
 For example:
 
-- `/api/v1` is the core feature flag state management section
 - `/evaluate/v1` is the application facing flag state evaluation API
 
 Several of these API sections can be optionally omitted from requiring authentication.
@@ -40,7 +41,6 @@ By default, when authentication is configured as `required: true`, the effective
 authentication:
   required: true
   exclude:
-    management: false
     evaluation: false
 ```
 
@@ -86,6 +86,67 @@ openssl rand -base64 64
 
 </Card>
 
+### Session Storage
+
+Session storage allows you to configure where the session data is stored. All session enabled authentication methods will use the same configured session storage backend.
+
+Currently, Flipt v2 supports the following session storage backends:
+
+- `memory`
+- `redis`
+
+#### Memory
+
+The `memory` backend is the default and will store session data in memory. This means that the session data will be lost when the Flipt server restarts.
+
+```yaml config.yaml
+authentication:
+  required: true
+  session:
+    storage:
+      type: memory
+```
+
+#### Redis
+
+The `redis` backend will store session data in a Redis instance. This means that the session data will be persisted across Flipt server restarts and can be shared across multiple Flipt servers.
+
+```yaml config.yaml
+authentication:
+  required: true
+  session:
+    storage:
+      type: redis
+      redis:
+        host: localhost
+        port: 6379
+        db: 0
+        password: password
+```
+
+### Session Cleanup
+
+Session cleanup is a feature that allows you to configure the periodic deletion of _expired_ authentications created with the associated method.
+
+```yaml config.yaml
+authentication:
+  required: true
+  session:
+    cleanup:
+      grace_period: 24h
+```
+
+`grace_period` is used to ensure that _expired_ tokens are preserved for at least this configured duration.
+
+This allows you to keep authentications around for auditing purposes after expiration.
+
+Expired tokens are instances where the `expires_at` timestamp occurs before the current time.
+The grace period is added onto this timestamp as a predicate when the delete operation is made.
+
+Tokens that have expired (`expires_at` is before `now()`) will begin immediately failing authentication when presented as a credential to the API.
+The `grace_period` is simply for the cleanup process.
+
+
 ## Methods
 
 Each key within the `methods` section is a particular authentication method.
@@ -94,7 +155,11 @@ Enabling and configuring a method allows for different ways to establish client 
 
 ### Static Token
 
-The `token` method provides the ability to create client tokens statically, with optional expiry constraints.
+<Note>
+  The `token` method is NOT a `session compatible` authentication method.
+</Note>
+
+The `token` method provides the ability to create client tokens statically, defined in the configuration file.
 
 ```yaml config.yaml
 authentication:
@@ -102,23 +167,19 @@ authentication:
   methods:
     token:
       enabled: true
-      bootstrap:
-        expiration: 24h
+      storage:
+        tokens:
+          "some_token_id":
+            credential: "some_token_credential"
+            metadata:
+              some_key: "some_value"
 ```
 
-Once enabled, static tokens can be created via the [CreateToken](/v1/reference/authentication/create-token) operation in the API.
-
-Further explanation for using this method can be found in the [Authentication: Static Token](/v1/authentication/methods#static-token) documentation.
+Further explanation for using this method can be found in the [Authentication: Static Token](/v2/authentication/methods#static-token) documentation.
 
 ### OIDC
 
 <Note>The `OIDC` method is a `session compatible` authentication method.</Note>
-
-<Tip>
-  Read our [Login with
-  Google](/v1/guides/operation/authentication/login-with-google) guide for a
-  more in-depth walk-through setting up an OIDC provider.
-</Tip>
 
 The `oidc` method provides the ability to establish client tokens via OAuth 2.0 with OIDC flow.
 Once enabled and configured, the UI will automatically leverage it and present any configured providers as login options.
@@ -144,9 +205,9 @@ authentication:
 
 Multiple providers can be configured simultaneously. Each provider will result in a login option being presented in the UI, along with a configured endpoint to support the provider flow.
 
-!["OIDC Login"](/v1/images/configuration/oidc_login.png)
+!["OIDC Login"](/v2/images/configuration/oidc_login.png)
 
-Flipt has been tested with each of the following providers:
+Flipt v2 has been tested with each of the following providers:
 
 - [Google](https://developers.google.com/identity/openid-connect/openid-connect)
 - [Auth0](https://auth0.com/docs/get-started/applications/application-settings)
@@ -217,15 +278,9 @@ You can see an example of that above in the [sample configuration](#method-oidc)
 
 A good amount of OIDC providers support the PKCE (Proof Key for Code Exchange) flow and the implicit OAuth flow. Flipt allows for a configuration to enable PKCE for all the legs of the OIDC authentication flow.
 
-To enable this, you must set the [`use_pkce`](/v1/configuration/overview#authentication-methods-oidc) property to `true` for each provider you would like to leverage PKCE with.
+To enable this, you must set the [`use_pkce`](/v2/configuration/overview#authentication-methods-oidc) property to `true` for each provider you would like to leverage PKCE with.
 
 #### Example: OIDC With Google
-
-<Tip>
-  Checkout our [Login with
-  Google](/v1/guides/operation/authentication/login-with-google) guide for an
-  in-depth look into configuring Google as an OIDC provider.
-</Tip>
 
 Given we're running our instance of Flipt on the public internet at `https://flipt.myorg.com`.
 
@@ -281,12 +336,6 @@ Other providers have similar mechanisms for attenuating who can leverage this au
   The `GitHub` method is a `session compatible` authentication method.
 </Note>
 
-<Tip>
-  Read our [Login with
-  Github](/v1/guides/operation/authentication/login-with-github) guide for a
-  more in-depth walk-through.
-</Tip>
-
 The `github` method provides the ability to establish client tokens via OAuth 2.0 with GitHub as the identity provider.
 Once enabled and configured, the UI will automatically leverage it and present a "Login with GitHub" button.
 
@@ -303,7 +352,7 @@ authentication:
         - user:email
 ```
 
-!["GitHub Login"](/v1/images/guides/login-with-github/login-with-github.png)
+!["GitHub Login"](/v2/images/guides/login-with-github/login-with-github.png)
 
 #### Allowed Organizations
 
@@ -486,33 +535,3 @@ authentication:
         audiences: https://flipt.io/, https://flipt.com/ # at least one audience must match
 ```
 
-### Common Properties: Cleanup
-
-Each authentication method contains a nested `cleanup` configuration object.
-This object configures the periodic deletion of _expired_ authentications created with the associated method.
-
-```yaml config.yaml
-authentication:
-  required: true
-  methods:
-    <method>:
-      cleanup:
-        interval: 10m
-      grace_period: 24h
-```
-
-The cleanup object currently contains two keys `interval` and `grace_period`.
-The `interval` is used to configure how frequently a delete _expired_ tokens action is performed.
-Whereas, `grace_period` is used to ensure that _expired_ tokens are preserved for at least this configured duration.
-
-This allows you to keep authentications around for auditing purposes after expiration.
-Expired tokens are instances where the `expires_at` timestamp occurs before the current time.
-The grace period is added onto this timestamp as a predicate when the delete operation is made.
-
-Tokens that have expired (`expires_at` is before `now()`) will begin immediately failing authentication when presented as a credential to the API.
-The `grace_period` is simply for the cleanup process.
-
-## Reverse Proxy
-
-You can secure Flipt simply by running it behind a reverse proxy in your own trusted environment.
-An example of this can be found in [authentication examples](https://github.com/flipt-io/flipt/tree/main/examples/authentication) in the Flipt repository.

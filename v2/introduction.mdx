@@ -1,0 +1,52 @@
+---
+title: Introduction
+description: This document describes the features and benefits of Flipt v2.
+mode: "wide"
+---
+
+Flipt v2 is a major new version of Flipt that is built to be Git-native and
+support a more flexible and powerful feature management platform.
+
+<Warning>
+  Flipt v2 is currently in beta and is not recommended for production use.
+</Warning>
+
+## Features
+
+Flipt v2 introduces a number of new features and capabilities that are not available in v1 while maintaining backwards compatibility with v1.
+
+### Git-Native
+
+Flipt v2 is built to be Git-native, meaning that your feature flags and configurations are stored in your own Git repositories. This allows you to use your existing Git workflow and tools to manage your feature flags and configurations.
+
+We modeled Flipt v2 after our [Flipt Cloud](/cloud/overview) product, but with the ability to self-host.
+
+While Flipt v1 has the ability to read flag data from a Git repository, Flipt v2 takes this one step further by allowing you to write flag data to a Git repository using the Flipt v2 API and UI.
+
+We believe that Git is the best way to manage configuration data. We also believe that feature flags are a type of configuration data, and as such, they should be stored in the same way.
+
+By combining the power of Git with a user-friendly interface, Flipt v2 offers the best of both worlds: the robustness and version control of Git-backed storage, and the ease of use of a modern feature flag management system.
+
+### Multi-Environment
+
+Flipt v2 introduces the concept of environments, which are an additional layer above Flipt v1's concept of [Namespaces](/v1/concepts#namespace).
+
+Environments allow you to manage your feature flags and configurations in different several ways including:
+
+- Different Git repositories
+- Different directories within the same Git repository
+- Different branches within the same directory
+
+Each environment has its own set of namespaces, feature flags and configurations, and is completely isolated from the others.
+
+### No External Dependencies
+
+Flipt v2 is a standalone binary that does not depend on any external services. This means that you can run Flipt v2 on any machine that has a compatible operating system.
+
+V2 does not require any database or cache by default. Even the git-backed storage is local by default either in memory or on disk. You can configure Flipt v2 to sync your local git-backed storage to a remote git repository such as GitHub, GitLab, or Bitbucket.
+
+### Declarative APIs
+
+Flipt v2 introduces a declarative API for managing feature flags and configurations. This allows you to manage your feature flags and configurations in a declarative way, using a simple JSON schema.
+
+Flipt v2 works on the principle of managing resources. A resource is a collection of related configurations that are managed together. Feature flags are just one type of resource and are managed through the Flipt v2 API.

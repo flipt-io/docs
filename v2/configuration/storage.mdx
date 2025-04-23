@@ -1,0 +1,168 @@
+---
+title: Storage
+description: This document describes how to configure Flipt v2's storage backend mechanisms.
+---
+
+Flipt v2 stores all of its resources in git repositories. This section describes how those git repositories are persisted and managed.
+
+## Identifiers
+
+Each storage backend has an identifier that is used to reference the storage backend in the configuration, such as when specifying the storage backend for an environment.
+
+Identifiers can be any string value but must be unique. Flipt creates a `default` identifier for you automatically if you don't specify one.
+
+In the following example, we've defined two storage backends:
+
+- `foo` is a local storage backend that will serve Flipt flag state from a local directory.
+- `bar` is a memory storage backend that will serve Flipt flag state from an in-memory store.
+
+```yaml
+storage:
+  foo:
+    name: "foo"
+    backend:
+      type: local
+      path: "/path/to/foo/repository"
+  bar:
+    name: "bar"
+    backend:
+      type: memory
+```
+
+## Backends
+
+Flipt v2 supports the following storage backends:
+
+- [Local](#local)
+- [Memory](#memory)
+
+### Local
+
+The purpose of this backend type is to support serving Flipt flag state directly from your local filesystem in a git repository.
+
+This allows the the data to be persisted between server restarts.
+
+Flipt will periodically rebuild its state from the local disk every 10 seconds.
+
+```yaml
+storage:
+  backend:
+    type: local
+    path: "."
+```
+
+The above configuration will create a local storage backend with the identifier `default` and serve Flipt flag state from the current working directory.
+
+### Memory
+
+The purpose of this backend type is to support serving Flipt flag state from an in-memory store.
+
+This is useful for development and testing purposes where you don't want to persist flag state to disk.
+
+```yaml
+storage:
+  backend:
+    type: memory
+```
+
+The above configuration will create a memory storage backend with the identifier `default` and serve Flipt flag state from an in-memory store.
+
+## Git Remotes
+
+Flipt v2 supports syncing flag state to and from a remote git repository.
+
+```yaml
+storage:
+  backend:
+    type: memory
+    remote: "https://github.com/flipt-io/example.git"
+    branch: "main"
+    poll_interval: "30s"
+    credentials: "github"
+```
+
+This configuration will create a git storage backend with the identifier `default` in memory and will sync flag state to and from the remote repository.
+
+### Conflict Resolution
+
+Conflicts can occur when syncing flag state to and from a remote repository. The conflict resolution strategy in Flipt v2 is currently rudimentary and we aim to improve this in future releases.
+
+When syncing flag state to and from a remote repository, Flipt will behave as follows:
+
+- Remote state is synced to the local storage backend using the configured `poll_interval`
+- On writes to the Flipt server, the local storage backend will create a new commit and push it to the remote repository
+- Flipt keeps track of the last commit hash for each storage backend
+- If a write is made to a flag state file that has been modified since the last commit, Flipt will refuse to push the changes to the remote repository and will instead return an error
+- If a write is made to a flag state file that has not been modified since the last commit, Flipt will push the changes to the remote repository
+
+### Credentials
+
+Credentials enable the ability to authenticate with the remote repository.
+
+Supported authentication schemes are:
+
+- `basic`
+- `ssh`
+- `access_token`
+
+Credentials are configured using the `credentials` configuration section and use identifiers to reference the credentials in the configuration.
+
+<Tip>
+  This means that you can use the same credentials for multiple storage backends
+  if needed.
+</Tip>
+
+#### Basic
+
+Basic authentication is a username and password pair.
+
+<Note>
+  When using GitHub and their [PATs (Personal Access
+  Tokens)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens),
+  `basic` authentication should be used. GitHub expects you to supply a valid
+  `username` and provide your PAT as the `password` parameter.
+</Note>
+
+```yaml
+credentials:
+  github:
+    type: basic
+    username: < username >
+    password: < github-personal-access-token >
+```
+
+#### SSH
+
+In order to configure a git remote with SSH, you will need to generate an SSH key-pair and configure your repository provider with the public key.
+
+GitHub has some excellent documentation regarding how to generate and install your credentials [here](https://docs.github.com/en/authentication/connecting-to-github-with-ssh).
+
+Once you have your private key credentials you will need to configure Flipt to use them.
+This can be done via the `storage.git.authentication.ssh` configuration section:
+
+```yaml
+credentials:
+  github:
+    type: ssh
+    user: git
+    private_key_path: ~/.ssh/id_rsa
+    private_key_bytes: <raw-key-bytes> # alternatively pass the raw bytes inline
+```
+
+<Warning>
+  `insecure_ignore_host_key` is not encouraged for production use, and is
+  `false` by default. Instead, you are advised to put the key fingerprint in the
+  known hosts file where you are running Flipt. For example, for GitHub you can
+  do `ssh-keyscan github.com >> ~/.ssh/known_hosts` on the Flipt host.
+</Warning>
+
+#### Access Token
+
+Access tokens are a type of credential that are used to authenticate with a remote repository. These can be used for any remote repository provider that supports access tokens.
+
+```yaml
+credentials:
+  gitlab:
+    type: access_token
+    token: < gitlab-access-token >
+```
