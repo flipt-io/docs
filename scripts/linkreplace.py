@@ -17,7 +17,7 @@ def replace_links_in_file(filepath: str, from_path: str, to_path: str):
 def walk_and_process(root_dir: str, from_path: str, to_path: str):
     for dirpath, _, filenames in os.walk(root_dir):
         for fname in filenames:
-            if fname.endswith('.md'):
+            if fname.endswith('.mdx'):
                 replace_links_in_file(os.path.join(dirpath, fname), from_path, to_path)
 
 def main():

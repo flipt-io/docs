@@ -102,7 +102,7 @@ For production deployments, we recommend using the JSON format as it's easier to
 2024-01-20T22:04:18-05:00	INFO	finished unary call with code OK	{"server": "grpc", "grpc.start_time": "2024-01-20T22:04:18-05:00", "system": "grpc", "span.kind": "server", "grpc.service": "flipt.evaluation.EvaluationService", "grpc.method": "Boolean", "peer.address": "127.0.0.1:53714", "grpc.code": "OK", "grpc.time_ms": 0.373}
 ```
 
-More information about the available configuration options can be found in the [Logging configuration](/v1/configuration/overview#logging) section.
+More information about the available configuration options can be found in the [Logging configuration](/configuration/overview#logging) section.
 
 ## Tracing
 
@@ -110,7 +110,7 @@ Flipt supports distributed tracing via the [OpenTelemetry](https://opentelemetry
 
 ### OTLP
 
-![Datadog OTLP](/v1/images/configuration/datadog_otlp.png)
+![Datadog OTLP](/images/configuration/datadog_otlp.png)
 
 OTLP supports additional configuration such as specifying the protocol to use (gRPC or HTTP) as well as providing custom headers to send with the request.
 

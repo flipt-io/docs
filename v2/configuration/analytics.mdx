@@ -18,15 +18,15 @@ The data that gets collected currently includes:
 
 Once a storage engine is configured, these analytics are viewable in the UI allowing users to visualize up to 24 hours of data for each metric.
 
-![UI For Analytics](/v1/images/configuration/analytics_quick_view.png)
+![UI For Analytics](/images/configuration/analytics_quick_view.png)
 
 The image above shows the past 30 minutes of the flag `flag1` evaluation counts.
 
 ### Origin
 
-Analytics are currently only collected as they pass through the evaluation server. This means that analytics will be captured if you are using the REST or GRPC APIs via one of our [Server SDKs](/v1/integration/server/rest) or [GRPC SDKs](/v1/integration/server/grpc) for evaluations.
+Analytics are currently only collected as they pass through the evaluation server. This means that analytics will be captured if you are using the REST or GRPC APIs via one of our [Server SDKs](/integration/server/rest) or [GRPC SDKs](/integration/server/grpc) for evaluations.
 
-We have plans to support collecting analytics for [Client-Side](/v1/integration/client) evaluations in the future.
+We have plans to support collecting analytics for [Client-Side](/integration/client) evaluations in the future.
 
 ## ClickHouse
 
@@ -37,7 +37,7 @@ We highly **recommend** using a separate database for analytics produced by Flip
 <Note>
   The analytics database must be created before Flipt will be able to write
   analytical data and run any migrations. See our
-  [migration](/v1/configuration/storage#migrations) section for more info.
+  [migration](/configuration/storage#migrations) section for more info.
 </Note>
 
 To create a database for Flipt analytics, you can use the following SQL:
