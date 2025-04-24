@@ -1,6 +1,6 @@
 ---
 title: Observability
-description: This document describes how to configure Flipt's observability mechanisms including metrics, logging, and tracing.
+description: This document describes how to configure observability mechanisms including metrics, logging, and tracing for Flipt v2.
 ---
 
 ## Metrics
@@ -103,6 +103,27 @@ For production deployments, we recommend using the JSON format as it's easier to
 ```
 
 More information about the available configuration options can be found in the [Logging configuration](/configuration/overview#logging) section.
+
+### OTLP
+
+Flipt v2 supports the new [OpenTelemetry OTLP logging specification](https://opentelemetry.io/docs/specs/otel/logs/). To enable OTLP logging, set the `OTLP_LOGS_EXPORTER` environment variable
+
+```console
+export OTLP_LOGS_EXPORTER=otlp
+```
+
+<Note>
+  OpenTelemetry logging is in addition to the existing logging configuration. It
+  does not replace the ability to log to a file or stdout/stderr.
+</Note>
+
+OpenTelemetry OTLP logging is configured via the default OpenTelemetry Environment Variables. See the [OpenTelemetry Environment Variables](https://opentelemetry.io/docs/reference/specification/sdk-environment-variables/) documentation for more details.
+
+For example, to configure the OTLP logging endpoint, you can set the `OTEL_EXPORTER_OTLP_LOGS_ENDPOINT` environment variable.
+
+```console
+export OTEL_EXPORTER_OTLP_LOGS_ENDPOINT=http://localhost:4317
+```
 
 ## Tracing
 

@@ -1,6 +1,6 @@
 ---
 title: Storage
-description: This document describes how to configure Flipt v2's storage backend mechanisms.
+description: This document describes how to configure the storage backend mechanisms for Flipt v2.
 ---
 
 Flipt v2 stores all of its resources in git repositories. This section describes how those git repositories are persisted and managed.
@@ -9,22 +9,22 @@ Flipt v2 stores all of its resources in git repositories. This section describes
 
 Each storage backend has an identifier that is used to reference the storage backend in the configuration, such as when specifying the storage backend for an environment.
 
-Identifiers can be any string value but must be unique. Flipt creates a `default` identifier for you automatically if you don't specify one.
+Identifiers can be any string value but must be unique. Flipt creates a `default` identifier and storage backend for you automatically if you don't specify one.
 
 In the following example, we've defined two storage backends:
 
-- `foo` is a local storage backend that will serve Flipt flag state from a local directory.
-- `bar` is a memory storage backend that will serve Flipt flag state from an in-memory store.
+- `staging` is a local storage backend that will serve Flipt flag state from a local directory.
+- `development` is a memory storage backend that will serve Flipt flag state from an in-memory store.
 
 ```yaml
 storage:
-  foo:
-    name: "foo"
+  staging: # id
+    name: "staging"
     backend:
       type: local
-      path: "/path/to/foo/repository"
-  bar:
-    name: "bar"
+      path: "/path/to/staging/repository"
+  development: # id
+    name: "development"
     backend:
       type: memory
 ```
@@ -73,15 +73,16 @@ Flipt v2 supports syncing flag state to and from a remote git repository.
 
 ```yaml
 storage:
-  backend:
-    type: memory
-    remote: "https://github.com/flipt-io/example.git"
-    branch: "main"
-    poll_interval: "30s"
-    credentials: "github"
+  staging:
+    backend:
+      type: memory
+      remote: "https://github.com/flipt-io/example.git"
+      branch: "main"
+      poll_interval: "30s"
+      credentials: "github"
 ```
 
-This configuration will create a git storage backend with the identifier `default` in memory and will sync flag state to and from the remote repository.
+This configuration will create a git storage backend with the identifier `staging` in memory and will sync flag state to and from the remote repository.
 
 ### Conflict Resolution
 
@@ -97,7 +98,7 @@ When syncing flag state to and from a remote repository, Flipt will behave as fo
 
 ### Credentials
 
-Credentials enable the ability to authenticate with the remote repository.
+Credentials enable the ability to authenticate with remote repositories.
 
 Supported authentication schemes are:
 
@@ -111,6 +112,15 @@ Credentials are configured using the `credentials` configuration section and use
   This means that you can use the same credentials for multiple storage backends
   if needed.
 </Tip>
+
+<img
+  className="block dark:hidden"
+  src="/v2/images/configuration/storage/credentials-light.svg"
+/>
+<img
+  className="hidden dark:block"
+  src="/v2/images/configuration/storage/credentials-dark.svg"
+/>
 
 #### Basic
 

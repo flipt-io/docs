@@ -1,6 +1,6 @@
 ---
 title: Authorization
-description: This document describes how to configure Flipt v2's authorization mechanisms.
+description: This document describes how to configure the authorization mechanisms for Flipt v2.
 ---
 
 Flipt supports the ability to secure its core API routes by setting the `required` field to `true` on the `authorization` configuration object.
@@ -15,11 +15,9 @@ When authorization is set to `required`, the API will ensure valid credentials a
 <Info>
 Once authorization has been set to `required: true` all management API routes will require a valid authentication session as well.
 
-The UI will require a session-compatible authentication method (e.g. [OIDC](/v2/authentication/methods#openid-connect)) to be enabled.
+The UI will require a session-compatible authentication method (e.g. OIDC) to be enabled.
 
 </Info>
-
-See the [Authorization: Overview](/v2/authorization/overview) documentation for more details on Flipt's API authorization handling.
 
 ## Backends
 
@@ -50,10 +48,8 @@ authorization:
 The policy **must** have the following package declaration:
 
 ```rego policy.rego
-package flipt.authz.v1
+package flipt.authz.v2
 ```
-
-You can learn more about policies in our [Authorization: Overview](/v2/authorization/overview#policies) documentation.
 
 #### Polling Interval
 
@@ -83,8 +79,6 @@ authorization:
     data:
       path: "data.json"
 ```
-
-You can learn more about using data with policies in our [Authorization: Overview](/authorization/overview#external-data) documentation.
 
 #### Polling Interval
 

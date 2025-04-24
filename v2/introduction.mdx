@@ -4,14 +4,14 @@ description: This document describes the features and benefits of Flipt v2.
 mode: "wide"
 ---
 
+import V2Alpha from "/snippets/v2-alpha.mdx";
+
+<V2Alpha />
+
 Flipt v2 is a major new version of Flipt that is built to be Git-native and
 support a more flexible and powerful feature management platform.
 
-<Warning>
-  Flipt v2 is currently in beta and is not recommended for production use.
-</Warning>
-
-## Features
+## Differences from v1
 
 Flipt v2 introduces a number of new features and capabilities that are not available in v1 while maintaining backwards compatibility with v1.
 
@@ -21,11 +21,19 @@ Flipt v2 is built to be Git-native, meaning that your feature flags and configur
 
 We modeled Flipt v2 after our [Flipt Cloud](/cloud/overview) product, but with the ability to self-host.
 
+import Cloud from "/snippets/cloud.mdx";
+
+<Cloud />
+
 While Flipt v1 has the ability to read flag data from a Git repository, Flipt v2 takes this one step further by allowing you to write flag data to a Git repository using the Flipt v2 API and UI.
 
 We believe that Git is the best way to manage configuration data. We also believe that feature flags are a type of configuration data, and as such, they should be stored in the same way.
 
 By combining the power of Git with a user-friendly interface, Flipt v2 offers the best of both worlds: the robustness and version control of Git-backed storage, and the ease of use of a modern feature flag management system.
+
+### Real-Time Client Updates (In Development)
+
+Flipt v2 introduces a new streaming API that allows you to subscribe to changes on the Flipt server and update the state of the flags accordingly in real-time. This means you'll be able to see changes to flags and configurations as they are made, without having to poll the Flipt server for updates.
 
 ### Multi-Environment
 

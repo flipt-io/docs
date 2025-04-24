@@ -1,0 +1,65 @@
+vars: {
+  d2-config: {
+    layout-engine: elk
+  }
+}
+
+direction: right
+
+style: {
+  fill: transparent
+}
+
+classes: {
+  github: {
+    shape: image
+    icon: https://icons.terrastruct.com/dev%2Fgithub.svg
+    style.font-size: 24
+    style.fill: transparent
+    style.stroke-width: 1
+  }
+  box: {
+    style.fill: transparent
+  }
+  solid: {
+    style.stroke-width: 1
+  }
+  dashed: {
+    style.stroke-width: 1
+    style.stroke-dash: 5
+  }
+}
+
+E1: "Environment A\n(path: /env-a)" {
+    class: box
+}
+E2: "Environment B\n(path: /env-b)" {
+    class: box
+}
+E3: "Environment C" {
+    class: box
+}
+
+FS: "Filesystem Backend" {
+    class: box
+}
+MEM: "In-Memory Backend" {
+    class: box
+}
+
+GitFS: "GitHub Repo A" {
+  class: github
+}
+
+GitMEM: "GitHub Repo B" {
+  class: github
+}
+
+# Environment to Storage mappings
+E1 -> FS { class: solid }
+E2 -> FS { class: solid }
+E3 -> MEM { class: solid }
+
+# Storage to Git remotes
+FS <-> GitFS: "optional sync" { class: dashed }
+MEM <-> GitMEM: "optional sync" { class: dashed }

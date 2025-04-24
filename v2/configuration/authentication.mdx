@@ -3,8 +3,6 @@ title: Authentication
 description: This document describes how to configure the authentication mechanisms for Flipt v2.
 ---
 
-
-
 Flipt supports the ability to secure its core API routes by setting the `required` field to `true` on the `authentication` configuration object.
 
 ```yaml config.yaml
@@ -20,8 +18,6 @@ Once authentication has been set to `required: true` all API routes will require
 The UI will require a session-compatible authentication method (e.g. [OIDC](#method-oidc)) to be enabled.
 
 </Info>
-
-See the [Authentication: Overview](/v2/authentication/overview) documentation for more details on Flipt's API authentication handling.
 
 ## Exclusions
 
@@ -146,7 +142,6 @@ The grace period is added onto this timestamp as a predicate when the delete ope
 Tokens that have expired (`expires_at` is before `now()`) will begin immediately failing authentication when presented as a credential to the API.
 The `grace_period` is simply for the cleanup process.
 
-
 ## Methods
 
 Each key within the `methods` section is a particular authentication method.
@@ -174,8 +169,6 @@ authentication:
             metadata:
               some_key: "some_value"
 ```
-
-Further explanation for using this method can be found in the [Authentication: Static Token](/v2/authentication/methods#static-token) documentation.
 
 ### OIDC
 
@@ -205,7 +198,7 @@ authentication:
 
 Multiple providers can be configured simultaneously. Each provider will result in a login option being presented in the UI, along with a configured endpoint to support the provider flow.
 
-!["OIDC Login"](/v2/images/configuration/oidc_login.png)
+-- TODO: add screenshot
 
 Flipt v2 has been tested with each of the following providers:
 
@@ -352,7 +345,7 @@ authentication:
         - user:email
 ```
 
-!["GitHub Login"](/v2/images/guides/login-with-github/login-with-github.png)
+-- TODO: add screenshot
 
 #### Allowed Organizations
 
@@ -534,4 +527,3 @@ authentication:
         subject: user@domain.com
         audiences: https://flipt.io/, https://flipt.com/ # at least one audience must match
 ```
-
