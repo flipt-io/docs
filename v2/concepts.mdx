@@ -22,6 +22,7 @@ Environments are managed via configuration files as they are also coupled to how
 All data created in one environment is only accessible within that environment, meaning namespaces, flags, segments, etc must be created in each environment in which they're to be used.
 
 If an environment isn't selected then the 'Default' environment is used.
+
 </Note>
 
 You can create as many environments as you want. Each environment can have its own namespaces, feature flags and configurations.
@@ -154,7 +155,8 @@ Currently 5 constraint types are available:
 ![Constraint Types](/v2/images/concepts/constraints_types.png)
 
 <Note>
-  The constraint value is represented as a string in transit and in storage, however it's coerced into the appropriate type for evaluation.
+  The constraint value is represented as a string in transit and in storage,
+  however it's coerced into the appropriate type for evaluation.
 </Note>
 
 ## Rules
