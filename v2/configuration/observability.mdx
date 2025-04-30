@@ -25,9 +25,6 @@ go_gc_duration_seconds{quantile="1"} 0.00026651 go_gc_duration_seconds_sum
 0.000402094 go_gc_duration_seconds_count 5
 ```
 
-An [example](https://github.com/flipt-io/flipt/tree/main/examples/metrics)
-showing how to set up Flipt with Prometheus can be found in the GitHub repository.
-
 <Tip>
   You can disable the Prometheus metrics collection by setting the
   `metrics.enabled` configuration option to `false`.
@@ -131,7 +128,7 @@ Flipt supports distributed tracing via the [OpenTelemetry](https://opentelemetry
 
 ### OTLP
 
-![Datadog OTLP](/images/configuration/datadog_otlp.png)
+![Datadog OTLP](/v2/images/configuration/observability/datadog_otlp.png)
 
 OTLP supports additional configuration such as specifying the protocol to use (gRPC or HTTP) as well as providing custom headers to send with the request.
 

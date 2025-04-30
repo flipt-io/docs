@@ -14,7 +14,7 @@ Before getting started, make sure the Flipt server is up and running on your
 host on your chosen ports.
 
 <Note>
-  Our pre-release version is built nightly and only available as a Docker image at the moment.
+  Our pre-release version is built on every merge to the `v2` branch and only available as a Docker image at the moment.
 
 Once we release a stable version, we'll update the installation instructions to include binary, Helm, and Homebrew installation options.
 
@@ -27,7 +27,7 @@ docker run -d \
     -p 8080:8080 \
     -p 9000:9000 \
     -v $HOME/flipt:/var/opt/flipt \
-    docker.flipt.io/flipt/flipt:v2-nightly
+    docker.flipt.io/flipt/flipt:v2-alpha
 ```
 
 </CodeGroup>
@@ -40,7 +40,7 @@ Flipt v2 introduces the concept of environments in addition to namespaces.
 
 By default, Flipt v2 will create a single environment called `default` along with the `default` namespace.
 
--- TODO add screenshot
+![Default Environments](/v2/images/quickstart/default.png)
 
 Environments are managed via configuration files. See the [Environments](/v2/concepts#environments) documentation for more.
 
@@ -57,11 +57,12 @@ To create a flag:
 
 1. Open the UI at http://localhost:8080.
 2. Click `New Flag`.
-3. Populate the details of the flag as shown.
-4. Click `Enabled` so the flag will be enabled once created.
-5. Click `Create`.
+3. Select the `Variant` type.
+4. Populate the details of the flag as shown.
+5. Click `Enabled` so the flag will be enabled once created.
+6. Click `Create`.
 
--- TODO add screenshot
+![Create Flag](/v2/images/quickstart/create_flag.png)
 
 ### Create Variants
 
@@ -70,12 +71,13 @@ you define.
 
 To create a variant:
 
-1. On the Flag Details page for the new flag you created, click `New Variant`.
+1. On the page for the flag you just created, click `Create Variant`.
 2. Populate the details of the variant as shown.
-3. Click `Create`.
+3. Click `Add`.
 4. Create one more variant populating the information as you wish.
+5. Click `Update` to save the flag and variants.
 
--- TODO add screenshot
+![Create Variant](/v2/images/quickstart/create_variant.png)
 
 Click `Flags` in the navigation menu and you should now see your newly created
 flag in the list.
@@ -96,7 +98,7 @@ To create a segment:
 3. Populate the details of the segment as shown.
 4. Click `Create`.
 
--- TODO add screenshot
+![Create Segment](/v2/images/quickstart/create_segment.png)
 
 ### Create a Constraint
 
@@ -109,12 +111,12 @@ Constraints are used to target a specific segment.
 
 To create a constraint:
 
-1. On the Segment Details page for the new segment you created, click
-   `New Constraint`.
+1. On the page for the segment you just created, click `Create Constraint`.
 2. Populate the details of the constraint as shown.
-3. Click `Create`.
+3. Click `Add`.
+4. Click `Update` to save the segment and constraint.
 
--- TODO add screenshot
+![Create Constraint](/v2/images/quickstart/create_constraint.png)
 
 Click `Segments` in the navigation menu and you should now see your newly
 created segment in the list.
@@ -136,9 +138,10 @@ To create a rule:
 5. Next to `Type` choose `Multi-Variate`.
 6. You should see the two variants that you created earlier, with a percentage
    of `50%` each.
-7. Click `Create`.
+7. Click `Add`.
+8. Click `Update` to save the rule.
 
--- TODO add screenshot
+![Create Rule](/v2/images/quickstart/create_rule.png)
 
 A distribution is a way of assigning a percentage for which entities evaluated
 get a specific variant. The higher the percentage assigned, the more likely it
@@ -174,8 +177,7 @@ To test evaluation:
    segment that you created earlier, and return one of the variants defined.
 6. Experiment with different values for the `Request Context` and `Entity ID` fields.
 
--- TODO add screenshot
-
+![Evaluation Console](/v2/images/quickstart/evaluation_console.png)
 That's it! You're now ready to integrate Flipt into your applications and start
 defining your flags and segments that will enable you to seamlessly rollout
 new features to your users while reducing risk.

@@ -15,22 +15,20 @@ Environments are a new concept in Flipt v2. They are a way to organize your name
 
 By default, Flipt v2 will create a single environment called `default` along with the `default` namespace.
 
--- TODO add screenshot
-
+![Environments](/v2/images/concepts/environments.png)
 Environments are managed via configuration files as they are also coupled to how you store your configuration data. See the [Environments](/v2/configuration#environments) documentation for more.
 
 <Note>
 All data created in one environment is only accessible within that environment, meaning namespaces, flags, segments, etc must be created in each environment in which they're to be used.
 
 If an environment isn't selected then the 'Default' environment is used.
-
 </Note>
+
+You can create as many environments as you want. Each environment can have its own namespaces, feature flags and configurations.
 
 ## Namespaces
 
 Namespaces are a way to organize your feature flags and configurations within an environment.
-
--- TODO add screenshot
 
 One common use-case of Namespaces is to separate Flipt data by internal team.
 
@@ -41,11 +39,9 @@ If a namespace isn't selected then the 'Default' namespace is used.
 
 </Note>
 
--- TODO add screenshot
-
 Namespaces can be managed within the `Settings` section of the Flipt UI:
 
--- TODO add screenshot
+![Namespaces](/v2/images/concepts/namespaces.png)
 
 ## Flags
 
@@ -53,14 +49,14 @@ Flags are the basic unit in the Flipt ecosystem. Flags represent experiments or
 features that you want to be able to enable or disable for users of your
 applications.
 
-For example, a flag named `new-contact-page` could be used to determine whether
+For example, a flag named `New Contact Page` could be used to determine whether
 or not a given user sees the latest version of a 'Contact Us' page that you are
 working on when they visit your homepage.
 
 Flags can be used as simple on/off toggles or with variants and rules to support
 more elaborate use cases.
 
--- TODO add screenshot
+![Flags](/v2/images/concepts/flags.png)
 
 There are two types of flags:
 
@@ -69,9 +65,11 @@ There are two types of flags:
 
 ### Variant Flags
 
-Variants are options for flags. For example, if you have a flag `colorscheme`
+Variants are options for flags. For example, if you have a flag `Colorscheme`
 that determines which main colors your users see when they login to your
 application, then possible variants could include `dark`, `light` or `auto`.
+
+![Variant Flags](/v2/images/concepts/flags_variant.png)
 
 #### Variant Attachments
 
@@ -86,8 +84,6 @@ The attachment size is limited to **1MB**.
 
 </Warning>
 
--- TODO add screenshot
-
 ### Boolean Flags
 
 Boolean flags are a special type of flag that allow you to return a boolean value for a given flag.
@@ -96,7 +92,7 @@ You can use boolean flags to determine if a feature is enabled or disabled for a
 
 Boolean flags can be configured with [rollout](#rollouts) rules to determine which entities receive `true` or `false` for a given flag.
 
--- TODO add screenshot
+![Boolean Flags](/v2/images/concepts/flags_boolean.png)
 
 ### Metadata
 
@@ -111,7 +107,7 @@ Currently, the following data types are supported:
 - Primitive types: `String`, `Number`, `Boolean`
 - Complex types: `Array`, `Object`
 
--- TODO add screenshot
+![Flag Metadata](/v2/images/concepts/flags_metadata.png)
 
 ## Segments
 
@@ -121,7 +117,7 @@ a flag or variant applies to them.
 
 An example segment could be `new-users`.
 
--- TODO add screenshot
+![Segments](/v2/images/concepts/segments.png)
 
 <Note>Segments are global within a Flipt namespace.</Note>
 
@@ -141,7 +137,7 @@ Constraints allow you to determine which segment a given entity is a part of.
 For example, for a user to fall into the above `new-users` segment, you may want
 to check their `finished_onboarding` property.
 
--- TODO add screenshot
+![Constraints](/v2/images/concepts/constraints.png)
 
 All constraints have a _property_, _type_, _operator_ and optionally a _value_.
 
@@ -155,11 +151,10 @@ Currently 5 constraint types are available:
 - **DateTime** which allows you to check a date or datetime property of an entity such as `2020-01-01` or `2020-01-01T00:00:00Z` ([RFC3339](https://datatracker.ietf.org/doc/html/rfc3339))
 - **Entity** which allows you to check the `entityId` that was sent in the body of the `Variant` or `Boolean` request
 
--- TODO add screenshot
+![Constraint Types](/v2/images/concepts/constraints_types.png)
 
 <Note>
-  The constraint value is represented as a string in transit and in the
-  database, however it's coerced into the appropriate type for evaluation.
+  The constraint value is represented as a string in transit and in storage, however it's coerced into the appropriate type for evaluation.
 </Note>
 
 ## Rules
@@ -173,7 +168,7 @@ richer by using distribution logic to roll out features on a percentage basis.
 Continuing our previous example, we may want to return the flag variant `dark`
 for all entities in the `new-users` segment. This would be configured like so:
 
--- TODO add screenshot
+![Rules](/v2/images/concepts/rules.png)
 
 Rules are evaluated in order per their rank from 1-N. The first rule that
 matches wins. Once created, rules can be re-ordered to change how they're
@@ -181,11 +176,9 @@ evaluated.
 
 ### Default Rule
 
-<Info>Default Rules are available since v1.47.0 of Flipt.</Info>
-
 If no rules match for a given flag, the default rule value is returned. This value is optional and can be set to any variant that exists for the flag.
 
--- TODO add screenshot
+![Default Rule](/v2/images/concepts/rules_default.png)
 
 ### Distributions
 
@@ -196,7 +189,7 @@ Let's say that instead of always showing the `dark` variant to your `new-users`
 segment, you want to show `dark` to **10%** of `new-users`, `light` to **30%**, and `auto`
 to the remaining **60%**. You would accomplish this using rules with distributions:
 
--- TODO add screenshot
+![Distributions](/v2/images/concepts/rules_distributions.png)
 
 The ability to manage distributions, as illustrated in the image above, is an extremely powerful feature of Flipt that can help you seamlessly deploy new features of your applications to your users while also limiting the reach of potential bugs.
 
@@ -211,7 +204,7 @@ Current rollout types include:
 - **Threshold** which allows you to return `true` or `false` for a given percentage of entities.
 - **Segments Match** which allows you to return `true` or `false` if an entity matches a given segment.
 
--- TODO add screenshot
+![Rollouts](/v2/images/concepts/rollouts.png)
 
 Rollouts work similar to [Rules](#rules) in that they're evaluated in order per their rank from 1-N. The first rollout that matches wins. Once created, rollouts can be re-ordered to change how they're evaluated.
 
@@ -229,7 +222,7 @@ In the above example involving colors, evaluation is where you send information
 about your current user to determine if they're a `new-user`, and which color
 (`dark`, `auto`, or `light`) that they should see for their main color scheme.
 
--- TODO add screenshot
+![Evaluation](/v2/images/concepts/evaluation.png)
 
 ### Entities
 
