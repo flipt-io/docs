@@ -1,0 +1,94 @@
+---
+title: Authorization
+description: This document describes how to configure the authorization mechanisms for Flipt v2.
+---
+
+Flipt supports the ability to secure its core API routes by setting the `required` field to `true` on the `authorization` configuration object.
+
+```yaml config.yaml
+authorization:
+  required: true
+```
+
+When authorization is set to `required`, the API will ensure valid credentials are present on all management API requests.
+
+<Info>
+Once authorization has been set to `required: true` all management API routes will require a valid authentication session as well.
+
+The UI will require a session-compatible authentication method (e.g. OIDC) to be enabled.
+
+</Info>
+
+## Backends
+
+Flipt uses [Open Policy Agent (OPA)](https://www.openpolicyagent.org/) to enforce authorization policies. OPA is a general-purpose policy engine that can be used to enforce policies across the stack.
+
+Flipt supports sourcing policies and external data from various backends. Currently, Flipt supports the following backends:
+
+- [Local](#local)
+
+## Local
+
+Flipt supports loading policy and external data from the local filesystem.
+
+### Policies
+
+For configuring policies, the files must be valid [Rego](https://www.openpolicyagent.org/docs/latest/policy-language/) files.
+
+You can specify the path to the policy file in the `policy` object in the `authorization` configuration object.
+
+```yaml
+authorization:
+  required: true
+  local:
+    policy:
+      path: "policy.rego"
+```
+
+The policy **must** have the following package declaration:
+
+```rego policy.rego
+package flipt.authz.v2
+```
+
+#### Polling Interval
+
+Flipt will poll the policy file for changes at a regular interval. By default, Flipt will poll the policy file every 5 minutes. You can adjust this interval by setting the `poll_interval` field in the `policy` object.
+
+```yaml
+authorization:
+  required: true
+  local:
+    policy:
+      path: "policy.rego"
+      poll_interval: "1m"
+```
+
+### External Data
+
+In addition to policies that can be used to enforce authorization rules, Flipt also provides a way to pass external data to the policy evaluation from the local filesystem. These data objects **must be valid JSON objects**.
+
+This can be done by setting the `data` object in the `authorization` configuration object.
+
+```yaml
+authorization:
+  required: true
+  local:
+    policy:
+      path: "policy.rego"
+    data:
+      path: "data.json"
+```
+
+#### Polling Interval
+
+Like policies, Flipt will poll data files for changes at a regular interval. By default, Flipt will poll the data file every 30 seconds. You can adjust this interval by setting the `poll_interval` field in the `data` object.
+
+```yaml
+authorization:
+  required: true
+  local:
+    data:
+      path: "data.json"
+      poll_interval: "1m"
+```

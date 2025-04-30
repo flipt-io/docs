@@ -1,0 +1,87 @@
+---
+title: Environments
+description: This document describes how environments are configured for Flipt v2.
+---
+
+Flipt v2 supports the ability to configure multiple environments, allowing the user to switch between them in the UI as well as at evaluation time.
+
+Environments are unique to other Flipt resources in that they are not created or managed via the Flipt API or UI. Instead, they are defined in the Flipt server configuration file as they are tightly coupled to the [storage configuration](/v2/configuration/storage).
+
+## Identifiers
+
+Each environment has an identifier that is used to reference the environment in the configuration and in the UI/API and is used to determine the environment that will be used when evaluating flags.
+
+Identifiers can be any string value but must be unique. Flipt creates a `default` identifier and environment for you automatically if you don't specify one.
+
+```yaml
+environments:
+  local: # id
+    name: "local"
+    default: true
+
+  staging: # id
+    name: "staging"
+    storage: "staging"
+```
+
+## Storage
+
+Each environment has a storage configuration field that is used to determine the storage backend that will be used for the environment.
+
+The storage configuration is a reference to the [storage backend](/v2/configuration/storage) that will be used for the environment.
+
+```yaml
+environments:
+  local:
+    storage: "local"
+```
+
+In the above configuration, the `local` environment will use the `local` storage backend as defined in the [storage configuration](/v2/configuration/storage).
+
+<Tip>
+This mapping between environments and storage backends means that multiple environments can share the same storage backend.
+
+For example you could have all environments share the same storage which syncs to a single git repository.
+
+</Tip>
+
+<img
+  className="block dark:hidden"
+  src="/v2/images/configuration/environments/storage-light.svg"
+/>
+<img
+  className="hidden dark:block"
+  src="/v2/images/configuration/environments/storage-dark.svg"
+/>
+
+### Directories
+
+Each environment has an optional `directory` configuration field that is used to determine the directory that will be used to store the environment's resources.
+
+This is only required if multiple environments share the same storage backend, as Flipt needs to know where to ultimately store the state without conflicting with other environments.
+
+```yaml
+environments:
+  foo:
+    directory: "foo"
+    storage: "local"
+  bar:
+    directory: "bar"
+    storage: "local"
+```
+
+In the above configuration, the `foo` and `bar` environments will use the same `local` storage backend but will store their resources in different directories.
+
+## Default
+
+Each environment has a default configuration field that is used to determine if the environment is the default environment.
+
+The default environment is the environment that will be used when no other environment is specified.
+
+```yaml
+environments:
+  local:
+    default: true
+```
+
+This means that if no environment is specified when performing actions such as flag evaluation, creation, or updates, the `local` environment will be used. This will also be the environment that is selected in the UI by default.

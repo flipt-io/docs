@@ -1,0 +1,429 @@
+---
+title: Overview
+description: This document describes how to configure the Flipt v2 server.
+mode: "wide"
+---
+
+Configuration precedence is as follows:
+
+1. [Environment Variables](#environment-variables)
+1. [Configuration File](#configuration-file)
+
+## Configuration File
+
+The default way that Flipt is configured is with the use of a configuration file
+[default.yml](https://github.com/flipt-io/flipt/blob/v2/config/default.yml).
+
+This file is read when Flipt starts up and configures several important
+properties for the server.
+
+<Tip>
+  You can generate a default configuration file by running `flipt config init`.
+  See the [CLI](/cli) documentation for more information.
+</Tip>
+
+The server will check in a few different locations for server configuration (in order):
+
+1. `--config` flag as an override
+2. `{{ USER_CONFIG_DIR }}/flipt/config.yml` (the `USER_CONFIG_DIR` value is based on your architecture and specified in the [Go documentation](https://pkg.go.dev/os#UserConfigDir))
+3. `/etc/flipt/config/default.yml`
+
+<Note>
+  We provide both a [JSON
+  schema](https://raw.githubusercontent.com/flipt-io/flipt/v2/config/flipt.schema.json)
+  and a [Cue
+  schema](https://raw.githubusercontent.com/flipt-io/flipt/v2/config/flipt.schema.cue)
+  that you can use to validate your configuration file and its properties.
+</Note>
+
+You can edit any of these properties to your liking, and on restart, Flipt will
+pick up the new changes.
+
+### Environment Substitution
+
+The configuration file also supports environment variable substitution.
+
+This allows you to use environment variables in your configuration file. For example, you can use the `FLIPT_CUSTOM_AUTH_REQUIRED` environment variable in the configuration file like this:
+
+```yaml
+authentication:
+  required: ${FLIPT_CUSTOM_AUTH_REQUIRED}
+```
+
+This will replace `${FLIPT_CUSTOM_AUTH_REQUIRED}` with the value of the `FLIPT_CUSTOM_AUTH_REQUIRED` environment variable. The format for environment variable substitution is `${ENV_VAR}`.
+
+<Tip>
+  This can be used to provide sensitive information to Flipt without storing it
+  in the configuration file. For example, you can use environment variables to
+  store the database URL, API keys, or other sensitive information without
+  having to conform to the pre-defined Flipt [environment variable
+  format](#environment-variables).
+</Tip>
+
+### Remote Configuration
+
+Flipt supports fetching configuration from a remote source. This is useful for managing configuration across multiple instances of Flipt. The remote configuration source can be a URL to a configuration file stored in one of the following object storage services:
+
+- S3 (e.g.: `s3://bucket-name/path/to/config.yml`)
+- Azure Blob Storage (e.g.: `azblob://container-name/path/to/config.yml`)
+- Google Cloud Storage (e.g.: `googlecloud://bucket-name/path/to/config.yml`)
+
+To load Flipt configuration from a remote source, replace the `config.yml` file with the URL to the remote configuration file in the `--config` flag when starting the server.
+
+```console
+flipt server --config s3://bucket-name/path/to/config.yml
+```
+
+For authenticating with the object storage service, you can use the following environment variables depending on the service:
+
+- `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
+- `AZURE_STORAGE_ACCOUNT` and `AZURE_STORAGE_KEY` or `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_CLIENT_SECRET`
+- `GOOGLE_APPLICATION_CREDENTIALS`
+
+## Environment Variables
+
+All options in the configuration file can be overridden using environment
+variables using the syntax:
+
+```yaml
+FLIPT_<SectionName>_<KeyName>
+```
+
+Environment variables **MUST** have `FLIPT_` prefix and be in `UPPER_SNAKE_CASE` format.
+
+<Note>
+  Using environment variables to override defaults is especially helpful when
+  running with Docker.
+</Note>
+
+Keys should be uppercase and `.` should be replaced by `_`. For example,
+given these configuration settings:
+
+```yaml
+server:
+  grpc_port: 9000
+```
+
+You can override them using:
+
+```console
+export FLIPT_SERVER_GRPC_PORT=9001
+```
+
+### Multiple Values
+
+Some configuration options can have a list of values. For example, the `cors.allowed_origins` option can have multiple origins.
+
+In this case, you can use a space separated list of values for the environment variable override:
+
+```console
+export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
+```
+
+## Configuration Parameters
+
+| Property                      | Description                                                                    | Default             | Since  |
+| ----------------------------- | ------------------------------------------------------------------------------ | ------------------- | ------ |
+| cors.enabled                  | Enable CORS support                                                            | false               | v2.0.0 |
+| cors.allowed_origins          | Sets Access-Control-Allow-Origin header on server                              | "\*" (all domains)  | v2.0.0 |
+| meta.check_for_updates        | Enable check for newer versions of Flipt on startup                            | true                | v2.0.0 |
+| meta.telemetry_enabled        | Enable anonymous telemetry data (see [Telemetry](/v2/configuration/telemetry)) | true                | v2.0.0 |
+| meta.state_directory          | Directory on the host to store local state                                     | $HOME/.config/flipt | v2.0.0 |
+| diagnostics.profiling.enabled | Enable profiling endpoints for pprof                                           | true                | v2.0.0 |
+
+### User Interface
+
+| Property         | Description                         | Default | Since  |
+| ---------------- | ----------------------------------- | ------- | ------ |
+| ui.default_theme | Sets the default UI theme for users | system  | v2.0.0 |
+
+### Server
+
+| Property                       | Description                                                                                                 | Default   | Since  |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------- | --------- | ------ |
+| server.protocol                | http or https                                                                                               | http      | v2.0.0 |
+| server.host                    | The host address on which to serve the Flipt application                                                    | 0.0.0.0   | v2.0.0 |
+| server.http_port               | The HTTP port on which to serve the Flipt REST API and UI                                                   | 8080      | v2.0.0 |
+| server.https_port              | The HTTPS port on which to serve the Flipt REST API and UI                                                  | 443       | v2.0.0 |
+| server.grpc_port               | The port on which to serve the Flipt GRPC server                                                            | 9000      | v2.0.0 |
+| server.grpc_conn_max_idle_time | Maximum amount of time a GRPC connection can be idle                                                        | unlimited | v2.0.0 |
+| server.grpc_conn_max_age       | Maximum amount of time a GRPC connection can live                                                           | unlimited | v2.0.0 |
+| server.grpc_conn_max_age_grace | Maximum amount of time a GRPC connection can live for outstanding RPCs after exceeding `grpc_conn_max_age ` | unlimited | v2.0.0 |
+| server.cert_file               | Path to the certificate file (if protocol is set to https)                                                  |           | v2.0.0 |
+| server.cert_key                | Path to the certificate key file (if protocol is set to https)                                              |           | v2.0.0 |
+
+### Environments
+
+| Property                    | Description                                                     | Default | Since  |
+| --------------------------- | --------------------------------------------------------------- | ------- | ------ |
+| environments.[id].name      | The canonical name of the environment                           | default | v2.0.0 |
+| environments.[id].default   | Whether the environment is the default environment              | false   | v2.0.0 |
+| environments.[id].storage   | The id of the storage to use for the environment                |         | v2.0.0 |
+| environments.[id].directory | The directory to use for the environment with the given storage |         | v2.0.0 |
+
+### Storage
+
+| Property                       | Description                                                         | Default             | Since  |
+| ------------------------------ | ------------------------------------------------------------------- | ------------------- | ------ |
+| storage.[id].name              | The canonical name of the storage instance                          | default             | v2.0.0 |
+| storage.[id].backend.type      | The type of backend to use (options: memory, local)                 | memory              | v2.0.0 |
+| storage.[id].backend.path      | The path to the local storage directory for git backend             | temporary directory | v2.0.0 |
+| storage.[id].remote            | The remote URL to sync storage to/from                              |                     | v2.0.0 |
+| storage.[id].branch            | The branch to use for git backend                                   | main                | v2.0.0 |
+| storage.[id].poll_interval     | The interval to poll the git repository and ref for changes         | 30s                 | v2.0.0 |
+| storage.[id].ca_cert_bytes     | The CA certificate bytes for the remote URL                         |                     | v2.0.0 |
+| storage.[id].ca_cert_path      | The CA certificate path for the remote URL                          |                     | v2.0.0 |
+| storage.[id].insecure_skip_tls | Skip verifying the server's certificate chain (avoid in production) | false               | v2.0.0 |
+| storage.[id].credentials       | The id of the credentials to use for the remote URL                 |                     | v2.0.0 |
+| storage.[id].signature.name    | The name of the author to use from the commit signature             |                     | v2.0.0 |
+| storage.[id].signature.email   | The email of the author to use from the commit signature            |                     | v2.0.0 |
+
+### Credentials
+
+| Property                                      | Description                                                        | Default | Since  |
+| --------------------------------------------- | ------------------------------------------------------------------ | ------- | ------ |
+| credentials.[id].type                         | The type of credentials to use (options: basic, ssh, access_token) | basic   | v2.0.0 |
+| credentials.[id].basic.username               | The username to use for basic authentication                       |         | v2.0.0 |
+| credentials.[id].basic.password               | The password to use for basic authentication                       |         | v2.0.0 |
+| credentials.[id].ssh.user                     | The username to use for SSH authentication                         | git     | v2.0.0 |
+| credentials.[id].ssh.password                 | Password used to generate the SSH key pair                         |         | v2.0.0 |
+| credentials.[id].ssh.private_key_path         | Path to private key on the filesystem                              |         | v2.0.0 |
+| credentials.[id].ssh.private_key_bytes        | (Alternative) Raw private key bytes                                |         | v2.0.0 |
+| credentials.[id].ssh.insecure_ignore_host_key | Skip verifying the known hosts key (avoid in production)           | false   | v2.0.0 |
+| credentials.[id].access_token                 | The token to use for authentication                                |         | v2.0.0 |
+
+### Authentication
+
+<Note>
+  Authentication is configured slightly differently in v2 compared to v1. See
+  the [Authentication](/v2/configuration/authentication) documentation for more
+  details.
+</Note>
+
+| Property                          | Description                                             | Default | Since  |
+| --------------------------------- | ------------------------------------------------------- | ------- | ------ |
+| authentication.required           | Enable or disable authentication validation on requests | false   | v2.0.0 |
+| authentication.exclude.evaluation | Exclude authentication for /evaluation/v1 API prefix    | false   | v2.0.0 |
+| authentication.exclude.ofrep      | Exclude authentication for /ofrep API prefix            | false   | v2.0.0 |
+
+#### Authentication Session
+
+| Property                              | Description                                                   | Default | Since  |
+| ------------------------------------- | ------------------------------------------------------------- | ------- | ------ |
+| authentication.session.domain         | Public domain on which Flipt instance is hosted               |         | v2.0.0 |
+| authentication.session.secure         | Configures the `Secure` property on created session cookies   | false   | v2.0.0 |
+| authentication.session.token_lifetime | Configures the lifetime of the session token (login duration) | 24h     | v2.0.0 |
+| authentication.session.state_lifetime | Configures the lifetime of state parameters during OAuth flow | 10m     | v2.0.0 |
+| authentication.session.csrf.key       | Secret credential used to sign CSRF prevention tokens         |         | v2.0.0 |
+| authentication.session.token_lifetime | Configures the lifetime of the session token (login duration) | 24h     | v2.0.0 |
+| authentication.session.state_lifetime | Configures the lifetime of state parameters during OAuth flow | 10m     | v2.0.0 |
+
+#### Authentication Session Storage
+
+| Property                                            | Description                                                    | Default | Since  |
+| --------------------------------------------------- | -------------------------------------------------------------- | ------- | ------ |
+| authentication.session.storage.type                 | The type of storage to use for session storage (memory, redis) | memory  | v2.0.0 |
+| authentication.session.storage.cleanup.grace_period | The grace period for the cleanup of expired sessions           | 30m     | v2.0.0 |
+
+#### Authentication Session Storage: Redis
+
+| Property                                                | Description                                                         | Default   | Since  |
+| ------------------------------------------------------- | ------------------------------------------------------------------- | --------- | ------ |
+| authentication.session.storage.redis.host               | Host to access the Redis database                                   | localhost | v2.0.0 |
+| authentication.session.storage.redis.port               | Port to access the Redis database                                   | 6379      | v2.0.0 |
+| authentication.session.storage.redis.db                 | Redis database to use                                               | 0         | v2.0.0 |
+| authentication.session.storage.redis.username           | Username to access the Redis database                               |           | v2.0.0 |
+| authentication.session.storage.redis.password           | Password to access the Redis database                               |           | v2.0.0 |
+| authentication.session.storage.redis.require_tls        | Require TLS to access the Redis database                            | false     | v2.0.0 |
+| authentication.session.storage.redis.pool_size          | Max number of socket connections per CPU                            | 10        | v2.0.0 |
+| authentication.session.storage.redis.min_idle_conn      | Minimum number of idle connections in the pool                      | 0         | v2.0.0 |
+| authentication.session.storage.redis.conn_max_idle_time | Maximum amount of time a connection can be idle                     | 30m       | v2.0.0 |
+| authentication.session.storage.redis.net_timeout        | Network timeout for Redis connections                               | 0         | v2.0.0 |
+| authentication.session.storage.redis.ca_cert_path       | Path to custom certificate authority (CA) certificate               |           | v2.0.0 |
+| authentication.session.storage.redis.ca_cert_bytes      | (Alternative) Raw certificate authority (CA) certificate bytes      |           | v2.0.0 |
+| authentication.session.storage.redis.insecure_skip_tls  | Skip verifying the server's certificate chain (avoid in production) | false     | v2.0.0 |
+
+#### Authentication Methods: Static Token
+
+| Property                                               | Description                                     | Default | Since  |
+| ------------------------------------------------------ | ----------------------------------------------- | ------- | ------ |
+| authentication.methods.token.enabled                   | Enable static token authentication              | false   | v2.0.0 |
+| authentication.methods.token.tokens                    | List of static tokens to use for authentication |         | v2.0.0 |
+| authentication.methods.token.tokens.[token].credential | The credential to use for the token             |         | v2.0.0 |
+| authentication.methods.token.tokens.[token].metadata   | The metadata to use for the token               |         | v2.0.0 |
+
+#### Authentication Methods: OIDC
+
+| Property                                                          | Description                                                      | Default | Since  |
+| ----------------------------------------------------------------- | ---------------------------------------------------------------- | ------- | ------ |
+| authentication.methods.oidc.enabled                               | Enable OIDC authentication                                       | false   | v2.0.0 |
+| authentication.methods.oidc.providers.[provider].issuer_url       | Provider specific OIDC issuer URL (see your providers docs)      |         | v2.0.0 |
+| authentication.methods.oidc.providers.[provider].client_id        | Provider specific OIDC client ID (see your providers docs)       |         | v2.0.0 |
+| authentication.methods.oidc.providers.[provider].client_secret    | Provider specific OIDC client secret (see your providers docs)   |         | v2.0.0 |
+| authentication.methods.oidc.providers.[provider].redirect_address | Public URL on which this Flipt instance is reachable             |         | v2.0.0 |
+| authentication.methods.oidc.providers.[provider].scopes           | Scopes to request from the provider                              |         | v2.0.0 |
+| authentication.methods.oidc.providers.[provider].use_pkce         | Option for enabling PKCE for OIDC authentication flow            | false   | v2.0.0 |
+| authentication.methods.oidc.email_matches                         | List of email addresses (regex) of users allowed to authenticate |         | v2.0.0 |
+
+#### Authentication Methods: GitHub
+
+| Property                                            | Description                                                        | Default                | Since  |
+| --------------------------------------------------- | ------------------------------------------------------------------ | ---------------------- | ------ |
+| authentication.methods.github.enabled               | Enable GitHub authentication                                       | false                  | v2.0.0 |
+| authentication.methods.github.client_id             | GitHub client ID                                                   |                        | v2.0.0 |
+| authentication.methods.github.client_secret         | GitHub client secret                                               |                        | v2.0.0 |
+| authentication.methods.github.redirect_address      | Public URL on which this Flipt instance is reachable               |                        | v2.0.0 |
+| authentication.methods.github.scopes                | Scopes to request from GitHub                                      |                        | v2.0.0 |
+| authentication.methods.github.allowed_organizations | List of GitHub organizations allowed to authenticate               |                        | v2.0.0 |
+| authentication.methods.github.allowed_teams         | Map of GitHub organizations to teams that users must be members of |                        | v2.0.0 |
+| authentication.methods.github.server_url            | GitHub Server URL (to support GHES)                                | https://github.com     | v2.0.0 |
+| authentication.methods.github.api_url               | GitHub API URL (to support GHES)                                   | https://api.github.com | v2.0.0 |
+
+#### Authentication Methods: Kubernetes
+
+| Property                                                     | Description                                                | Default                                              | Since  |
+| ------------------------------------------------------------ | ---------------------------------------------------------- | ---------------------------------------------------- | ------ |
+| authentication.methods.kubernetes.enabled                    | Enable Kubernetes service account token authentication     | false                                                | v2.0.0 |
+| authentication.methods.kubernetes.discovery_url              | Kubernetes API server URL for OIDC configuration discovery | https://kubernetes.default.svc.cluster.local         | v2.0.0 |
+| authentication.methods.kubernetes.ca_path                    | Kubernetes API CA certification path                       | /var/run/secrets/kubernetes.io/serviceaccount/ca.crt | v2.0.0 |
+| authentication.methods.kubernetes.service_account_token_path | Path to Flipt service account token                        | /var/run/secrets/kubernetes.io/serviceaccount/token  | v2.0.0 |
+
+#### Authentication Methods: JWT
+
+| Property                                             | Description                                         | Default | Since  |
+| ---------------------------------------------------- | --------------------------------------------------- | ------- | ------ |
+| authentication.methods.jwt.enabled                   | Enable JWT authentication                           | false   | v2.0.0 |
+| authentication.methods.jwt.jwks_url                  | URL to retrieve JWKS for JWT validation             |         | v2.0.0 |
+| authentication.methods.jwt.public_key_file           | Path to public key file for JWT validation          |         | v2.0.0 |
+| authentication.methods.jwt.validate_claims.issuer    | The issuer claim to validate on JWT tokens          |         | v2.0.0 |
+| authentication.methods.jwt.validate_claims.audiences | The audience claim (list) to validate on JWT tokens |         | v2.0.0 |
+| authentication.methods.jwt.validate_claims.subject   | The subject claim to validate on JWT tokens         |         | v2.0.0 |
+
+### Authorization
+
+| Property               | Description                                            | Default | Since  |
+| ---------------------- | ------------------------------------------------------ | ------- | ------ |
+| authorization.required | Enable or disable authorization validation on requests | false   | v2.0.0 |
+
+#### Authorization Backend: Local
+
+| Property                                 | Description                                  | Default | Since  |
+| ---------------------------------------- | -------------------------------------------- | ------- | ------ |
+| authorization.local.policy.path          | Path to the local policy file                |         | v2.0.0 |
+| authorization.local.policy.poll_interval | Interval to poll the policy file for changes | 5m      | v2.0.0 |
+| authorization.local.data.path            | Path to the local data file                  |         | v2.0.0 |
+| authorization.local.data.poll_interval   | Interval to poll the data file for changes   | 30s     | v2.0.0 |
+
+### Analytics
+
+| Property                      | Description                                     | Default | Since  |
+| ----------------------------- | ----------------------------------------------- | ------- | ------ |
+| analytics.buffer.flush_period | Duration to wait before sending events to sinks | 10s     | v2.0.0 |
+
+#### Analytics: Clickhouse
+
+| Property                             | Description                         | Default | Since  |
+| ------------------------------------ | ----------------------------------- | ------- | ------ |
+| analytics.storage.clickhouse.enabled | Enable Clickhouse support           | false   | v2.0.0 |
+| analytics.storage.clickhouse.url     | URL to connect to clickhouse server |         | v2.0.0 |
+
+#### Analytics: Prometheus
+
+| Property                             | Description                                                             | Default | Since  |
+| ------------------------------------ | ----------------------------------------------------------------------- | ------- | ------ |
+| analytics.storage.prometheus.enabled | Enable Prometheus support                                               | false   | v2.0.0 |
+| analytics.storage.prometheus.url     | URL to connect to prometheus server                                     |         | v2.0.0 |
+| analytics.storage.prometheus.headers | Additional headers to send with Prometheus requests (map[string]string) |         | v2.0.0 |
+
+### Logging
+
+| Property         | Description                                                                      | Default | Since  |
+| ---------------- | -------------------------------------------------------------------------------- | ------- | ------ |
+| log.level        | Level at which messages are logged (debug, info, warn, error, fatal, panic)      | info    | v2.0.0 |
+| log.grpc_level   | Level at which gRPC messages are logged (debug, info, warn, error, fatal, panic) | error   | v2.0.0 |
+| log.file         | File to log to instead of STDOUT                                                 |         | v2.0.0 |
+| log.encoding     | Encoding to use for logging (json, console)                                      | console | v2.0.0 |
+| log.keys.time    | Structured logging key used when outputting log timestamp                        | T       | v2.0.0 |
+| log.keys.level   | Structured logging key used when outputting log level                            | L       | v2.0.0 |
+| log.keys.message | Structured logging key used when outputting log message                          | M       | v2.0.0 |
+
+#### Logging: OTLP
+
+Flipt v2 supports the new [OpenTelemetry OTLP logging specification](https://opentelemetry.io/docs/specs/otel/logs/). To enable OTLP logging, set the `OTLP_LOGS_EXPORTER` environment variable
+
+```console
+export OTLP_LOGS_EXPORTER=otlp
+```
+
+<Note>
+  OpenTelemetry logging is in addition to the existing logging configuration. It
+  does not replace the ability to log to a file or stdout/stderr.
+</Note>
+
+OpenTelemetry OTLP logging is configured via the default OpenTelemetry Environment Variables. See the [OpenTelemetry Environment Variables](https://opentelemetry.io/docs/reference/specification/sdk-environment-variables/) documentation for more details.
+
+For example, to configure the OTLP logging endpoint, you can set the `OTEL_EXPORTER_OTLP_LOGS_ENDPOINT` environment variable.
+
+```console
+export OTEL_EXPORTER_OTLP_LOGS_ENDPOINT=http://localhost:4317
+```
+
+### Metrics
+
+| Property         | Description                            | Default    | Since  |
+| ---------------- | -------------------------------------- | ---------- | ------ |
+| metrics.enabled  | Enable metrics support                 | true       | v2.0.0 |
+| metrics.exporter | The exporter to use (prometheus, otlp) | prometheus | v2.0.0 |
+
+#### Metrics: OTLP
+
+OpenTelemetry OTLP metrics are configured via the default OpenTelemetry Environment Variables. See the [OpenTelemetry Environment Variables](https://opentelemetry.io/docs/reference/specification/sdk-environment-variables/) documentation for more details.
+
+For example, to configure the OTLP metrics endpoint, you can set the `OTEL_EXPORTER_OTLP_METRICS_ENDPOINT` environment variable.
+
+```console
+export OTEL_EXPORTER_OTLP_METRICS_ENDPOINT=http://localhost:4317
+```
+
+To configure the OTLP headers, you can set the `OTEL_EXPORTER_OTLP_METRICS_HEADERS` environment variable.
+
+```console
+export OTEL_EXPORTER_OTLP_METRICS_HEADERS="Authorization=Bearer <token>"
+```
+
+### Tracing
+
+| Property        | Description            | Default | Since  |
+| --------------- | ---------------------- | ------- | ------ |
+| tracing.enabled | Enable tracing support | false   | v2.0.0 |
+
+<Note>The only supported tracing backend is OTLP.</Note>
+
+#### Tracing: OTLP
+
+OpenTelemetry OTLP tracing is configured via the default OpenTelemetry Environment Variables. See the [OpenTelemetry Environment Variables](https://opentelemetry.io/docs/reference/specification/sdk-environment-variables/) documentation for more details.
+
+For example, to configure the OTLP tracing endpoint, you can set the `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` environment variable.
+
+```console
+export OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317
+```
+
+To configure the OTLP headers, you can set the `OTEL_EXPORTER_OTLP_TRACES_HEADERS` environment variable.
+
+```console
+export OTEL_EXPORTER_OTLP_TRACES_HEADERS="Authorization=Bearer <token>"
+```
+
+## Deprecations
+
+From time to time configuration options will need to be deprecated and
+eventually removed. Deprecated configuration options will be removed after \~6
+months from the time they were deprecated.
+
+All deprecated configuration options will be removed from the documentation,
+however, they will still work as expected until they're removed. A warning will
+be logged in the Flipt logs when a deprecated configuration option is used.
+
+All deprecated options are listed in the [DEPRECATIONS](https://github.com/flipt-io/flipt/blob/v2/DEPRECATIONS.md) file
+in the Flipt repository as well as the [CHANGELOG](https://github.com/flipt-io/flipt/blob/v2/CHANGELOG.md).

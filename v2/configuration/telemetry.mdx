@@ -1,9 +1,7 @@
 ---
 title: Telemetry
-description: This document describes how to configure Flipt's telemetry outputs as well as what data is captured.
+description: This document describes how to configure telemetry outputs as well as what data is captured for Flipt v2.
 ---
-
-## Telemetry
 
 Flipt developers rely on anonymous usage data to help prioritize new features and improve the product. The information collected is completely anonymous,
 never shared with external entities, and you can opt-out at any time.
@@ -14,10 +12,9 @@ Telemetry is only collected when Flipt is running, **once at startup** and then 
 
 ### What Kind of Data is Collected?
 
-- Flipt version (i.e.: v1.21.0)
-- Database backend (i.e.: Postgres)
-- Cache backend (i.e.: Redis)
-- Authentication methods (i.e.: OIDC)
+- Flipt version (i.e.: v2.0.0)
+- Operating system (i.e.: Linux)
+- Architecture (i.e.: amd64)
 
 We use [Jitsu](https://jitsu.com/) to collect the data. Only the Flipt team has access to the raw data.
 
@@ -25,20 +22,13 @@ Here is an example of the telemetry data sent to Jitsu:
 
 ```json
 {
-  "version": "1.1",
+  "version": "2.0",
   "uuid": "1545d8a8-7a66-4d8d-a158-0a1c576c68a6",
   "lastTimestamp": "2023-04-25T01:01:51Z",
   "flipt": {
-    "version": "v1.21.1",
+    "version": "v2.0.0",
     "os": "linux",
-    "arch": "amd64",
-    "storage": {
-      "database": "postgres",
-      "cache": "redis"
-    },
-    "authentication": {
-      "methods": "oidc"
-    }
+    "arch": "amd64"
   }
 }
 ```
