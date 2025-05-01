@@ -74,12 +74,12 @@ Flipt v2 supports syncing flag state to and from a remote git repository.
 ```yaml
 storage:
   staging:
+    remote: "https://github.com/flipt-io/example.git"
+    branch: "main"
+    poll_interval: "30s"
+    credentials: "github"
     backend:
       type: memory
-      remote: "https://github.com/flipt-io/example.git"
-      branch: "main"
-      poll_interval: "30s"
-      credentials: "github"
 ```
 
 This configuration will create a git storage backend with the identifier `staging` in memory and will sync flag state to and from the remote repository.
