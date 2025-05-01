@@ -501,15 +501,5 @@
     "koala": {
       "publicApiKey": "pk_ec5df6fa506399d9065131b64546a1ec7dfc"
     }
-  },
-  "redirects": [
-    {
-      "source": "/self-hosted/:slug*",
-      "destination": "/installation/:slug*"
-    },
-    {
-      "source": "/integration/:slug*",
-      "destination": "/integration/server/:slug*"
-    }
-  ]
+  }
 }
