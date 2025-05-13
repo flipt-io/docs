@@ -43,7 +43,7 @@ We highly **recommend** using a separate database for analytics produced by Flip
 To create a database for Flipt analytics, you can use the following SQL:
 
 ```sql
-CREATE DATABASE IF NOT EXISTS flipt_analytics;
+CREATE DATABASE IF NOT EXISTS flipt_analytics_v2;
 ```
 
 See the [ClickHouse documentation](https://clickhouse.com/docs) for more information on how to get started with ClickHouse.
@@ -57,7 +57,7 @@ To configure Flipt to use ClickHouse for analytics, you will need to add the fol
 
     ```bash
     FLIPT_ANALYTICS_STORAGE_CLICKHOUSE_ENABLED=true
-    FLIPT_ANALYTICS_STORAGE_CLICKHOUSE_URL=clickhouse://clickhouse:9000/flipt_analytics
+    FLIPT_ANALYTICS_STORAGE_CLICKHOUSE_URL=clickhouse://clickhouse:9000/flipt_analytics_v2
     ```
 
   </Tab>
@@ -68,7 +68,7 @@ To configure Flipt to use ClickHouse for analytics, you will need to add the fol
       storage:
         clickhouse:
           enabled: true
-          url: clickhouse://clickhouse:9000/flipt_analytics
+          url: clickhouse://clickhouse:9000/flipt_analytics_v2
     ```
 
   </Tab>
