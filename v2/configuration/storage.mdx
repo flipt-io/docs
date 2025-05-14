@@ -137,8 +137,9 @@ Basic authentication is a username and password pair.
 credentials:
   github:
     type: basic
-    username: < username >
-    password: < github-personal-access-token >
+    basic:
+      username: < username >
+      password: < github-personal-access-token >
 ```
 
 #### SSH
@@ -154,9 +155,10 @@ This can be done via the `storage.git.authentication.ssh` configuration section:
 credentials:
   github:
     type: ssh
-    user: git
-    private_key_path: ~/.ssh/id_rsa
-    private_key_bytes: <raw-key-bytes> # alternatively pass the raw bytes inline
+    ssh:
+      user: git
+      private_key_path: ~/.ssh/id_rsa
+      private_key_bytes: <raw-key-bytes> # alternatively pass the raw bytes inline
 ```
 
 <Warning>
