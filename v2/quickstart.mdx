@@ -40,7 +40,7 @@ Flipt v2 introduces the concept of environments in addition to namespaces.
 
 By default, Flipt v2 will create a single environment called `default` along with the `default` namespace.
 
-![Default Environments](/v2/images/quickstart/default.png)
+![Environments](/v2/images/quickstart/environments.png)
 
 Environments are managed via configuration files. See the [Environments](/v2/concepts#environments) documentation for more.
 
@@ -58,7 +58,7 @@ To create a flag:
 1. Open the UI at http://localhost:8080.
 2. Click `New Flag`.
 3. Select the `Variant` type.
-4. Populate the details of the flag as shown.
+4. Populate the details of the flag as you wish.
 5. Click `Enabled` so the flag will be enabled once created.
 6. Click `Create`.
 
@@ -72,10 +72,9 @@ you define.
 To create a variant:
 
 1. On the page for the flag you just created, click `Create Variant`.
-2. Populate the details of the variant as shown.
+2. Populate the details of the variant as you wish.
 3. Click `Add`.
-4. Create one more variant populating the information as you wish.
-5. Click `Update` to save the flag and variants.
+4. Click `Update` to save the flag and variants.
 
 ![Create Variant](/v2/images/quickstart/create_variant.png)
 
@@ -95,7 +94,7 @@ To create a segment:
 
 1. From the navigation click `Segments`.
 2. Click `New Segment`.
-3. Populate the details of the segment as shown.
+3. Populate the details of the segment as you wish.
 4. Click `Create`.
 
 ![Create Segment](/v2/images/quickstart/create_segment.png)
@@ -112,7 +111,7 @@ Constraints are used to target a specific segment.
 To create a constraint:
 
 1. On the page for the segment you just created, click `Create Constraint`.
-2. Populate the details of the constraint as shown.
+2. Populate the details of the constraint as you wish.
 3. Click `Add`.
 4. Click `Update` to save the segment and constraint.
 
@@ -136,8 +135,7 @@ To create a rule:
 3. Click `New Rule`.
 4. Next to `Segment` choose or search for the segment you created earlier.
 5. Next to `Type` choose `Multi-Variate`.
-6. You should see the two variants that you created earlier, with a percentage
-   of `50%` each.
+6. You should see the variants you created earlier, with a percentage assigned to each.
 7. Click `Add`.
 8. Click `Update` to save the rule.
 
@@ -153,12 +151,12 @@ is that any entity will get that specific variant.
   have a single distribution, a variant with `100%` chance of being returned.
 </Note>
 
-## Evaluation Console
+## Evaluation Playground
 
 After creating the above flag, segment and targeting rule, you're now ready to
 test how this would work in your application.
 
-The Flipt UI contains an Evaluation Console to allow you to experiment
+The Flipt UI contains an Evaluation Playground to allow you to experiment
 with different requests to see how they would be evaluated.
 
 The main ideas behind how evaluation works are described in more detail in the
@@ -166,7 +164,7 @@ The main ideas behind how evaluation works are described in more detail in the
 
 To test evaluation:
 
-1. Navigate to the `Console` page from the main navigation.
+1. Navigate to the `Playground` page from the main navigation.
 2. Select or search for the flag you created earlier.
 3. Notice that the `Entity ID` field is pre-populated with a random UUID. This represents
    the ID that you would use to uniquely identify entities (ex: users) that you
@@ -177,7 +175,7 @@ To test evaluation:
    segment that you created earlier, and return one of the variants defined.
 6. Experiment with different values for the `Request Context` and `Entity ID` fields.
 
-![Evaluation Console](/v2/images/quickstart/evaluation_console.png)
+![Evaluation Playground](/v2/images/quickstart/evaluation_playground.png)
 That's it! You're now ready to integrate Flipt into your applications and start
 defining your flags and segments that will enable you to seamlessly rollout
 new features to your users while reducing risk.

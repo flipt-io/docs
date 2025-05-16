@@ -66,9 +66,8 @@ There are two types of flags:
 
 ### Variant Flags
 
-Variants are options for flags. For example, if you have a flag `Colorscheme`
-that determines which main colors your users see when they login to your
-application, then possible variants could include `dark`, `light` or `auto`.
+Variants are options for flags. For example, if you have a flag `Proceed to Checkout Color`
+that determines which color your users see when they proceed to checkout, then possible variants could include `blue`, `red` or `green`.
 
 ![Variant Flags](/v2/images/concepts/flags_variant.png)
 
@@ -116,7 +115,7 @@ Segments allow you to split your user base or audience up into predefined
 slices. This is a powerful feature that enables targeting groups to determine if
 a flag or variant applies to them.
 
-An example segment could be `new-users`.
+An example segment could be `beta-users`.
 
 ![Segments](/v2/images/concepts/segments.png)
 
@@ -135,7 +134,7 @@ When configuring a segment you can choose a `Match Type` of either:
 
 Constraints allow you to determine which segment a given entity is a part of.
 
-For example, for a user to fall into the above `new-users` segment, you may want
+For example, for a user to fall into the above `beta-users` segment, you may want
 to check their `finished_onboarding` property.
 
 ![Constraints](/v2/images/concepts/constraints.png)
@@ -152,8 +151,6 @@ Currently 5 constraint types are available:
 - **DateTime** which allows you to check a date or datetime property of an entity such as `2020-01-01` or `2020-01-01T00:00:00Z` ([RFC3339](https://datatracker.ietf.org/doc/html/rfc3339))
 - **Entity** which allows you to check the `entityId` that was sent in the body of the `Variant` or `Boolean` request
 
-![Constraint Types](/v2/images/concepts/constraints_types.png)
-
 <Note>
   The constraint value is represented as a string in transit and in storage,
   however it's coerced into the appropriate type for evaluation.
@@ -167,8 +164,8 @@ which segments are targeted by which variants.
 Rules can be as simple as `IF IN segment THEN RETURN variant_a` or they can be
 richer by using distribution logic to roll out features on a percentage basis.
 
-Continuing our previous example, we may want to return the flag variant `dark`
-for all entities in the `new-users` segment. This would be configured like so:
+Continuing our previous example, we may want to return the flag variant `green`
+for all entities in the `beta-users` segment. This would be configured like so:
 
 ![Rules](/v2/images/concepts/rules.png)
 
@@ -180,15 +177,13 @@ evaluated.
 
 If no rules match for a given flag, the default rule value is returned. This value is optional and can be set to any variant that exists for the flag.
 
-![Default Rule](/v2/images/concepts/rules_default.png)
-
 ### Distributions
 
 Distributions allow you to return different variants of your flag to different
 percentages of your user base based on your rules.
 
-Let's say that instead of always showing the `dark` variant to your `new-users`
-segment, you want to show `dark` to **10%** of `new-users`, `light` to **30%**, and `auto`
+Let's say that instead of always showing the `green` variant to your `beta-users`
+segment, you want to show `green` to **10%** of `beta-users`, `blue` to **30%**, and `red`
 to the remaining **60%**. You would accomplish this using rules with distributions:
 
 ![Distributions](/v2/images/concepts/rules_distributions.png)
@@ -220,9 +215,9 @@ Evaluation is the process of sending requests to the Flipt server to process and
 determine if that request matches any of your segments and if so which variant or boolean value
 to return depending on flag type.
 
-In the above example involving colors, evaluation is where you send information
-about your current user to determine if they're a `new-user`, and which color
-(`dark`, `auto`, or `light`) that they should see for their main color scheme.
+In the above example involving checkout colors, evaluation is where you send information
+about your current user to determine if they're a `beta-user`, and which color
+(`green`, `blue`, or `red`) that they should see for their checkout color.
 
 ![Evaluation](/v2/images/concepts/evaluation.png)
 

@@ -54,6 +54,8 @@ authentication:
 
 This section contains common properties for establishing browser sessions via a "session compatible" authentication method. Session-compatible methods enable support for login in the UI. The methods below state whether or not they're session compatible (e.g. [OIDC](#method-oidc) is session compatible).
 
+![Session Login](/v2/images/configuration/authentication/session.png)
+
 In order to establish a browser session over HTTP (via a `Cookie` header) some configuration is required.
 
 ```yaml config.yaml
@@ -343,7 +345,7 @@ authentication:
         - user:email
 ```
 
--- TODO: add screenshot
+![GitHub Login](/v2/images/configuration/authentication/github-login.png)
 
 #### Allowed Organizations
 
