@@ -391,6 +391,7 @@
                       "v2/configuration/storage",
                       "v2/configuration/authentication",
                       "v2/configuration/authorization",
+                      "v2/configuration/analytics",
                       "v2/configuration/observability",
                       "v2/configuration/telemetry"
                     ]
