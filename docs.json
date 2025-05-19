@@ -395,6 +395,26 @@
                       "v2/configuration/observability",
                       "v2/configuration/telemetry"
                     ]
+                  },
+                  {
+                    "group": "Guides",
+                    "pages": [
+                      {
+                        "group": "Operations Guides",
+                        "pages": [
+                          {
+                            "group": "Authentication",
+                            "pages": [
+                              "v2/guides/operations/authentication/login-with-github"
+                            ]
+                          },
+                          {
+                            "group": "Storage",
+                            "pages": ["v2/guides/operations/storage/git-sync"]
+                          }
+                        ]
+                      }
+                    ]
                   }
                 ]
               },
