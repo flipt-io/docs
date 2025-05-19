@@ -1,0 +1,131 @@
+---
+title: Git Sync with GitHub
+description: Configure Flipt to sync your data to a GitHub repository
+---
+
+This guide will show you how to configure Flipt to sync your data to a Git repository.
+
+## Prerequisites
+
+- [Flipt v2](/v2/quickstart)
+- A GitHub Account and a repository to sync to
+
+## Using GitHub for Git Sync
+
+This section will walk you through configuring Flipt to sync your flag state to a GitHub repository using a Personal Access Token (PAT) for authentication.
+
+### 1. Create a GitHub Personal Access Token (PAT)
+
+1. Go to [GitHub Settings > Developer settings > Personal access tokens](https://github.com/settings/tokens).
+2. Click **"Generate new token"** (classic or fine-grained).
+3. Give your token a name and select the following scopes:
+   - `repo` read and write access (for private repositories)
+   - `contents` read and write access
+4. Click **"Generate token"** and copy the token. **You will not be able to see it again!**
+
+### 2. Configure Flipt Storage with GitHub Remote
+
+Edit your Flipt configuration file to add a storage backend that syncs with your GitHub repository:
+
+```yaml
+storage:
+  github:
+    remote: "https://github.com/<your-username>/<your-repo>.git"
+    branch: "main"
+    poll_interval: "30s"
+    credentials: "github"
+    backend:
+      type: local
+      path: "/path/to/local/clone"
+```
+
+- Replace `<your-username>` and `<your-repo>` with your GitHub username and repository name.
+- Adjust `path` to where you want Flipt to store the local clone of your repo.
+
+<Note>
+  Setting the `backend` to `local` is optional as you can store the state in
+  memory which is the default behavior.
+</Note>
+
+### 3. Add GitHub Credentials
+
+Add your GitHub PAT as a basic credential in the same configuration file:
+
+```yaml
+credentials:
+  github:
+    type: basic
+    basic:
+      username: <your-github-username>
+      password: <your-personal-access-token>
+```
+
+- Replace `<your-github-username>` with your GitHub username.
+- Replace `<your-personal-access-token>` with the token you generated above.
+
+<Tip>
+  Flipt can use [environment
+  substitution](/v2/configuration/overview#environment-substitution) for
+  credentials.
+</Tip>
+
+```yaml
+credentials:
+  github:
+    type: basic
+    basic:
+      username: ${GITHUB_USERNAME}
+      password: ${GITHUB_TOKEN}
+```
+
+### 4. Configure Environments
+
+If you want to use multiple environments (e.g., staging, production), reference your storage backend in the environments section and specify a directory for each environment:
+
+```yaml
+environments:
+  production:
+    name: "Production"
+    storage: "github"
+    default: true
+    directory: "production"
+  staging:
+    name: "Staging"
+    storage: "github"
+    directory: "staging"
+```
+
+<Tip>
+    This mapping between environments and storage backends means that multiple environments can share the same storage backend (e.g. a single GitHub repository).
+
+    Each environment that shares the same storage backend must have a unique directory to avoid conflicts.
+
+</Tip>
+
+### 5. Start Flipt
+
+Start or restart your Flipt server with the updated configuration. Flipt will now:
+
+- Clone your GitHub repository to the specified local path
+- Periodically sync flag state to and from GitHub
+- Commit and push changes when you update flags via the Flipt API or UI
+
+Notice in the top right of the Flipt UI you will see a new GitHub icon and a link to the GitHub repository.
+
+Clicking this will take you to the GitHub repository where you can view the flag state.
+
+![Flipt GitHub Sync](/v2/images/guides/operations/storage/github_linked.png)
+
+### 6. Troubleshooting
+
+- Ensure your PAT has the correct permissions.
+- Make sure the local path is writable by the Flipt process.
+- Check Flipt logs for any sync or authentication errors.
+
+---
+
+**References:**
+
+- [Flipt v2 Storage Configuration](/v2/configuration/storage)
+- [Flipt v2 Environments Configuration](/v2/configuration/environments)
+- [GitHub: Creating a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
