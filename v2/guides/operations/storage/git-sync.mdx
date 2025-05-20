@@ -22,11 +22,17 @@ This section will walk you through configuring Flipt to sync your flag state to 
 ### 1. Create a GitHub Personal Access Token (PAT)
 
 1. Go to [GitHub Settings > Developer settings > Personal access tokens](https://github.com/settings/tokens).
-2. Click **"Generate new token"** (classic or fine-grained).
-3. Give your token a name and select the following scopes:
+2. Click **"Generate new token"**
+3. Give your token a name
+4. Select a resource owner (e.g. your organization)
+5. Select the repositories you want to give access to (or Select all)
+6. Set an expiration date
+7. Select the repository scopes you want to give access to:
    - `repo` read and write access (for private repositories)
    - `contents` read and write access
-4. Click **"Generate token"** and copy the token. **You will not be able to see it again!**
+8. Click **"Generate token"** and copy the token. **You will not be able to see it again!**
+
+![GitHub PAT](/v2/images/guides/operations/storage/github_pat.png)
 
 ### 2. Configure Flipt Storage with GitHub Remote
 
