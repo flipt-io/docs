@@ -21,7 +21,7 @@ Flipt v2 introduces a number of new features and capabilities that are not avail
 
 Flipt v2 is built to be Git-native, meaning that your feature flags and configurations are stored in your own Git repositories. This allows you to use your existing Git workflow and tools to manage your feature flags and configurations.
 
-![Flipt v2 Git-Native](/v2/images/introduction/git_native.png)
+By default, Flipt v2 uses a local git-backed storage backend that is stored in memory or on disk. You can also configure Flipt v2 to sync your local git-backed storage to a remote Git repository such as GitHub, GitLab, or Bitbucket.
 
 We modeled Flipt v2 after our [Flipt Cloud](/cloud/overview) product, but with the ability to self-host.
 
@@ -34,6 +34,25 @@ While Flipt v1 has the ability to read flag data from a Git repository, Flipt v2
 We believe that Git is the best way to manage configuration data. We also believe that feature flags are a type of configuration data, and as such, they should be stored in the same way.
 
 By combining the power of Git with a user-friendly interface, Flipt v2 offers the best of both worlds: the robustness and version control of Git-backed storage, and the ease of use of a modern feature flag management system.
+
+### Branching
+
+Flipt v2 allows you to create branches of any environment. This allows you to test changes to your feature flags and configurations in a separate branch without affecting your users in production.
+
+![Flipt v2 Branching](/v2/images/introduction/branches.png)
+
+Branches use Git under the hood and create a complete copy of the base environment. You can also optionally sync the branch to a remote Git repository.
+
+### Merge Proposals
+
+Flipt v2 allows you to create merge proposals for any environment branch. This enables you to review changes from your branched environments before merging them into the base environment. This models the same workflow as GitHub Pull Requests, GitLab Merge Requests, and Bitbucket Pull Requests.
+
+![Flipt v2 Merge Proposals](/v2/images/introduction/merge_proposals.png)
+
+<Note>
+  Merge proposals are a paid enterprise feature and require an enterprise
+  license.
+</Note>
 
 ### Real-Time Client Updates
 

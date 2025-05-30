@@ -28,6 +28,19 @@ If an environment isn't selected then the 'Default' environment is used.
 
 You can create as many environments as you want. Each environment can have its own namespaces, feature flags and configurations.
 
+## Branches
+
+Branches are a way to create a copy of an environment. This allows you to test changes to your feature flags and configurations in a separate branch without affecting your users in production.
+
+Branches are created from an existing environment. Branches copy the base environment data and are completely independent of each other after creation.
+
+![Branches](/v2/images/concepts/branches.png)
+
+<Note>
+  You can create as many branches as you want from a base environment, however
+  you cannot branch from a branch.
+</Note>
+
 ## Namespaces
 
 Namespaces are a way to organize your feature flags and configurations within an environment.

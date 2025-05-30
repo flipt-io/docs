@@ -85,3 +85,67 @@ environments:
 ```
 
 This means that if no environment is specified when performing actions such as flag evaluation, creation, or updates, the `local` environment will be used. This will also be the environment that is selected in the UI by default.
+
+## Branching
+
+You can create branches from an existing environment. Branches are a complete copy of the base environment and are completely independent of each other after creation.
+
+Branches are created in the UI or API and do not require any additional configuration.
+
+![Branches](/v2/images/configuration/environments/branch.png)
+
+Branches can optionally be configured to sync to a remote Git repository. This allows you to create and track merge proposals for your branches if you have an [SCM provider configured](#source-control-management).
+
+## Source Control Management
+
+<Note>
+  Source Control Management is a paid enterprise feature and require an
+  enterprise license.
+</Note>
+
+Each environment can be configured to use a source control management provider. This allows you to go beyond just storing your environment's data in a remote Git repository, but also create and track merge proposals for your branches.
+
+![SCM](/v2/images/configuration/environments/merge_proposals.png)
+
+```yaml
+environments:
+  local:
+    scm:
+      type: "github"
+      credentials: "github"
+      api_url: "https://{your-github-enterprise-domain}/api/v3"
+```
+
+Environments can be configured to use a single Source Control Management (SCM) provider such as GitHub, GitLab, or Bitbucket.
+
+<Warning>
+  As of the alpha release, only GitHub is supported, however we will be adding
+  support for GitLab and Bitbucket soon.
+</Warning>
+
+### Credentials
+
+Configuring an SCM provider requires a set of credentials to be provided. These credentials are configured via the same mechanism as the [remote storage credential configuration](/v2/configuration/storage#credentials).
+
+The identifier for the credentials is a string value that is used to reference the credentials in the configuration.
+
+```yaml
+credentials:
+  github:
+    type: "basic"
+    username: "{your-github-username}"
+    password: "{your-github-access-token}"
+```
+
+### API URL
+
+The API URL is the URL of the SCM provider's API. This is only required if you are using a self-hosted SCM provider such as GitHub Enterprise.
+
+```yaml
+environments:
+  local:
+    scm:
+      type: "github"
+      credentials: "github"
+      api_url: "https://{your-github-enterprise-domain}/api/v3"
+```
