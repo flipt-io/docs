@@ -55,7 +55,7 @@ Client-side evaluation is another way Flipt supports evaluating feature flags. T
 Client-side evaluation is much more performant than server-side evaluation, but it comes with some tradeoffs. The main tradeoff is that you need to keep your feature flag rules in sync with Flipt. This means that you will need to periodically fetch the feature flag rules from Flipt and update your local copy. Our client-side SDKs provide a way to do this automatically.
 
 <Tip>
-  Flipt v2 suports streaming mode, which will make the SDK subscribe to changes
+  Flipt v2 supports streaming mode, which will make the SDK subscribe to changes
   on the Flipt server and update the state of the flags accordingly in
   real-time.
 </Tip>
