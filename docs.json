@@ -415,6 +415,18 @@
                         ]
                       }
                     ]
+                  },
+                  {
+                    "group": "Integration",
+                    "pages": [
+                      "v2/integration/overview",
+                      {
+                        "group": "Server-Side SDKs",
+                        "pages": ["v2/integration/server/rest"]
+                      },
+                      "v2/integration/client",
+                      "v2/integration/openfeature"
+                    ]
                   }
                 ]
               },

@@ -35,6 +35,18 @@ We believe that Git is the best way to manage configuration data. We also believ
 
 By combining the power of Git with a user-friendly interface, Flipt v2 offers the best of both worlds: the robustness and version control of Git-backed storage, and the ease of use of a modern feature flag management system.
 
+### Multi-Environment
+
+Flipt v2 introduces the concept of environments, which are an additional layer above Flipt v1's concept of [Namespaces](/concepts#namespace).
+
+Environments allow you to manage your feature flags and configurations in different several ways including:
+
+- Different Git repositories
+- Different directories within the same Git repository
+- Different branches within the same directory
+
+Each environment has its own set of namespaces, feature flags and configurations, and is completely isolated from the others.
+
 ### Branching
 
 Flipt v2 allows you to create branches of any environment. This allows you to test changes to your feature flags and configurations in a separate branch without affecting your users in production.
@@ -57,18 +69,6 @@ Flipt v2 allows you to create merge proposals for any environment branch. This e
 ### Real-Time Client Updates
 
 Flipt v2 introduces a new streaming API that allows you to subscribe to changes on the Flipt server and update the state of the flags accordingly in real-time. This means you'll be able to see changes to flags and configurations as they are made, without having to poll the Flipt server for updates.
-
-### Multi-Environment
-
-Flipt v2 introduces the concept of environments, which are an additional layer above Flipt v1's concept of [Namespaces](/concepts#namespace).
-
-Environments allow you to manage your feature flags and configurations in different several ways including:
-
-- Different Git repositories
-- Different directories within the same Git repository
-- Different branches within the same directory
-
-Each environment has its own set of namespaces, feature flags and configurations, and is completely isolated from the others.
 
 ### No External Dependencies
 
