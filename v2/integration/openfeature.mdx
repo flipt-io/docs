@@ -1,0 +1,119 @@
+---
+title: OpenFeature
+description: An overview of OpenFeature and Flipt OpenFeature integrations.
+---
+
+<Frame>
+  <img
+    noZoom
+    className="block h-32 dark:hidden"
+    src="/images/integration/openfeature-dark.svg"
+  />
+  <img
+    noZoom
+    className="hidden h-32 dark:block"
+    src="/images/integration/openfeature-light.svg"
+  />
+</Frame>
+
+[OpenFeature](https://openfeature.dev/) is an open specification that provides a vendor-agnostic, community-driven API for feature flagging that works with your favorite feature flag management tool.
+
+OpenFeature allows you to use the same feature flagging API across multiple feature flag management tools. This means that you can switch between feature flag management tools without having to change your code.
+
+OpenFeature is a CNCF Sandbox project. You can learn more about OpenFeature on the [OpenFeature website](https://openfeature.dev/).
+
+## Providers
+
+As a feature flag management tool, Flipt provides our own OpenFeature integrations (providers). This means that you can use the OpenFeature API with Flipt v2.
+
+From the [OpenFeature Specification](https://docs.openfeature.dev/docs/specification/sections/providers):
+
+> Providers are the "translator" between the flag evaluation calls made in application code, and the flag management system that stores flags and in some cases evaluates flags.
+
+We currently provide the following OpenFeature providers:
+
+<Note>
+  While Flipt v2 is backward compatible with Flipt v1, the OpenFeature providers have not yet been updated to support the new `environments` concept in Flipt v2.
+
+We are currently working on updating the OpenFeature providers to support environments.
+
+</Note>
+
+<CardGroup cols={2}>
+  <Card
+    title="Node"
+    href="https://github.com/open-feature/js-sdk-contrib/tree/main/libs/providers/flipt"
+    icon="node"
+    color="#68a063"
+  >
+    The official Flipt OpenFeature Provider using the OpenFeature Node SDK.
+  </Card>
+  <Card
+    title="Browser"
+    href="https://github.com/open-feature/js-sdk-contrib/tree/main/libs/providers/flipt-web"
+    icon="js"
+    color="#f7e018"
+  >
+    The official Flipt OpenFeature Provider using the OpenFeature Web SDK.
+  </Card>
+  <Card
+    href="https://github.com/open-feature/go-sdk-contrib/tree/main/providers/flipt"
+    title="Go"
+    icon="golang"
+    color="#00add8"
+  >
+    The official Flipt OpenFeature Provider using the OpenFeature Go SDK.
+  </Card>
+  <Card
+    href="https://github.com/open-feature/java-sdk-contrib/tree/main/providers/flipt"
+    title="Java"
+    icon="java"
+    color="#e41f23"
+  >
+    The official Flipt OpenFeature Provider using the OpenFeature Java SDK.
+  </Card>
+  <Card
+    href="https://github.com/open-feature/dotnet-sdk-contrib/tree/main/src/OpenFeature.Contrib.Providers.Flipt"
+    title="C#"
+    icon="microsoft"
+    color="#4c8abe"
+  >
+    The official Flipt OpenFeature Provider using the OpenFeature C# SDK.
+  </Card>
+  <Card
+    href="https://github.com/open-feature/python-sdk-contrib/tree/main/providers/openfeature-provider-flipt"
+    title="Python"
+    icon="python"
+    color="#4c8abe"
+  >
+    The official Flipt OpenFeature Provider using the OpenFeature Python SDK.
+  </Card>
+  <Card
+    href="https://github.com/open-feature/ruby-sdk-contrib/tree/main/providers/openfeature-flipt-provider"
+    title="Ruby"
+    icon="gem"
+    color="#cd412b"
+  >
+    The official Flipt OpenFeature Provider using the OpenFeature Ruby SDK.
+  </Card>
+  <Card
+    href="https://github.com/flipt-io/flipt/discussions/2208"
+    title="Request a Client"
+    icon="github"
+    color="#000000"
+  >
+    > Need a client in another language? Let us know!
+  </Card>
+</CardGroup>
+
+## Remote Evaluation Protocol
+
+The OpenFeature Remote Evaluation Protocol (OFREP) is an API specification for feature flagging that allows the use of generic providers to connect to any feature flag management systems that support the protocol.
+
+Flipt is one of the early adopters of the OFREP protocol and has implemented the protocol in its API.
+
+The OFREP protocol is still in the early stages of development, so the specification is subject to change.
+
+The API documentation for the OFREP protocol implementation in Flipt is available in the [OpenFeature Remote Evaluation](/reference/openfeature/overview) API documentation.
+
+For more information on the OFREP protocol, see the [OpenFeature Remote Evaluation Protocol](https://github.com/open-feature/protocol) repository on GitHub.
