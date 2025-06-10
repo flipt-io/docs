@@ -1,0 +1,151 @@
+---
+title: Branching
+description: How to use branches for environments in Flipt v2
+---
+
+This guide will show you how to configure Flipt v2 to use branches for environments.
+
+## Prerequisites
+
+- [Flipt v2](/v2/quickstart)
+- A GitHub Account and a repository to sync to (Optional).
+
+## Using Branches for Environments
+
+Flipt v2 allows you to branch existing environments. This is useful if you want to test changes to your feature flags and configurations in a separate branch without affecting your users in production.
+
+### Branch Storage
+
+By default, environments and their branches are stored in memory. This means that if you restart Flipt, the data will be lost. You can configure Flipt to store your environments and branches in a Git repository on your local machine. See the [Storage](/v2/configuration/storage) documentation for more information.
+
+You can also configure Flipt to sync your environments and branches to a remote Git repository. This is useful if you want to share your environments and branches with your team or if you want to backup your data. See the [Git Sync](/v2/guides/operations/storage/git-sync) guide for more information.
+
+### Creating a Branch
+
+To create a branch simply click the branch button in the top right of the Flipt UI.
+
+<Note>
+  You cannot branch from a branched environment. You can only branch from
+  'source' environments that are configured in your Flipt configuration file.
+</Note>
+
+![Branch Button](/v2/images/guides/user/environments/branches/branch_button.png)
+
+This will bring up a modal to allow you to enter the branch name.
+
+![Branch Modal](/v2/images/guides/user/environments/branches/branch_modal.png)
+
+<Note>
+  Branch names must be unique within the source environment. They also cannot be
+  the same as the source environment.
+</Note>
+
+Once you have entered the branch name, click the `Create` button. This will create a new branch with the same data as the source environment and update the UI to show the new branch.
+
+![Branch Created](/v2/images/guides/user/environments/branches/branch_created.png)
+
+As you can see, the new branch has the same data as the source environment however it is completely isolated from the source environment.
+
+<Tip>
+  Any changes you make to the branch will not affect the source environment and
+  vice versa.
+</Tip>
+
+### Navigating With Branches
+
+You can navigate between environments and branched environments by clicking the environment selector in the top left of the Flipt UI.
+
+![Environment Selector](/v2/images/guides/user/environments/branches/environment_selector.png)
+
+Branched environments are displayed as children of the source environment with a branch icon.
+
+Clicking on a branched environment will switch to that environment. You can also select the namespace after selecting the environment.
+
+See the concepts behind [Environments](/v2/concepts#environments) and [Namespaces](/v2/concepts#namespaces) for more information.
+
+### Deleting a Branch
+
+In a branched environment, you can see the source environment that the branch is based on in the top right of the Flipt UI.
+
+![Branch Info](/v2/images/guides/user/environments/branches/branch_info.png)
+
+Clicking the branch info will bring up a menu to allow you to delete the branch.
+
+![Delete Branch Modal](/v2/images/guides/user/environments/branches/branch_delete.png)
+
+Type the branch name to confirm the deletion and click the `Delete Branch` button to delete the branch.
+
+This will delete the branch and update the UI to show the source environment.
+
+<Note>
+  Deleting a branch will not delete the data from the source environment.
+</Note>
+
+## Evaluation With Branches
+
+Since branches are just environments themselves, you can evaluate within them just like you would evaluate any other environment using our UI, API or SDKs.
+
+<Tip>
+  Review the [Evaluation](/v2/concepts#evaluation) documentation for more
+  information on how evaluation works.
+</Tip>
+
+### In the UI
+
+You can evaluate a flag in a branch by selecting the branch in the environment selector and then selecting the flag you want to evaluate.
+
+Next click the `View in Playground` button to open the playground for that flag in the branched environment.
+
+![Playground](/v2/images/guides/user/environments/branches/playground.png)
+
+You can then evaluate the flag by entering an entity ID and context values.
+
+![Playground Evaluation](/v2/images/guides/user/environments/branches/playground_evaluation.png)
+
+### Using the API/SDKs
+
+All of our SDKs support evaluating within environments and branches. See the [SDKs](/v2/integration/overview) documentation for more information.
+
+In this example we'll use the Go [Client Side SDK](/v2/integration/client) to evaluate a flag in a branch.
+
+Imagine that you have a branch called `test` and you want to evaluate a flag called `test-flag` in that branch. You can do the following:
+
+```go
+client, err := flipt.NewClient(
+    ctx,
+    flipt.WithURL("http://localhost:8080"),
+    flipt.WithEnvironment("test"),
+  )
+  if err != nil {
+    log.Fatal(err)
+  }
+  defer client.Close(ctx)
+
+  variantResult, _ := client.EvaluateVariant(ctx, &flipt.EvaluationRequest{
+    FlagKey:  "test-flag",
+    EntityID: "someentity",
+    Context:  map[string]string{"fizz": "buzz"},
+  })
+  fmt.Println(variantResult)
+```
+
+## Using GitHub for Git Sync
+
+If you've configured Flipt to use a GitHub repository for Git Sync, your branches will also be synced to your GitHub repository.
+
+See the [Git Sync](/v2/guides/operations/storage/git-sync) guide for more information on how to configure Flipt to use a GitHub repository for Git Sync.
+
+<Note>
+  Flipt v2 supports any Git provider including Gitea, GitLab, Bitbucket, and is
+  not limited to GitHub.
+</Note>
+
+Any changes you make to a branch will be synced to your GitHub repository.
+
+If you have Git Sync enabled, you'll see a `View Remote` option in the branch info menu.
+
+![View Remote](/v2/images/guides/user/environments/branches/view_remote.png)
+
+Clicking this will open the branch in your GitHub repository that is configured in your Flipt configuration file.
+
+![GitHub Branch](/v2/images/guides/user/environments/branches/github.png)

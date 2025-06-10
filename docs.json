@@ -395,6 +395,15 @@
                     "group": "Guides",
                     "pages": [
                       {
+                        "group": "User Guides",
+                        "pages": [
+                          {
+                            "group": "Environments",
+                            "pages": ["v2/guides/user/environments/branches"]
+                          }
+                        ]
+                      },
+                      {
                         "group": "Operations Guides",
                         "pages": [
                           {
