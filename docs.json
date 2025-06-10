@@ -313,11 +313,6 @@
                 "icon": "newspaper"
               },
               {
-                "anchor": "Community",
-                "href": "https://community.flipt.io",
-                "icon": "discourse"
-              },
-              {
                 "anchor": "Discord",
                 "href": "https://flipt.io/discord",
                 "icon": "discord"
@@ -434,11 +429,6 @@
                 "anchor": "Blog",
                 "href": "https://blog.flipt.io",
                 "icon": "newspaper"
-              },
-              {
-                "anchor": "Community",
-                "href": "https://community.flipt.io",
-                "icon": "discourse"
               },
               {
                 "anchor": "Discord",
