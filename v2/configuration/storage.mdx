@@ -126,13 +126,6 @@ Credentials are configured using the `credentials` configuration section and use
 
 Basic authentication is a username and password pair.
 
-<Note>
-  When using GitHub and their [PATs (Personal Access
-  Tokens)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens),
-  `basic` authentication should be used. GitHub expects you to supply a valid
-  `username` and provide your PAT as the `password` parameter.
-</Note>
-
 ```yaml
 credentials:
   github:
@@ -170,11 +163,11 @@ credentials:
 
 #### Access Token
 
-Access tokens are a type of credential that are used to authenticate with a remote repository. These can be used for any remote repository provider that supports access tokens.
+Access tokens are a type of credential that are used to authenticate with a remote repository. These can be used for any remote repository provider that supports access tokens such as GitHub, GitLab, and Gitea.
 
 ```yaml
 credentials:
-  gitlab:
+  github:
     type: access_token
-    token: < gitlab-access-token >
+    access_token: < github-access-token >
 ```

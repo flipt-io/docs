@@ -116,12 +116,17 @@ environments:
       api_url: "https://{your-github-enterprise-domain}/api/v3"
 ```
 
-Environments can be configured to use a single Source Control Management (SCM) provider such as GitHub, Gitea, GitLab, or Bitbucket.
+<Tip>
+  If you are using a self-hosted SCM provider such as GitHub Enterprise, GitLab,
+  or Gitea, you will need to configure the API URL.
+</Tip>
 
-<Warning>
-  As of the alpha release, only GitHub and Gitea are supported, however we will
-  be adding support for GitLab and Bitbucket soon.
-</Warning>
+Environments can be configured to use a single Source Control Management (SCM) provider such as GitHub, GitLab, Gitea, or Bitbucket.
+
+<Info>
+  Currently only GitHub, GitLab, and Gitea are supported. We will add support
+  for Bitbucket upon request.
+</Info>
 
 ### Credentials
 
@@ -132,9 +137,8 @@ The identifier for the credentials is a string value that is used to reference t
 ```yaml
 credentials:
   github:
-    type: "basic"
-    username: "{your-github-username}"
-    password: "{your-github-access-token}"
+    type: "access-token"
+    access_token: "{your-github-access-token}"
 ```
 
 ### API URL
