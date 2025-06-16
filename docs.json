@@ -375,7 +375,8 @@
                     "pages": [
                       "/v2/introduction",
                       "/v2/quickstart",
-                      "/v2/concepts"
+                      "/v2/concepts",
+                      "/v2/licensing"
                     ]
                   },
                   {
@@ -388,7 +389,8 @@
                       "v2/configuration/authorization",
                       "v2/configuration/analytics",
                       "v2/configuration/observability",
-                      "v2/configuration/telemetry"
+                      "v2/configuration/telemetry",
+                      "v2/configuration/licensing"
                     ]
                   },
                   {
@@ -399,7 +401,10 @@
                         "pages": [
                           {
                             "group": "Environments",
-                            "pages": ["v2/guides/user/environments/branches"]
+                            "pages": [
+                              "v2/guides/user/environments/branches",
+                              "v2/guides/user/environments/merge-proposals"
+                            ]
                           }
                         ]
                       },
@@ -413,8 +418,11 @@
                             ]
                           },
                           {
-                            "group": "Storage",
-                            "pages": ["v2/guides/operations/storage/git-sync"]
+                            "group": "Environments",
+                            "pages": [
+                              "v2/guides/operations/environments/git-sync",
+                              "v2/guides/operations/environments/git-scm"
+                            ]
                           }
                         ]
                       }

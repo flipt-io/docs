@@ -131,12 +131,6 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | meta.state_directory          | Directory on the host to store local state                                     | $HOME/.config/flipt | v2.0.0 |
 | diagnostics.profiling.enabled | Enable profiling endpoints for pprof                                           | true                | v2.0.0 |
 
-### User Interface
-
-| Property         | Description                         | Default | Since  |
-| ---------------- | ----------------------------------- | ------- | ------ |
-| ui.default_theme | Sets the default UI theme for users | system  | v2.0.0 |
-
 ### Server
 
 | Property                       | Description                                                                                                 | Default   | Since  |
@@ -151,6 +145,23 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | server.grpc_conn_max_age_grace | Maximum amount of time a GRPC connection can live for outstanding RPCs after exceeding `grpc_conn_max_age ` | unlimited | v2.0.0 |
 | server.cert_file               | Path to the certificate file (if protocol is set to https)                                                  |           | v2.0.0 |
 | server.cert_key                | Path to the certificate key file (if protocol is set to https)                                              |           | v2.0.0 |
+
+### License
+
+| Property    | Description                                                        | Default | Since  |
+| ----------- | ------------------------------------------------------------------ | ------- | ------ |
+| license.key | The license key to use for the license (required for Pro features) |         | v2.0.0 |
+
+<Note>
+  A license is only required for Pro features. See the
+  [Licensing](/v2/licensing) documentation for more information.
+</Note>
+
+### User Interface
+
+| Property         | Description                         | Default | Since  |
+| ---------------- | ----------------------------------- | ------- | ------ |
+| ui.default_theme | Sets the default UI theme for users | system  | v2.0.0 |
 
 ### Environments
 
