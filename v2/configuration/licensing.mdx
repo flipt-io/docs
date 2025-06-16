@@ -1,0 +1,89 @@
+---
+title: Licensing
+description: This document describes how to configure licensing for Flipt v2 and how it works.
+---
+
+Flipt v2 is licensed under the [Fair Core License](https://fcl.dev/) (FCL).
+
+Most of the features in Flipt v2 are available in the free edition, however some features are only available after purchasing a commercial license.
+
+See our [licensing](/v2/licensing) documentation for more information on the license and frequently asked questions.
+
+## License Configuration
+
+You can configure the license key in the Flipt v2 configuration file or via environment variables.
+
+<Tabs>
+
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    license:
+      key: "your-license-key"
+    ```
+
+  </Tab>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_LICENSE_KEY="your-license-key"
+    ```
+
+  </Tab>
+</Tabs>
+
+<Note>
+  You'll need to restart your Flipt v2 instance for the license key to take
+  effect.
+</Note>
+
+## Acquiring a License
+
+You can get a 14 day trial license for the Pro edition via [Stripe checkout](https://buy.stripe.com/cNi8wPfoxfTh13J0u41B600).
+
+The license will be emailed to you after checkout. After the trial period, you will need to provide a payment method to continue using the Pro edition.
+
+<Tip>
+  You can also purchase a license by contacting us at
+  [support@flipt.io](mailto:support@flipt.io).
+</Tip>
+
+### Trial Expiration
+
+If you do not provide a payment method after the trial period, the license will expire and your Flipt v2 instance(s) will revert to the free edition.
+
+This means that you will lose functionality such as [Merge Proposals](/v2/introduction#merge-proposals) and other paid features.
+
+### License Renewal
+
+Paid licenses will be renewed automatically on a monthly basis. You can cancel the subscription at any time.
+
+<Warning>
+  Cancellations take effect immediately and you will lose access to paid
+  features. You will be prorated for the remaining time in your current billing
+  cycle.
+</Warning>
+
+See our [licensing](/v2/licensing) documentation for more information on how to cancel your subscription.
+
+## License Validation
+
+Flipt v2 will validate the license key on startup. If the license key is invalid, Flipt v2 will start with paid features disabled.
+
+You'll see a message in the logs indicating that the license key is invalid.
+
+### Continuous Validation
+
+Flipt v2 will continuously validate the license key every 12 hours.
+
+This means that you will **need to have an active network connection from the Flipt v2 instance to the internet** to validate the license key.
+
+<Note>
+  We are working on a solution to allow for offline validation of the license
+  key. If you have a specific use case that requires offline validation, please
+  contact us at [support@flipt.io](mailto:support@flipt.io).
+</Note>
+
+### License Expiration
+
+If the license key expires, the Flipt v2 instance will continue to run but will be unable to access paid features.
