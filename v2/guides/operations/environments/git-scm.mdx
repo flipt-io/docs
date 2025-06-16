@@ -1,0 +1,117 @@
+---
+title: Git SCM Integration
+description: Configure Flipt v2 to allow deeper integration with your Git Provider
+---
+
+Flipt v2 supports Source Control Management (SCM) for Git repositories.
+
+import V2Pro from "/snippets/v2-pro.mdx";
+
+<V2Pro />
+
+## Prerequisites
+
+- [Flipt v2](/v2/quickstart)
+- A Flipt v2 environment configured with [Git Sync](/v2/guides/operations/environments/git-sync)
+- A Flipt v2 Pro license or trial license
+
+<Note>
+  Flipt v2 SCM integration supports most the major Git providers including
+  GitHub, GitLab, and Gitea.
+</Note>
+
+## Configuring SCM Integration
+
+This section will walk you through configuring Flipt v2 to more deeply integrate with your Git provider to enable features like [Merge Proposals](/v2/introduction#merge-proposals).
+
+### 1. Create a Personal Access Token (PAT)
+
+1. Go to [GitHub Settings > Developer settings > Personal access tokens](https://github.com/settings/tokens).
+2. Click **"Generate new token"**
+3. Give your token a name
+4. Select a resource owner (e.g. your organization)
+5. Select the repositories you want to give access to (or Select all). These should be the same repositories that you have configured to [sync with Flipt](/v2/guides/operations/environments/git-sync).
+6. Set an expiration date
+7. Select the following repository scopes (**required**):
+   - `contents` read and write access
+   - `pull-requests` read and write access
+
+![GitHub PAT Scopes](/v2/images/guides/operations/environments/github_pat_scopes.png)
+
+8. Click **"Generate token"** and copy the token. **You will not be able to see it again!**
+
+### 2. Configure GitHub Credentials
+
+Edit your Flipt configuration file to use the GitHub credentials you created in the previous step:
+
+```yaml
+credentials:
+  github:
+    type: access_token
+    access_token: <your-personal-access-token>
+```
+
+### 3. Configure Flipt Storage with GitHub Remote
+
+Edit your Flipt configuration file to add or update the storage backend that syncs with your GitHub repository:
+
+```yaml
+storage:
+  github:
+    remote: "https://github.com/<your-username>/<your-repo>.git"
+    branch: "main"
+    poll_interval: "30s"
+    credentials: "github"
+    backend:
+      type: local
+      path: "/path/to/local/clone"
+```
+
+### 4. Configure an Environment to use GitHub SCM
+
+Edit your Flipt configuration file to add or update the environment that uses the GitHub SCM storage backend and add the `scm` section:
+
+```yaml highlight={6-8}
+environments:
+  production:
+    name: "Production"
+    storage: "github"
+    default: true
+    scm:
+      type: github
+      credentials: "github"
+```
+
+### 5. Start Flipt
+
+Start or restart your Flipt server with the updated configuration. Flipt will now:
+
+- Clone your GitHub repository to the specified local path
+- Periodically sync flag state to and from GitHub
+- Commit and push changes when you update flags via the Flipt API or UI
+- Enable merge proposals in the Flipt UI
+
+![Merge Proposals](/v2/images/guides/operations/environments/merge_proposals.png)
+
+### 6. Troubleshooting
+
+- Ensure your PAT has the correct permissions.
+- Make sure the local path is writable by the Flipt process.
+- Check Flipt logs for any sync or authentication errors.
+
+## Conclusion
+
+This guide showed how to configure Flipt to enable merge proposals in the Flipt UI.
+
+You can now use Flipt to manage your flags and use merge proposals to review and approve changes to your flags.
+
+If you have any questions or feedback, please reach out to the Flipt team on [Discord](https://discord.gg/flipt) or [GitHub Discussions](https://github.com/flipt-io/flipt/discussions).
+
+---
+
+**References:**
+
+- [Flipt v2 Environments Configuration](/v2/configuration/environments)
+- [Flipt v2 Git Sync](/v2/guides/operations/environments/git-sync)
+- [Flipt v2 Merge Proposals](/v2/introduction#merge-proposals)
+- [GitHub: Creating a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)

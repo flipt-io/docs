@@ -27,14 +27,40 @@ This section will walk you through configuring Flipt to sync your flag state to 
 4. Select a resource owner (e.g. your organization)
 5. Select the repositories you want to give access to (or Select all)
 6. Set an expiration date
-7. Select the repository scopes you want to give access to:
+7. Select the following repository scopes (**required**):
    - `repo` read and write access (for private repositories)
    - `contents` read and write access
 8. Click **"Generate token"** and copy the token. **You will not be able to see it again!**
 
 ![GitHub PAT](/v2/images/guides/operations/storage/github_pat.png)
 
-### 2. Configure Flipt Storage with GitHub Remote
+### 2. Add GitHub Credentials
+
+Add your GitHub PAT as a credential in the Flipt configuration file:
+
+```yaml
+credentials:
+  github:
+    type: access_token
+    access_token: <your-personal-access-token>
+```
+
+- Replace `<your-personal-access-token>` with the token you generated above.
+
+<Tip>
+  Flipt can use [environment
+  substitution](/v2/configuration/overview#environment-substitution) for
+  credentials.
+</Tip>
+
+```yaml
+credentials:
+  github:
+    type: access_token
+    access_token: ${GITHUB_TOKEN}
+```
+
+### 3. Configure Flipt Storage with GitHub Remote
 
 Edit your Flipt configuration file to add a storage backend that syncs with your GitHub repository:
 
@@ -57,37 +83,6 @@ storage:
   Setting the `backend` to `local` is optional as you can store the state in
   memory which is the default behavior.
 </Note>
-
-### 3. Add GitHub Credentials
-
-Add your GitHub PAT as a basic credential in the same configuration file:
-
-```yaml
-credentials:
-  github:
-    type: basic
-    basic:
-      username: <your-github-username>
-      password: <your-personal-access-token>
-```
-
-- Replace `<your-github-username>` with your GitHub username.
-- Replace `<your-personal-access-token>` with the token you generated above.
-
-<Tip>
-  Flipt can use [environment
-  substitution](/v2/configuration/overview#environment-substitution) for
-  credentials.
-</Tip>
-
-```yaml
-credentials:
-  github:
-    type: basic
-    basic:
-      username: ${GITHUB_USERNAME}
-      password: ${GITHUB_TOKEN}
-```
 
 ### 4. Configure Environments
 
