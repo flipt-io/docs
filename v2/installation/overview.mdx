@@ -1,0 +1,140 @@
+---
+title: "Overview"
+description: "Multiple ways to install and run Flipt v2 on your own infrastructure"
+---
+
+Flipt v2 is a single binary that can be run on any Linux or macOS (arm64) host. You can install and try out Flipt v2 in a two different ways:
+
+<CodeGroup>
+
+```console Binary
+curl -fsSL https://get.flipt.io/v2 | sh
+```
+
+```console Docker
+docker run -d \
+    -p 8080:8080 \
+    -p 9000:9000 \
+    -v $HOME/flipt:/var/opt/flipt \
+    docker.flipt.io/flipt/flipt:v2-beta
+```
+
+</CodeGroup>
+
+For more details on each installation method, see the sections below.
+
+- [Docker](#docker)
+- [Binary](#binary)
+
+<Info>
+  Flipt v2 is currently in beta. Once we release a stable version, we'll update
+  the installation instructions to include Helm, and Homebrew installation
+  options.
+</Info>
+
+## Docker
+
+Docker installation is required on the host, see the [official installation docs](https://docs.docker.com/install/).
+
+<Note>
+  Flipt requires Docker Engine version
+  [20.10](https://docs.docker.com/engine/release-notes/20.10/) or higher.
+</Note>
+
+### Running
+
+```console
+docker run -d \
+    -p 8080:8080 \
+    -p 9000:9000 \
+    -v $HOME/flipt:/var/opt/flipt \
+    docker.flipt.io/flipt/flipt:v2-beta
+```
+
+This will download the image and start a Flipt container and publish ports
+needed to access the UI and backend server. All persistent Flipt data will be
+stored in `$HOME/flipt`.
+
+<Info>
+  `$HOME/flipt` is just used as an example, you can use any directory you would
+  like on the host.
+</Info>
+
+The Flipt container uses host-mounted volumes to persist data:
+
+| Host location | Container location | Purpose                      |
+| ------------- | ------------------ | ---------------------------- |
+| $HOME/flipt   | /var/opt/flipt     | For storing application data |
+
+This allows data to persist between Docker container restarts.
+
+<Warning>
+  If you don't use mounted volumes to persist your data, your data will be lost
+  when the container exits!
+</Warning>
+
+After starting the container you can visit http://127.0.0.1:8080 to view the
+application.
+
+<Note>Flipt runs without the root user in the Docker container.</Note>
+
+### Configuration
+
+A default configuration file is included within the image. To supply a custom configuration, update the `docker run` command to mount your local configuration into the container:
+
+```console
+docker run -d \
+    -p 8080:8080 \
+    -p 9000:9000 \
+    -v $HOME/flipt:/var/opt/flipt \
+    -v $HOME/flipt/config.yaml:/etc/flipt/config.yaml \
+    docker.flipt.io/flipt/flipt:v2-beta
+```
+
+## Binary
+
+You can always download the latest release archive of Flipt v2 from the
+[Releases](https://github.com/flipt-io/flipt/releases) section on GitHub.
+
+### Installing
+
+You can use the following script to download and install the latest Flipt binary:
+
+```console
+curl -fsSL https://get.flipt.io/v2 | sh
+```
+
+This will install Flipt to `/usr/local/bin/flipt` on Mac and Linux systems.
+
+View the [install.sh](https://github.com/flipt-io/flipt/blob/v2/install.sh) source for more details.
+
+### Running
+
+Run the Flipt server with:
+
+```console
+flipt server [--config OPTIONAL_PATH_TO_YOUR_CONFIG]
+```
+
+Flipt will check in a few different locations for server configuration (in order):
+
+1. `--config` flag as an override
+2. `{{ USER_CONFIG_DIR }}/flipt/config.yml` (the `USER_CONFIG_DIR` value is based on your architecture and specified in the [Go documentation](https://pkg.go.dev/os#UserConfigDir))
+3. `/etc/flipt/config/default.yml`
+
+See the [Configuration](/v2/configuration/overview) section for more details.
+
+## Supported Architectures
+
+Flipt v2 is built for the following architectures/os:
+
+- **x86-64** / **Linux**
+- **ARM64** / **Linux**
+- **x86-64** / **Darwin/MacOS**
+- **ARM64** / **Darwin/MacOS**
+
+You can find the binaries for each architecture in the [Latest Release](https://github.com/flipt-io/flipt/releases/latest) assets section on GitHub.
+
+The [Docker image](https://hub.docker.com/r/flipt/flipt/tags) for Flipt v2 is multi-arch and supports both **x86-64** and **ARM64** architectures on **Linux**.
+
+If you need a different architecture, please open an issue on the [GitHub repository](https://github.com/flipt-io/flipt/issues) and we will try to accommodate your request.

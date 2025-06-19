@@ -380,6 +380,10 @@
                     ]
                   },
                   {
+                    "group": "Installation",
+                    "pages": ["v2/installation/overview"]
+                  },
+                  {
                     "group": "Configuration",
                     "pages": [
                       "v2/configuration/overview",

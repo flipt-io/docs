@@ -13,14 +13,11 @@ import V2Beta from "/snippets/v2-beta.mdx";
 Before getting started, make sure the Flipt server is up and running on your
 host on your chosen ports.
 
-<Note>
-  Our pre-release version is built on every merge to the `v2` branch and only available as a Docker image at the moment.
-
-Once we release a stable version, we'll update the installation instructions to include binary, Helm, and Homebrew installation options.
-
-</Note>
-
 <CodeGroup>
+
+```console Binary
+curl -fsSL https://get.flipt.io/v2 | sh
+```
 
 ```console Docker
 docker run -d \
