@@ -15,8 +15,8 @@ This is the documentation repository for Flipt, a feature flag and experimentati
 - `vale sync` - Install Vale dependencies for documentation linting
 - `vale *` - Lint all documentation files
 - `vale README.md` - Lint specific file
-- `mintlify dev` - Start local development server (requires yarn globally)
-- `mintlify rename` - Rename file in a Mintlify project and update the internal link references
+- `mint dev` - Start local development server
+- `mint rename` - Rename file in a Mintlify project and update the internal link references
 
 ### Publishing
 
@@ -73,10 +73,10 @@ Changes are automatically deployed to production when pushed to the main branch.
 
 ## Development Setup
 
-1. Install Mintlify CLI globally: `npm i mintlify -g`
+1. Install Mintlify CLI globally: `npm i mint -g`
 2. Install Vale for linting: Follow [Vale installation guide](https://vale.sh/docs/vale-cli/installation/)
 3. Run `vale sync` to install Vale packages
-4. Start development server: `mintlify dev`
+4. Start development server: `mint dev`
 
 ## Code Quality
 

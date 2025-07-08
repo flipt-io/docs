@@ -22,12 +22,25 @@ First, identify the GitHub repository and configuration that Flipt Cloud is usin
 
 1. Log into your [Flipt Cloud](https://flipt.cloud) dashboard
 2. Navigate to your environment settings
-3. Note the following information:
+3. Click on the **Integrations** tab
+4. Click on the 'View GitHub Repository' button
+5. Note the following information:
    - **Repository URL**: The GitHub repository where your flags are stored
    - **Branch**: The branch being used (typically `main`)
    - **Directory**: The directory path within the repository (if any)
 
-### Step 2: Set Up GitHub Authentication
+![Flipt Cloud Repository](/v2/images/guides/migration/cloud/github_repository.png)
+
+### Step 2: Export Authorization Configuration
+
+1. While logged into Flipt Cloud, click on the **Settings** tab
+2. Click on the **Roles** tab
+3. Click on the **Export RBAC** button
+4. Download the authorization configuration archive and save it for later
+
+![Export Authorization](/v2/images/guides/migration/cloud/export_authz.png)
+
+### Step 3: Set Up GitHub Authentication
 
 Create a GitHub Personal Access Token (PAT) that Flipt v2 can use to access your repository:
 
@@ -46,7 +59,7 @@ Create a GitHub Personal Access Token (PAT) that Flipt v2 can use to access your
   this page.
 </Warning>
 
-### Step 3: Configure Flipt v2
+### Step 4: Configure Flipt v2
 
 Create or update your Flipt v2 configuration file to connect to your existing GitHub repository:
 
@@ -101,7 +114,50 @@ environments:
   avoid data conflicts.
 </Note>
 
-### Step 4: Start Flipt v2
+#### Configure Authorization
+
+If you have any custom RBAC roles or permissions in Flipt Cloud, you'll need to configure them in Flipt v2.
+
+<Tip>
+  If you don't have any custom RBAC roles or permissions in Flipt Cloud, you can
+  skip this step.
+</Tip>
+
+Unarchive the authorization configuration from earlier and put the files somewhere accessible to Flipt v2.
+
+Update the `policy.rego` file to have the package name `flipt.authz.v2` instead of `flipt.authz.v1`.
+
+```rego policy.rego
+package flipt.authz.v2
+
+import rego.v1
+
+default allow := false
+
+allow if {
+	some rule in has_rules
+
+	permit_string(rule.resource, input.request.resource)
+	permit_slice(rule.actions, input.request.action)
+	permit_string(rule.namespace, input.request.namespace)
+}
+```
+
+Update the `config.yaml` file to point to the new policy files:
+
+```yaml
+authorization:
+  required: true
+  local:
+    policy:
+      path: "policy.rego"
+    data:
+      path: "data.json"
+```
+
+See [Authorization](/v2/configuration/authorization) for more information.
+
+### Step 5: Start Flipt v2
 
 1. Set your GitHub token as an environment variable:
 
@@ -120,14 +176,14 @@ environments:
    - Load your feature flag data
    - Begin syncing with GitHub
 
-### Step 5: Verify Migration
+### Step 6: Verify Migration
 
 1. Access the Flipt v2 UI (typically at `http://localhost:8080`)
 2. Verify that all your feature flags, segments, and rules are present
 3. Check that all environments are configured correctly
 4. Test flag evaluation to ensure everything works as expected
 
-### Step 6: Update Your Applications
+### Step 7: Update Your Applications
 
 Update your applications to point to your new Flipt v2 instance instead of Flipt Cloud:
 
@@ -135,7 +191,7 @@ Update your applications to point to your new Flipt v2 instance instead of Flipt
 2. **Update API Keys**: Generate new [Static Tokens](/v2/configuration/authentication#static-token) in Flipt v2 if needed
 3. **Test Evaluation**: Verify that flag evaluation works with your new instance
 
-### Step 7: Decommission Flipt Cloud
+### Step 8: Decommission Flipt Cloud
 
 Once you've verified that your migration is successful:
 
