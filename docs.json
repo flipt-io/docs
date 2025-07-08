@@ -429,6 +429,10 @@
                             ]
                           }
                         ]
+                      },
+                      {
+                        "group": "Migration Guides",
+                        "pages": ["v2/guides/migration/cloud/flipt-cloud-to-v2"]
                       }
                     ]
                   },
