@@ -1,0 +1,34 @@
+---
+title: "Overview"
+description: "Overview of the Flipt v2 CLI"
+---
+
+The `flipt` CLI is a command line interface for managing Flipt v2. It's useful for configuring your Flipt instance, running the server, and more.
+
+You can use it in various environments, including your local machine and CI/CD pipelines.
+
+### Installation
+
+```console Binary
+curl -fsSL https://get.flipt.io/v2 | sh
+```
+
+### Usage
+
+```
+flipt <command> <subcommand> [flags]
+```
+
+### Examples
+
+```
+$ flipt --help
+$ flipt server
+$ flipt server --config /path/to/config.yml
+```
+
+### Options
+
+```
+  -h, --help            help for flipt
+```
