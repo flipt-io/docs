@@ -1,7 +1,5 @@
 # Flipt Docs
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)][codespaces]
-
 This repository powers the content behind Flipt's docs at [flipt.io/docs](https://www.flipt.io/docs)
 
 ## 📝 Contributing
@@ -62,29 +60,22 @@ We use GitHub Actions to lint our documentation. The Vale action is run on every
 
 ## 👩‍💻 Development
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the documentation changes locally. To install, use the following command
+Install the [Mintlify CLI](https://mintlify.com/docs/installation) to preview the documentation changes locally. To install, use the following command
 
 ```shell
-npm i mintlify -g
+npm i mint -g
 ```
 
-Run the following command at the root of your documentation (where mint.json is)
+Run the following command at the root of your documentation (where `docs.json` is)
 
 ```shell
-mintlify dev
+mint dev
 ```
-
-Note - `mintlify dev` requires `yarn` and it's recommended you install it as a global installation. If you don't have yarn installed already run `npm install --global yarn` in your terminal.
 
 ## 😎 Publishing Changes
 
 Changes will be deployed to production automatically after pushing to the default branch.
 
-You can also preview changes using PRs, which generates a preview link of the docs.
-
 ### Troubleshooting
 
-- Mintlify dev isn't running - Run `mintlify install` it'll re-install dependencies.
-- Mintlify dev is updating really slowly - Run `mintlify clear` to clear the cache.
-
-[codespaces]: https://codespaces.new/flipt-io/docs?quickstart=1
+- Mint dev isn't running - Run `mint install` it'll re-install dependencies.

@@ -1,0 +1,253 @@
+---
+title: Flipt Cloud to Flipt v2
+description: Learn how to migrate from Flipt Cloud to a self-hosted Flipt v2 instance
+---
+
+This guide will walk you through migrating from [Flipt Cloud](/cloud/overview) to a self-hosted Flipt v2 instance while preserving your existing feature flag data.
+
+## Prerequisites
+
+- An active [Flipt Cloud](https://flipt.cloud) account with configured environments
+- A GitHub repository containing your feature flag data (managed by Flipt Cloud)
+- [Flipt v2 installed](/v2/installation) on your target environment
+- Access to the GitHub repository containing your feature flag data
+
+## Migration Overview
+
+Since Flipt Cloud already stores your [feature flag data in Git repositories](/cloud/features/git-backed-storage), migrating to Flipt v2 is straightforward. You'll configure Flipt v2 to sync with the same GitHub repository that Flipt Cloud has been using.
+
+### Step 1: Identify Your Flipt Cloud Repository
+
+First, identify the GitHub repository and configuration that Flipt Cloud is using for your environment:
+
+1. Log into your [Flipt Cloud](https://flipt.cloud) dashboard
+2. Navigate to your environment settings
+3. Click on the **Integrations** tab
+4. Click on the 'View GitHub Repository' button
+5. Note the following information:
+   - **Repository URL**: The GitHub repository where your flags are stored
+   - **Branch**: The branch being used (typically `main`)
+   - **Directory**: The directory path within the repository (if any)
+
+![Flipt Cloud Repository](/v2/images/guides/migration/cloud/github_repository.png)
+
+### Step 2: Export Authorization Configuration
+
+1. While logged into Flipt Cloud, click on the **Settings** tab
+2. Click on the **Roles** tab
+3. Click on the **Export RBAC** button
+4. Download the authorization configuration archive and save it for later
+
+![Export Authorization](/v2/images/guides/migration/cloud/export_authz.png)
+
+### Step 3: Set Up GitHub Authentication
+
+Create a GitHub Personal Access Token (PAT) that Flipt v2 can use to access your repository:
+
+1. Go to [GitHub Settings > Developer settings > Personal access tokens](https://github.com/settings/tokens)
+2. Click **"Generate new token"**
+3. Give your token a descriptive name (e.g., "Flipt v2 Migration")
+4. Select the appropriate resource owner and repositories
+5. Set an expiration date
+6. Select the following repository scopes:
+   - `repo` read and write access (for private repositories)
+   - `contents` read and write access
+7. Click **"Generate token"** and copy the token
+
+<Warning>
+  Save your token securely. You will not be able to see it again after leaving
+  this page.
+</Warning>
+
+### Step 4: Configure Flipt v2
+
+Create or update your Flipt v2 configuration file to connect to your existing GitHub repository:
+
+#### Add GitHub Credentials
+
+```yaml
+credentials:
+  github:
+    type: access_token
+    access_token: ${GITHUB_TOKEN}
+```
+
+#### Configure Storage Backend
+
+```yaml
+storage:
+  github:
+    remote: "https://github.com/<your-username>/<your-repo>.git"
+    branch: "main"
+    poll_interval: "30s"
+    credentials: "github"
+    backend:
+      type: local
+      path: "/tmp/flipt-repo"
+```
+
+Replace:
+
+- `<your-username>` and `<your-repo>` with your actual GitHub repository details
+- `branch` with the branch used by Flipt Cloud (if different from `main`)
+- `path` with your preferred local storage location
+
+#### Configure Environments
+
+If you have multiple environments in Flipt Cloud, configure them in Flipt v2:
+
+```yaml
+environments:
+  production:
+    name: "Production"
+    storage: "github"
+    default: true
+    directory: "production" # Use the same directory as Flipt Cloud
+  staging:
+    name: "Staging"
+    storage: "github"
+    directory: "staging" # Use the same directory as Flipt Cloud
+```
+
+<Note>
+  Make sure the directory paths match exactly what Flipt Cloud was using to
+  avoid data conflicts.
+</Note>
+
+#### Configure Authorization
+
+If you have any custom RBAC roles or permissions in Flipt Cloud, you'll need to configure them in Flipt v2.
+
+<Tip>
+  If you don't have any custom RBAC roles or permissions in Flipt Cloud, you can
+  skip this step.
+</Tip>
+
+Unarchive the authorization configuration from earlier and put the files somewhere accessible to Flipt v2.
+
+Update the `policy.rego` file to have the package name `flipt.authz.v2` instead of `flipt.authz.v1`.
+
+```rego policy.rego
+package flipt.authz.v2
+
+import rego.v1
+
+default allow := false
+
+allow if {
+	some rule in has_rules
+
+	permit_string(rule.resource, input.request.resource)
+	permit_slice(rule.actions, input.request.action)
+	permit_string(rule.namespace, input.request.namespace)
+}
+```
+
+Update the `config.yaml` file to point to the new policy files:
+
+```yaml
+authorization:
+  required: true
+  local:
+    policy:
+      path: "policy.rego"
+    data:
+      path: "data.json"
+```
+
+See [Authorization](/v2/configuration/authorization) for more information.
+
+### Step 5: Start Flipt v2
+
+1. Set your GitHub token as an environment variable:
+
+   ```bash
+   export GITHUB_TOKEN=your_github_token_here
+   ```
+
+2. Start Flipt v2 with your configuration:
+
+   ```bash
+   ./flipt server --config config.yaml
+   ```
+
+3. Flipt v2 will:
+   - Clone your existing repository
+   - Load your feature flag data
+   - Begin syncing with GitHub
+
+### Step 6: Verify Migration
+
+1. Access the Flipt v2 UI (typically at `http://localhost:8080`)
+2. Verify that all your feature flags, segments, and rules are present
+3. Check that all environments are configured correctly
+4. Test flag evaluation to ensure everything works as expected
+
+### Step 7: Update Your Applications
+
+Update your applications to point to your new Flipt v2 instance instead of Flipt Cloud:
+
+1. **Update SDK Configuration**: Change the Flipt server URL in your application code
+2. **Update API Keys**: Generate new [Static Tokens](/v2/configuration/authentication#static-token) in Flipt v2 if needed
+3. **Test Evaluation**: Verify that flag evaluation works with your new instance
+
+### Step 8: Decommission Flipt Cloud
+
+Once you've verified that your migration is successful:
+
+1. Update any remaining applications to use Flipt v2
+2. When ready, you can delete your Flipt Cloud environment
+
+### Data Continuity
+
+Your feature flag data will remain intact throughout this migration because:
+
+- Flipt Cloud stores data in your GitHub repository
+- Flipt v2 reads from the same repository structure
+- No data transformation or conversion is required
+- All flag history is preserved in Git
+
+### Troubleshooting
+
+#### Repository Access Issues
+
+If Flipt v2 cannot access your repository:
+
+- Verify your GitHub token has the correct permissions
+- Check that the repository URL is correct
+- Ensure the branch name matches what Flipt Cloud was using
+- Ensure the directory path matches what Flipt Cloud was using
+
+#### Sync Issues
+
+If changes aren't syncing properly:
+
+- Check the `poll_interval` setting
+- Verify write permissions on the local storage path
+- Verify your GitHub token as the correct scopes (write access to the repository)
+- Review Flipt v2 logs for sync errors
+
+## Next Steps
+
+After successful migration:
+
+- [Configure authentication](/v2/guides/operations/authentication) for your team
+- [Set up environments](/v2/configuration/environments) for your deployment pipeline
+- [Review configuration settings](/v2/configuration/overview) for your deployment
+- [Setup Merge Proposals](/v2/guides/user/environments/merge-proposals) for your environments
+
+## Support
+
+If you encounter issues during migration:
+
+- Check the [Flipt v2 documentation](/v2)
+- Join our [Discord community](https://discord.gg/flipt)
+- Visit [GitHub Discussions](https://github.com/flipt-io/flipt/discussions)
+
+---
+
+**References:**
+
+- [Flipt v2 Storage Configuration](/v2/configuration/storage)
+- [Git Sync with GitHub](/v2/guides/operations/environments/git-sync)
+- [Flipt Cloud Git-Backed Storage](/cloud/features/git-backed-storage)

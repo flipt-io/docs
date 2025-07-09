@@ -398,6 +398,29 @@
                     ]
                   },
                   {
+                    "group": "CLI",
+                    "pages": [
+                      "v2/cli/overview",
+                      {
+                        "group": "Commands",
+                        "pages": [
+                          {
+                            "group": "config",
+                            "pages": [
+                              "v2/cli/commands/config/init",
+                              "v2/cli/commands/config/edit"
+                            ]
+                          },
+                          "v2/cli/commands/evaluate",
+                          "v2/cli/commands/migrate",
+                          "v2/cli/commands/validate",
+                          "v2/cli/commands/server",
+                          "v2/cli/commands/quickstart"
+                        ]
+                      }
+                    ]
+                  },
+                  {
                     "group": "Guides",
                     "pages": [
                       {
@@ -429,6 +452,10 @@
                             ]
                           }
                         ]
+                      },
+                      {
+                        "group": "Migration Guides",
+                        "pages": ["v2/guides/migration/cloud/flipt-cloud-to-v2"]
                       }
                     ]
                   },
