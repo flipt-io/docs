@@ -389,6 +389,8 @@
                       "v2/configuration/overview",
                       "v2/configuration/environments",
                       "v2/configuration/storage",
+                      "v2/configuration/secrets",
+                      "v2/configuration/commit-signing",
                       "v2/configuration/authentication",
                       "v2/configuration/authorization",
                       "v2/configuration/analytics",
