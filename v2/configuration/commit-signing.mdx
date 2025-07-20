@@ -5,10 +5,9 @@ description: GPG commit signing for enhanced security and change verification
 
 Flipt v2 supports GPG commit signing to provide cryptographic verification of configuration changes. This feature ensures the authenticity and integrity of your feature flag modifications, creating a verifiable audit trail for compliance and security purposes.
 
-<Info>
-  Commit signing is available in Flipt Pro and requires secrets management to be
-  configured for secure key storage.
-</Info>
+import V2Pro from "/snippets/v2-pro.mdx";
+
+<V2Pro />
 
 ## Why Use Commit Signing?
 
@@ -22,7 +21,9 @@ GPG commit signing provides several important benefits:
 
 ## How It Works
 
-When commit signing is enabled, Flipt automatically signs all commits to your flag configuration repository with a GPG key. These signatures can be verified by Git hosting services like GitHub, GitLab, and Gitea, displaying a "Verified" badge next to signed commits.
+When commit signing is enabled, Flipt automatically signs all commits to your flag configuration repository with a GPG key.
+
+These signatures can be verified by Git hosting services like GitHub, GitLab, and others, displaying a "Verified" badge next to signed commits.
 
 ## Prerequisites
 
@@ -32,67 +33,11 @@ Before enabling commit signing, ensure you have:
 2. **GPG Key Pair**: A valid GPG private/public key pair for signing
 3. **Flipt Pro License**: Commit signing is a Pro feature
 
-## GPG Key Setup
-
-### Generate a New GPG Key
-
-If you don't have a GPG key, create one specifically for Flipt:
-
-```bash
-# Generate a new GPG key
-gpg --full-generate-key
-
-# Select RSA and RSA (default)
-# Choose 4096 bits for maximum security
-# Set expiration (recommended: 2 years)
-# Enter details:
-#   Real name: Flipt Bot
-#   Email: flipt@yourcompany.com
-#   Comment: Flipt configuration signing
-```
-
-### Export the Private Key
-
-Export your private key for storage in your secrets provider:
-
-```bash
-# Export private key (replace with your key ID)
-gpg --export-secret-keys --armor flipt@yourcompany.com > flipt-signing-key.asc
-
-# The key ID can be found with:
-gpg --list-secret-keys flipt@yourcompany.com
-```
-
-### Store Key in Secrets Provider
-
-Store the private key securely using your configured secrets provider:
-
-**Vault Example:**
-
-```bash
-vault kv put secret/flipt/signing-key private_key=@flipt-signing-key.asc
-```
-
-**File Provider Example:**
-
-```bash
-cp flipt-signing-key.asc /etc/flipt/secrets/signing-key
-```
-
-### Upload Public Key
-
-Upload the public key to your Git hosting service:
-
-```bash
-# Export public key
-gpg --export --armor flipt@yourcompany.com > flipt-public-key.asc
-```
-
-Add this public key to:
-
-- **GitHub**: Settings → SSH and GPG keys → New GPG key
-- **GitLab**: User Settings → GPG Keys → Add key
-- **Gitea**: Settings → SSH/GPG Keys → Add GPG Key
+<Note>
+  For step-by-step instructions on setting up commit signing with GitHub and
+  other Git providers, see the [Commit Signing Setup
+  Guide](/v2/guides/operations/environments/commit-signing-setup).
+</Note>
 
 ## Configuration
 
@@ -111,242 +56,4 @@ storage:
       name: "Flipt Bot" # Signer name
       email: "flipt@yourcompany.com" # Signer email
       key_id: "flipt@yourcompany.com" # GPG key identifier
-```
-
-### Configuration Options
-
-| Option    | Description                                     | Default          |
-| --------- | ----------------------------------------------- | ---------------- |
-| `enabled` | Enable or disable commit signing                | `false`          |
-| `type`    | Signature type (currently only "gpg" supported) | `"gpg"`          |
-| `name`    | Name to use in Git commits                      | `"flipt"`        |
-| `email`   | Email to use in Git commits                     | `"dev@flipt.io"` |
-| `key_id`  | GPG key ID for identification                   | Required         |
-
-### Key Reference Options
-
-| Option     | Description                | Required |
-| ---------- | -------------------------- | -------- |
-| `provider` | Secrets provider name      | Yes      |
-| `path`     | Path to secret in provider | Yes      |
-| `key`      | Key name within the secret | Yes      |
-
-## Deployment Examples
-
-### Docker with File Secrets
-
-```yaml
-# docker-compose.yml
-services:
-  flipt:
-    image: flipt/flipt:latest
-    volumes:
-      - ./secrets:/etc/flipt/secrets:ro
-      - ./config.yml:/etc/flipt/config.yml:ro
-    environment:
-      - FLIPT_CONFIG_PATH=/etc/flipt/config.yml
-```
-
-```yaml
-# config.yml
-secrets:
-  providers:
-    file:
-      enabled: true
-      base_path: "/etc/flipt/secrets"
-
-storage:
-  default:
-    signature:
-      enabled: true
-      key_ref:
-        provider: "file"
-        path: "signing-key"
-      name: "Flipt Production"
-      email: "flipt-prod@company.com"
-      key_id: "flipt-prod@company.com"
-```
-
-### Kubernetes with Vault
-
-```yaml
-# deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: flipt
-spec:
-  template:
-    spec:
-      serviceAccountName: flipt
-      containers:
-        - name: flipt
-          image: flipt/flipt:latest
-          env:
-            - name: FLIPT_CONFIG_PATH
-              value: "/etc/flipt/config.yml"
-          volumeMounts:
-            - name: config
-              mountPath: /etc/flipt/config.yml
-              subPath: config.yml
-      volumes:
-        - name: config
-          configMap:
-            name: flipt-config
-```
-
-```yaml
-# config.yml in ConfigMap
-secrets:
-  providers:
-    vault:
-      enabled: true
-      address: "https://vault.company.com"
-      auth_method: "kubernetes"
-      role: "flipt"
-
-storage:
-  default:
-    signature:
-      enabled: true
-      key_ref:
-        provider: "vault"
-        path: "flipt/signing-key"
-        key: "private_key"
-      name: "Flipt Kubernetes"
-      email: "flipt-k8s@company.com"
-      key_id: "ABCD1234567890EF"
-```
-
-## Verification
-
-### Check Signed Commits
-
-After enabling signing, verify that commits are being signed:
-
-```bash
-# Clone your flag repository
-git clone https://github.com/company/flags.git
-cd flags
-
-# Check recent commits for signatures
-git log --show-signature -5
-
-# Look for GPG signature verification
-git verify-commit HEAD
-```
-
-### GitHub Verification
-
-On GitHub, signed commits will display:
-
-- ✅ **Verified** badge next to the commit
-- GPG key information when clicking the badge
-- Signature details in the commit view
-
-### Troubleshoot Verification
-
-If commits aren't showing as verified:
-
-1. **Check public key upload**: Ensure the public key is added to your Git hosting service
-2. **Verify email match**: The email in the GPG key must match the configured email
-3. **Confirm key validity**: Ensure the GPG key hasn't expired
-4. **Check key ID**: Verify the key_id matches your actual GPG key
-
-## Security Best Practices
-
-### Key Management
-
-- **Use dedicated keys**: Create separate GPG keys specifically for Flipt signing
-- **Set expiration dates**: Configure key expiration (1-2 years recommended)
-- **Regular rotation**: Rotate keys periodically and update your secrets provider
-- **Secure storage**: Store private keys only in secure secret management systems
-
-### Access Control
-
-- **Limit access**: Restrict who can access signing keys in your secrets provider
-- **Environment separation**: Use different keys for development, staging, and production
-- **Audit access**: Monitor who accesses signing keys and when
-- **Principle of least privilege**: Grant minimal necessary permissions
-
-### Operational Security
-
-- **Monitor signatures**: Regularly verify that commits are being signed correctly
-- **Backup keys**: Securely backup your GPG keys with proper encryption
-- **Revocation plan**: Have a process to revoke and replace compromised keys
-- **Team training**: Ensure team members understand how to verify signatures
-
-## Troubleshooting
-
-### Common Issues
-
-**Signing Failures**
-
-```
-Error: failed to sign commit: gpg key not found
-```
-
-- Verify the key exists in your secrets provider
-- Check the key reference path and key name
-- Ensure the secrets provider is accessible
-
-**Invalid Signatures**
-
-```
-Warning: commit signature verification failed
-```
-
-- Confirm the public key is uploaded to your Git hosting service
-- Verify the email in your GPG key matches the configured email
-- Check that the GPG key hasn't expired
-
-**Key Loading Errors**
-
-```
-Error: failed to load GPG private key
-```
-
-- Verify secrets provider connectivity
-- Check authentication credentials for your secrets provider
-- Ensure the private key is in valid ASCII armored format
-
-**Permission Errors**
-
-```
-Error: insufficient permissions to access secret
-```
-
-- Verify Flipt has the necessary permissions in your secrets provider
-- Check authentication method configuration
-- Review access policies for the signing key secret
-
-### Debug Configuration
-
-Enable debug logging to troubleshoot signing issues:
-
-```yaml
-log:
-  level: "debug"
-```
-
-This will show detailed information about:
-
-- GPG key loading attempts
-- Signature generation process
-- Secrets provider interactions
-- Authentication status
-
-### Validation Commands
-
-Test your configuration:
-
-```bash
-# Check if GPG key can be loaded
-gpg --import /path/to/private-key.asc
-
-# Verify key information
-gpg --list-secret-keys your-email@company.com
-
-# Test signing
-echo "test" | gpg --armor --sign --default-key your-email@company.com
 ```
