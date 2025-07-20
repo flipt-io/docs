@@ -80,6 +80,30 @@ Flipt v2 is a standalone binary that does not depend on any external services. T
 
 V2 does not require any database or cache by default. Even the git-backed storage is local by default either in memory or on disk. You can configure Flipt v2 to sync your local git-backed storage to a remote git repository such as GitHub, GitLab, or Bitbucket.
 
+### Secrets Management
+
+Flipt v2 introduces secure external secrets management, allowing you to store sensitive configuration data like API keys, tokens, and certificates outside of your main configuration files. This enhances security by centralizing secret management and reducing the risk of accidentally exposing sensitive data.
+
+Flipt v2 supports multiple secrets providers including:
+
+- **File Provider** - Store secrets in local files for development and simple deployments
+- **HashiCorp Vault** - Enterprise-grade secret management with advanced authentication and access controls
+- **More coming soon!**
+
+### Commit Signing
+
+Flipt v2 supports GPG commit signing to provide cryptographic verification of configuration changes. This feature ensures the authenticity and integrity of your feature flag modifications, creating a verifiable audit trail for compliance and security purposes.
+
+When commit signing is enabled, Flipt automatically signs all commits to your flag configuration repository with a GPG key. These signatures can be verified by Git hosting services like GitHub, GitLab, and others, displaying a "Verified" badge next to signed commits.
+
+Key benefits include:
+
+- **Authenticity Verification** - Prove who made configuration changes with cryptographic signatures
+- **Integrity Assurance** - Detect if commits have been tampered with after creation
+- **Compliance Support** - Meet regulatory requirements for change management and audit trails
+
+<Note>Commit signing is a paid feature and requires a commercial license.</Note>
+
 ### Declarative APIs
 
 Flipt v2 introduces a declarative API for managing feature flags and configurations. This allows you to manage your feature flags and configurations in a declarative way, using a simple JSON schema.

@@ -198,16 +198,16 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 
 #### Commit Signing
 
-| Property                                | Description                                     | Default        | Since  |
-| --------------------------------------- | ----------------------------------------------- | -------------- | ------ |
-| storage.[id].signature.enabled          | Enable or disable commit signing                | false          | v2.0.0 |
-| storage.[id].signature.type             | Signature type (currently only "gpg" supported) | "gpg"          | v2.0.0 |
-| storage.[id].signature.name             | Name to use in Git commits                      | "flipt"        | v2.0.0 |
-| storage.[id].signature.email            | Email to use in Git commits                     | "dev@flipt.io" | v2.0.0 |
-| storage.[id].signature.key_id           | GPG key ID for identification                   |                | v2.0.0 |
-| storage.[id].signature.key_ref.provider | Secrets provider name for GPG private key       |                | v2.0.0 |
-| storage.[id].signature.key_ref.path     | Path to secret in provider                      |                | v2.0.0 |
-| storage.[id].signature.key_ref.key      | Key name within the secret                      |                | v2.0.0 |
+| Property                                | Description                                     | Default | Since  |
+| --------------------------------------- | ----------------------------------------------- | ------- | ------ |
+| storage.[id].signature.enabled          | Enable or disable commit signing                | false   | v2.0.0 |
+| storage.[id].signature.type             | Signature type (currently only "gpg" supported) | "gpg"   | v2.0.0 |
+| storage.[id].signature.name             | Name to use in Git commits                      |         | v2.0.0 |
+| storage.[id].signature.email            | Email to use in Git commits                     |         | v2.0.0 |
+| storage.[id].signature.key_id           | GPG key ID for identification                   |         | v2.0.0 |
+| storage.[id].signature.key_ref.provider | Secrets provider name for GPG private key       |         | v2.0.0 |
+| storage.[id].signature.key_ref.path     | Path to secret in provider                      |         | v2.0.0 |
+| storage.[id].signature.key_ref.key      | Key name within the secret                      |         | v2.0.0 |
 
 ### Credentials
 
