@@ -389,6 +389,8 @@
                       "v2/configuration/overview",
                       "v2/configuration/environments",
                       "v2/configuration/storage",
+                      "v2/configuration/secrets",
+                      "v2/configuration/commit-signing",
                       "v2/configuration/authentication",
                       "v2/configuration/authorization",
                       "v2/configuration/analytics",
@@ -448,7 +450,8 @@
                             "group": "Environments",
                             "pages": [
                               "v2/guides/operations/environments/git-sync",
-                              "v2/guides/operations/environments/git-scm"
+                              "v2/guides/operations/environments/git-scm",
+                              "v2/guides/operations/environments/commit-signing-setup"
                             ]
                           }
                         ]

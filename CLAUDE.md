@@ -4,7 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is the documentation repository for Flipt, a feature flag and experimentation platform. The documentation is built using [Mintlify](https://mintlify.com/) and hosted at [flipt.io/docs](https://www.flipt.io/docs).
+This is the **user-facing** documentation repository for Flipt, a feature flag and experimentation platform. The documentation is built using [Mintlify](https://mintlify.com/) and hosted at [flipt.io/docs](https://www.flipt.io/docs).
+
+## General Guidelines
+
+- Use the [Microsoft Writing Style Guide](https://learn.microsoft.com/en-us/style-guide/welcome/) for all writing.
+- Make sure to use the correct tone and style for the target audience (developers, operators, etc.).
+- While the audience is technical, try to avoid using technical jargon and explain concepts in a way that is easy to understand.
+- **IMPORTANT**: Remember this is user-facing documentation, so we need to be very clear and concise and not go too deep into the technical details, but instead focus on how to use the product and how to configure it.
 
 ## Development Commands
 

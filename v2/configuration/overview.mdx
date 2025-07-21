@@ -125,6 +125,7 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | ----------------------------- | ------------------------------------------------------------------------------ | ------------------- | ------ |
 | cors.enabled                  | Enable CORS support                                                            | false               | v2.0.0 |
 | cors.allowed_origins          | Sets Access-Control-Allow-Origin header on server                              | "\*" (all domains)  | v2.0.0 |
+| cors.allowed_headers          | Sets Access-Control-Allow-Headers header on server                             | "\*" (all headers)  | v2.0.0 |
 | meta.check_for_updates        | Enable check for newer versions of Flipt on startup                            | true                | v2.0.0 |
 | meta.telemetry_enabled        | Enable anonymous telemetry data (see [Telemetry](/v2/configuration/telemetry)) | true                | v2.0.0 |
 | meta.state_directory          | Directory on the host to store local state                                     | $HOME/.config/flipt | v2.0.0 |
@@ -161,6 +162,7 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | Property         | Description                         | Default | Since  |
 | ---------------- | ----------------------------------- | ------- | ------ |
 | ui.default_theme | Sets the default UI theme for users | system  | v2.0.0 |
+| ui.topbar.color  | Sets the color of the topbar        |         | v2.0.0 |
 
 ### Environments
 
@@ -193,8 +195,19 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | storage.[id].ca_cert_path      | The CA certificate path for the remote URL                          |                     | v2.0.0 |
 | storage.[id].insecure_skip_tls | Skip verifying the server's certificate chain (avoid in production) | false               | v2.0.0 |
 | storage.[id].credentials       | The id of the credentials to use for the remote URL                 |                     | v2.0.0 |
-| storage.[id].signature.name    | The name of the author to use from the commit signature             |                     | v2.0.0 |
-| storage.[id].signature.email   | The email of the author to use from the commit signature            |                     | v2.0.0 |
+
+#### Commit Signing
+
+| Property                                | Description                                     | Default | Since  |
+| --------------------------------------- | ----------------------------------------------- | ------- | ------ |
+| storage.[id].signature.enabled          | Enable or disable commit signing                | false   | v2.0.0 |
+| storage.[id].signature.type             | Signature type (currently only "gpg" supported) | "gpg"   | v2.0.0 |
+| storage.[id].signature.name             | Name to use in Git commits                      |         | v2.0.0 |
+| storage.[id].signature.email            | Email to use in Git commits                     |         | v2.0.0 |
+| storage.[id].signature.key_id           | GPG key ID for identification                   |         | v2.0.0 |
+| storage.[id].signature.key_ref.provider | Secrets provider name for GPG private key       |         | v2.0.0 |
+| storage.[id].signature.key_ref.path     | Path to secret in provider                      |         | v2.0.0 |
+| storage.[id].signature.key_ref.key      | Key name within the secret                      |         | v2.0.0 |
 
 ### Credentials
 
@@ -209,6 +222,29 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | credentials.[id].ssh.private_key_bytes        | (Alternative) Raw private key bytes                                |         | v2.0.0 |
 | credentials.[id].ssh.insecure_ignore_host_key | Skip verifying the known hosts key (avoid in production)           | false   | v2.0.0 |
 | credentials.[id].access_token                 | The token to use for authentication                                |         | v2.0.0 |
+
+### Secrets
+
+| Property                       | Description                            | Default | Since  |
+| ------------------------------ | -------------------------------------- | ------- | ------ |
+| secrets.providers.[id].enabled | Enable or disable the secrets provider | false   | v2.0.0 |
+
+#### Secrets Provider: File
+
+| Property                         | Description                                  | Default            | Since  |
+| -------------------------------- | -------------------------------------------- | ------------------ | ------ |
+| secrets.providers.file.base_path | Base directory path for storing secret files | /etc/flipt/secrets | v2.0.0 |
+
+#### Secrets Provider: Vault
+
+| Property                            | Description                                      | Default | Since  |
+| ----------------------------------- | ------------------------------------------------ | ------- | ------ |
+| secrets.providers.vault.address     | URL address of the Vault server                  |         | v2.0.0 |
+| secrets.providers.vault.auth_method | Authentication method                            | token   | v2.0.0 |
+| secrets.providers.vault.token       | Vault token for authentication                   |         | v2.0.0 |
+| secrets.providers.vault.role        | Role name for authentication                     |         | v2.0.0 |
+| secrets.providers.vault.mount       | Vault mount path for secrets                     | secret  | v2.0.0 |
+| secrets.providers.vault.namespace   | Vault namespace for enterprise Vault deployments |         | v2.0.0 |
 
 ### Authentication
 

@@ -1,0 +1,59 @@
+---
+title: Commit Signing
+description: GPG commit signing for enhanced security and change verification
+---
+
+Flipt v2 supports GPG commit signing to provide cryptographic verification of configuration changes. This feature ensures the authenticity and integrity of your feature flag modifications, creating a verifiable audit trail for compliance and security purposes.
+
+import V2Pro from "/snippets/v2-pro.mdx";
+
+<V2Pro />
+
+## Why Use Commit Signing?
+
+GPG commit signing provides several important benefits:
+
+- **Authenticity Verification**: Prove who made configuration changes with cryptographic signatures
+- **Integrity Assurance**: Detect if commits have been tampered with after creation
+- **Compliance Support**: Meet regulatory requirements for change management and audit trails
+- **Trust Enhancement**: Team members can verify the source of feature flag changes
+- **Non-repudiation**: Prevent disputes about who made specific changes
+
+## How It Works
+
+When commit signing is enabled, Flipt automatically signs all commits to your flag configuration repository with a GPG key.
+
+These signatures can be verified by Git hosting services like GitHub, GitLab, and others, displaying a "Verified" badge next to signed commits.
+
+## Prerequisites
+
+Before enabling commit signing, ensure you have:
+
+1. **Secrets Management Configured**: GPG keys are stored securely using [secrets management](/v2/configuration/secrets)
+2. **GPG Key Pair**: A valid GPG private/public key pair for signing
+3. **Flipt Pro License**: Commit signing is a Pro feature
+
+<Note>
+  For step-by-step instructions on setting up commit signing with GitHub and
+  other Git providers, see the [Commit Signing Setup
+  Guide](/v2/guides/operations/environments/commit-signing-setup).
+</Note>
+
+## Configuration
+
+Configure commit signing in your Flipt configuration:
+
+```yaml
+storage:
+  default:
+    signature:
+      enabled: true
+      type: "gpg"
+      key_ref:
+        provider: "vault" # Your secrets provider
+        path: "flipt/signing-key" # Path to private key in secrets
+        key: "private_key" # Key name within the secret
+      name: "Flipt Bot" # Signer name
+      email: "flipt@yourcompany.com" # Signer email
+      key_id: "flipt@yourcompany.com" # GPG key identifier
+```
