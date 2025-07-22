@@ -24,11 +24,24 @@ The database connection can be configured as follows:
   Linux and `~/Library/Application Support/flipt/flipt.db` on macOS.
 </Note>
 
-```yaml
-db:
-  # file: informs flipt to use SQLite
-  url: file:/var/opt/flipt/flipt.db
-```
+<Tabs>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_DB_URL="file:/var/opt/flipt/flipt.db"
+    ```
+
+  </Tab>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    db:
+      # file: informs flipt to use SQLite
+      url: file:/var/opt/flipt/flipt.db
+    ```
+
+  </Tab>
+</Tabs>
 
 ### LibSQL
 
@@ -36,11 +49,24 @@ See our [libSQL Example](https://github.com/flipt-io/flipt/blob/main/examples/da
 
 #### Local
 
-```yaml
-db:
-  # libsql: informs flipt to use libSQL
-  url: libsql://file:/var/opt/flipt/flipt.db
-```
+<Tabs>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_DB_URL="libsql://file:/var/opt/flipt/flipt.db"
+    ```
+
+  </Tab>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    db:
+      # libsql: informs flipt to use libSQL
+      url: libsql://file:/var/opt/flipt/flipt.db
+    ```
+
+  </Tab>
+</Tabs>
 
 #### Remote
 
@@ -50,31 +76,83 @@ db:
   to access the database.
 </Note>
 
-```yaml
-db: # http(s): informs flipt to use libSQL over HTTP(s) via sqld/Turso
-  url: https://db-[your-github-name].turso.io?authToken=[your-auth-token]
-```
+<Tabs>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_DB_URL="https://db-[your-github-name].turso.io?authToken=[your-auth-token]"
+    ```
+
+  </Tab>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    db: # http(s): informs flipt to use libSQL over HTTP(s) via sqld/Turso
+      url: https://db-[your-github-name].turso.io?authToken=[your-auth-token]
+    ```
+
+  </Tab>
+</Tabs>
 
 ### PostgreSQL
 
-```yaml
-db:
-  url: postgres://postgres@localhost:5432/flipt?sslmode=disable
-```
+<Tabs>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_DB_URL="postgres://postgres@localhost:5432/flipt?sslmode=disable"
+    ```
+
+  </Tab>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    db:
+      url: postgres://postgres@localhost:5432/flipt?sslmode=disable
+    ```
+
+  </Tab>
+</Tabs>
 
 ### CockroachDB
 
-```yaml
-db:
-  url: cockroach://root@localhost:26257/flipt?sslmode=disable
-```
+<Tabs>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_DB_URL="cockroach://root@localhost:26257/flipt?sslmode=disable"
+    ```
+
+  </Tab>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    db:
+      url: cockroach://root@localhost:26257/flipt?sslmode=disable
+    ```
+
+  </Tab>
+</Tabs>
 
 ### MySQL
 
-```yaml
-db:
-  url: mysql://mysql@localhost:3306/flipt
-```
+<Tabs>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_DB_URL="mysql://mysql@localhost:3306/flipt"
+    ```
+
+  </Tab>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    db:
+      url: mysql://mysql@localhost:3306/flipt
+    ```
+
+  </Tab>
+</Tabs>
 
 ### Migrations
 
