@@ -535,6 +535,9 @@
     "light": "/logo/light-logo.svg",
     "dark": "/logo/dark-logo.svg"
   },
+  "banner": {
+    "content": "⚠️ **Flipt Cloud is shutting down on August 29, 2025.** [Learn more about this decision and next steps in our blog post](https://blog.flipt.io/sunsetting-flipt-cloud)."
+  },
   "api": {
     "openapi": "https://raw.githubusercontent.com/flipt-io/flipt/main/openapi.yaml",
     "playground": {
@@ -553,13 +556,7 @@
       "dark": "#121212"
     }
   },
-  "navbar": {
-    "primary": {
-      "type": "button",
-      "label": "Login to Flipt Cloud",
-      "href": "https://flipt.cloud/login"
-    }
-  },
+  "navbar": {},
   "footer": {
     "socials": {
       "website": "https://www.flipt.io/",
