@@ -109,11 +109,4 @@ Flipt provides a number of client-side SDKs to help you integrate with Flipt in 
 
 By default, the SDKs will use a polling mechanism to sync the state of the flags with the Flipt server. You can set the polling interval using the `updateInterval` option in the SDK's configuration.
 
-If you are a [Flipt Cloud](/cloud/overview) user, you can enable `streaming` mode, which will make the SDK subscribe to changes on the Flipt server and update the state of the flags accordingly in real-time.
-
-<Card href="/cloud/overview" title="Flipt Cloud" icon="cloud">
-  Flipt Cloud is a fully managed feature management platform that enables you to
-  continue to use Flipt's feature management capabilities with zero maintenance.
-</Card>
-
-Streaming is available for all Flipt Cloud plans, even the free tier.
+Note: Flipt Cloud offered `streaming` mode for real-time flag updates, but Flipt Cloud is shutting down on August 29, 2025. If you're currently using Flipt Cloud, please read our [blog post](https://blog.flipt.io/sunsetting-flipt-cloud) for guidance on migrating to self-hosted Flipt.
