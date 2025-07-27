@@ -372,19 +372,22 @@
                 "groups": [
                   {
                     "group": "Getting Started",
+                    "icon": "rocket",
                     "pages": [
                       "/v2/introduction",
                       "/v2/quickstart",
                       "/v2/concepts",
-                      "v2/installation"
+                      "/v2/installation"
                     ]
                   },
                   {
-                    "group": "Licensing & Pro Features",
+                    "group": "Pro Features",
+                    "icon": "crown",
                     "pages": ["/v2/licensing", "/v2/pro"]
                   },
                   {
                     "group": "Configuration",
+                    "icon": "gear",
                     "pages": [
                       "v2/configuration/overview",
                       "v2/configuration/environments",
@@ -401,6 +404,7 @@
                   },
                   {
                     "group": "CLI",
+                    "icon": "terminal",
                     "pages": [
                       "v2/cli/overview",
                       {
@@ -424,6 +428,7 @@
                   },
                   {
                     "group": "Guides",
+                    "icon": "book",
                     "pages": [
                       {
                         "group": "User Guides",
@@ -464,6 +469,7 @@
                   },
                   {
                     "group": "Integration",
+                    "icon": "plug",
                     "pages": [
                       "v2/integration/overview",
                       {
