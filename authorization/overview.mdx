@@ -187,12 +187,14 @@ The `input.request` field contains information about the incoming request. This 
 - `namespace`: The [namespace](/concepts#namespaces) in Flipt of the resource being accessed. If no namespace is provided, the default namespace is used, or it is not applicable as the resource is not namespace scoped (e.g. authentication)
 
 - `resource`: The resource being accessed. This can be one of:
+
   - `namespace`: Access to [namespace](/concepts#namespaces) resources (e.g., listing or creating namespaces).
   - `flag`: Access to [flag](/concepts#flags) resources and sub-resources (e.g., listing or creating flags, variants, rules or rollouts).
   - `segment`: Access to [segment](/concepts#segments) resources and sub-resources (e.g., listing or creating segments, constraints or distributions).
   - `authentication`: Access to authentication resources (e.g., listing or creating client tokens).
 
 - `subject`: The (optional) nested subject of the request. This can be one of:
+
   - `namespace`: Access to [namespace](/concepts#namespaces) resources.
   - `flag`: Access to [flag](/concepts#flags) resources.
     - `variant`: Access to flag [variant](/concepts#variant-flags) resources.

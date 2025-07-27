@@ -12,6 +12,7 @@ This is the **user-facing** documentation repository for Flipt, a feature flag a
 - Make sure to use the correct tone and style for the target audience (developers, operators, etc.).
 - While the audience is technical, try to avoid using technical jargon and explain concepts in a way that is easy to understand.
 - **IMPORTANT**: Remember this is user-facing documentation, so we need to be very clear and concise and not go too deep into the technical details, but instead focus on how to use the product and how to configure it.
+- Always run `npm run lint` and `npm run format` before committing any changes
 
 ## Development Commands
 

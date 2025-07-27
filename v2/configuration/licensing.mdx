@@ -20,6 +20,8 @@ You can configure the license key in the Flipt v2 configuration file or via envi
     ```yaml
     license:
       key: "your-license-key"
+      # Optional: Path to offline license file for annual licenses
+      file: "/path/to/license.lic"
     ```
 
   </Tab>
@@ -27,6 +29,8 @@ You can configure the license key in the Flipt v2 configuration file or via envi
 
     ```bash
     FLIPT_LICENSE_KEY="your-license-key"
+    # Optional: Path to offline license file for annual licenses
+    FLIPT_LICENSE_FILE="/path/to/license.lic"
     ```
 
   </Tab>
@@ -39,12 +43,21 @@ You can configure the license key in the Flipt v2 configuration file or via envi
 
 ## Acquiring a License
 
-You can get a 14 day trial license for the Pro edition via our [Flipt v2 Pro License](https://getflipt.co/pro) purchase page.
+You can get a 14 day trial license for the Pro edition by purchasing a [monthly](https://getflipt.co/pro/monthly) license. Note that trials are only available for monthly licenses, not [annual](https://getflipt.co/pro/annual) licenses.
 
 The license will be emailed to you after checkout. After the trial period, you will need to provide a payment method to continue using the Pro edition.
 
+### License Types
+
+Flipt v2 supports both **monthly** and **annual** commercial licenses:
+
+- **Monthly licenses**: Require continuous internet connectivity for validation
+- **Annual licenses**: Support offline validation using license files for air-gapped environments
+
 <Tip>
-  You can also purchase a license by contacting us at
+  Choose [monthly](https://getflipt.co/pro/monthly) for standard subscription or
+  [annual](https://getflipt.co/pro/annual) for offline validation support. You
+  can also purchase a license by contacting us at
   [support@flipt.io](mailto:support@flipt.io).
 </Tip>
 
@@ -56,7 +69,7 @@ This means that you will lose functionality such as [Merge Proposals](/v2/introd
 
 ### License Renewal
 
-Paid licenses will be renewed automatically on a monthly basis. You can cancel the subscription at any time.
+Paid licenses will be renewed automatically based on your subscription type (monthly or annual). You can cancel the subscription at any time.
 
 <Warning>
   Cancellations take effect immediately and you will lose access to paid
@@ -78,10 +91,20 @@ Flipt v2 will continuously validate the license key every 12 hours.
 
 This means that you will **need to have an active network connection from the Flipt v2 instance to the internet** to validate the license key.
 
+### Offline License Validation
+
+For **annual license purchases**, Flipt v2 supports offline license validation using cryptographically signed license files. This allows you to run Flipt v2 in air-gapped environments without internet connectivity.
+
+To use offline validation:
+
+1. Purchase an annual license
+2. Download the provided license file (.lic)
+3. Configure the `file` path in your license configuration
+4. Restart your Flipt v2 instance
+
 <Note>
-  We are working on a solution to allow for offline validation of the license
-  key. If you have a specific use case that requires offline validation, please
-  contact us at [support@flipt.io](mailto:support@flipt.io).
+  Offline license validation is only available for annual license purchases.
+  Monthly licenses require continuous internet connectivity for validation.
 </Note>
 
 ### License Expiration
