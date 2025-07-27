@@ -371,17 +371,17 @@
                 "anchor": "Documentation",
                 "groups": [
                   {
-                    "group": "Overview",
+                    "group": "Getting Started",
                     "pages": [
                       "/v2/introduction",
                       "/v2/quickstart",
                       "/v2/concepts",
-                      "/v2/licensing"
+                      "v2/installation"
                     ]
                   },
                   {
-                    "group": "Installation",
-                    "pages": ["v2/installation/overview"]
+                    "group": "Licensing & Pro Features",
+                    "pages": ["/v2/licensing", "/v2/pro"]
                   },
                   {
                     "group": "Configuration",

@@ -13,6 +13,7 @@ This is the **user-facing** documentation repository for Flipt, a feature flag a
 - While the audience is technical, try to avoid using technical jargon and explain concepts in a way that is easy to understand.
 - **IMPORTANT**: Remember this is user-facing documentation, so we need to be very clear and concise and not go too deep into the technical details, but instead focus on how to use the product and how to configure it.
 - Always run `npm run lint` and `npm run format` before committing any changes
+- Run `mint dev` to spin up a docs preview page (long-running process) and use the puppeteer MCP tools (if available) to view the docs in a browser
 
 ## Development Commands
 
