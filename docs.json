@@ -308,6 +308,11 @@
                 "pages": ["changelog/overview"]
               },
               {
+                "anchor": "AI Context",
+                "href": "https://docs.flipt.io/llms.txt",
+                "icon": "robot"
+              },
+              {
                 "anchor": "Blog",
                 "href": "https://blog.flipt.io",
                 "icon": "newspaper"
@@ -371,20 +376,24 @@
                 "anchor": "Documentation",
                 "groups": [
                   {
-                    "group": "Overview",
+                    "group": "Getting Started",
+                    "icon": "rocket",
                     "pages": [
                       "/v2/introduction",
                       "/v2/quickstart",
                       "/v2/concepts",
-                      "/v2/licensing"
+                      "/v2/installation"
                     ]
                   },
                   {
-                    "group": "Installation",
-                    "pages": ["v2/installation/overview"]
+                    "group": "Pro Features",
+                    "tag": "NEW",
+                    "icon": "crown",
+                    "pages": ["/v2/licensing", "/v2/pro"]
                   },
                   {
                     "group": "Configuration",
+                    "icon": "gear",
                     "pages": [
                       "v2/configuration/overview",
                       "v2/configuration/environments",
@@ -401,6 +410,7 @@
                   },
                   {
                     "group": "CLI",
+                    "icon": "terminal",
                     "pages": [
                       "v2/cli/overview",
                       {
@@ -424,6 +434,7 @@
                   },
                   {
                     "group": "Guides",
+                    "icon": "book",
                     "pages": [
                       {
                         "group": "User Guides",
@@ -464,6 +475,7 @@
                   },
                   {
                     "group": "Integration",
+                    "icon": "plug",
                     "pages": [
                       "v2/integration/overview",
                       {
@@ -475,6 +487,11 @@
                     ]
                   }
                 ]
+              },
+              {
+                "anchor": "AI Context",
+                "href": "https://docs.flipt.io/llms.txt",
+                "icon": "robot"
               },
               {
                 "anchor": "Blog",
