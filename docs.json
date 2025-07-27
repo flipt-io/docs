@@ -308,6 +308,11 @@
                 "pages": ["changelog/overview"]
               },
               {
+                "anchor": "AI Context",
+                "href": "https://docs.flipt.io/llms.txt",
+                "icon": "robot"
+              },
+              {
                 "anchor": "Blog",
                 "href": "https://blog.flipt.io",
                 "icon": "newspaper"
@@ -382,6 +387,7 @@
                   },
                   {
                     "group": "Pro Features",
+                    "tag": "NEW",
                     "icon": "crown",
                     "pages": ["/v2/licensing", "/v2/pro"]
                   },
@@ -481,6 +487,11 @@
                     ]
                   }
                 ]
+              },
+              {
+                "anchor": "AI Context",
+                "href": "https://docs.flipt.io/llms.txt",
+                "icon": "robot"
               },
               {
                 "anchor": "Blog",
