@@ -370,7 +370,6 @@
         "tabs": [
           {
             "tab": "Open Source",
-            "icon": "book-open",
             "anchors": [
               {
                 "anchor": "Documentation",
@@ -389,7 +388,7 @@
                     "group": "Pro Features",
                     "tag": "NEW",
                     "icon": "crown",
-                    "pages": ["/v2/licensing", "/v2/pro"]
+                    "pages": ["/v2/pro", "/v2/licensing"]
                   },
                   {
                     "group": "Configuration",

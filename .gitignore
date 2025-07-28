@@ -6,3 +6,5 @@ node_modules
 .vale/styles/*
 !.vale/styles/Flipt
 !.vale/styles/Openly
+
+.scratch
