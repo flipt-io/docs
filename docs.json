@@ -552,7 +552,7 @@
     "dark": "/logo/dark-logo.svg"
   },
   "banner": {
-    "content": "⚠️ **Flipt Cloud is shutting down on August 29, 2025.** [Learn more about this decision and next steps in our blog post](https://blog.flipt.io/sunsetting-flipt-cloud).",
+    "content": "⚠️ **Flipt Cloud is shutting down on August 29, 2025.** Learn more about this decision and next steps in our [blog post](https://blog.flipt.io/sunsetting-flipt-cloud).",
     "dismissible": true
   },
   "api": {
