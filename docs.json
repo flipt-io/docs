@@ -8,6 +8,13 @@
     "dark": "#4F3292"
   },
   "favicon": "/favicon.svg",
+  "seo": {
+    "indexing": "all",
+    "metatags": {
+      "og:type": "website",
+      "og:site_name": "Flipt Docs"
+    }
+  },
   "navigation": {
     "versions": [
       {
@@ -22,7 +29,10 @@
                 "groups": [
                   {
                     "group": "Overview",
-                    "pages": ["introduction", "concepts"]
+                    "pages": [
+                      "introduction",
+                      "concepts"
+                    ]
                   },
                   {
                     "group": "Use Cases",
@@ -167,7 +177,9 @@
                   },
                   {
                     "group": "Authorization",
-                    "pages": ["authorization/overview"]
+                    "pages": [
+                      "authorization/overview"
+                    ]
                   },
                   {
                     "group": "Operations",
@@ -194,7 +206,9 @@
                 "groups": [
                   {
                     "group": "Overview",
-                    "pages": ["reference/overview"]
+                    "pages": [
+                      "reference/overview"
+                    ]
                   },
                   {
                     "group": "Authentication",
@@ -305,7 +319,9 @@
               {
                 "anchor": "Changelog",
                 "icon": "clock",
-                "pages": ["changelog/overview"]
+                "pages": [
+                  "changelog/overview"
+                ]
               },
               {
                 "anchor": "AI Context",
@@ -388,7 +404,10 @@
                     "group": "Pro Features",
                     "tag": "NEW",
                     "icon": "crown",
-                    "pages": ["/v2/pro", "/v2/licensing"]
+                    "pages": [
+                      "/v2/pro",
+                      "/v2/licensing"
+                    ]
                   },
                   {
                     "group": "Configuration",
@@ -468,7 +487,9 @@
                       },
                       {
                         "group": "Migration Guides",
-                        "pages": ["v2/guides/migration/cloud/flipt-cloud-to-v2"]
+                        "pages": [
+                          "v2/guides/migration/cloud/flipt-cloud-to-v2"
+                        ]
                       }
                     ]
                   },
@@ -479,7 +500,9 @@
                       "v2/integration/overview",
                       {
                         "group": "Server-Side SDKs",
-                        "pages": ["v2/integration/server/rest"]
+                        "pages": [
+                          "v2/integration/server/rest"
+                        ]
                       },
                       "v2/integration/client",
                       "v2/integration/openfeature"
