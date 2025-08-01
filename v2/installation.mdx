@@ -202,13 +202,11 @@ flipt:
     storage:
       default:
         backend:
-          type: local
-          path: "."
+          type: memory
 ```
 
 <Note>
-  This example uses local storage. To configure Git repository synchronization,
-  see the [Git Storage guide](/v2/guides/operations/environments/git-sync).
+  This example uses memory storage which works out-of-the-box without requiring a Git repository. For production use with Git-backed storage, see the [Git Storage guide](/v2/guides/operations/environments/git-sync).
 </Note>
 
 For comprehensive deployment instructions and configuration examples, see the [Deploy Flipt v2 to Kubernetes](/v2/guides/operations/deployment/deploy-to-kubernetes) guide.

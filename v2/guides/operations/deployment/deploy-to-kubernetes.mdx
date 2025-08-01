@@ -71,20 +71,16 @@ flipt:
     storage:
       default:
         backend:
-          type: local
-          path: "."
+          type: memory
 ```
 
 This example configures:
 
 - Log level to 'INFO'
-- Local storage backend that serves flags from the local filesystem
+- Memory storage backend for development and testing
 
 <Note>
-  This example uses local storage for simplicity. To configure Git repository
-  synchronization, see the [Git Storage
-  guide](/v2/guides/operations/environments/git-sync) for details on setting up
-  remote Git sync.
+  This example uses memory storage which works out-of-the-box without requiring a Git repository. For production use with Git-backed storage, see the [Git Storage guide](/v2/guides/operations/environments/git-sync) for setup details.
 </Note>
 
 You can adjust this file to include any configuration values you need based on the [v2 configuration documentation](/v2/configuration/overview).
@@ -156,8 +152,7 @@ In the output of this command, you should see the configuration values you set i
   "storage": {
     "default": {
       "backend": {
-        "type": "local",
-        "path": "."
+        "type": "memory"
       }
     }
   },
