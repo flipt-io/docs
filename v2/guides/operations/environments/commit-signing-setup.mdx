@@ -21,7 +21,7 @@ import V2Pro from "/snippets/v2-pro.mdx";
   Gitea, and other Git providers.
 </Note>
 
-## Step 1: Generate a GPG Key
+## 1. Generate a GPG Key
 
 If you don't have a GPG key, create one specifically for Flipt:
 
@@ -38,7 +38,7 @@ gpg --full-generate-key
 #   Comment: Flipt configuration signing
 ```
 
-## Step 2: Export the Private Key
+## 2. Export the Private Key
 
 Export your private key for storage in your secrets provider:
 
@@ -50,7 +50,7 @@ gpg --export-secret-keys --armor flipt@yourcompany.com > flipt-signing-key.asc
 gpg --list-secret-keys flipt@yourcompany.com
 ```
 
-## Step 3: Store Key in Secrets Provider
+## 3. Store Key in Secrets Provider
 
 Store the private key securely using your configured secrets provider:
 
@@ -60,7 +60,7 @@ Store the private key securely using your configured secrets provider:
 vault kv put secret/flipt/signing-key private_key=@flipt-signing-key.asc
 ```
 
-## Step 4: Upload Public Key to GitHub
+## 4. Upload Public Key to GitHub
 
 1. Export your public key:
 
@@ -76,7 +76,7 @@ gpg --export --armor flipt@yourcompany.com > flipt-public-key.asc
 
 ![GitHub GPG Key Setup](/v2/images/guides/operations/environments/github_gpg_key.png)
 
-## Step 5: Configure Flipt
+## 5. Configure Flipt
 
 Add commit signing configuration to your Flipt configuration file:
 
@@ -95,13 +95,13 @@ storage:
       key_id: "flipt@yourcompany.com" # GPG key identifier
 ```
 
-## Step 6: Deploy and Start Flipt
+## 6. Deploy and Start Flipt
 
 Deploy your updated configuration and start or restart your Flipt server.
 
 Flipt will now automatically sign all commits to your flag configuration repository.
 
-## Step 7: Verify Commit Signing
+## 7. Verify Commit Signing
 
 After enabling signing, verify that new commits are being signed:
 

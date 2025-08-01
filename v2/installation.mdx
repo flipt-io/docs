@@ -4,7 +4,7 @@ description: "Multiple ways to install and run Flipt v2 on your own infrastructu
 mode: "wide"
 ---
 
-Flipt v2 is a single binary that can be run on any Linux or macOS (arm64) host. You can install and try out Flipt v2 in a two different ways:
+Flipt v2 is a single binary that can be run on any Linux or macOS (arm64) host. You can install and try out Flipt v2 in a few different ways:
 
 <CodeGroup>
 
@@ -20,17 +20,23 @@ docker run -d \
     docker.flipt.io/flipt/flipt:v2-beta
 ```
 
+```console Kubernetes/Helm
+helm repo add flipt https://helm.flipt.io
+helm install my-flipt-v2 flipt/flipt-v2
+```
+
 </CodeGroup>
 
 For more details on each installation method, see the sections below.
 
 - [Docker](#docker)
 - [Binary](#binary)
+- [Kubernetes/Helm](#kubernetes%2Fhelm)
 
 <Info>
-  Flipt v2 is currently in beta. Once we release a stable version, we'll update
-  the installation instructions to include Helm, and Homebrew installation
-  options.
+  Flipt v2 is currently in beta. Helm installation is now available for
+  Kubernetes deployments. Once we release a stable version, we'll add Homebrew
+  installation options.
 </Info>
 
 ## Docker
@@ -139,3 +145,65 @@ You can find the binaries for each architecture in the [Latest Release](https://
 The [Docker image](https://hub.docker.com/r/flipt/flipt/tags) for Flipt v2 is multi-arch and supports both **x86-64** and **ARM64** architectures on **Linux**.
 
 If you need a different architecture, please open an issue on the [GitHub repository](https://github.com/flipt-io/flipt/issues) and we will try to accommodate your request.
+
+## Kubernetes/Helm
+
+Deploy Flipt v2 to Kubernetes using the official Helm chart. This method is ideal for production deployments and provides easy configuration management.
+
+### Prerequisites
+
+- Kubernetes cluster (local or remote)
+- Helm v3.x installed
+- `kubectl` configured to access your cluster
+
+### Installing
+
+Add the Flipt Helm repository and install Flipt v2:
+
+```console
+# Add the Flipt Helm repository
+helm repo add flipt https://helm.flipt.io
+helm repo update
+
+# Install Flipt v2
+helm install my-flipt-v2 flipt/flipt-v2
+
+# Or with custom configuration
+helm install my-flipt-v2 flipt/flipt-v2 -f values.yaml
+```
+
+<Note>
+  The chart name is `flipt-v2`, which is separate from the v1 `flipt` chart.
+  This ensures v2-specific configurations and compatibility.
+</Note>
+
+### Key Features
+
+Flipt v2's Helm chart includes:
+
+- **Git-native storage**: Works out-of-the-box without external databases
+- **Environment support**: Deploy multiple environments from different Git branches
+- **Flexible configuration**: Support for all v2 configuration options
+- **Production ready**: Includes security, observability, and scaling options
+
+### Configuration
+
+Create a `values.yaml` file to customize your deployment:
+
+```yaml
+flipt:
+  config:
+    log:
+      level: INFO
+    storage:
+      type: git
+      git:
+        repository: https://github.com/your-org/flags-repo.git
+        ref: main
+    analytics:
+      storage:
+        clickhouse:
+          enabled: false
+```
+
+For comprehensive deployment instructions and configuration examples, see the [Deploy Flipt v2 to Kubernetes](/v2/guides/operations/deployment/deploy-to-kubernetes) guide.

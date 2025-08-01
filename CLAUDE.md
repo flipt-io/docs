@@ -40,6 +40,15 @@ Changes are automatically deployed to production when pushed to the main branch.
 - Spelling exceptions in `.vale/styles/Flipt/spelling-exceptions.txt` (lowercase, alphabetical)
 - Vale configuration in `.vale.ini`
 
+### Link Formatting
+
+- **Always use markdown link syntax**: `[Link Text](https://example.com)` instead of raw URLs
+- **Use descriptive link text**: `[Installation guide](https://helm.sh/docs/intro/install/)` instead of `(Installation guide: https://helm.sh/docs/intro/install/)`
+- **Keep link text concise**: Use terms like "Download", "Installation guide", "Documentation" rather than full sentences
+- **Examples**:
+  - ✅ Good: `Docker installed ([Download](https://www.docker.com/products/docker-desktop))`
+  - ❌ Bad: `Docker installed (Download: https://www.docker.com/products/docker-desktop)`
+
 ### Commit Messages
 
 - Follow Conventional Commits format

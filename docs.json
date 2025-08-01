@@ -452,6 +452,7 @@
                   },
                   {
                     "group": "Guides",
+                    "tag": "NEW",
                     "icon": "book",
                     "pages": [
                       {
@@ -469,6 +470,12 @@
                       {
                         "group": "Operations Guides",
                         "pages": [
+                          {
+                            "group": "Deployment",
+                            "pages": [
+                              "v2/guides/operations/deployment/deploy-to-kubernetes"
+                            ]
+                          },
                           {
                             "group": "Authentication",
                             "pages": [
