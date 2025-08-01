@@ -69,16 +69,20 @@ flipt:
     log:
       level: INFO
     storage:
-      type: git
-      git:
-        repository: https://github.com/your-org/your-flags-repo.git
-        ref: main
+      default:
+        remote: "https://github.com/your-org/your-flags-repo.git"
+        branch: "main"
+        poll_interval: "30s"
+        backend:
+          type: local
+          path: "."
 ```
 
 This example configures:
 
 - Log level to 'INFO'
-- Git storage with a specific repository (optional - defaults to local Git repository)
+- Git remote sync with a specific repository and branch
+- Local storage backend with periodic sync from remote repository
 
 You can adjust this file to include any configuration values you need based on the [v2 configuration documentation](/v2/configuration/overview).
 
@@ -145,11 +149,14 @@ In the output of this command, you should see the configuration values you set i
     ...
   },
   "storage": {
-    "type": "git",
-    "git": {
-      "repository": "https://github.com/your-org/your-flags-repo.git",
-      "ref": "main",
-      "backend": "go-git"
+    "default": {
+      "remote": "https://github.com/your-org/your-flags-repo.git",
+      "branch": "main",
+      "poll_interval": "30s",
+      "backend": {
+        "type": "local",
+        "path": "."
+      }
     }
   },
   ...

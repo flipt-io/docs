@@ -196,10 +196,13 @@ flipt:
     log:
       level: INFO
     storage:
-      type: git
-      git:
-        repository: https://github.com/your-org/flags-repo.git
-        ref: main
+      default:
+        remote: "https://github.com/your-org/flags-repo.git"
+        branch: "main"
+        poll_interval: "30s"
+        backend:
+          type: local
+          path: "."
 ```
 
 For comprehensive deployment instructions and configuration examples, see the [Deploy Flipt v2 to Kubernetes](/v2/guides/operations/deployment/deploy-to-kubernetes) guide.
