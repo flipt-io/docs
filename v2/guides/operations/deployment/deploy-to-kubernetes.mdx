@@ -73,23 +73,12 @@ flipt:
       git:
         repository: https://github.com/your-org/your-flags-repo.git
         ref: main
-        backend: go-git
-    analytics:
-      storage:
-        clickhouse:
-          enabled: false
-    telemetry:
-      exporter: otlp
-      otlp:
-        endpoint: http://jaeger:14268/api/traces
 ```
 
 This example configures:
 
 - Log level to 'INFO'
 - Git storage with a specific repository (optional - defaults to local Git repository)
-- Disabled ClickHouse analytics storage
-- OTLP telemetry export to Jaeger
 
 You can adjust this file to include any configuration values you need based on the [v2 configuration documentation](/v2/configuration/overview).
 
