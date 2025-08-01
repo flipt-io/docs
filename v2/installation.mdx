@@ -199,6 +199,25 @@ flipt:
   config:
     log:
       level: INFO
+      encoding: json
+    server:
+      grpc_port: 9000
+      http_port: 8080
+    cors:
+      enabled: true
+      allowed_origins:
+        - "http://localhost:3000"
+        - "https://your-frontend-domain.com"
+    ui:
+      default_theme: dark
+      topbar:
+        color: "#7C3AED"
+    meta:
+      check_for_updates: false
+      telemetry_enabled: false
+    metrics:
+      enabled: true
+      exporter: prometheus
     storage:
       default:
         backend:
@@ -206,7 +225,7 @@ flipt:
 ```
 
 <Note>
-  This example uses memory storage which works out-of-the-box without requiring a Git repository. For production use with Git-backed storage, see the [Git Storage guide](/v2/guides/operations/environments/git-sync).
+  This example showcases common v2 configuration options including CORS, UI customization, and observability settings. For production use with Git-backed storage, see the [Git Storage guide](/v2/guides/operations/environments/git-sync).
 </Note>
 
 For comprehensive deployment instructions and configuration examples, see the [Deploy Flipt v2 to Kubernetes](/v2/guides/operations/deployment/deploy-to-kubernetes) guide.
