@@ -4,7 +4,9 @@ description: "Multiple ways to install and run Flipt v2 on your own infrastructu
 mode: "wide"
 ---
 
-Flipt v2 is a single binary that can be run on any Linux or macOS (arm64) host. You can install and try out Flipt v2 in a few different ways:
+Flipt v2 is a single binary that can be run on any Linux or macOS (arm64) host.
+
+You can install and try out Flipt v2 in a few different ways:
 
 <CodeGroup>
 
@@ -197,12 +199,13 @@ flipt:
       level: INFO
     storage:
       default:
-        remote: "https://github.com/your-org/flags-repo.git"
-        branch: "main"
-        poll_interval: "30s"
         backend:
           type: local
           path: "."
 ```
+
+<Note>
+  This example uses local storage. To configure Git repository synchronization, see the [Git Storage guide](/v2/guides/operations/environments/git-sync).
+</Note>
 
 For comprehensive deployment instructions and configuration examples, see the [Deploy Flipt v2 to Kubernetes](/v2/guides/operations/deployment/deploy-to-kubernetes) guide.
