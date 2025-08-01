@@ -24,7 +24,7 @@ docker run -d \
 
 ```console Kubernetes/Helm
 helm repo add flipt https://helm.flipt.io
-helm install my-flipt-v2 flipt/flipt-v2
+helm install my-flipt-v2 flipt/flipt-v2 --devel
 ```
 
 </CodeGroup>
@@ -167,16 +167,18 @@ Add the Flipt Helm repository and install Flipt v2:
 helm repo add flipt https://helm.flipt.io
 helm repo update
 
-# Install Flipt v2
-helm install my-flipt-v2 flipt/flipt-v2
+# Install Flipt v2 (requires --devel flag while in beta)
+helm install my-flipt-v2 flipt/flipt-v2 --devel
 
 # Or with custom configuration
-helm install my-flipt-v2 flipt/flipt-v2 -f values.yaml
+helm install my-flipt-v2 flipt/flipt-v2 -f values.yaml --devel
 ```
 
 <Note>
   The chart name is `flipt-v2`, which is separate from the v1 `flipt` chart.
-  This ensures v2-specific configurations and compatibility.
+  This ensures v2-specific configurations and compatibility. The `--devel` flag
+  is required while Flipt v2 is in beta. This flag will no longer be needed once
+  we release a stable version.
 </Note>
 
 ### Key Features
@@ -205,7 +207,8 @@ flipt:
 ```
 
 <Note>
-  This example uses local storage. To configure Git repository synchronization, see the [Git Storage guide](/v2/guides/operations/environments/git-sync).
+  This example uses local storage. To configure Git repository synchronization,
+  see the [Git Storage guide](/v2/guides/operations/environments/git-sync).
 </Note>
 
 For comprehensive deployment instructions and configuration examples, see the [Deploy Flipt v2 to Kubernetes](/v2/guides/operations/deployment/deploy-to-kubernetes) guide.
