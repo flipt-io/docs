@@ -103,7 +103,9 @@ This example configures:
 - Memory storage backend (default)
 
 <Note>
-  This example uses memory storage which works out-of-the-box without requiring a Git repository. For production use with Git-backed storage, see the [Git Storage guide](/v2/guides/operations/environments/git-sync) for setup details.
+  This example uses memory storage which works out-of-the-box without requiring
+  a Git repository. For production use with Git-backed storage, see the [Git
+  Storage guide](/v2/guides/operations/environments/git-sync) for setup details.
 </Note>
 
 You can adjust this file to include any configuration values you need based on the [v2 configuration documentation](/v2/configuration/overview).
@@ -120,9 +122,11 @@ helm install flipt-v2 flipt/flipt-v2 --devel
 
 <Note>
   Note the chart name is `flipt-v2`, not `flipt`. This is the dedicated chart
-  for Flipt v2 which includes v2-specific configurations and defaults. The
-  `--devel` flag is required while Flipt v2 is in beta. This flag will no longer
-  be needed once we release a stable version.
+  for Flipt v2 which includes v2-specific configurations and defaults.
+
+The `--devel` flag is required while Flipt v2 is in beta. This flag will no longer
+be needed once we release a stable version.
+
 </Note>
 
 This command installs the Flipt v2 Helm chart into your Kubernetes cluster using the configuration options specified in your `values.yaml` file merged with the default values from the chart.
@@ -132,11 +136,9 @@ This command installs the Flipt v2 Helm chart into your Kubernetes cluster using
 After successfully installing Flipt v2 via the Helm chart, you should see instructions on how to access Flipt in your terminal. The instructions will look something like this:
 
 ```bash
-You have successfully deployed Flipt v2.
-
-  export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=flipt-v2,app.kubernetes.io/instance=flipt-v2" -o jsonpath="{.items[0].metadata.name}")
-  export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
-  kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
+export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=flipt-v2,app.kubernetes.io/instance=flipt-v2" -o jsonpath="{.items[0].metadata.name}")
+export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
 ```
 
 Execute the commands in your terminal to forward the port and access Flipt v2.
@@ -207,7 +209,7 @@ In the output of this command, you should see the configuration values you set i
 Flipt v2's Git-native storage works seamlessly in Kubernetes environments. The deployed instance can:
 
 - **Clone repositories**: Automatically clone and sync with your Git repository containing feature flag definitions
-- **Work offline**: Continue serving flags even when Git repository is temporarily unavailable
+- **Work offline**: Continue serving flags even when the source Git repository is temporarily unavailable
 - **Support multiple Git providers**: Works with GitHub, GitLab, Azure DevOps, and other Git platforms
 
 ### Environment Support
