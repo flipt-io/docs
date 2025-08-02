@@ -35,7 +35,7 @@ To set up Keycloak for authentication, you will need to create a new realm, clie
   Guide](https://www.keycloak.org/getting-started/getting-started-docker).
 </Info>
 
-### Step 1: Start Keycloak
+### 1. Start Keycloak
 
 Start Keycloak using Docker:
 
@@ -43,11 +43,11 @@ Start Keycloak using Docker:
 docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:24.0.4 start-dev
 ```
 
-### Step 2: Access Keycloak
+### 2. Access Keycloak
 
 Access Keycloak at [http://localhost:8080](http://localhost:8080) and log in with the admin credentials (`admin`/`admin`).
 
-### Step 3: Create a Realm
+### 3. Create a Realm
 
 Create a new realm called `flipt`:
 
@@ -58,7 +58,7 @@ Create a new realm called `flipt`:
 
 ![Keycloak create realm form](/images/guides/login-with-keycloak/create-keycloak-realm.png)
 
-### Step 4: Create a User
+### 4. Create a User
 
 Create a new user called `user`:
 
@@ -72,7 +72,7 @@ Create a new user called `user`:
 
 ![Keycloak create user](/images/guides/login-with-keycloak/create-keycloak-user.png)
 
-### Step 5: Create a Client
+### 5. Create a Client
 
 Create a new client called `flipt`:
 
@@ -88,13 +88,13 @@ Create a new client called `flipt`:
 
 ![Keycloak create client](/images/guides/login-with-keycloak/create-keycloak-client.png)
 
-### Step 6: Copy Client ID and Secret
+### 6. Copy Client ID and Secret
 
 1. From the `flipt` client, click on the `Credentials` tab.
 1. The client ID will be displayed at the top of the page (e.g., `flipt`). Copy this value and save it for later.
 1. Click on the copy icon next to the `Client Secret` field to copy the client secret. Save this value for later.
 
-### Step 7: Get Required URLs
+### 7. Get Required URLs
 
 1. In another browser tab, paste the following URL into the address bar:
 

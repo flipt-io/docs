@@ -1,0 +1,218 @@
+---
+title: "Deploy to Kubernetes"
+description: "Deploy Flipt v2 to Kubernetes using our official Helm chart"
+---
+
+## What You'll Learn
+
+In this guide, you will learn how to deploy Flipt v2 to a local Kubernetes cluster (via [Kind](https://kind.sigs.k8s.io/)) using our official Helm chart. You'll also learn how to override the default Flipt v2 configuration by providing a `values.yaml` file.
+
+By the end of this guide, we will have:
+
+- 🚢 Created a Kind cluster locally using Docker
+- 📦 Installed Flipt v2 into your cluster via Helm
+- ⚙️ Configured Flipt v2 settings via a `values.yaml` file
+- 🔄 Explored v2's Git-native storage capabilities
+
+## Prerequisites
+
+- Docker installed ([Download](https://www.docker.com/products/docker-desktop))
+- Helm v3.x installed ([Installation guide](https://helm.sh/docs/intro/install/))
+- Kind installed ([Installation guide](https://kind.sigs.k8s.io/docs/user/quick-start/))
+
+## Deploying Flipt v2
+
+### 1. Create a Local Kubernetes Cluster Using Kind
+
+First, we need to create a local Kubernetes cluster. We'll use [Kind](https://kind.sigs.k8s.io/) to accomplish this.
+
+Open a terminal and run the following command:
+
+```bash
+kind create cluster --name flipt-v2
+```
+
+This command will create a new Kubernetes cluster named `flipt-v2`. Wait for the command to complete and ensure the cluster is correctly set up.
+
+### 2. Add the Flipt Helm Repository
+
+Next, we'll add the [Flipt Helm repository](https://helm.flipt.io/) which hosts the Flipt Helm charts. Run the following command:
+
+```bash
+helm repo add flipt https://helm.flipt.io/
+```
+
+After running this command, Helm will fetch shared information about the new repository.
+
+### 3. Update Helm Repositories
+
+To ensure that Helm has the latest information about the charts from the Flipt Helm repository, update the repositories:
+
+```bash
+helm repo update
+```
+
+### 4. Install Flipt v2 with Custom Configuration
+
+Before installing Flipt v2, you can create a `values.yaml` file to customize the deployment according to your preferences.
+
+<Note>
+  Flipt v2 works out-of-the-box without any configuration using Git-native
+  storage. However, you can customize various aspects of the deployment.
+</Note>
+
+Here's an example `values.yaml` file with some common v2 configurations:
+
+```yaml
+flipt:
+  config:
+    log:
+      level: INFO
+      encoding: json
+    server:
+      grpc_port: 9000
+      http_port: 8080
+    cors:
+      enabled: true
+      allowed_origins:
+        - "http://localhost:3000"
+        - "https://your-frontend-domain.com"
+    ui:
+      default_theme: dark
+      topbar:
+        color: "#7C3AED"
+    meta:
+      check_for_updates: false
+      telemetry_enabled: false
+    metrics:
+      enabled: true
+      exporter: prometheus
+    storage:
+      default:
+        backend:
+          type: memory
+```
+
+This example configures:
+
+- Structured JSON logging at INFO level
+- CORS support for frontend integration
+- Custom UI theme and branding
+- Disabled telemetry and update checks
+- Prometheus metrics enabled
+- Memory storage backend (default)
+
+<Note>
+  This example uses memory storage which works out-of-the-box without requiring
+  a Git repository. For production use with Git-backed storage, see the [Git
+  Storage guide](/v2/guides/operations/environments/git-sync) for setup details.
+</Note>
+
+You can adjust this file to include any configuration values you need based on the [v2 configuration documentation](/v2/configuration/overview).
+
+Once you have your `values.yaml` file (or to use default settings), install Flipt v2 with Helm:
+
+```bash
+# Install with custom values (requires --devel flag while in beta)
+helm install flipt-v2 flipt/flipt-v2 -f values.yaml --devel
+
+# Or install with default settings
+helm install flipt-v2 flipt/flipt-v2 --devel
+```
+
+<Note>
+  Note the chart name is `flipt-v2`, not `flipt`. This is the dedicated chart
+  for Flipt v2 which includes v2-specific configurations and defaults.
+
+The `--devel` flag is required while Flipt v2 is in beta. This flag will no longer
+be needed once we release a stable version.
+
+</Note>
+
+This command installs the Flipt v2 Helm chart into your Kubernetes cluster using the configuration options specified in your `values.yaml` file merged with the default values from the chart.
+
+### 5. Forward the Port to Access Flipt v2
+
+After successfully installing Flipt v2 via the Helm chart, you should see instructions on how to access Flipt in your terminal. The instructions will look something like this:
+
+```bash
+export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=flipt-v2,app.kubernetes.io/instance=flipt-v2" -o jsonpath="{.items[0].metadata.name}")
+
+export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+
+kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
+```
+
+Execute the commands in your terminal to forward the port and access Flipt v2.
+
+You should now be able to access Flipt v2 at `http://localhost:8080`.
+
+### 6. Verify the Installation and Configuration
+
+To ensure that Flipt v2 has been correctly deployed to your Kubernetes cluster, you can check the running pods:
+
+```bash
+kubectl get pods
+```
+
+You should see the Flipt v2 pod in the list with a status of `Running`.
+
+```console
+NAME                         READY   STATUS    RESTARTS   AGE
+flipt-v2-6d64f856d7-4l5qn    1/1     Running   0          32m
+```
+
+To verify that your configuration changes were applied, open the application in your browser at [http://localhost:8080](http://localhost:8080) and you should see the Flipt UI with the dark theme and custom topbar color:
+
+![Deployed via Helm](/v2/images/guides/operations/deployment/helm_deployed.png)
+
+## Flipt v2 Features in Kubernetes
+
+### Git-Native Storage
+
+Flipt v2's Git-native storage works seamlessly in Kubernetes environments. The deployed instance can:
+
+- **Clone repositories**: Automatically clone and sync with your Git repository containing feature flag definitions
+- **Work offline**: Continue serving flags even when the source Git repository is temporarily unavailable
+- **Support multiple Git providers**: Works with GitHub, GitLab, Azure DevOps, and other Git platforms
+
+### Environment Support
+
+Flipt v2 introduces environments that map to Git branches, allowing you to:
+
+- Deploy multiple environments (dev/staging/prod) from different branches
+- Use branch-based workflows for flag management
+- Create merge proposals through the UI that generate Git pull requests
+
+### Configuration Flexibility
+
+The v2 Helm chart supports all v2 configuration options, including:
+
+- **Storage backends**: Git, local filesystem, or hybrid approaches
+- **Analytics**: Optional ClickHouse integration for advanced analytics
+- **Authentication**: GitHub, OIDC, and other authentication methods
+- **Authorization**: RBAC and policy-based access control
+
+## Next Steps
+
+Congratulations! You've successfully deployed Flipt v2 to a local Kubernetes cluster using our Helm chart. You've also learned about v2's Git-native capabilities and configuration options.
+
+You should be able to take the knowledge you've gained in this guide and deploy Flipt v2 to a real Kubernetes cluster.
+
+### Additional Resources
+
+- [Flipt v2 Helm Chart Repository](https://github.com/flipt-io/helm-charts/tree/main/charts/flipt-v2) - Chart source and configuration options
+- [v2 Configuration Documentation](/v2/configuration/overview) - Complete configuration reference
+- [Git Storage Guide](/v2/guides/operations/environments/git-sync) - Detailed Git storage setup
+- [Authentication Methods](/v2/configuration/authentication) - Setting up authentication in v2
+
+### Production Considerations
+
+For production deployments, consider:
+
+- **Resource limits**: Set appropriate CPU and memory limits in your `values.yaml`
+- **Persistent storage**: Configure persistent volumes if using local storage
+- **High availability**: Deploy multiple replicas with appropriate anti-affinity rules
+- **Security**: Enable authentication and configure RBAC policies
+- **Monitoring**: Set up observability with metrics and distributed tracing
+- **Backup**: Implement backup strategies for your Git repositories and any local data

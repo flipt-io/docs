@@ -4,13 +4,11 @@ description: "Multiple ways to install and run Flipt v2 on your own infrastructu
 mode: "wide"
 ---
 
-Flipt v2 is a single binary that can be run on any Linux or macOS (arm64) host. You can install and try out Flipt v2 in a two different ways:
+Flipt v2 is a single binary that can be run on any Linux or macOS (arm64) host.
+
+You can install and try out Flipt v2 in a few different ways:
 
 <CodeGroup>
-
-```console Binary
-curl -fsSL https://get.flipt.io/v2 | sh
-```
 
 ```console Docker
 docker run -d \
@@ -20,18 +18,43 @@ docker run -d \
     docker.flipt.io/flipt/flipt:v2-beta
 ```
 
+```console Binary
+curl -fsSL https://get.flipt.io/v2 | sh
+```
+
+```console Kubernetes/Helm
+helm repo add flipt https://helm.flipt.io
+helm install my-flipt-v2 flipt/flipt-v2 --devel
+```
+
 </CodeGroup>
 
 For more details on each installation method, see the sections below.
 
 - [Docker](#docker)
 - [Binary](#binary)
+- [Kubernetes/Helm](#kubernetes%2Fhelm)
 
 <Info>
-  Flipt v2 is currently in beta. Once we release a stable version, we'll update
-  the installation instructions to include Helm, and Homebrew installation
-  options.
+  Flipt v2 is currently in beta. Helm installation is now available for
+  Kubernetes deployments. Once we release a stable version, we'll add Homebrew
+  installation options.
 </Info>
+
+## Supported Architectures
+
+Flipt v2 is built for the following architectures/os:
+
+- **x86-64** / **Linux**
+- **ARM64** / **Linux**
+- **x86-64** / **Darwin/MacOS**
+- **ARM64** / **Darwin/MacOS**
+
+You can find the binaries for each architecture in the [Latest Release](https://github.com/flipt-io/flipt/releases/latest) assets section on GitHub.
+
+The [Docker image](https://hub.docker.com/r/flipt/flipt/tags) for Flipt v2 is multi-arch and supports both **x86-64** and **ARM64** architectures on **Linux**.
+
+If you need a different architecture, please open an issue on the [GitHub repository](https://github.com/flipt-io/flipt/issues) and we will try to accommodate your request.
 
 ## Docker
 
@@ -125,17 +148,91 @@ Flipt will check in a few different locations for server configuration (in order
 
 See the [Configuration](/v2/configuration/overview) section for more details.
 
-## Supported Architectures
+## Kubernetes/Helm
 
-Flipt v2 is built for the following architectures/os:
+Deploy Flipt v2 to Kubernetes using the official Helm chart. This method is ideal for production deployments and provides easy configuration management.
 
-- **x86-64** / **Linux**
-- **ARM64** / **Linux**
-- **x86-64** / **Darwin/MacOS**
-- **ARM64** / **Darwin/MacOS**
+### Prerequisites
 
-You can find the binaries for each architecture in the [Latest Release](https://github.com/flipt-io/flipt/releases/latest) assets section on GitHub.
+- Kubernetes cluster (local or remote)
+- Helm v3.x installed
+- `kubectl` configured to access your cluster
 
-The [Docker image](https://hub.docker.com/r/flipt/flipt/tags) for Flipt v2 is multi-arch and supports both **x86-64** and **ARM64** architectures on **Linux**.
+### Installing
 
-If you need a different architecture, please open an issue on the [GitHub repository](https://github.com/flipt-io/flipt/issues) and we will try to accommodate your request.
+Add the Flipt Helm repository and install Flipt v2:
+
+```console
+# Add the Flipt Helm repository
+helm repo add flipt https://helm.flipt.io
+helm repo update
+
+# Install Flipt v2 (requires --devel flag while in beta)
+helm install my-flipt-v2 flipt/flipt-v2 --devel
+
+# Or with custom configuration
+helm install my-flipt-v2 flipt/flipt-v2 -f values.yaml --devel
+```
+
+<Note>
+
+The chart name is `flipt-v2`, which is separate from the v1 `flipt` chart.
+This ensures v2-specific configurations and compatibility.
+
+The `--devel` flag
+is required while Flipt v2 is in beta. This flag will no longer be needed once
+we release a stable version.
+
+</Note>
+
+### Key Features
+
+Flipt v2's Helm chart includes:
+
+- **Git-native storage**: Works out-of-the-box without external databases
+- **Environment support**: Deploy multiple environments from different Git branches
+- **Flexible configuration**: Support for all v2 configuration options
+- **Production ready**: Includes security, observability, and scaling options
+
+### Configuration
+
+Create a `values.yaml` file to customize your deployment:
+
+```yaml
+flipt:
+  config:
+    log:
+      level: INFO
+      encoding: json
+    server:
+      grpc_port: 9000
+      http_port: 8080
+    cors:
+      enabled: true
+      allowed_origins:
+        - "http://localhost:3000"
+        - "https://your-frontend-domain.com"
+    ui:
+      default_theme: dark
+      topbar:
+        color: "#7C3AED"
+    meta:
+      check_for_updates: false
+      telemetry_enabled: false
+    metrics:
+      enabled: true
+      exporter: prometheus
+    storage:
+      default:
+        backend:
+          type: memory
+```
+
+<Note>
+  This example showcases common v2 configuration options including CORS, UI
+  customization, and observability settings. For production use with Git-backed
+  storage, see the [Git Storage
+  guide](/v2/guides/operations/environments/git-sync).
+</Note>
+
+For comprehensive deployment instructions and configuration examples, see the [Deploy Flipt v2 to Kubernetes](/v2/guides/operations/deployment/deploy-to-kubernetes) guide.

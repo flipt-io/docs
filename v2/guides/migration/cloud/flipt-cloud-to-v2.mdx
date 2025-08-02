@@ -16,7 +16,7 @@ This guide will walk you through migrating from [Flipt Cloud](/cloud/overview) t
 
 Since Flipt Cloud already stores your [feature flag data in Git repositories](/cloud/features/git-backed-storage), migrating to Flipt v2 is straightforward. You'll configure Flipt v2 to sync with the same GitHub repository that Flipt Cloud has been using.
 
-### Step 1: Identify Your Flipt Cloud Repository
+### 1. Identify Your Flipt Cloud Repository
 
 First, identify the GitHub repository and configuration that Flipt Cloud is using for your environment:
 
@@ -31,7 +31,7 @@ First, identify the GitHub repository and configuration that Flipt Cloud is usin
 
 ![Flipt Cloud Repository](/v2/images/guides/migration/cloud/github_repository.png)
 
-### Step 2: Export Authorization Configuration
+### 2. Export Authorization Configuration
 
 1. While logged into Flipt Cloud, click on the **Settings** tab
 2. Click on the **Roles** tab
@@ -40,7 +40,7 @@ First, identify the GitHub repository and configuration that Flipt Cloud is usin
 
 ![Export Authorization](/v2/images/guides/migration/cloud/export_authz.png)
 
-### Step 3: Set Up GitHub Authentication
+### 3. Set Up GitHub Authentication
 
 Create a GitHub Personal Access Token (PAT) that Flipt v2 can use to access your repository:
 
@@ -59,7 +59,7 @@ Create a GitHub Personal Access Token (PAT) that Flipt v2 can use to access your
   this page.
 </Warning>
 
-### Step 4: Configure Flipt v2
+### 4. Configure Flipt v2
 
 Create or update your Flipt v2 configuration file to connect to your existing GitHub repository:
 
@@ -157,7 +157,7 @@ authorization:
 
 See [Authorization](/v2/configuration/authorization) for more information.
 
-### Step 5: Start Flipt v2
+### 5. Start Flipt v2
 
 1. Set your GitHub token as an environment variable:
 
@@ -176,14 +176,14 @@ See [Authorization](/v2/configuration/authorization) for more information.
    - Load your feature flag data
    - Begin syncing with GitHub
 
-### Step 6: Verify Migration
+### 6. Verify Migration
 
 1. Access the Flipt v2 UI (typically at `http://localhost:8080`)
 2. Verify that all your feature flags, segments, and rules are present
 3. Check that all environments are configured correctly
 4. Test flag evaluation to ensure everything works as expected
 
-### Step 7: Update Your Applications
+### 7. Update Your Applications
 
 Update your applications to point to your new Flipt v2 instance instead of Flipt Cloud:
 
@@ -191,7 +191,7 @@ Update your applications to point to your new Flipt v2 instance instead of Flipt
 2. **Update API Keys**: Generate new [Static Tokens](/v2/configuration/authentication#static-token) in Flipt v2 if needed
 3. **Test Evaluation**: Verify that flag evaluation works with your new instance
 
-### Step 8: Decommission Flipt Cloud
+### 8. Decommission Flipt Cloud
 
 Once you've verified that your migration is successful:
 
