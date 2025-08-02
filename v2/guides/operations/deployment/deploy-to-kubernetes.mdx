@@ -137,7 +137,9 @@ After successfully installing Flipt v2 via the Helm chart, you should see instru
 
 ```bash
 export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=flipt-v2,app.kubernetes.io/instance=flipt-v2" -o jsonpath="{.items[0].metadata.name}")
+
 export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+
 kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
 ```
 
@@ -160,47 +162,9 @@ NAME                         READY   STATUS    RESTARTS   AGE
 flipt-v2-6d64f856d7-4l5qn    1/1     Running   0          32m
 ```
 
-To verify that your configuration changes were applied, you can `curl` Flipt's `/meta/config` endpoint:
+To verify that your configuration changes were applied, open the application in your browser at [http://localhost:8080](http://localhost:8080) and you should see the Flipt UI with the dark theme and custom topbar color:
 
-```bash
-curl --silent http://localhost:8080/meta/config | jq
-```
-
-In the output of this command, you should see the configuration values you set in your `values.yaml` file.
-
-```json
-{
-  "log": {
-    "level": "INFO",
-    "encoding": "json"
-  },
-  "server": {
-    "grpc_port": 9000,
-    "http_port": 8080
-  },
-  "cors": {
-    "enabled": true,
-    "allowed_origins": [
-      "http://localhost:3000",
-      "https://your-frontend-domain.com"
-    ]
-  },
-  "ui": {
-    "default_theme": "dark",
-    "topbar": {
-      "color": "#7C3AED"
-    }
-  },
-  "storage": {
-    "default": {
-      "backend": {
-        "type": "memory"
-      }
-    }
-  },
-  ...
-}
-```
+![Deployed via Helm](/v2/images/guides/operations/deployment/helm_deployed.png)
 
 ## Flipt v2 Features in Kubernetes
 
