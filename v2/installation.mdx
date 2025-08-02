@@ -10,16 +10,16 @@ You can install and try out Flipt v2 in a few different ways:
 
 <CodeGroup>
 
-```console Binary
-curl -fsSL https://get.flipt.io/v2 | sh
-```
-
 ```console Docker
 docker run -d \
     -p 8080:8080 \
     -p 9000:9000 \
     -v $HOME/flipt:/var/opt/flipt \
     docker.flipt.io/flipt/flipt:v2-beta
+```
+
+```console Binary
+curl -fsSL https://get.flipt.io/v2 | sh
 ```
 
 ```console Kubernetes/Helm
@@ -40,6 +40,21 @@ For more details on each installation method, see the sections below.
   Kubernetes deployments. Once we release a stable version, we'll add Homebrew
   installation options.
 </Info>
+
+## Supported Architectures
+
+Flipt v2 is built for the following architectures/os:
+
+- **x86-64** / **Linux**
+- **ARM64** / **Linux**
+- **x86-64** / **Darwin/MacOS**
+- **ARM64** / **Darwin/MacOS**
+
+You can find the binaries for each architecture in the [Latest Release](https://github.com/flipt-io/flipt/releases/latest) assets section on GitHub.
+
+The [Docker image](https://hub.docker.com/r/flipt/flipt/tags) for Flipt v2 is multi-arch and supports both **x86-64** and **ARM64** architectures on **Linux**.
+
+If you need a different architecture, please open an issue on the [GitHub repository](https://github.com/flipt-io/flipt/issues) and we will try to accommodate your request.
 
 ## Docker
 
@@ -133,21 +148,6 @@ Flipt will check in a few different locations for server configuration (in order
 
 See the [Configuration](/v2/configuration/overview) section for more details.
 
-## Supported Architectures
-
-Flipt v2 is built for the following architectures/os:
-
-- **x86-64** / **Linux**
-- **ARM64** / **Linux**
-- **x86-64** / **Darwin/MacOS**
-- **ARM64** / **Darwin/MacOS**
-
-You can find the binaries for each architecture in the [Latest Release](https://github.com/flipt-io/flipt/releases/latest) assets section on GitHub.
-
-The [Docker image](https://hub.docker.com/r/flipt/flipt/tags) for Flipt v2 is multi-arch and supports both **x86-64** and **ARM64** architectures on **Linux**.
-
-If you need a different architecture, please open an issue on the [GitHub repository](https://github.com/flipt-io/flipt/issues) and we will try to accommodate your request.
-
 ## Kubernetes/Helm
 
 Deploy Flipt v2 to Kubernetes using the official Helm chart. This method is ideal for production deployments and provides easy configuration management.
@@ -175,10 +175,14 @@ helm install my-flipt-v2 flipt/flipt-v2 -f values.yaml --devel
 ```
 
 <Note>
-  The chart name is `flipt-v2`, which is separate from the v1 `flipt` chart.
-  This ensures v2-specific configurations and compatibility. The `--devel` flag
-  is required while Flipt v2 is in beta. This flag will no longer be needed once
-  we release a stable version.
+
+The chart name is `flipt-v2`, which is separate from the v1 `flipt` chart.
+This ensures v2-specific configurations and compatibility.
+
+The `--devel` flag
+is required while Flipt v2 is in beta. This flag will no longer be needed once
+we release a stable version.
+
 </Note>
 
 ### Key Features
