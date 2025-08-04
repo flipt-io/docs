@@ -62,8 +62,8 @@ authentication:
   methods:
     github:
       enabled: true
-      client_id: ${FLIPT_GITHUB_CLIENT_ID}
-      client_secret: ${FLIPT_GITHUB_CLIENT_SECRET}
+      client_id: ${env:FLIPT_GITHUB_CLIENT_ID}
+      client_secret: ${env:FLIPT_GITHUB_CLIENT_SECRET}
       redirect_address: "http://localhost:8080"
       scopes:
         - user:email
