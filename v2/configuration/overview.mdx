@@ -38,18 +38,65 @@ The server will check in a few different locations for server configuration (in 
 You can edit any of these properties to your liking, and on restart, Flipt will
 pick up the new changes.
 
-### Environment Substitution
+### Environment Substitution and Secret References
 
-The configuration file also supports environment variable substitution.
+The configuration file supports both environment variable substitution and secret references for managing sensitive data.
 
-This allows you to use environment variables in your configuration file. For example, you can use the `FLIPT_CUSTOM_AUTH_REQUIRED` environment variable in the configuration file like this:
+#### Environment Variables
+
+Environment variables use the `${env:VARIABLE_NAME}` syntax. For example:
 
 ```yaml
 authentication:
-  required: ${FLIPT_CUSTOM_AUTH_REQUIRED}
+  required: ${env:FLIPT_CUSTOM_AUTH_REQUIRED}
+server:
+  http_port: ${env:HTTP_PORT}
 ```
 
-This will replace `${FLIPT_CUSTOM_AUTH_REQUIRED}` with the value of the `FLIPT_CUSTOM_AUTH_REQUIRED` environment variable. The format for environment variable substitution is `${ENV_VAR}`.
+This will replace `${env:FLIPT_CUSTOM_AUTH_REQUIRED}` with the value of the `FLIPT_CUSTOM_AUTH_REQUIRED` environment variable. The format for environment variable substitution is `${env:ENV_VAR}`.
+
+<Warning>
+  v2 uses a different environment variable syntax than v1. The old v1 syntax `${ENV_VAR}` is not supported in v2. You must use the new `${env:ENV_VAR}` format.
+</Warning>
+
+#### Secret References
+
+Secret references use the `${secret:reference}` syntax and integrate with configured secret providers:
+
+```yaml
+authentication:
+  methods:
+    github:
+      client_id: ${env:GITHUB_CLIENT_ID} # Environment variable
+      client_secret: ${secret:github-token} # Secret reference
+    oidc:
+      client_id: ${secret:vault:auth/oidc:client_id} # Vault provider
+      client_secret: ${secret:vault:auth/oidc:client_secret} # Vault provider
+```
+
+Secret references can be:
+
+- **Simple format**: `${secret:key-name}` (uses the default or first configured provider)
+- **Complex format**: `${secret:provider:path:key}` (explicitly specifies provider, path, and key)
+
+#### Mixed Usage
+
+You can combine environment variables and secret references in the same configuration:
+
+```yaml
+server:
+  http_port: ${env:HTTP_PORT} # Environment variable
+  grpc_port: ${env:GRPC_PORT} # Environment variable
+
+authentication:
+  session:
+    csrf:
+      key: ${secret:csrf-key} # Secret reference
+  methods:
+    github:
+      client_id: ${env:GITHUB_CLIENT_ID} # Environment variable
+      client_secret: ${secret:github-token} # Secret reference
+```
 
 <Tip>
   This can be used to provide sensitive information to Flipt without storing it
