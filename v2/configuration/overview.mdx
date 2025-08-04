@@ -38,18 +38,48 @@ The server will check in a few different locations for server configuration (in 
 You can edit any of these properties to your liking, and on restart, Flipt will
 pick up the new changes.
 
-### Environment Substitution
+### Environment Substitution and Secret References
 
-The configuration file also supports environment variable substitution.
+The configuration file supports both environment variable substitution and secret references.
 
-This allows you to use environment variables in your configuration file. For example, you can use the `FLIPT_CUSTOM_AUTH_REQUIRED` environment variable in the configuration file like this:
+#### Environment Variables
+
+You can use environment variables in your configuration file with the `${env:VARIABLE_NAME}` syntax. For example:
 
 ```yaml
 authentication:
-  required: ${FLIPT_CUSTOM_AUTH_REQUIRED}
+  required: ${env:FLIPT_CUSTOM_AUTH_REQUIRED}
 ```
 
-This will replace `${FLIPT_CUSTOM_AUTH_REQUIRED}` with the value of the `FLIPT_CUSTOM_AUTH_REQUIRED` environment variable. The format for environment variable substitution is `${ENV_VAR}`.
+This will replace `${env:FLIPT_CUSTOM_AUTH_REQUIRED}` with the value of the `FLIPT_CUSTOM_AUTH_REQUIRED` environment variable.
+
+<Warning>
+The v1 syntax `${VARIABLE_NAME}` is not supported in v2. You must use the explicit `${env:VARIABLE_NAME}` format.
+</Warning>
+
+#### Secret References
+
+You can also reference secrets from configured secret providers using the `${secret:provider:path:key}` syntax:
+
+```yaml
+server:
+  cert_file: ${secret:file:tls-cert} # Reference to file provider secret
+  cert_key: ${secret:vault:tls/certs:private-key} # Reference to Vault secret
+```
+
+#### Combined Usage
+
+You can combine environment variables and secret references in the same configuration:
+
+```yaml
+authentication:
+  methods:
+    oidc:
+      providers:
+        google:
+          client_id: ${env:GOOGLE_CLIENT_ID} # Environment variable
+          client_secret: ${secret:vault:auth/oidc:client_secret} # Secret reference
+```
 
 <Tip>
   This can be used to provide sensitive information to Flipt without storing it
