@@ -17,12 +17,17 @@ import V2Pro from "/snippets/v2-pro.mdx";
 
 <Note>
   Flipt v2 SCM integration supports most of the major Git providers including
-  GitHub, GitLab, Gitea, and Azure DevOps.
+  GitHub, GitLab, BitBucket, Gitea, and Azure DevOps.
 </Note>
 
 ## Configuring SCM Integration
 
 This section will walk you through configuring Flipt v2 to more deeply integrate with your Git provider to enable features like [Merge Proposals](/v2/introduction#merge-proposals).
+
+<Tabs>
+<Tab title="GitHub">
+
+## GitHub Integration
 
 ### 1. Create a Personal Access Token (PAT)
 
@@ -98,6 +103,128 @@ Start or restart your Flipt server with the updated configuration. Flipt will no
 - Ensure your PAT has the correct permissions.
 - Make sure the local path is writable by the Flipt process.
 - Check Flipt logs for any sync or authentication errors.
+
+</Tab>
+<Tab title="BitBucket">
+
+## BitBucket Integration
+
+### 1. Create App Password or Access Token
+
+**Option A: App Password (Recommended for BitBucket Cloud)**
+
+1. Go to [BitBucket Account Settings > App passwords](https://bitbucket.org/account/settings/app-passwords/)
+2. Click **"Create app password"**
+3. Give your app password a name
+4. Select the following permissions (**required**):
+   - Repositories: Read, Write
+   - Pull requests: Read, Write
+5. Click **"Create"** and copy the generated password. **You will not be able to see it again!**
+
+**Option B: Access Token (For BitBucket Server)**
+
+1. Go to your BitBucket Server settings
+2. Navigate to Personal access tokens
+3. Create a new token with repository and pull request permissions
+
+### 2. Configure BitBucket Credentials
+
+Edit your Flipt configuration file to use the BitBucket credentials:
+
+**Using App Password:**
+
+```yaml
+credentials:
+  bitbucket:
+    type: basic
+    basic:
+      username: <your-bitbucket-username>
+      password: <your-app-password>
+```
+
+**Using Access Token:**
+
+```yaml
+credentials:
+  bitbucket:
+    type: access_token
+    access_token: <your-access-token>
+```
+
+### 3. Configure Flipt Storage with BitBucket Remote
+
+Edit your Flipt configuration file to add or update the storage backend that syncs with your BitBucket repository:
+
+```yaml
+storage:
+  bitbucket:
+    remote: "https://bitbucket.org/<your-username>/<your-repo>.git"
+    branch: "main"
+    poll_interval: "30s"
+    credentials: "bitbucket"
+    backend:
+      type: local
+      path: "/path/to/local/clone"
+```
+
+### 4. Configure an Environment to use BitBucket SCM
+
+Edit your Flipt configuration file to add or update the environment that uses the BitBucket SCM storage backend and add the `scm` section:
+
+```yaml highlight={6-8}
+environments:
+  production:
+    name: "Production"
+    storage: "bitbucket"
+    default: true
+    scm:
+      type: bitbucket
+      credentials: "bitbucket"
+```
+
+**For BitBucket Server (Custom Instance):**
+
+```yaml highlight={6-9}
+environments:
+  production:
+    name: "Production"
+    storage: "bitbucket"
+    default: true
+    scm:
+      type: bitbucket
+      api_url: "https://bitbucket.company.com/api/v2.0"
+      credentials: "bitbucket"
+```
+
+### 5. Start Flipt
+
+Start or restart your Flipt server with the updated configuration. Flipt will now:
+
+- Clone your BitBucket repository to the specified local path
+- Periodically sync flag state to and from BitBucket
+- Commit and push changes when you update flags via the Flipt API or UI
+- Enable merge proposals in the Flipt UI (using pull requests)
+
+### 6. Troubleshooting
+
+- Ensure your app password or access token has the correct permissions.
+- Make sure the local path is writable by the Flipt process.
+- Check Flipt logs for any sync or authentication errors.
+- For BitBucket Server, verify the API URL is correct.
+
+</Tab>
+</Tabs>
+
+## Authentication Formats by Provider
+
+Different Git providers require different authentication formats for optimal compatibility:
+
+| Provider         | Recommended Auth Method | Basic Auth Format                          |
+| ---------------- | ----------------------- | ------------------------------------------ |
+| **GitHub**       | Personal Access Token   | Username: token, Password: (empty)         |
+| **GitLab**       | Personal Access Token   | Username: oauth2, Password: token          |
+| **BitBucket**    | App Password            | Username: username, Password: app password |
+| **Azure DevOps** | Personal Access Token   | Username: username, Password: PAT          |
 
 ## Conclusion
 
