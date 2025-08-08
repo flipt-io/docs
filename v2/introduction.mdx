@@ -21,7 +21,7 @@ Flipt v2 introduces a number of new features and capabilities that are not avail
 
 Flipt v2 is built to be Git-native, meaning that your feature flags and configurations are stored in your own Git repositories. This allows you to use your existing Git workflow and tools to manage your feature flags and configurations.
 
-By default, Flipt v2 uses a local git-backed storage backend that is stored in memory or on disk. You can also configure Flipt v2 to sync your local git-backed storage to a remote Git repository such as GitHub, GitLab, or Bitbucket.
+By default, Flipt v2 uses a local git-backed storage backend that is stored in memory or on disk. You can also configure Flipt v2 to sync your local git-backed storage to a remote Git repository such as GitHub, GitLab, BitBucket, Azure DevOps, or Gitea.
 
 We modeled Flipt v2 after our Flipt Cloud product, but with the ability to self-host.
 
@@ -58,7 +58,7 @@ Branches use Git under the hood and create a complete copy of the base environme
 
 ### Merge Proposals
 
-Flipt v2 allows you to create merge proposals for any environment branch. This enables you to review changes from your branched environments before merging them into the base environment. This models the same workflow as GitHub Pull Requests, GitLab Merge Requests, and Bitbucket Pull Requests.
+Flipt v2 allows you to create merge proposals for any environment branch. This enables you to review changes from your branched environments before merging them into the base environment. This models the same workflow as GitHub Pull Requests, GitLab Merge Requests, and BitBucket Pull Requests.
 
 ![Flipt v2 Merge Proposals](/v2/images/introduction/merge_proposals.png)
 
@@ -74,7 +74,7 @@ Flipt v2 introduces a new streaming API that allows you to subscribe to changes 
 
 Flipt v2 is a standalone binary that does not depend on any external services. This means that you can run Flipt v2 on any machine that has a compatible operating system.
 
-V2 does not require any database or cache by default. Even the git-backed storage is local by default either in memory or on disk. You can configure Flipt v2 to sync your local git-backed storage to a remote git repository such as GitHub, GitLab, or Bitbucket.
+V2 does not require any database or cache by default. Even the git-backed storage is local by default either in memory or on disk. You can configure Flipt v2 to sync your local git-backed storage to a remote Git repository such as GitHub, GitLab, BitBucket, Azure DevOps, or Gitea.
 
 ### Secrets Management
 
