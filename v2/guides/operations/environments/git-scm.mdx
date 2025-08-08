@@ -20,7 +20,7 @@ import V2Pro from "/snippets/v2-pro.mdx";
   GitHub, GitLab, BitBucket, Gitea, and Azure DevOps.
 </Note>
 
-## Configuring SCM Integration
+## 1. Configure SCM Integration
 
 This section will walk you through configuring Flipt v2 to more deeply integrate with your Git provider to enable features like [Merge Proposals](/v2/introduction#merge-proposals).
 
@@ -231,7 +231,7 @@ Edit your Flipt configuration file to use the Azure DevOps credentials:
 
 ```yaml
 credentials:
-  azure_devops:
+  azure:
     type: basic
     basic:
       username: <your-username-or-email>
@@ -244,11 +244,11 @@ Edit your Flipt configuration file to add or update the storage backend that syn
 
 ```yaml
 storage:
-  azure_devops:
+  azure:
     remote: "https://dev.azure.com/<your-org>/<your-project>/_git/<your-repo>"
     branch: "main"
     poll_interval: "30s"
-    credentials: "azure_devops"
+    credentials: "azure"
     backend:
       type: local
       path: "/path/to/local/clone"
@@ -262,11 +262,11 @@ Edit your Flipt configuration file to add or update the environment that uses th
 environments:
   production:
     name: "Production"
-    storage: "azure_devops"
+    storage: "azure"
     default: true
     scm:
-      type: azure_devops
-      credentials: "azure_devops"
+      type: azure
+      credentials: "azure"
 ```
 
 **For Azure DevOps Server (On-premises):**
@@ -275,12 +275,12 @@ environments:
 environments:
   production:
     name: "Production"
-    storage: "azure_devops"
+    storage: "azure"
     default: true
     scm:
-      type: azure_devops
+      type: azure
       api_url: "https://your-server/tfs/{collection}/_apis"
-      credentials: "azure_devops"
+      credentials: "azure"
 ```
 
 </Tab>
@@ -359,7 +359,7 @@ environments:
 </Tab>
 </Tabs>
 
-## 5. Start Flipt
+## 2. Start Flipt
 
 Start or restart your Flipt server with the updated configuration. Flipt will now:
 
@@ -370,7 +370,7 @@ Start or restart your Flipt server with the updated configuration. Flipt will no
 
 ![Merge Proposals](/v2/images/guides/operations/environments/merge_proposals.png)
 
-## 6. Troubleshooting
+## 3. Troubleshooting
 
 ### Common Issues
 
