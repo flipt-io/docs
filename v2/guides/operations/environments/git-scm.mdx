@@ -87,23 +87,6 @@ environments:
       credentials: "github"
 ```
 
-### 5. Start Flipt
-
-Start or restart your Flipt server with the updated configuration. Flipt will now:
-
-- Clone your GitHub repository to the specified local path
-- Periodically sync flag state to and from GitHub
-- Commit and push changes when you update flags via the Flipt API or UI
-- Enable merge proposals in the Flipt UI
-
-![Merge Proposals](/v2/images/guides/operations/environments/merge_proposals.png)
-
-### 6. Troubleshooting
-
-- Ensure your PAT has the correct permissions.
-- Make sure the local path is writable by the Flipt process.
-- Check Flipt logs for any sync or authentication errors.
-
 </Tab>
 <Tab title="BitBucket">
 
@@ -225,22 +208,6 @@ environments:
       credentials: "bitbucket"
 ```
 
-### 5. Start Flipt
-
-Start or restart your Flipt server with the updated configuration. Flipt will now:
-
-- Clone your BitBucket repository to the specified local path
-- Periodically sync flag state to and from BitBucket
-- Commit and push changes when you update flags via the Flipt API or UI
-- Enable merge proposals in the Flipt UI (using pull requests)
-
-### 6. Troubleshooting
-
-- Ensure your API token, app password, or access token has the correct permissions.
-- Make sure the local path is writable by the Flipt process.
-- Check Flipt logs for any sync or authentication errors.
-- For BitBucket Server/Data Center, verify the API URL is correct.
-
 </Tab>
 <Tab title="Azure DevOps">
 
@@ -316,23 +283,6 @@ environments:
       credentials: "azure_devops"
 ```
 
-### 5. Start Flipt
-
-Start or restart your Flipt server with the updated configuration. Flipt will now:
-
-- Clone your Azure DevOps repository to the specified local path
-- Periodically sync flag state to and from Azure DevOps
-- Commit and push changes when you update flags via the Flipt API or UI
-- Enable merge proposals in the Flipt UI (using pull requests)
-
-### 6. Troubleshooting
-
-- Ensure your PAT has the correct scopes (Code read/write, Pull Request read/write).
-- Make sure the local path is writable by the Flipt process.
-- Check Flipt logs for any sync or authentication errors.
-- For Azure DevOps Server, verify the API URL format is correct.
-- Ensure the repository URL format matches: `https://dev.azure.com/{org}/{project}/_git/{repo}`
-
 </Tab>
 <Tab title="GitLab">
 
@@ -406,25 +356,53 @@ environments:
       credentials: "gitlab"
 ```
 
-### 5. Start Flipt
+</Tab>
+</Tabs>
+
+## 5. Start Flipt
 
 Start or restart your Flipt server with the updated configuration. Flipt will now:
 
-- Clone your GitLab repository to the specified local path
-- Periodically sync flag state to and from GitLab
+- Clone your Git repository to the specified local path
+- Periodically sync flag state to and from your Git provider
 - Commit and push changes when you update flags via the Flipt API or UI
-- Enable merge proposals in the Flipt UI (using merge requests)
+- Enable merge proposals in the Flipt UI
 
-### 6. Troubleshooting
+![Merge Proposals](/v2/images/guides/operations/environments/merge_proposals.png)
 
-- Ensure your PAT has the correct scopes (api, read_repository, write_repository).
-- Make sure the local path is writable by the Flipt process.
-- Check Flipt logs for any sync or authentication errors.
-- For GitLab Self-Managed, verify the API URL is correct (typically `/api/v4`).
-- Ensure the repository URL format is correct.
+## 6. Troubleshooting
 
-</Tab>
-</Tabs>
+### Common Issues
+
+- **Authentication**: Ensure your credentials (PAT, API token, or app password) have the correct permissions and haven't expired
+- **Permissions**: Make sure the local path is writable by the Flipt process
+- **Logs**: Check Flipt logs for any sync or authentication errors
+- **Network**: For self-hosted instances, verify the API URL is correct and accessible
+
+### Provider-Specific Troubleshooting
+
+**GitHub:**
+
+- Ensure your PAT has the correct repository scopes (`contents` and `pull-requests`)
+- Verify the repository URL format: `https://github.com/{owner}/{repo}.git`
+
+**BitBucket:**
+
+- For API tokens: Ensure you have `Repositories: Read, Write` and `Pull requests: Read, Write` scopes
+- For app passwords: Note that they will be deprecated in September 2025
+- For BitBucket Server/Data Center: Verify the API URL format (typically `/api/v2.0`)
+
+**Azure DevOps:**
+
+- Ensure your PAT has `Code (read & write)` and `Pull Request (read & write)` scopes
+- Verify the repository URL format: `https://dev.azure.com/{org}/{project}/_git/{repo}`
+- For Azure DevOps Server: Verify the API URL format: `https://your-server/tfs/{collection}/_apis`
+
+**GitLab:**
+
+- Ensure your PAT has the correct scopes: `api`, `read_repository`, `write_repository`
+- For GitLab Self-Managed: Verify the API URL is correct (typically `/api/v4`)
+- Verify the repository URL format: `https://gitlab.com/{owner}/{repo}.git`
 
 ## Authentication Formats by Provider
 
