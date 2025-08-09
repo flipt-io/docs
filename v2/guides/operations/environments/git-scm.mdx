@@ -17,12 +17,17 @@ import V2Pro from "/snippets/v2-pro.mdx";
 
 <Note>
   Flipt v2 SCM integration supports most of the major Git providers including
-  GitHub, GitLab, Gitea, and Azure DevOps.
+  GitHub, GitLab, BitBucket, Gitea, and Azure DevOps.
 </Note>
 
-## Configuring SCM Integration
+## 1. Configure SCM Integration
 
 This section will walk you through configuring Flipt v2 to more deeply integrate with your Git provider to enable features like [Merge Proposals](/v2/introduction#merge-proposals).
+
+<Tabs>
+<Tab title="GitHub">
+
+## GitHub Integration
 
 ### 1. Create a Personal Access Token (PAT)
 
@@ -82,22 +87,334 @@ environments:
       credentials: "github"
 ```
 
-### 5. Start Flipt
+</Tab>
+<Tab title="BitBucket">
+
+## BitBucket Integration
+
+### 1. Create API Token or App Password
+
+<Warning>
+  **App passwords are being deprecated and will stop working in 2026.** We
+  strongly recommend using API tokens instead.
+</Warning>
+
+**Option A: API Token (Recommended for BitBucket Cloud)**
+
+1. Go to [BitBucket Account Settings > API tokens](https://bitbucket.org/account/settings/api-tokens/)
+2. Click **"Create API token"**
+3. Give your token a name
+4. Select the following scopes (**required**):
+   - Repositories: Read, Write
+   - Pull requests: Read, Write
+5. Click **"Create"** and copy the generated token. **You will not be able to see it again!**
+
+**Option B: App Password (Legacy - Not recommended)**
+
+<Note>
+  Only use app passwords if API tokens are not available. **App passwords will
+  be deprecated on September 9, 2025 and will stop working on June 9, 2026.**
+</Note>
+
+1. Go to [BitBucket Account Settings > App passwords](https://bitbucket.org/account/settings/app-passwords/)
+2. Click **"Create app password"**
+3. Give your app password a name
+4. Select the following permissions (**required**):
+   - Repositories: Read, Write
+   - Pull requests: Read, Write
+5. Click **"Create"** and copy the generated password. **You will not be able to see it again!**
+
+**Option C: Access Token (For BitBucket Server/Data Center)**
+
+1. Go to your BitBucket Server settings
+2. Navigate to Personal access tokens
+3. Create a new token with repository and pull request permissions
+
+### 2. Configure BitBucket Credentials
+
+Edit your Flipt configuration file to use the BitBucket credentials:
+
+**Using API Token (Recommended):**
+
+```yaml
+credentials:
+  bitbucket:
+    type: access_token
+    access_token: <your-api-token>
+```
+
+**Using App Password (Legacy):**
+
+```yaml
+credentials:
+  bitbucket:
+    type: basic
+    basic:
+      username: <your-bitbucket-username>
+      password: <your-app-password>
+```
+
+**Using Access Token (BitBucket Server/Data Center):**
+
+```yaml
+credentials:
+  bitbucket:
+    type: access_token
+    access_token: <your-access-token>
+```
+
+### 3. Configure Flipt Storage with BitBucket Remote
+
+Edit your Flipt configuration file to add or update the storage backend that syncs with your BitBucket repository:
+
+```yaml
+storage:
+  bitbucket:
+    remote: "https://bitbucket.org/<your-username>/<your-repo>.git"
+    branch: "main"
+    poll_interval: "30s"
+    credentials: "bitbucket"
+    backend:
+      type: local
+      path: "/path/to/local/clone"
+```
+
+### 4. Configure an Environment to use BitBucket SCM
+
+Edit your Flipt configuration file to add or update the environment that uses the BitBucket SCM storage backend and add the `scm` section:
+
+```yaml highlight={6-8}
+environments:
+  production:
+    name: "Production"
+    storage: "bitbucket"
+    default: true
+    scm:
+      type: bitbucket
+      credentials: "bitbucket"
+```
+
+**For BitBucket Server (Custom Instance):**
+
+```yaml highlight={6-9}
+environments:
+  production:
+    name: "Production"
+    storage: "bitbucket"
+    default: true
+    scm:
+      type: bitbucket
+      api_url: "https://bitbucket.company.com/api/v2.0"
+      credentials: "bitbucket"
+```
+
+</Tab>
+<Tab title="Azure DevOps">
+
+## Azure DevOps Integration
+
+### 1. Create a Personal Access Token (PAT)
+
+1. Go to your Azure DevOps organization (e.g., `https://dev.azure.com/{your-organization}`)
+2. Click on your profile picture in the top right corner
+3. Select **"Personal access tokens"**
+4. Click **"New Token"**
+5. Give your token a name and set an expiration date
+6. Select the organization and scope:
+   - **Code (read & write)** - Required for repository access
+   - **Pull Request (read & write)** - Required for merge proposals
+7. Click **"Create"** and copy the token. **You will not be able to see it again!**
+
+### 2. Configure Azure DevOps Credentials
+
+Edit your Flipt configuration file to use the Azure DevOps credentials:
+
+```yaml
+credentials:
+  azure:
+    type: basic
+    basic:
+      username: <your-username-or-email>
+      password: <your-personal-access-token>
+```
+
+### 3. Configure Flipt Storage with Azure DevOps Remote
+
+Edit your Flipt configuration file to add or update the storage backend that syncs with your Azure DevOps repository:
+
+```yaml
+storage:
+  azure:
+    remote: "https://dev.azure.com/<your-org>/<your-project>/_git/<your-repo>"
+    branch: "main"
+    poll_interval: "30s"
+    credentials: "azure"
+    backend:
+      type: local
+      path: "/path/to/local/clone"
+```
+
+### 4. Configure an Environment to use Azure DevOps SCM
+
+Edit your Flipt configuration file to add or update the environment that uses the Azure DevOps SCM storage backend:
+
+```yaml highlight={6-8}
+environments:
+  production:
+    name: "Production"
+    storage: "azure"
+    default: true
+    scm:
+      type: azure
+      credentials: "azure"
+```
+
+**For Azure DevOps Server (On-premises):**
+
+```yaml highlight={6-9}
+environments:
+  production:
+    name: "Production"
+    storage: "azure"
+    default: true
+    scm:
+      type: azure
+      api_url: "https://your-server/tfs/{collection}/_apis"
+      credentials: "azure"
+```
+
+</Tab>
+<Tab title="GitLab">
+
+## GitLab Integration
+
+### 1. Create a Personal Access Token (PAT)
+
+1. Go to [GitLab Settings > Access Tokens](https://gitlab.com/-/user_settings/personal_access_tokens) (or your GitLab instance)
+2. Click **"Add new token"**
+3. Give your token a name
+4. Set an expiration date (optional but recommended)
+5. Select the following scopes (**required**):
+   - `api` - Full access to the API
+   - `read_repository` - Read access to repositories
+   - `write_repository` - Write access to repositories
+6. Click **"Create personal access token"** and copy the token. **You will not be able to see it again!**
+
+### 2. Configure GitLab Credentials
+
+Edit your Flipt configuration file to use the GitLab credentials:
+
+```yaml
+credentials:
+  gitlab:
+    type: access_token
+    access_token: <your-personal-access-token>
+```
+
+### 3. Configure Flipt Storage with GitLab Remote
+
+Edit your Flipt configuration file to add or update the storage backend that syncs with your GitLab repository:
+
+```yaml
+storage:
+  gitlab:
+    remote: "https://gitlab.com/<your-username>/<your-repo>.git"
+    branch: "main"
+    poll_interval: "30s"
+    credentials: "gitlab"
+    backend:
+      type: local
+      path: "/path/to/local/clone"
+```
+
+### 4. Configure an Environment to use GitLab SCM
+
+Edit your Flipt configuration file to add or update the environment that uses the GitLab SCM storage backend:
+
+```yaml highlight={6-8}
+environments:
+  production:
+    name: "Production"
+    storage: "gitlab"
+    default: true
+    scm:
+      type: gitlab
+      credentials: "gitlab"
+```
+
+**For GitLab Self-Managed (Self-hosted):**
+
+```yaml highlight={6-9}
+environments:
+  production:
+    name: "Production"
+    storage: "gitlab"
+    default: true
+    scm:
+      type: gitlab
+      api_url: "https://gitlab.company.com/api/v4"
+      credentials: "gitlab"
+```
+
+</Tab>
+</Tabs>
+
+## 2. Start Flipt
 
 Start or restart your Flipt server with the updated configuration. Flipt will now:
 
-- Clone your GitHub repository to the specified local path
-- Periodically sync flag state to and from GitHub
+- Clone your Git repository to the specified local path
+- Periodically sync flag state to and from your Git provider
 - Commit and push changes when you update flags via the Flipt API or UI
 - Enable merge proposals in the Flipt UI
 
 ![Merge Proposals](/v2/images/guides/operations/environments/merge_proposals.png)
 
-### 6. Troubleshooting
+## 3. Troubleshooting
 
-- Ensure your PAT has the correct permissions.
-- Make sure the local path is writable by the Flipt process.
-- Check Flipt logs for any sync or authentication errors.
+### Common Issues
+
+- **Authentication**: Ensure your credentials (PAT, API token, or app password) have the correct permissions and haven't expired
+- **Permissions**: Make sure the local path is writable by the Flipt process
+- **Logs**: Check Flipt logs for any sync or authentication errors
+- **Network**: For self-hosted instances, verify the API URL is correct and accessible
+
+### Provider-Specific Troubleshooting
+
+**GitHub:**
+
+- Ensure your PAT has the correct repository scopes (`contents` and `pull-requests`)
+- Verify the repository URL format: `https://github.com/{owner}/{repo}.git`
+
+**BitBucket:**
+
+- For API tokens: Ensure you have `Repositories: Read, Write` and `Pull requests: Read, Write` scopes
+- For app passwords: Note that they will be deprecated in September 2025
+- For BitBucket Server/Data Center: Verify the API URL format (typically `/api/v2.0`)
+
+**Azure DevOps:**
+
+- Ensure your PAT has `Code (read & write)` and `Pull Request (read & write)` scopes
+- Verify the repository URL format: `https://dev.azure.com/{org}/{project}/_git/{repo}`
+- For Azure DevOps Server: Verify the API URL format: `https://your-server/tfs/{collection}/_apis`
+
+**GitLab:**
+
+- Ensure your PAT has the correct scopes: `api`, `read_repository`, `write_repository`
+- For GitLab Self-Managed: Verify the API URL is correct (typically `/api/v4`)
+- Verify the repository URL format: `https://gitlab.com/{owner}/{repo}.git`
+
+## Authentication Formats by Provider
+
+Different Git providers require different authentication formats for optimal compatibility:
+
+| Provider         | Recommended Auth Method | Basic Auth Format                      | Notes                              |
+| ---------------- | ----------------------- | -------------------------------------- | ---------------------------------- |
+| **GitHub**       | Personal Access Token   | Username: token, Password: (empty)     |                                    |
+| **GitLab**       | Personal Access Token   | Username: oauth2, Password: token      |                                    |
+| **BitBucket**    | API Token               | Username: (not used), Token: api_token | App passwords deprecated Sept 2025 |
+| **Azure DevOps** | Personal Access Token   | Username: username, Password: PAT      |                                    |
+| **Gitea**        | Personal Access Token   | Username: token, Password: (empty)     |                                    |
 
 ## Conclusion
 
