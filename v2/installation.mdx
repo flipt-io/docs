@@ -15,7 +15,7 @@ docker run -d \
     -p 8080:8080 \
     -p 9000:9000 \
     -v $HOME/flipt:/var/opt/flipt \
-    docker.flipt.io/flipt/flipt:v2-beta
+    docker.flipt.io/flipt/flipt:v2.0.0
 ```
 
 ```console Binary
@@ -24,7 +24,7 @@ curl -fsSL https://get.flipt.io/v2 | sh
 
 ```console Kubernetes/Helm
 helm repo add flipt https://helm.flipt.io
-helm install my-flipt-v2 flipt/flipt-v2 --devel
+helm install my-flipt-v2 flipt/flipt-v2
 ```
 
 </CodeGroup>
@@ -36,9 +36,8 @@ For more details on each installation method, see the sections below.
 - [Kubernetes/Helm](#kubernetes%2Fhelm)
 
 <Info>
-  Flipt v2 is currently in beta. Helm installation is now available for
-  Kubernetes deployments. Once we release a stable version, we'll add Homebrew
-  installation options.
+  Flipt v2.0.0 is now stable! Helm installation is available for Kubernetes
+  deployments. Homebrew installation options are coming soon.
 </Info>
 
 ## Supported Architectures
@@ -72,7 +71,7 @@ docker run -d \
     -p 8080:8080 \
     -p 9000:9000 \
     -v $HOME/flipt:/var/opt/flipt \
-    docker.flipt.io/flipt/flipt:v2-beta
+    docker.flipt.io/flipt/flipt:v2.0.0
 ```
 
 This will download the image and start a Flipt container and publish ports
@@ -112,7 +111,7 @@ docker run -d \
     -p 9000:9000 \
     -v $HOME/flipt:/var/opt/flipt \
     -v $HOME/flipt/config.yaml:/etc/flipt/config.yaml \
-    docker.flipt.io/flipt/flipt:v2-beta
+    docker.flipt.io/flipt/flipt:v2.0.0
 ```
 
 ## Binary
@@ -167,21 +166,17 @@ Add the Flipt Helm repository and install Flipt v2:
 helm repo add flipt https://helm.flipt.io
 helm repo update
 
-# Install Flipt v2 (requires --devel flag while in beta)
-helm install my-flipt-v2 flipt/flipt-v2 --devel
+# Install Flipt v2
+helm install my-flipt-v2 flipt/flipt-v2
 
 # Or with custom configuration
-helm install my-flipt-v2 flipt/flipt-v2 -f values.yaml --devel
+helm install my-flipt-v2 flipt/flipt-v2 -f values.yaml
 ```
 
 <Note>
 
 The chart name is `flipt-v2`, which is separate from the v1 `flipt` chart.
 This ensures v2-specific configurations and compatibility.
-
-The `--devel` flag
-is required while Flipt v2 is in beta. This flag will no longer be needed once
-we release a stable version.
 
 </Note>
 
