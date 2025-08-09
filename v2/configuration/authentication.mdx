@@ -527,3 +527,70 @@ authentication:
         subject: user@domain.com
         audiences: https://flipt.io/, https://flipt.com/ # at least one audience must match
 ```
+
+#### Claims Mapping
+
+By default, Flipt extracts user attributes from JWT claims using predefined paths within the JWT payload. The default mappings are:
+
+- `email` from `/user/email`
+- `name` from `/user/name`
+- `sub` from `/user/sub`
+- `picture` from `/user/image`
+- `role` from `/user/role`
+
+You can customize these mappings using the `claims_mapping` configuration option. This allows you to specify [JSON Pointer](https://datatracker.ietf.org/doc/html/rfc6901) expressions to extract user attributes from different locations in the JWT payload.
+
+The custom mappings are merged with the default mappings, so you can override specific attributes while keeping the defaults for others.
+
+<Note>
+  Only the predefined attribute names (`email`, `name`, `sub`, `picture`,
+  `role`) are supported in claims mapping. Custom attribute names are not
+  allowed to ensure compatibility with consuming code.
+</Note>
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    jwt:
+      enabled: true
+      claims_mapping:
+        email: "/user/email" # Override default (same path)
+        name: "/profile/displayName" # Override default (custom path)
+        sub: "/user_id" # Override default (custom path)
+```
+
+With this configuration:
+
+- `email` is extracted from `/user/email` (default behavior)
+- `name` is extracted from `/profile/displayName` (custom override)
+- `sub` is extracted from `/user_id` (custom override)
+- `picture` is still extracted from `/user/image` (default, not overridden)
+- `role` is still extracted from `/user/role` (default, not overridden)
+
+**Example JWT payload:**
+
+```json
+{
+  "iss": "https://auth0.com/",
+  "sub": "auth0|123456",
+  "user_id": "12345",
+  "user": {
+    "email": "user@example.com"
+  },
+  "profile": {
+    "displayName": "John Doe"
+  }
+}
+```
+
+The resulting metadata available in Flipt would be:
+
+- `io.flipt.auth.jwt.email`: `user@example.com`
+- `io.flipt.auth.jwt.name`: `John Doe`
+- `io.flipt.auth.jwt.sub`: `12345`
+
+<Note>
+  Invalid JSON Pointer expressions or paths that don't exist in the JWT payload
+  are silently ignored.
+</Note>
