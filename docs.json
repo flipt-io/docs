@@ -415,6 +415,19 @@
                     ]
                   },
                   {
+                    "group": "Integration",
+                    "icon": "plug",
+                    "pages": [
+                      "v2/integration/overview",
+                      {
+                        "group": "Server-Side SDKs",
+                        "pages": ["v2/integration/server/rest"]
+                      },
+                      "v2/integration/client",
+                      "v2/integration/openfeature"
+                    ]
+                  },
+                  {
                     "group": "CLI",
                     "icon": "terminal",
                     "pages": [
@@ -487,17 +500,10 @@
                     ]
                   },
                   {
-                    "group": "Integration",
-                    "icon": "plug",
-                    "pages": [
-                      "v2/integration/overview",
-                      {
-                        "group": "Server-Side SDKs",
-                        "pages": ["v2/integration/server/rest"]
-                      },
-                      "v2/integration/client",
-                      "v2/integration/openfeature"
-                    ]
+                    "group": "Tooling",
+                    "icon": "hammer",
+                    "tag": "NEW",
+                    "pages": ["v2/tooling/github-actions"]
                   }
                 ]
               },
