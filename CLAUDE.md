@@ -60,7 +60,7 @@ Changes are automatically deployed to production when pushed to the main branch.
 
 - **Content**: All documentation files are in MDX format
 - **Navigation**: Configured in `docs.json` with versioned navigation (v1 and v2)
-- **Versions**: Supports both v1 (current) and v2 (beta) documentation
+- **Versions**: Supports both v1 (current) and v2 (stable) documentation
 - **Images**: Organized by section in `images/` directories
 - **Snippets**: Reusable content snippets in `snippets/`
 

@@ -79,7 +79,7 @@ The last bit of configuration is the session details. In order for the browser t
 docker run -it --rm \
   -p 8080:8080 \
   -v "$(pwd)/config.yml:/config.yml" \
-  flipt/flipt:v2-beta ./flipt server --config /config.yml
+  flipt/flipt:v2 ./flipt server --config /config.yml
 ```
 
 This will mount the `config.yml` as a volume in the container, and Flipt will use that configuration as it's provided as a command line flag option.

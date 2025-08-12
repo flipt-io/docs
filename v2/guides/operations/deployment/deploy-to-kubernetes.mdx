@@ -113,19 +113,16 @@ You can adjust this file to include any configuration values you need based on t
 Once you have your `values.yaml` file (or to use default settings), install Flipt v2 with Helm:
 
 ```bash
-# Install with custom values (requires --devel flag while in beta)
-helm install flipt-v2 flipt/flipt-v2 -f values.yaml --devel
+# Install with custom values
+helm install flipt-v2 flipt/flipt-v2 -f values.yaml
 
 # Or install with default settings
-helm install flipt-v2 flipt/flipt-v2 --devel
+helm install flipt-v2 flipt/flipt-v2
 ```
 
 <Note>
   Note the chart name is `flipt-v2`, not `flipt`. This is the dedicated chart
   for Flipt v2 which includes v2-specific configurations and defaults.
-
-The `--devel` flag is required while Flipt v2 is in beta. This flag will no longer
-be needed once we release a stable version.
 
 </Note>
 
