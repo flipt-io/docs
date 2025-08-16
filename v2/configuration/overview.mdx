@@ -151,67 +151,35 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 
 ## Configuration Parameters
 
-| Property                      | Description                                                                    | Default             | Since  |
-| ----------------------------- | ------------------------------------------------------------------------------ | ------------------- | ------ |
-| cors.enabled                  | Enable CORS support                                                            | false               | v2.0.0 |
-| cors.allowed_origins          | Sets Access-Control-Allow-Origin header on server                              | "\*" (all domains)  | v2.0.0 |
-| cors.allowed_headers          | Sets Access-Control-Allow-Headers header on server                             | "\*" (all headers)  | v2.0.0 |
-| meta.check_for_updates        | Enable check for newer versions of Flipt on startup                            | true                | v2.0.0 |
-| meta.telemetry_enabled        | Enable anonymous telemetry data (see [Telemetry](/v2/configuration/telemetry)) | true                | v2.0.0 |
-| meta.state_directory          | Directory on the host to store local state                                     | $HOME/.config/flipt | v2.0.0 |
-| diagnostics.profiling.enabled | Enable profiling endpoints for pprof                                           | true                | v2.0.0 |
+The following sections group related configuration options for easier navigation:
+
+1. **Core Server Setup** - Essential configuration to get Flipt running
+2. **Security & Access Control** - Authentication, authorization, and security settings
+3. **Observability & Operations** - Monitoring, logging, and analytics
+4. **Additional Settings** - Optional features and enhancements
+
+## Core Server Setup
 
 ### Server
 
-| Property                       | Description                                                                                                 | Default   | Since  |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------- | --------- | ------ |
-| server.protocol                | http or https                                                                                               | http      | v2.0.0 |
-| server.host                    | The host address on which to serve the Flipt application                                                    | 0.0.0.0   | v2.0.0 |
-| server.http_port               | The HTTP port on which to serve the Flipt REST API and UI                                                   | 8080      | v2.0.0 |
-| server.https_port              | The HTTPS port on which to serve the Flipt REST API and UI                                                  | 443       | v2.0.0 |
-| server.grpc_port               | The port on which to serve the Flipt GRPC server                                                            | 9000      | v2.0.0 |
-| server.grpc_conn_max_idle_time | Maximum amount of time a GRPC connection can be idle                                                        | unlimited | v2.0.0 |
-| server.grpc_conn_max_age       | Maximum amount of time a GRPC connection can live                                                           | unlimited | v2.0.0 |
-| server.grpc_conn_max_age_grace | Maximum amount of time a GRPC connection can live for outstanding RPCs after exceeding `grpc_conn_max_age ` | unlimited | v2.0.0 |
-| server.cert_file               | Path to the certificate file (if protocol is set to https)                                                  |           | v2.0.0 |
-| server.cert_key                | Path to the certificate key file (if protocol is set to https)                                              |           | v2.0.0 |
+Server configuration controls how Flipt listens for and serves HTTP, HTTPS, and gRPC connections.
 
-### License
-
-| Property    | Description                                                        | Default | Since  |
-| ----------- | ------------------------------------------------------------------ | ------- | ------ |
-| license.key | The license key to use for the license (required for Pro features) |         | v2.0.0 |
-
-<Note>
-  A license is only required for Pro features. See the
-  [Licensing](/v2/licensing) documentation for more information.
-</Note>
-
-### User Interface
-
-| Property         | Description                         | Default | Since  |
-| ---------------- | ----------------------------------- | ------- | ------ |
-| ui.default_theme | Sets the default UI theme for users | system  | v2.0.0 |
-| ui.topbar.color  | Sets the color of the topbar        |         | v2.0.0 |
-
-### Environments
-
-| Property                    | Description                                                     | Default | Since  |
-| --------------------------- | --------------------------------------------------------------- | ------- | ------ |
-| environments.[id].name      | The canonical name of the environment                           | default | v2.0.0 |
-| environments.[id].default   | Whether the environment is the default environment              | false   | v2.0.0 |
-| environments.[id].storage   | The id of the storage to use for the environment                |         | v2.0.0 |
-| environments.[id].directory | The directory to use for the environment with the given storage |         | v2.0.0 |
-
-#### Source Control Management
-
-| Property                          | Description                                                                        | Default | Since  |
-| --------------------------------- | ---------------------------------------------------------------------------------- | ------- | ------ |
-| environments.[id].scm.type        | The type of SCM provider to use (options: github, gitlab, bitbucket, azure, gitea) |         | v2.0.0 |
-| environments.[id].scm.api_url     | The API URL of the SCM provider to use (optional)                                  |         | v2.0.0 |
-| environments.[id].scm.credentials | The id of the credentials to use for the SCM provider                              |         | v2.0.0 |
+| Property                       | Description                                                                                                | Default   | Since  |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------- | --------- | ------ |
+| server.protocol                | http or https                                                                                              | http      | v2.0.0 |
+| server.host                    | The host address on which to serve the Flipt application                                                   | 0.0.0.0   | v2.0.0 |
+| server.http_port               | The HTTP port on which to serve the Flipt REST API and UI                                                  | 8080      | v2.0.0 |
+| server.https_port              | The HTTPS port on which to serve the Flipt REST API and UI                                                 | 443       | v2.0.0 |
+| server.grpc_port               | The port on which to serve the Flipt GRPC server                                                           | 9000      | v2.0.0 |
+| server.grpc_conn_max_idle_time | Maximum amount of time a GRPC connection can be idle                                                       | unlimited | v2.0.0 |
+| server.grpc_conn_max_age       | Maximum amount of time a GRPC connection can live                                                          | unlimited | v2.0.0 |
+| server.grpc_conn_max_age_grace | Maximum amount of time a GRPC connection can live for outstanding RPCs after exceeding `grpc_conn_max_age` | unlimited | v2.0.0 |
+| server.cert_file               | Path to the certificate file (if protocol is set to https)                                                 |           | v2.0.0 |
+| server.cert_key                | Path to the certificate key file (if protocol is set to https)                                             |           | v2.0.0 |
 
 ### Storage
+
+Storage configuration defines where and how Flipt persists feature flag data, including local and remote Git repositories.
 
 | Property                       | Description                                                         | Default             | Since  |
 | ------------------------------ | ------------------------------------------------------------------- | ------------------- | ------ |
@@ -239,44 +207,78 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | storage.[id].signature.key_ref.path     | Path to secret in provider                      |         | v2.0.0 |
 | storage.[id].signature.key_ref.key      | Key name within the secret                      |         | v2.0.0 |
 
-### Credentials
+### Environments
 
-| Property                                      | Description                                                        | Default | Since  |
-| --------------------------------------------- | ------------------------------------------------------------------ | ------- | ------ |
-| credentials.[id].type                         | The type of credentials to use (options: basic, ssh, access_token) | basic   | v2.0.0 |
-| credentials.[id].basic.username               | The username to use for basic authentication                       |         | v2.0.0 |
-| credentials.[id].basic.password               | The password to use for basic authentication                       |         | v2.0.0 |
-| credentials.[id].ssh.user                     | The username to use for SSH authentication                         | git     | v2.0.0 |
-| credentials.[id].ssh.password                 | Password used to generate the SSH key pair                         |         | v2.0.0 |
-| credentials.[id].ssh.private_key_path         | Path to private key on the filesystem                              |         | v2.0.0 |
-| credentials.[id].ssh.private_key_bytes        | (Alternative) Raw private key bytes                                |         | v2.0.0 |
-| credentials.[id].ssh.insecure_ignore_host_key | Skip verifying the known hosts key (avoid in production)           | false   | v2.0.0 |
-| credentials.[id].access_token                 | The token to use for authentication                                |         | v2.0.0 |
+Environments configuration allows you to create isolated feature flag namespaces with separate storage backends.
 
-### Secrets
+| Property                    | Description                                                     | Default | Since  |
+| --------------------------- | --------------------------------------------------------------- | ------- | ------ |
+| environments.[id].name      | The canonical name of the environment                           | default | v2.0.0 |
+| environments.[id].default   | Whether the environment is the default environment              | false   | v2.0.0 |
+| environments.[id].storage   | The id of the storage to use for the environment                |         | v2.0.0 |
+| environments.[id].directory | The directory to use for the environment with the given storage |         | v2.0.0 |
 
-| Property                       | Description                            | Default | Since  |
-| ------------------------------ | -------------------------------------- | ------- | ------ |
-| secrets.providers.[id].enabled | Enable or disable the secrets provider | false   | v2.0.0 |
+#### Source Control Management
 
-#### Secrets Provider: File
+| Property                          | Description                                                                        | Default | Since  |
+| --------------------------------- | ---------------------------------------------------------------------------------- | ------- | ------ |
+| environments.[id].scm.type        | The type of SCM provider to use (options: github, gitlab, bitbucket, azure, gitea) |         | v2.0.0 |
+| environments.[id].scm.api_url     | The API URL of the SCM provider to use (optional)                                  |         | v2.0.0 |
+| environments.[id].scm.credentials | The id of the credentials to use for the SCM provider                              |         | v2.0.0 |
 
-| Property                         | Description                                  | Default            | Since  |
-| -------------------------------- | -------------------------------------------- | ------------------ | ------ |
-| secrets.providers.file.base_path | Base directory path for storing secret files | /etc/flipt/secrets | v2.0.0 |
+### User Interface
 
-#### Secrets Provider: Vault
+User interface configuration customizes the appearance and behavior of the Flipt web UI.
 
-| Property                            | Description                                      | Default | Since  |
-| ----------------------------------- | ------------------------------------------------ | ------- | ------ |
-| secrets.providers.vault.address     | URL address of the Vault server                  |         | v2.0.0 |
-| secrets.providers.vault.auth_method | Authentication method                            | token   | v2.0.0 |
-| secrets.providers.vault.token       | Vault token for authentication                   |         | v2.0.0 |
-| secrets.providers.vault.role        | Role name for authentication                     |         | v2.0.0 |
-| secrets.providers.vault.mount       | Vault mount path for secrets                     | secret  | v2.0.0 |
-| secrets.providers.vault.namespace   | Vault namespace for enterprise Vault deployments |         | v2.0.0 |
+| Property         | Description                         | Default | Since  |
+| ---------------- | ----------------------------------- | ------- | ------ |
+| ui.default_theme | Sets the default UI theme for users | system  | v2.0.0 |
+| ui.topbar.color  | Sets the color of the topbar        |         | v2.0.0 |
+
+### CORS
+
+Cross-Origin Resource Sharing (CORS) configuration allows web applications from different domains to access Flipt's API.
+
+| Property             | Description                                        | Default            | Since  |
+| -------------------- | -------------------------------------------------- | ------------------ | ------ |
+| cors.enabled         | Enable CORS support                                | false              | v2.0.0 |
+| cors.allowed_origins | Sets Access-Control-Allow-Origin header on server  | "\*" (all domains) | v2.0.0 |
+| cors.allowed_headers | Sets Access-Control-Allow-Headers header on server | "\*" (all headers) | v2.0.0 |
+
+#### CORS Troubleshooting
+
+If you're experiencing CORS issues with browser-based applications (such as Vue, React, or Angular), simply setting `cors.enabled: true` may not be sufficient. Browsers can be strict about CORS policies, and you may need to explicitly configure the allowed origins and other options.
+
+**Common Issue:** Browser applications receive CORS errors even when `cors.enabled: true` is set.
+
+**Solution:** Configure explicit CORS settings instead of relying on the wildcard defaults:
+
+```yaml
+cors:
+  enabled: true
+  allowed_origins:
+    - http://localhost:3000 # React development server
+    - http://localhost:5173 # Vite development server
+    - https://yourapp.com # Production domain
+  allowed_headers:
+    - Content-Type
+    - Authorization
+    - X-Requested-With
+    - x-flipt-environment
+```
+
+<Note>
+  When using client-side SDKs like the [Flipt JavaScript
+  SDK](https://github.com/flipt-io/flipt-client-js), make sure to include your
+  application's origin in the `allowed_origins` list and include any custom
+  headers your application sends.
+</Note>
+
+## Security & Access Control
 
 ### Authentication
+
+Authentication configuration controls how users and systems authenticate with Flipt, supporting multiple methods including OIDC, GitHub, JWT, and static tokens.
 
 <Note>
   Authentication is configured slightly differently in v2 compared to v1. See
@@ -350,24 +352,24 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 
 #### Authentication Methods: GitHub
 
-| Property                                            | Description                                                        | Default                | Since  |
-| --------------------------------------------------- | ------------------------------------------------------------------ | ---------------------- | ------ |
-| authentication.methods.github.enabled               | Enable GitHub authentication                                       | false                  | v2.0.0 |
-| authentication.methods.github.client_id             | GitHub client ID                                                   |                        | v2.0.0 |
-| authentication.methods.github.client_secret         | GitHub client secret                                               |                        | v2.0.0 |
-| authentication.methods.github.redirect_address      | Public URL on which this Flipt instance is reachable               |                        | v2.0.0 |
-| authentication.methods.github.scopes                | Scopes to request from GitHub                                      |                        | v2.0.0 |
-| authentication.methods.github.allowed_organizations | List of GitHub organizations allowed to authenticate               |                        | v2.0.0 |
-| authentication.methods.github.allowed_teams         | Map of GitHub organizations to teams that users must be members of |                        | v2.0.0 |
-| authentication.methods.github.server_url            | GitHub Server URL (to support GHES)                                | https://github.com     | v2.0.0 |
-| authentication.methods.github.api_url               | GitHub API URL (to support GHES)                                   | https://api.github.com | v2.0.0 |
+| Property                                            | Description                                                        | Default                  | Since  |
+| --------------------------------------------------- | ------------------------------------------------------------------ | ------------------------ | ------ |
+| authentication.methods.github.enabled               | Enable GitHub authentication                                       | false                    | v2.0.0 |
+| authentication.methods.github.client_id             | GitHub client ID                                                   |                          | v2.0.0 |
+| authentication.methods.github.client_secret         | GitHub client secret                                               |                          | v2.0.0 |
+| authentication.methods.github.redirect_address      | Public URL on which this Flipt instance is reachable               |                          | v2.0.0 |
+| authentication.methods.github.scopes                | Scopes to request from GitHub                                      |                          | v2.0.0 |
+| authentication.methods.github.allowed_organizations | List of GitHub organizations allowed to authenticate               |                          | v2.0.0 |
+| authentication.methods.github.allowed_teams         | Map of GitHub organizations to teams that users must be members of |                          | v2.0.0 |
+| authentication.methods.github.server_url            | GitHub Server URL (to support GHES)                                | `https://github.com`     | v2.0.0 |
+| authentication.methods.github.api_url               | GitHub API URL (to support GHES)                                   | `https://api.github.com` | v2.0.0 |
 
 #### Authentication Methods: Kubernetes
 
 | Property                                                     | Description                                                | Default                                              | Since  |
 | ------------------------------------------------------------ | ---------------------------------------------------------- | ---------------------------------------------------- | ------ |
 | authentication.methods.kubernetes.enabled                    | Enable Kubernetes service account token authentication     | false                                                | v2.0.0 |
-| authentication.methods.kubernetes.discovery_url              | Kubernetes API server URL for OIDC configuration discovery | https://kubernetes.default.svc.cluster.local         | v2.0.0 |
+| authentication.methods.kubernetes.discovery_url              | Kubernetes API server URL for OIDC configuration discovery | `https://kubernetes.default.svc.cluster.local`       | v2.0.0 |
 | authentication.methods.kubernetes.ca_path                    | Kubernetes API CA certification path                       | /var/run/secrets/kubernetes.io/serviceaccount/ca.crt | v2.0.0 |
 | authentication.methods.kubernetes.service_account_token_path | Path to Flipt service account token                        | /var/run/secrets/kubernetes.io/serviceaccount/token  | v2.0.0 |
 
@@ -384,6 +386,8 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 
 ### Authorization
 
+Authorization configuration enforces fine-grained access control policies to restrict operations based on user roles and permissions.
+
 | Property               | Description                                            | Default | Since  |
 | ---------------------- | ------------------------------------------------------ | ------- | ------ |
 | authorization.required | Enable or disable authorization validation on requests | false   | v2.0.0 |
@@ -397,28 +401,52 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | authorization.local.data.path            | Path to the local data file                  |         | v2.0.0 |
 | authorization.local.data.poll_interval   | Interval to poll the data file for changes   | 30s     | v2.0.0 |
 
-### Analytics
+### Credentials
 
-| Property                      | Description                                     | Default | Since  |
-| ----------------------------- | ----------------------------------------------- | ------- | ------ |
-| analytics.buffer.flush_period | Duration to wait before sending events to sinks | 10s     | v2.0.0 |
+Credentials configuration manages authentication details for accessing remote Git repositories and SCM providers.
 
-#### Analytics: Clickhouse
+| Property                                      | Description                                                        | Default | Since  |
+| --------------------------------------------- | ------------------------------------------------------------------ | ------- | ------ |
+| credentials.[id].type                         | The type of credentials to use (options: basic, ssh, access_token) | basic   | v2.0.0 |
+| credentials.[id].basic.username               | The username to use for basic authentication                       |         | v2.0.0 |
+| credentials.[id].basic.password               | The password to use for basic authentication                       |         | v2.0.0 |
+| credentials.[id].ssh.user                     | The username to use for SSH authentication                         | git     | v2.0.0 |
+| credentials.[id].ssh.password                 | Password used to generate the SSH key pair                         |         | v2.0.0 |
+| credentials.[id].ssh.private_key_path         | Path to private key on the filesystem                              |         | v2.0.0 |
+| credentials.[id].ssh.private_key_bytes        | (Alternative) Raw private key bytes                                |         | v2.0.0 |
+| credentials.[id].ssh.insecure_ignore_host_key | Skip verifying the known hosts key (avoid in production)           | false   | v2.0.0 |
+| credentials.[id].access_token                 | The token to use for authentication                                |         | v2.0.0 |
 
-| Property                             | Description                         | Default | Since  |
-| ------------------------------------ | ----------------------------------- | ------- | ------ |
-| analytics.storage.clickhouse.enabled | Enable Clickhouse support           | false   | v2.0.0 |
-| analytics.storage.clickhouse.url     | URL to connect to clickhouse server |         | v2.0.0 |
+### Secrets
 
-#### Analytics: Prometheus
+Secrets configuration enables integration with external secret management systems like Vault for secure credential storage.
 
-| Property                             | Description                                                             | Default | Since  |
-| ------------------------------------ | ----------------------------------------------------------------------- | ------- | ------ |
-| analytics.storage.prometheus.enabled | Enable Prometheus support                                               | false   | v2.0.0 |
-| analytics.storage.prometheus.url     | URL to connect to prometheus server                                     |         | v2.0.0 |
-| analytics.storage.prometheus.headers | Additional headers to send with Prometheus requests (map[string]string) |         | v2.0.0 |
+| Property                       | Description                            | Default | Since  |
+| ------------------------------ | -------------------------------------- | ------- | ------ |
+| secrets.providers.[id].enabled | Enable or disable the secrets provider | false   | v2.0.0 |
+
+#### Secrets Provider: File
+
+| Property                         | Description                                  | Default            | Since  |
+| -------------------------------- | -------------------------------------------- | ------------------ | ------ |
+| secrets.providers.file.base_path | Base directory path for storing secret files | /etc/flipt/secrets | v2.0.0 |
+
+#### Secrets Provider: Vault
+
+| Property                            | Description                                      | Default | Since  |
+| ----------------------------------- | ------------------------------------------------ | ------- | ------ |
+| secrets.providers.vault.address     | URL address of the Vault server                  |         | v2.0.0 |
+| secrets.providers.vault.auth_method | Authentication method                            | token   | v2.0.0 |
+| secrets.providers.vault.token       | Vault token for authentication                   |         | v2.0.0 |
+| secrets.providers.vault.role        | Role name for authentication                     |         | v2.0.0 |
+| secrets.providers.vault.mount       | Vault mount path for secrets                     | secret  | v2.0.0 |
+| secrets.providers.vault.namespace   | Vault namespace for enterprise Vault deployments |         | v2.0.0 |
+
+## Observability & Operations
 
 ### Logging
+
+Logging configuration controls the format, destination, and verbosity of Flipt's application logs.
 
 | Property         | Description                                                                      | Default | Since  |
 | ---------------- | -------------------------------------------------------------------------------- | ------- | ------ |
@@ -453,6 +481,8 @@ export OTEL_EXPORTER_OTLP_LOGS_ENDPOINT=http://localhost:4317
 
 ### Metrics
 
+Metrics configuration enables operational monitoring through Prometheus or OpenTelemetry exporters.
+
 | Property         | Description                            | Default    | Since  |
 | ---------------- | -------------------------------------- | ---------- | ------ |
 | metrics.enabled  | Enable metrics support                 | true       | v2.0.0 |
@@ -476,6 +506,8 @@ export OTEL_EXPORTER_OTLP_METRICS_HEADERS="Authorization=Bearer <token>"
 
 ### Tracing
 
+Tracing configuration enables distributed tracing for observability and performance analysis using OpenTelemetry.
+
 | Property        | Description            | Default | Since  |
 | --------------- | ---------------------- | ------- | ------ |
 | tracing.enabled | Enable tracing support | false   | v2.0.0 |
@@ -497,6 +529,55 @@ To configure the OTLP headers, you can set the `OTEL_EXPORTER_OTLP_TRACES_HEADER
 ```console
 export OTEL_EXPORTER_OTLP_TRACES_HEADERS="Authorization=Bearer <token>"
 ```
+
+### Analytics
+
+Analytics configuration enables collection and export of feature flag evaluation metrics to external analytics systems.
+
+| Property                      | Description                                     | Default | Since  |
+| ----------------------------- | ----------------------------------------------- | ------- | ------ |
+| analytics.buffer.flush_period | Duration to wait before sending events to sinks | 10s     | v2.0.0 |
+
+#### Analytics: Clickhouse
+
+| Property                             | Description                         | Default | Since  |
+| ------------------------------------ | ----------------------------------- | ------- | ------ |
+| analytics.storage.clickhouse.enabled | Enable Clickhouse support           | false   | v2.0.0 |
+| analytics.storage.clickhouse.url     | URL to connect to clickhouse server |         | v2.0.0 |
+
+#### Analytics: Prometheus
+
+| Property                             | Description                                                             | Default | Since  |
+| ------------------------------------ | ----------------------------------------------------------------------- | ------- | ------ |
+| analytics.storage.prometheus.enabled | Enable Prometheus support                                               | false   | v2.0.0 |
+| analytics.storage.prometheus.url     | URL to connect to prometheus server                                     |         | v2.0.0 |
+| analytics.storage.prometheus.headers | Additional headers to send with Prometheus requests (map[string]string) |         | v2.0.0 |
+
+## Additional Settings
+
+### License
+
+License configuration enables Pro features by providing a valid license key.
+
+| Property    | Description                                                        | Default | Since  |
+| ----------- | ------------------------------------------------------------------ | ------- | ------ |
+| license.key | The license key to use for the license (required for Pro features) |         | v2.0.0 |
+
+<Note>
+  A license is only required for Pro features. See the
+  [Licensing](/v2/licensing) documentation for more information.
+</Note>
+
+### Meta & Diagnostics
+
+Meta configuration controls Flipt's internal behavior including update checks, telemetry, and diagnostic endpoints.
+
+| Property                      | Description                                                                    | Default             | Since  |
+| ----------------------------- | ------------------------------------------------------------------------------ | ------------------- | ------ |
+| meta.check_for_updates        | Enable check for newer versions of Flipt on startup                            | true                | v2.0.0 |
+| meta.telemetry_enabled        | Enable anonymous telemetry data (see [Telemetry](/v2/configuration/telemetry)) | true                | v2.0.0 |
+| meta.state_directory          | Directory on the host to store local state                                     | $HOME/.config/flipt | v2.0.0 |
+| diagnostics.profiling.enabled | Enable profiling endpoints for pprof                                           | true                | v2.0.0 |
 
 ## Deprecations
 
