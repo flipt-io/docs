@@ -61,6 +61,6 @@ docker run -d \
     -p 8080:8080 \
     -p 9000:9000 \
     -v $HOME/flipt:/var/opt/flipt \
-    -v $HOME/flipt/config.yaml:/etc/flipt/config.yaml \
+    -v $HOME/flipt/config.yaml:/etc/flipt/config/default.yml \
     docker.flipt.io/flipt/flipt:latest
 ```
