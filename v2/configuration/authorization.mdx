@@ -3,6 +3,8 @@ title: Authorization
 description: This document describes how to configure the authorization mechanisms for Flipt v2.
 ---
 
+Flipt v2 introduces an enhanced authorization system that provides environment-aware, hierarchical access control. This system builds upon v1's foundation while adding support for multi-environment deployments.
+
 Flipt supports the ability to secure its core API routes by setting the `required` field to `true` on the `authorization` configuration object.
 
 ```yaml config.yaml
@@ -51,6 +53,12 @@ The policy **must** have the following package declaration:
 package flipt.authz.v2
 ```
 
+<Note>
+  Flipt v2 uses `package flipt.authz.v2` instead of v1's `package
+  flipt.authz.v1`. This is a breaking change that reflects the enhanced
+  authorization model.
+</Note>
+
 #### Polling Interval
 
 Flipt will poll the policy file for changes at a regular interval. By default, Flipt will poll the policy file every 5 minutes. You can adjust this interval by setting the `poll_interval` field in the `policy` object.
@@ -92,3 +100,232 @@ authorization:
       path: "data.json"
       poll_interval: "1m"
 ```
+
+## Key Differences from v1
+
+Flipt v2 authorization introduces several important changes:
+
+### 1. Environment-Aware Authorization
+
+Unlike v1, which operates at the namespace level, v2 introduces a hierarchical model with environments:
+
+- **Global scope**: Full access to all environments and namespaces
+- **Environment scope**: Manage namespaces within specific environments
+- **Namespace scope**: Manage resources (flags, segments, etc.) within specific namespaces
+
+### 2. Optional Policy Queries for UI Filtering
+
+v2 policies can optionally implement two special queries to enable UI filtering. When implemented, these queries allow the Flipt UI to show only the environments and namespaces that users have access to:
+
+```rego
+# Returns list of environments the user can access
+viewable_environments := ["production", "staging"] # or ["*"] for all
+
+# Returns list of namespaces in an environment the user can access
+viewable_namespaces(env) := ["frontend", "backend"] # or ["*"] for all
+```
+
+<Note>
+These queries are **optional**. If not implemented, the UI will show all
+  environments and namespaces, but authorization will still be enforced when
+  users attempt to access them.
+
+Implementing these queries improves the user
+experience by filtering out inaccessible resources in the UI.
+
+</Note>
+
+### 3. Simplified Request Structure
+
+v2 uses a simplified request structure with `scope` field:
+
+```json
+{
+  "request": {
+    "scope": "namespace", // or "environment"
+    "environment": "production",
+    "namespace": "frontend",
+    "action": "update"
+  }
+}
+```
+
+## Example Policies
+
+### Basic RBAC Policy
+
+Here's a complete example of a v2 RBAC policy:
+
+```rego policy.rego
+package flipt.authz.v2
+
+import rego.v1
+
+# Default deny
+default allow := false
+default viewable_environments := []
+
+# Helper to get user/group identifiers
+subject_ids contains id if {
+    user := input.authentication.metadata["io.flipt.auth.user"]
+    id := sprintf("user:%s", [user])
+}
+
+subject_ids contains id if {
+    groups := input.authentication.metadata["io.flipt.auth.groups"]
+    id := sprintf("group:%s", [groups[_]])
+}
+
+# Check for global admin access
+has_global_access if {
+    some binding in data.role_bindings
+    binding.scope.type == "global"
+    some subject in binding.subjects
+    some id in subject_ids
+    subject == id
+}
+
+# Environment visibility
+viewable_environments := ["*"] if {
+    has_global_access
+} else := envs if {
+    envs := {env |
+        some binding in data.role_bindings
+        some subject in binding.subjects
+        some id in subject_ids
+        subject == id
+        some b in binding.scope.bindings
+        env := b.environment
+    }
+}
+
+# Namespace visibility within an environment
+viewable_namespaces(env) := ["*"] if {
+    has_global_access
+} else := ["*"] if {
+    # Check for wildcard namespace access
+    some binding in data.role_bindings
+    some subject in binding.subjects
+    some id in subject_ids
+    subject == id
+    some b in binding.scope.bindings
+    b.environment == env
+    "*" in b.namespaces
+} else := namespaces if {
+    # Return specific namespaces
+    namespaces := {ns |
+        some binding in data.role_bindings
+        some subject in binding.subjects
+        some id in subject_ids
+        subject == id
+        some b in binding.scope.bindings
+        b.environment == env
+        some ns in b.namespaces
+        ns != "*"
+    }
+}
+
+# Main authorization logic
+allow if {
+    has_global_access
+}
+
+allow if {
+    scope := input.request.scope
+    env := input.request.environment
+    ns := input.request.namespace
+    action := input.request.action
+
+    # Check permissions based on scope
+    some binding in data.role_bindings
+    some subject in binding.subjects
+    some id in subject_ids
+    subject == id
+
+    some b in binding.scope.bindings
+    b.environment == env
+
+    # Check namespace access
+    ns in b.namespaces
+
+    # Check action permission
+    action in b.permissions
+}
+```
+
+### Example Data Structure
+
+The accompanying `data.json` file defines role bindings:
+
+```json data.json
+{
+  "role_bindings": [
+    {
+      "role": "admin",
+      "subjects": ["user:admin@company.com"],
+      "scope": {
+        "type": "global"
+      }
+    },
+    {
+      "role": "platform_team",
+      "subjects": ["group:platform"],
+      "scope": {
+        "type": "environment",
+        "bindings": [
+          {
+            "environment": "production",
+            "namespaces": ["*"],
+            "permissions": ["*"]
+          },
+          {
+            "environment": "staging",
+            "namespaces": ["*"],
+            "permissions": ["read", "update"]
+          }
+        ]
+      }
+    },
+    {
+      "role": "developer",
+      "subjects": ["user:dev@company.com", "group:developers"],
+      "scope": {
+        "type": "namespace",
+        "bindings": [
+          {
+            "environment": "development",
+            "namespaces": ["frontend", "backend"],
+            "permissions": ["*"]
+          },
+          {
+            "environment": "staging",
+            "namespaces": ["frontend"],
+            "permissions": ["read"]
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+This structure allows:
+
+- **Global admins**: Full access to everything
+- **Platform team**: Manage all namespaces in production, read/update in staging
+- **Developers**: Full access to specific namespaces in development, read-only in staging
+
+## Migration from v1
+
+When migrating from v1 to v2:
+
+1. **Update package declaration** from `flipt.authz.v1` to `flipt.authz.v2`
+2. **Add environment context** to your role bindings
+3. **Optionally implement the UI filtering queries**: `viewable_environments` and `viewable_namespaces(env)` for better UX
+4. **Update request handling** to use the new `scope` field instead of `resource`/`subject`
+5. **Remove bundle configurations** as they're not supported in v2 (yet)
+
+<Warning>
+  Existing v1 policies will not work without modification. Plan your migration
+  carefully and test thoroughly before deploying to production.
+</Warning>
