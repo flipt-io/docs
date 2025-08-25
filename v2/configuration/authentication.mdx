@@ -371,6 +371,12 @@ authentication:
   the user is a member of.
 </Note>
 
+Your OAuth application **must have permission** to access the specified organization(s). Without this permission, the GitHub API won't return organization membership information when Flipt verifies access.
+
+For a complete setup guide, see [Login with GitHub](/v2/guides/operations/authentication/login-with-github).
+
+![GitHub Organization OAuth Permissions](/v2/images/configuration/authentication/github-org-oauth.png)
+
 #### Allowed Teams
 
 The GitHub authentication method also supports the ability to restrict access to a set of GitHub teams. This is important if you want to limit access to Flipt to only members of a specific team within an organization as opposed to all members of the organization.
