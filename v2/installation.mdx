@@ -27,6 +27,10 @@ helm repo add flipt https://helm.flipt.io
 helm install my-flipt-v2 flipt/flipt-v2
 ```
 
+```console Homebrew
+brew install flipt-io/brew/flipt@2
+```
+
 </CodeGroup>
 
 For more details on each installation method, see the sections below.
@@ -34,11 +38,7 @@ For more details on each installation method, see the sections below.
 - [Docker](#docker)
 - [Binary](#binary)
 - [Kubernetes/Helm](#kubernetes%2Fhelm)
-
-<Info>
-  Flipt v2.0.0 is now stable! Helm installation is available for Kubernetes
-  deployments. Homebrew installation options are coming soon.
-</Info>
+- [Homebrew](#homebrew)
 
 ## Supported Architectures
 
@@ -112,6 +112,29 @@ docker run -d \
     -v $HOME/flipt:/var/opt/flipt \
     -v $HOME/flipt/config.yaml:/etc/flipt/config.yaml \
     docker.flipt.io/flipt/flipt:v2
+```
+
+## Homebrew
+
+You can install Flipt v2 using [Homebrew](https://brew.sh/) on macOS and Linux.
+
+<Note>
+  If you have Flipt v1 installed via Homebrew, you'll need to unlink it first:
+  `brew unlink flipt`
+</Note>
+
+### Installing
+
+```console
+brew install flipt-io/brew/flipt@2
+```
+
+### Running
+
+Once installed, you can run Flipt v2 with:
+
+```console
+flipt server [--config OPTIONAL_PATH_TO_YOUR_CONFIG]
 ```
 
 ## Binary
