@@ -17,7 +17,7 @@ import V2Pro from "/snippets/v2-pro.mdx";
 
 <Note>
   Flipt v2 SCM integration supports most of the major Git providers including
-  GitHub, GitLab, BitBucket, Gitea, and Azure DevOps.
+  GitHub, GitLab, Bitbucket, Gitea, and Azure DevOps.
 </Note>
 
 ## 1. Configure SCM Integration
@@ -88,9 +88,9 @@ environments:
 ```
 
 </Tab>
-<Tab title="BitBucket">
+<Tab title="Bitbucket">
 
-## BitBucket Integration
+## Bitbucket Integration
 
 ### 1. Create API Token or App Password
 
@@ -99,9 +99,9 @@ environments:
   strongly recommend using API tokens instead.
 </Warning>
 
-**Option A: API Token (Recommended for BitBucket Cloud)**
+**Option A: API Token (Recommended for Bitbucket Cloud)**
 
-1. Go to [BitBucket Account Settings > API tokens](https://bitbucket.org/account/settings/api-tokens/)
+1. Go to [Bitbucket Account Settings > API tokens](https://bitbucket.org/account/settings/api-tokens/)
 2. Click **"Create API token"**
 3. Give your token a name
 4. Select the following scopes (**required**):
@@ -116,7 +116,7 @@ environments:
   be deprecated on September 9, 2025 and will stop working on June 9, 2026.**
 </Note>
 
-1. Go to [BitBucket Account Settings > App passwords](https://bitbucket.org/account/settings/app-passwords/)
+1. Go to [Bitbucket Account Settings > App passwords](https://bitbucket.org/account/settings/app-passwords/)
 2. Click **"Create app password"**
 3. Give your app password a name
 4. Select the following permissions (**required**):
@@ -124,15 +124,15 @@ environments:
    - Pull requests: Read, Write
 5. Click **"Create"** and copy the generated password. **You will not be able to see it again!**
 
-**Option C: Access Token (For BitBucket Server/Data Center)**
+**Option C: Access Token (For Bitbucket Server/Data Center)**
 
-1. Go to your BitBucket Server settings
+1. Go to your Bitbucket Server settings
 2. Navigate to Personal access tokens
 3. Create a new token with repository and pull request permissions
 
-### 2. Configure BitBucket Credentials
+### 2. Configure Bitbucket Credentials
 
-Edit your Flipt configuration file to use the BitBucket credentials:
+Edit your Flipt configuration file to use the Bitbucket credentials:
 
 **Using API Token (Recommended):**
 
@@ -154,7 +154,7 @@ credentials:
       password: <your-app-password>
 ```
 
-**Using Access Token (BitBucket Server/Data Center):**
+**Using Access Token (Bitbucket Server/Data Center):**
 
 ```yaml
 credentials:
@@ -163,9 +163,9 @@ credentials:
     access_token: <your-access-token>
 ```
 
-### 3. Configure Flipt Storage with BitBucket Remote
+### 3. Configure Flipt Storage with Bitbucket Remote
 
-Edit your Flipt configuration file to add or update the storage backend that syncs with your BitBucket repository:
+Edit your Flipt configuration file to add or update the storage backend that syncs with your Bitbucket repository:
 
 ```yaml
 storage:
@@ -179,9 +179,9 @@ storage:
       path: "/path/to/local/clone"
 ```
 
-### 4. Configure an Environment to use BitBucket SCM
+### 4. Configure an Environment to use Bitbucket SCM
 
-Edit your Flipt configuration file to add or update the environment that uses the BitBucket SCM storage backend and add the `scm` section:
+Edit your Flipt configuration file to add or update the environment that uses the Bitbucket SCM storage backend and add the `scm` section:
 
 ```yaml highlight={6-8}
 environments:
@@ -194,7 +194,7 @@ environments:
       credentials: "bitbucket"
 ```
 
-**For BitBucket Server (Custom Instance):**
+**For Bitbucket Server (Custom Instance):**
 
 ```yaml highlight={6-9}
 environments:
@@ -386,11 +386,11 @@ Start or restart your Flipt server with the updated configuration. Flipt will no
 - Ensure your PAT has the correct repository scopes (`contents` and `pull-requests`)
 - Verify the repository URL format: `https://github.com/{owner}/{repo}.git`
 
-**BitBucket:**
+**Bitbucket:**
 
 - For API tokens: Ensure you have `Repositories: Read, Write` and `Pull requests: Read, Write` scopes
 - For app passwords: Note that they will be deprecated in September 2025
-- For BitBucket Server/Data Center: Verify the API URL format (typically `/api/v2.0`)
+- For Bitbucket Server/Data Center: Verify the API URL format (typically `/api/v2.0`)
 
 **Azure DevOps:**
 
@@ -412,7 +412,7 @@ Different Git providers require different authentication formats for optimal com
 | ---------------- | ----------------------- | -------------------------------------- | ---------------------------------- |
 | **GitHub**       | Personal Access Token   | Username: token, Password: (empty)     |                                    |
 | **GitLab**       | Personal Access Token   | Username: oauth2, Password: token      |                                    |
-| **BitBucket**    | API Token               | Username: (not used), Token: api_token | App passwords deprecated Sept 2025 |
+| **Bitbucket**    | API Token               | Username: (not used), Token: api_token | App passwords deprecated Sept 2025 |
 | **Azure DevOps** | Personal Access Token   | Username: username, Password: PAT      |                                    |
 | **Gitea**        | Personal Access Token   | Username: token, Password: (empty)     |                                    |
 
