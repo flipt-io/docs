@@ -335,40 +335,6 @@
                 "icon": "github"
               }
             ]
-          },
-          {
-            "tab": "Flipt Cloud",
-            "groups": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "cloud/overview",
-                  "cloud/benefits",
-                  "cloud/concepts",
-                  "cloud/architecture"
-                ]
-              },
-              {
-                "group": "Features",
-                "pages": [
-                  "cloud/features/authentication",
-                  "cloud/features/git-backed-storage",
-                  "cloud/features/approval-workflows",
-                  "cloud/features/rbac",
-                  "cloud/features/user-management",
-                  "cloud/features/verified-commits",
-                  "cloud/features/custom-domains"
-                ]
-              },
-              {
-                "group": "Guides",
-                "pages": [
-                  "cloud/guides/getting-started",
-                  "cloud/guides/production",
-                  "cloud/guides/configuring-environments"
-                ]
-              }
-            ]
           }
         ]
       },
@@ -526,40 +492,6 @@
                 "anchor": "GitHub",
                 "href": "https://git.new/flipt",
                 "icon": "github"
-              }
-            ]
-          },
-          {
-            "tab": "Flipt Cloud",
-            "groups": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "cloud/overview",
-                  "cloud/benefits",
-                  "cloud/concepts",
-                  "cloud/architecture"
-                ]
-              },
-              {
-                "group": "Features",
-                "pages": [
-                  "cloud/features/authentication",
-                  "cloud/features/git-backed-storage",
-                  "cloud/features/approval-workflows",
-                  "cloud/features/rbac",
-                  "cloud/features/user-management",
-                  "cloud/features/verified-commits",
-                  "cloud/features/custom-domains"
-                ]
-              },
-              {
-                "group": "Guides",
-                "pages": [
-                  "cloud/guides/getting-started",
-                  "cloud/guides/production",
-                  "cloud/guides/configuring-environments"
-                ]
               }
             ]
           }
