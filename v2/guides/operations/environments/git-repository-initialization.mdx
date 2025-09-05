@@ -9,6 +9,15 @@ This guide explains how to set up Git repository initialization for existing fea
 
 Flipt v2 supports automatic Git repository detection and initialization for existing feature files when using the local storage backend. This addresses the common workflow where you have existing feature flag configurations but no Git repository initialized yet.
 
+<Note>
+  This is only necessary if you want to pre-populate Flipt with existing feature
+  data from your local machine.
+
+If you are starting fresh or have data synced to
+a remote repository then following this guide is not necessary.
+
+</Note>
+
 ## Supported File Formats
 
 Flipt v2 supports both YAML file extensions for feature configurations:
@@ -140,7 +149,6 @@ You can also combine local storage with remote Git synchronization:
 ```yaml
 storage:
   local:
-    name: "Local with Remote"
     remote: "https://github.com/your-org/feature-flags.git"
     branch: "main"
     poll_interval: "30s"
@@ -205,22 +213,7 @@ Check that:
 1. Your feature files use the correct naming: `features.yaml` or `features.yml`
 2. The files are in the correct directory structure
 3. The YAML syntax is valid
-
-### Changes Not Persisting
-
-For normal Git repositories:
-
-- Changes made in the UI should automatically sync to your files
-- Check that Flipt has write permissions to the directory
-- Verify that the Git repository is properly initialized
-
-## Best Practices
-
-1. **Use Descriptive Commit Messages**: When initializing your repository, use clear commit messages that describe your feature set
-2. **Organize by Environment**: Structure your directories to separate different environments (staging, production, etc.)
-3. **Regular Commits**: Consider setting up automated commits for changes made through the UI
-4. **Backup Strategy**: Implement a backup strategy for your feature flag configurations
-5. **File Naming**: Stick to either `.yaml` or `.yml` consistently across your project
+4. You added and committed the files at `path`
 
 ## Backward Compatibility
 
