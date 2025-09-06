@@ -1,0 +1,226 @@
+---
+title: Git Repository Initialization
+description: Learn how to initialize Git repositories for existing feature flag configurations in Flipt v2.
+---
+
+This guide explains how to set up Git repository initialization for existing feature flag configurations in Flipt v2. This is particularly useful when you already have `features.yaml` or `features.yml` files but need to initialize version control for them.
+
+## Overview
+
+Flipt v2 supports automatic Git repository detection and initialization for existing feature files when using the local storage backend. This addresses the common workflow where you have existing feature flag configurations but no Git repository initialized yet.
+
+<Note>
+  This is only necessary if you want to pre-populate Flipt with existing feature
+  data from your local machine.
+
+If you are starting fresh or have data synced to
+a remote repository then following this guide is not necessary.
+
+</Note>
+
+## Supported File Formats
+
+Flipt v2 supports both YAML file extensions for feature configurations:
+
+- `features.yaml` (recommended)
+- `features.yml`
+
+Both formats work identically and you can use whichever extension you prefer.
+
+## Basic Setup Workflow
+
+The typical workflow for initializing a Git repository with existing feature files is:
+
+### 1. Organize Your Feature Files
+
+Create a directory structure with your existing features:
+
+```bash
+mkdir -p my-project/flags/production
+cp existing-features.yaml my-project/flags/production/features.yaml
+```
+
+### 2. Initialize Git Repository
+
+Navigate to your flags directory and initialize Git:
+
+```bash
+cd my-project/flags
+git init -b main
+git add .
+git commit -m "Initial features"
+```
+
+### 3. Configure Flipt
+
+Create a Flipt configuration that points to your flags directory:
+
+```yaml
+storage:
+  local:
+    name: "local"
+    backend:
+      type: local
+      path: "flags" # Path to your flags directory
+    branch: "main"
+
+environments:
+  default:
+    name: "Default"
+    storage: "local"
+    default: true
+```
+
+### 4. Start Flipt Server
+
+Run Flipt pointing to your configuration:
+
+```bash
+cd ..  # Back to my-project directory
+flipt server --config config.yml
+```
+
+## Repository Detection
+
+Flipt v2 includes enhanced repository detection logic that can handle:
+
+1. **Normal Git Repositories**: Standard repositories created with `git init` (with `.git` subdirectory)
+2. **Bare Repositories**: Repositories managed internally by Flipt (Git files in root directory)
+3. **Automatic Fallback**: Graceful handling when repository types are ambiguous
+
+The system automatically:
+
+- Detects the repository type
+- Creates necessary remote tracking references (`refs/remotes/origin/main`)
+- Sets up proper branch management for Flipt's operations
+
+## Working Directory Synchronization
+
+When you make changes through the Flipt UI, the system automatically:
+
+- Updates the actual `.yaml` files on disk for normal repositories
+- Maintains backward compatibility with existing bare repository workflows
+- Synchronizes changes back to the filesystem
+
+This means changes made in the Flipt web interface will be reflected in your actual feature files, allowing you to see modifications through standard Git tools.
+
+## Configuration Examples
+
+### Basic Local Storage
+
+```yaml
+storage:
+  backend:
+    type: local
+    path: "." # Current directory
+```
+
+### Multiple Environments
+
+```yaml
+storage:
+  staging:
+    name: "Staging"
+    backend:
+      type: local
+      path: "flags/staging"
+    branch: "staging"
+  production:
+    name: "Production"
+    backend:
+      type: local
+      path: "flags/production"
+    branch: "main"
+
+environments:
+  staging:
+    name: "Staging"
+    storage: "staging"
+  production:
+    name: "Production"
+    storage: "production"
+    default: true
+```
+
+### With Remote Git Repository
+
+You can also combine local storage with remote Git synchronization:
+
+```yaml
+storage:
+  local:
+    remote: "https://github.com/your-org/feature-flags.git"
+    branch: "main"
+    poll_interval: "30s"
+    credentials: "github"
+    backend:
+      type: local
+      path: "flags"
+
+environments:
+  default:
+    name: "Default"
+    storage: "local"
+    default: true
+
+credentials:
+  github:
+    type: access_token
+    access_token: "your-github-token"
+```
+
+## Docker Usage
+
+When using Docker, you can initialize the repository in your container build process:
+
+```dockerfile
+FROM docker-registry.example.com/base:latest as builder
+
+COPY main/features /tmp/data
+RUN cd /tmp/data && \
+    git config --global init.defaultBranch main && \
+    git init && \
+    git config user.name "Flipt Container" && \
+    git config user.email "flipt@container.local" && \
+    git add . && \
+    git commit -m "Initial commit with feature flags"
+
+FROM docker.flipt.io/flipt/flipt:v2
+
+COPY --from=builder --chown=flipt:flipt /tmp/data /data
+COPY --chown=flipt:flipt main/config.yml /config.yml
+
+USER flipt
+EXPOSE 8080 9000
+
+CMD ["/flipt", "server", "--config", "/config.yml"]
+```
+
+## Troubleshooting
+
+### Repository Does Not Exist Error
+
+If you see this error, ensure that:
+
+1. Your `path` configuration points to a valid directory
+2. The directory contains your feature files
+3. Git is properly initialized in the directory
+
+### Features Not Loading
+
+Check that:
+
+1. Your feature files use the correct naming: `features.yaml` or `features.yml`
+2. The files are in the correct directory structure
+3. The YAML syntax is valid
+4. You added and committed the files at `path`
+
+## Backward Compatibility
+
+This enhancement is fully backward compatible:
+
+- Existing bare repository workflows continue to work unchanged
+- All existing functionality is preserved
+- Safe fallbacks handle edge cases gracefully
+
+You can migrate existing setups without any breaking changes.

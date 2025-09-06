@@ -324,11 +324,6 @@
                 ]
               },
               {
-                "anchor": "AI Context",
-                "href": "https://docs.flipt.io/llms.txt",
-                "icon": "robot"
-              },
-              {
                 "anchor": "Blog",
                 "href": "https://blog.flipt.io",
                 "icon": "newspaper"
@@ -466,6 +461,7 @@
                           {
                             "group": "Environments",
                             "pages": [
+                              "v2/guides/operations/environments/git-repository-initialization",
                               "v2/guides/operations/environments/git-sync",
                               "v2/guides/operations/environments/git-scm",
                               "v2/guides/operations/environments/commit-signing-setup"
@@ -490,11 +486,6 @@
                     ]
                   }
                 ]
-              },
-              {
-                "anchor": "AI Context",
-                "href": "https://docs.flipt.io/llms.txt",
-                "icon": "robot"
               },
               {
                 "anchor": "Blog",
