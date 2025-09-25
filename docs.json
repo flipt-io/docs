@@ -29,10 +29,7 @@
                 "groups": [
                   {
                     "group": "Overview",
-                    "pages": [
-                      "introduction",
-                      "concepts"
-                    ]
+                    "pages": ["introduction", "concepts"]
                   },
                   {
                     "group": "Use Cases",
@@ -177,9 +174,7 @@
                   },
                   {
                     "group": "Authorization",
-                    "pages": [
-                      "authorization/overview"
-                    ]
+                    "pages": ["authorization/overview"]
                   },
                   {
                     "group": "Operations",
@@ -206,9 +201,7 @@
                 "groups": [
                   {
                     "group": "Overview",
-                    "pages": [
-                      "reference/overview"
-                    ]
+                    "pages": ["reference/overview"]
                   },
                   {
                     "group": "Authentication",
@@ -319,9 +312,7 @@
               {
                 "anchor": "Changelog",
                 "icon": "clock",
-                "pages": [
-                  "changelog/overview"
-                ]
+                "pages": ["changelog/overview"]
               },
               {
                 "anchor": "Blog",
@@ -365,10 +356,7 @@
                     "group": "Pro Features",
                     "tag": "NEW",
                     "icon": "crown",
-                    "pages": [
-                      "/v2/pro",
-                      "/v2/licensing"
-                    ]
+                    "pages": ["/v2/pro", "/v2/licensing"]
                   },
                   {
                     "group": "Configuration",
@@ -394,9 +382,7 @@
                       "v2/integration/overview",
                       {
                         "group": "Server-Side SDKs",
-                        "pages": [
-                          "v2/integration/server/rest"
-                        ]
+                        "pages": ["v2/integration/server/rest"]
                       },
                       "v2/integration/client",
                       "v2/integration/openfeature"
@@ -471,9 +457,7 @@
                       },
                       {
                         "group": "Migration Guides",
-                        "pages": [
-                          "v2/guides/migration/cloud/flipt-cloud-to-v2"
-                        ]
+                        "pages": ["v2/guides/migration/cloud/flipt-cloud-to-v2"]
                       }
                     ]
                   },
@@ -481,9 +465,7 @@
                     "group": "Tooling",
                     "icon": "hammer",
                     "tag": "NEW",
-                    "pages": [
-                      "v2/tooling/github-actions"
-                    ]
+                    "pages": ["v2/tooling/github-actions"]
                   }
                 ]
               },
