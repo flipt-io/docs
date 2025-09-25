@@ -13,17 +13,20 @@ This is the **user-facing** documentation repository for Flipt, a feature flag a
 ## Project Structure
 
 ### Configuration
+
 - **Format**: MDX files with YAML frontmatter
 - **Config**: docs.json for navigation, theme, settings ([docs.json schema](https://mintlify.com/docs.json))
 - **Components**: Mintlify components
 
 ### Required Frontmatter
+
 - `title`: Clear, descriptive page title
 - `description`: Concise summary for SEO/navigation
 
 ## Writing Guidelines
 
 ### Content Strategy
+
 - Document just enough for user success - not too much, not too little
 - Prioritize accuracy and usability
 - Make content evergreen when possible
@@ -32,6 +35,7 @@ This is the **user-facing** documentation repository for Flipt, a feature flag a
 - Start by making the smallest reasonable changes
 
 ### Writing Standards
+
 - Use the [Microsoft Writing Style Guide](https://learn.microsoft.com/en-us/style-guide/welcome/)
 - Second-person voice ("you")
 - Target audience: developers and operators
@@ -39,6 +43,7 @@ This is the **user-facing** documentation repository for Flipt, a feature flag a
 - Focus on how to use and configure the product (not deep technical internals)
 
 ### Technical Requirements
+
 - Prerequisites at start of procedural content
 - Test all code examples before publishing
 - Match style and formatting of existing pages
@@ -48,6 +53,7 @@ This is the **user-facing** documentation repository for Flipt, a feature flag a
 - Relative paths for internal links
 
 ### Link Formatting
+
 - **Always use markdown link syntax**: `[Link Text](https://example.com)` instead of raw URLs
 - **Use descriptive link text**: `[Installation guide](https://helm.sh/docs/intro/install/)`
 - **Keep link text concise**: Use terms like "Download", "Installation guide", "Documentation"
@@ -67,30 +73,36 @@ This is the **user-facing** documentation repository for Flipt, a feature flag a
 ## Development Commands
 
 ### Local Development
+
 - `mint dev` - Start local development server
 - `mint rename` - Rename file and update internal link references
 
 ### Code Quality
+
 - `npm run lint` - Run ESLint to check code quality
 - `npm run format` - Format code using Prettier
 
 ### Documentation Linting
+
 - `vale sync` - Install Vale dependencies for documentation linting
 - `vale *` - Lint all documentation files
 - `vale README.md` - Lint specific file
 
 ### Publishing
+
 Changes are automatically deployed to production when pushed to the main branch.
 
 ## Quality Assurance
 
 ### Automated Checks
+
 - ESLint with MDX support for linting
 - Prettier for formatting
 - Vale for prose linting with Microsoft Writing Style Guide rules
 - GitHub Actions run Vale on PRs with inline comments
 
 ### Vale Configuration
+
 - Custom Flipt style rules: `.vale/styles/flipt/`
 - Spelling exceptions: `.vale/styles/Flipt/spelling-exceptions.txt` (lowercase, alphabetical)
 - Configuration: `.vale.ini`
