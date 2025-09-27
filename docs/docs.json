@@ -37,10 +37,7 @@
                 "group": "Pro Features",
                 "tag": "NEW",
                 "icon": "crown",
-                "pages": [
-                  "v2/pro",
-                  "v2/licensing"
-                ]
+                "pages": ["v2/pro", "v2/licensing"]
               },
               {
                 "group": "Configuration",
@@ -66,9 +63,7 @@
                   "v2/integration/overview",
                   {
                     "group": "Server-Side SDKs",
-                    "pages": [
-                      "v2/integration/server/rest"
-                    ]
+                    "pages": ["v2/integration/server/rest"]
                   },
                   "v2/integration/client",
                   "v2/integration/openfeature"
@@ -143,9 +138,7 @@
                   },
                   {
                     "group": "Migration Guides",
-                    "pages": [
-                      "v2/guides/migration/cloud/flipt-cloud-to-v2"
-                    ]
+                    "pages": ["v2/guides/migration/cloud/flipt-cloud-to-v2"]
                   }
                 ]
               },
@@ -153,9 +146,7 @@
                 "group": "Tooling",
                 "icon": "hammer",
                 "tag": "NEW",
-                "pages": [
-                  "v2/tooling/github-actions"
-                ]
+                "pages": ["v2/tooling/github-actions"]
               }
             ]
           },
@@ -185,10 +176,7 @@
             "groups": [
               {
                 "group": "Overview",
-                "pages": [
-                  "v1/introduction",
-                  "v1/concepts"
-                ]
+                "pages": ["v1/introduction", "v1/concepts"]
               },
               {
                 "group": "Use Cases",
@@ -333,9 +321,7 @@
               },
               {
                 "group": "Authorization",
-                "pages": [
-                  "v1/authorization/overview"
-                ]
+                "pages": ["v1/authorization/overview"]
               },
               {
                 "group": "Operations",
@@ -362,9 +348,7 @@
             "groups": [
               {
                 "group": "Overview",
-                "pages": [
-                  "v1/reference/overview"
-                ]
+                "pages": ["v1/reference/overview"]
               },
               {
                 "group": "Authentication",
@@ -475,9 +459,7 @@
           {
             "anchor": "Changelog",
             "icon": "clock",
-            "pages": [
-              "v1/changelog/overview"
-            ]
+            "pages": ["v1/changelog/overview"]
           },
           {
             "anchor": "Blog",
@@ -528,6 +510,7 @@
   "footer": {
     "socials": {
       "website": "https://www.flipt.io/",
+      "twitter": "https://twitter.com/flipt_io",
       "discord": "https://www.flipt.io/discord",
       "github": "https://git.new/flipt"
     }

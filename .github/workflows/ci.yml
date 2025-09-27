@@ -1,24 +1,24 @@
 name: CI
-
 on: [pull_request]
 
 jobs:
   lint:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./docs
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
-        with:
-          cache: yarn
 
       - name: Install Dependencies
-        run: yarn --frozen-lockfile
+        run: npm ci
 
       - name: Lint
-        run: yarn lint
+        run: npm run lint
 
       - name: Check for Broken Links
-        run: |
-          ./check-links.sh
+        run: npx -y mint broken-links
+
