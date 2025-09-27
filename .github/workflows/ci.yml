@@ -21,5 +21,4 @@ jobs:
 
       - name: Check for Broken Links
         run: |
-          yarn global add mintlify
-          mintlify broken-links
+          npx mint broken-links
