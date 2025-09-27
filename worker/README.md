@@ -31,12 +31,14 @@ npm install
 ### Local Development
 
 1. **Start your documentation server** (Mintlify):
+
    ```bash
    # In the main docs directory
    mint dev  # This runs on http://localhost:3000
    ```
 
 2. **Run the worker** in a separate terminal:
+
    ```bash
    cd worker
    npm run dev  # This runs on http://localhost:8787
@@ -97,7 +99,7 @@ ORIGIN_URL = "https://docs-origin.flipt.io"  # The actual Mintlify docs URL
 ### 3. Deploy to Production
 
 ```bash
-npm run deploy:production
+npm run deploy
 ```
 
 ### 4. Verify Deployment
@@ -117,14 +119,14 @@ The worker excludes certain paths from redirection. Update the `excludedPaths` a
 
 ```typescript
 const excludedPaths = [
-  '/favicon.svg',
-  '/logo/',
-  '/snippets/',
-  '/background.png',
-  '/_next/',
-  '/api/',
-  '.xml',
-  '.txt',
+  "/favicon.svg",
+  "/logo/",
+  "/snippets/",
+  "/background.png",
+  "/_next/",
+  "/api/",
+  ".xml",
+  ".txt",
 ];
 ```
 
@@ -136,7 +138,7 @@ The worker requires the `ORIGIN_URL` environment variable to be set. This tells 
 [env.development.vars]
 ORIGIN_URL = "http://localhost:3000"  # Local Mintlify dev server
 
-[env.production.vars]  
+[env.production.vars]
 ORIGIN_URL = "https://your-actual-docs-origin.com"  # Production Mintlify URL
 ```
 
@@ -186,5 +188,4 @@ When making changes:
 1. Update the TypeScript code in `src/index.ts`
 2. Test locally with `npm run dev`
 3. Run type checking: `npm run typecheck`
-4. Deploy to staging first: `npm run deploy:staging`
-5. After verification, deploy to production: `npm run deploy:production`
+

@@ -6,8 +6,6 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "deploy:staging": "wrangler deploy --env staging",
-    "deploy:production": "wrangler deploy --env production",
     "format": "prettier --write .",
     "lint": "eslint src --ext .ts,.tsx",
     "typecheck": "tsc --noEmit"
@@ -26,6 +24,6 @@
     "eslint": "^8.56.0",
     "prettier": "^3.2.5",
     "typescript": "^5.3.3",
-    "wrangler": "^3.79.0"
+    "wrangler": "^4.40.2"
   }
 }
