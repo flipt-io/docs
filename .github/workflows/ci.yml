@@ -21,4 +21,4 @@ jobs:
 
       - name: Check for Broken Links
         run: |
-          npx mint broken-links
+          ./check-links.sh
