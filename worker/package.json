@@ -1,0 +1,31 @@
+{
+  "name": "flipt-docs-redirect-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker for handling Flipt documentation redirects",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:staging": "wrangler deploy --env staging",
+    "deploy:production": "wrangler deploy --env production",
+    "format": "prettier --write .",
+    "lint": "eslint src --ext .ts,.tsx",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "cloudflare-worker",
+    "redirects",
+    "documentation"
+  ],
+  "author": "Flipt",
+  "license": "MIT",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240925.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3",
+    "wrangler": "^3.79.0"
+  }
+}

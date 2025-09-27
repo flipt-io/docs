@@ -1,0 +1,28 @@
+name = "flipt-docs-redirect"
+main = "src/index.ts"
+compatibility_date = "2024-09-27"
+
+# These values will need to be configured for your specific deployment
+# Uncomment and update when deploying
+
+# [env.production]
+# route = "docs.flipt.io/*"
+# zone_id = "YOUR_ZONE_ID"
+
+# [env.staging]
+# route = "staging-docs.flipt.io/*"
+# zone_id = "YOUR_ZONE_ID"
+
+# Development configuration
+[env.development]
+# For local testing with wrangler dev
+port = 8787
+
+# Observability
+[observability]
+enabled = true
+
+# If you need to bind to other services or KV namespaces
+# [kv_namespaces]
+# binding = "KV"
+# id = "YOUR_KV_NAMESPACE_ID"
