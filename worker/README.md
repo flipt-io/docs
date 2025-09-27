@@ -146,7 +146,7 @@ ORIGIN_URL = "https://your-actual-docs-origin.com"  # Production Mintlify URL
 
 ## Monitoring
 
-### View Real-time Logs
+### View Real-Time Logs
 
 ```bash
 npx wrangler tail flipt-docs-redirect --env production
@@ -188,4 +188,3 @@ When making changes:
 1. Update the TypeScript code in `src/index.ts`
 2. Test locally with `npm run dev`
 3. Run type checking: `npm run typecheck`
-
