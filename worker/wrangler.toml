@@ -4,17 +4,8 @@ compatibility_date = "2024-09-27"
 
 # Development configuration
 [env.development]
-port = 8787
 [env.development.vars]
 ORIGIN_URL = "http://localhost:3000"
-
-# Staging configuration
-# Uncomment and update when deploying to staging
-# [env.staging]
-# route = "staging-docs.flipt.io/*"
-# zone_id = "YOUR_ZONE_ID"
-# [env.staging.vars]
-# ORIGIN_URL = "https://staging-docs-origin.flipt.io"
 
 # Production configuration  
 # Uncomment and update when deploying to production
@@ -32,3 +23,4 @@ enabled = true
 # [kv_namespaces]
 # binding = "KV"
 # id = "YOUR_KV_NAMESPACE_ID"
+

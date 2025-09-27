@@ -1,4 +1,4 @@
-# AGENTS.md
+# CLAUDE.md
 
 This file provides guidance to AI Agents when working with code in this repository.
 
@@ -12,11 +12,28 @@ This is the **user-facing** documentation repository for Flipt, a feature flag a
 
 ## Project Structure
 
+### Documentation Versions
+
+The documentation is organized into two main versions:
+
+- **`/v1`**: Legacy documentation for Flipt v1.x (open-source version)
+- **`/v2`**: Current documentation for Flipt v2.x (including Pro features)
+
+Both versions are maintained to support users on different versions of Flipt.
+
 ### Configuration
 
 - **Format**: MDX files with YAML frontmatter
 - **Config**: docs.json for navigation, theme, settings ([docs.json schema](https://mintlify.com/docs.json))
 - **Components**: Mintlify components
+
+### Cloudflare Worker
+
+A Cloudflare Worker (`/worker`) handles automatic redirects from old v1 documentation paths to their new locations. This ensures backward compatibility for existing links and bookmarks.
+
+- **Purpose**: Redirects old documentation URLs to new v1 or v2 paths
+- **Configuration**: See `/worker/README.md` for deployment and configuration details
+- **Testing**: Run `npm test` in the worker directory to validate redirect rules
 
 ### Required Frontmatter
 
@@ -87,6 +104,12 @@ This is the **user-facing** documentation repository for Flipt, a feature flag a
 - `vale sync` - Install Vale dependencies for documentation linting
 - `vale *` - Lint all documentation files
 - `vale README.md` - Lint specific file
+
+### Cloudflare Worker Commands
+
+- `npm run dev` - Start worker development server
+- `npm test` - Run redirect tests
+- `npm run deploy` - Deploy worker to production
 
 ### Publishing
 
