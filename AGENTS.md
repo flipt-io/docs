@@ -1,4 +1,4 @@
-# CLAUDE.md
+# AGENTS
 
 This file provides guidance to AI Agents when working with code in this repository.
 
