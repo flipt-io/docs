@@ -30,13 +30,26 @@ npm install
 
 ### Local Development
 
-Run the worker locally for testing:
+1. **Start your documentation server** (Mintlify):
+   ```bash
+   # In the main docs directory
+   mint dev  # This runs on http://localhost:3000
+   ```
 
-```bash
-npm run dev
+2. **Run the worker** in a separate terminal:
+   ```bash
+   cd worker
+   npm run dev  # This runs on http://localhost:8787
+   ```
+
+The worker will proxy requests to the docs server at `http://localhost:3000` while handling redirects.
+
+**Important**: The worker needs the documentation server (Mintlify) running on port 3000. If your docs server runs on a different port, update the `ORIGIN_URL` in `wrangler.toml`:
+
+```toml
+[env.development.vars]
+ORIGIN_URL = "http://localhost:YOUR_PORT"
 ```
-
-The worker will be available at `http://localhost:8787`
 
 ### Testing Redirect Logic
 
@@ -75,7 +88,11 @@ Edit `wrangler.toml` and update the production configuration:
 [env.production]
 route = "docs.flipt.io/*"  # Your documentation domain
 zone_id = "YOUR_ZONE_ID"    # Found in Cloudflare dashboard
+[env.production.vars]
+ORIGIN_URL = "https://docs-origin.flipt.io"  # The actual Mintlify docs URL
 ```
+
+**Critical**: The `ORIGIN_URL` must point to where your actual Mintlify documentation is hosted (not the worker URL). This prevents infinite redirect loops.
 
 ### 3. Deploy to Production
 
@@ -113,13 +130,17 @@ const excludedPaths = [
 
 ### Environment Variables
 
-If you need environment-specific configuration, you can add bindings in `wrangler.toml`:
+The worker requires the `ORIGIN_URL` environment variable to be set. This tells the worker where to forward requests:
 
 ```toml
-[env.production.vars]
-REDIRECT_VERSION = "v1"
-ENABLE_LOGGING = "true"
+[env.development.vars]
+ORIGIN_URL = "http://localhost:3000"  # Local Mintlify dev server
+
+[env.production.vars]  
+ORIGIN_URL = "https://your-actual-docs-origin.com"  # Production Mintlify URL
 ```
+
+**Important**: The `ORIGIN_URL` should point to your Mintlify documentation server, NOT the worker URL itself.
 
 ## Monitoring
 
@@ -137,9 +158,11 @@ The worker includes observability configuration. View metrics in the Cloudflare 
 
 ### Common Issues
 
-1. **Worker not triggering**: Ensure the route pattern in `wrangler.toml` matches your domain
-2. **Infinite redirects**: Check that the redirect URL doesn't match the original pattern
-3. **Assets not loading**: Add asset paths to the `excludedPaths` array
+1. **500 Error / Infinite loop**: Ensure `ORIGIN_URL` is set correctly and points to your actual docs server, not the worker itself
+2. **Worker not triggering**: Ensure the route pattern in `wrangler.toml` matches your domain
+3. **Infinite redirects**: Check that the redirect URL doesn't match the original pattern
+4. **Assets not loading**: Add asset paths to the `excludedPaths` array
+5. **Development not working**: Make sure Mintlify is running on the port specified in `ORIGIN_URL`
 
 ### Debug Mode
 

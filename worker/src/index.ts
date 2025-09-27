@@ -6,7 +6,8 @@
  */
 
 export interface Env {
-  // Environment bindings can be added here if needed
+  // The origin URL where the actual documentation is hosted
+  ORIGIN_URL: string;
 }
 
 export default {
@@ -14,21 +15,47 @@ export default {
     const url = new URL(request.url);
     const pathname = url.pathname;
     
+    // Get the origin URL from environment or use a default
+    const originUrl = env.ORIGIN_URL || 'http://localhost:3000';
+    
     // Remove trailing slash for consistency (except for root)
     const normalizedPath = pathname === '/' ? pathname : pathname.replace(/\/$/, '');
     
     // Check if the path already has a version prefix (v1/ or v2/)
     const hasVersionPrefix = /^\/v[12]\//.test(normalizedPath);
     
+    // Helper function to forward request to origin
+    const forwardToOrigin = async (): Promise<Response> => {
+      // Create new URL with origin host but same path
+      const originRequestUrl = new URL(url.pathname + url.search, originUrl);
+      
+      // Create a new request with the origin URL
+      const originRequest = new Request(originRequestUrl.toString(), {
+        method: request.method,
+        headers: request.headers,
+        body: request.body,
+        redirect: 'manual', // Don't follow redirects automatically
+      });
+      
+      // Forward the request to the origin
+      const response = await fetch(originRequest);
+      
+      // Return the response, preserving headers
+      return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers,
+      });
+    };
+    
     // If the request has a version prefix, pass through to origin
     if (hasVersionPrefix) {
-      // Pass through to the origin unchanged
-      return fetch(request);
+      return forwardToOrigin();
     }
     
     // If this is the root path, pass through to origin
     if (normalizedPath === '/' || normalizedPath === '') {
-      return fetch(request);
+      return forwardToOrigin();
     }
     
     // List of paths that should not be redirected (static assets, etc.)
@@ -41,11 +68,19 @@ export default {
       '/api/',    // API endpoints
       '.xml',     // Sitemaps
       '.txt',     // Robots.txt, etc.
+      '.json',    // JSON files
+      '.js',      // JavaScript files
+      '.css',     // CSS files
     ];
     
     // Check if the path should be excluded from redirection
     const shouldExclude = excludedPaths.some(excluded => {
+      if (excluded.startsWith('.')) {
+        // File extensions
+        return normalizedPath.endsWith(excluded);
+      }
       if (excluded.endsWith('/')) {
+        // Directory paths
         return normalizedPath.startsWith(excluded);
       }
       return normalizedPath.includes(excluded);
@@ -53,7 +88,7 @@ export default {
     
     if (shouldExclude) {
       // Pass through to origin for excluded paths
-      return fetch(request);
+      return forwardToOrigin();
     }
     
     // For all other paths without version prefix, redirect to v1

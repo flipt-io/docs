@@ -1,5 +1,6 @@
 # Dependencies
 node_modules/
+package-lock.json
 
 # Build output
 dist/
@@ -9,6 +10,7 @@ dist/
 .env
 .env.local
 .env.production
+.dev.vars
 
 # Logs
 *.log
@@ -23,7 +25,3 @@ npm-debug.log*
 *.sln
 *.sw?
 .DS_Store
-
-# Wrangler
-.wrangler/
-.dev.vars

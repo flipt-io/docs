@@ -2,21 +2,27 @@ name = "flipt-docs-redirect"
 main = "src/index.ts"
 compatibility_date = "2024-09-27"
 
-# These values will need to be configured for your specific deployment
-# Uncomment and update when deploying
+# Development configuration
+[env.development]
+port = 8787
+[env.development.vars]
+ORIGIN_URL = "http://localhost:3000"
 
-# [env.production]
-# route = "docs.flipt.io/*"
-# zone_id = "YOUR_ZONE_ID"
-
+# Staging configuration
+# Uncomment and update when deploying to staging
 # [env.staging]
 # route = "staging-docs.flipt.io/*"
 # zone_id = "YOUR_ZONE_ID"
+# [env.staging.vars]
+# ORIGIN_URL = "https://staging-docs-origin.flipt.io"
 
-# Development configuration
-[env.development]
-# For local testing with wrangler dev
-port = 8787
+# Production configuration  
+# Uncomment and update when deploying to production
+# [env.production]
+# route = "docs.flipt.io/*"
+# zone_id = "YOUR_ZONE_ID"
+# [env.production.vars]
+# ORIGIN_URL = "https://docs-origin.flipt.io"
 
 # Observability
 [observability]
