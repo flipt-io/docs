@@ -27,14 +27,14 @@ Read our [Get Going with GitOps](https://www.flipt.io/docs/guides/user/get-going
 
 ## CI/CD Integration
 
-Our [GitHub Action](/tooling/github-actions) allows you to easily integrate Flipt into your CI/CD pipelines. This allows you to install Flipt into your CI pipeline and run tests against your feature flags before deploying your code to production.
+Our [GitHub Action](/v1/tooling/github-actions) allows you to easily integrate Flipt into your CI/CD pipelines. This allows you to install Flipt into your CI pipeline and run tests against your feature flags before deploying your code to production.
 
-You can either import your feature flag data from your repository into Flipt using our [Import Command](/cli/commands/import) or run Flipt over your repository directly using our [Local Storage](/configuration/storage#local-2) backend.
+You can either import your feature flag data from your repository into Flipt using our [Import Command](/v1/cli/commands/import) or run Flipt over your repository directly using our [Local Storage](/v1/configuration/storage#local-2) backend.
 
 This allows you to import your feature flag data into Flipt before running your tests.
 
 ## Validation
 
-Flipt's [Validate Command](/cli/commands/validate) allows you to validate your feature flag data against a schema. This allows you to ensure that your feature flag data is valid before deploying it to production. This is especially useful when using Flipt with GitOps workflows because it allows you to catch errors in your configuration in the CI stage.
+Flipt's [Validate Command](/v1/cli/commands/validate) allows you to validate your feature flag data against a schema. This allows you to ensure that your feature flag data is valid before deploying it to production. This is especially useful when using Flipt with GitOps workflows because it allows you to catch errors in your configuration in the CI stage.
 
 You can also add your own custom validation rules to the schema to ensure that your feature flag data is valid for your specific use case.

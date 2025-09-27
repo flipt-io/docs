@@ -57,7 +57,7 @@ def doRequest():
 ### 2. `Cookie` Header
 
 <Warning>
-  It's important to enable [CSRF](/configuration/authentication#session)
+  It's important to enable [CSRF](/v1/configuration/authentication#session)
   prevention in your Flipt configuration when using a "session compatible"
   authentication method and `Cookie` based authentication in the browser.
 </Warning>
@@ -116,7 +116,7 @@ def doRequest():
 
 This allows for stateful browser sessions to be established.
 
-When using a "session compatible" authentication method (e.g. [OIDC](/authentication/methods#oidc)), Flipt will automatically establish this cookie via a `Set-Cookie` response header during the authentication method exchange.
+When using a "session compatible" authentication method (e.g. [OIDC](/v1/authentication/methods#oidc)), Flipt will automatically establish this cookie via a `Set-Cookie` response header during the authentication method exchange.
 
 In a browser context this means subsequent API calls will be automatically authenticated given the API requests are invoked with credentials included (cookies are enabled). Flipt's UI leverages this mechanism for its login functionality.
 

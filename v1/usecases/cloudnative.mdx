@@ -20,11 +20,11 @@ CloudNative means different things to different people. We define CloudNative as
 
 Flipt is mainly distributed as a container image. While it is a single binary and can run easily on bare metal, most users choose to deploy Flipt to a container orchestration platform such as Kubernetes.
 
-To deploy Flipt to Kubernetes, use our Helm chart as described in our [Kubernetes](/installation/kubernetes) documentation.
+To deploy Flipt to Kubernetes, use our Helm chart as described in our [Kubernetes](/v1/installation/kubernetes) documentation.
 
 Flipt also integrates directly with Kubernetes service account tokens for authentication. This allows services deployed into the same Kubernetes cluster as Flipt to automatically gain authenticated access to the Flipt API without additional management of static client tokens.
 
-See our [Kubernetes Authentication](/authentication/methods#kubernetes) documentation for more information on how to configure Kubernetes service account authentication.
+See our [Kubernetes Authentication](/v1/authentication/methods#kubernetes) documentation for more information on how to configure Kubernetes service account authentication.
 
 ## Metrics and Observability
 
@@ -32,25 +32,25 @@ See our [Kubernetes Authentication](/authentication/methods#kubernetes) document
 
 Flipt exposes Prometheus metrics on the `/metrics` endpoint. These metrics are designed to be scraped by Prometheus and visualized in external tools such as Grafana.
 
-See the [Metrics Configuration](/configuration/observability#metrics) documentation for more information on the metrics exposed by Flipt and how to configure them.
+See the [Metrics Configuration](/v1/configuration/observability#metrics) documentation for more information on the metrics exposed by Flipt and how to configure them.
 
 ### Logging
 
 Flipt writes structured logs in JSON format. These logs are designed to be ingested by external log aggregation tools such as Elasticsearch, Splunk, and Grafana Loki.
 
-For more information on the logs exposed by Flipt and how to configure them, see the [Logging Configuration](/configuration/observability#logging) documentation.
+For more information on the logs exposed by Flipt and how to configure them, see the [Logging Configuration](/v1/configuration/observability#logging) documentation.
 
 ### Tracing
 
 Flipt exposes tracing information in the OpenTelemetry format. This allows you to trace requests through Flipt and into your application. Flipt also annotates the traces with information such as the feature flag and variant that was evaluated.
 
-For more information on the tracing exposed by Flipt and how to configure it, see the [Tracing Configuration](/configuration/observability#tracing) documentation.
+For more information on the tracing exposed by Flipt and how to configure it, see the [Tracing Configuration](/v1/configuration/observability#tracing) documentation.
 
 ## Storage
 
 Flipt is designed to be stateless. It supports multiple storage backends, including cloud object storage, git, OCI, and SQL databases.
 
-Our [Declarative Storage](/configuration/storage#declarative) also allows you to easily migrate between storage backends. For example, you can start with a local SQLite database and migrate to a cloud object storage backend as your usage grows.
+Our [Declarative Storage](/v1/configuration/storage#declarative) also allows you to easily migrate between storage backends. For example, you can start with a local SQLite database and migrate to a cloud object storage backend as your usage grows.
 
 ## Security and Performance
 
@@ -58,7 +58,7 @@ Our [Declarative Storage](/configuration/storage#declarative) also allows you to
 
 Flipt supports multiple authentication methods, including static tokens, Kubernetes service account tokens, JWT, and OIDC.
 
-See our [Authentication](/authentication) documentation for more information on the authentication methods supported by Flipt.
+See our [Authentication](/v1/authentication) documentation for more information on the authentication methods supported by Flipt.
 
 ### Performance
 
@@ -68,4 +68,4 @@ Flipt also supports caching of feature flag evaluations. This allows you to cach
 
 Finally, Flipt's GRPC API is meant to be used in a cloud environment such as Kubernetes. This allows you to deploy Flipt in the same Kubernetes cluster as your applications and take advantage of the low latency and high throughput of the Kubernetes network.
 
-See our [Architecture](/operations/architecture) and [Deployment](/operations/deployment) documentation for more information on how to deploy Flipt for performance and scalability.
+See our [Architecture](/v1/operations/architecture) and [Deployment](/v1/operations/deployment) documentation for more information on how to deploy Flipt for performance and scalability.

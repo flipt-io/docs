@@ -19,7 +19,7 @@ authentication:
 
 When authentication is set to `required`, the API will ensure valid credentials are present on all API requests.
 
-See the [Authentication: Overview](/authentication/overview) documentation for more details on Flipt's API authentication handling.
+See the [Authentication: Overview](/v1/authentication/overview) documentation for more details on Flipt's API authentication handling.
 
 ## Exclusions
 
@@ -106,9 +106,9 @@ authentication:
         expiration: 24h
 ```
 
-Once enabled, static tokens can be created via the [CreateToken](/reference/authentication/create-token) operation in the API.
+Once enabled, static tokens can be created via the [CreateToken](/v1/reference/authentication/create-token) operation in the API.
 
-Further explanation for using this method can be found in the [Authentication: Static Token](/authentication/methods#static-token) documentation.
+Further explanation for using this method can be found in the [Authentication: Static Token](/v1/authentication/methods#static-token) documentation.
 
 ### OIDC
 
@@ -116,7 +116,7 @@ Further explanation for using this method can be found in the [Authentication: S
 
 <Tip>
   Read our [Login with
-  Google](/guides/operation/authentication/login-with-google) guide for a more
+  Google](/v1/guides/operation/authentication/login-with-google) guide for a more
   in-depth walk-through setting up an OIDC provider.
 </Tip>
 
@@ -217,13 +217,13 @@ You can see an example of that above in the [sample configuration](#method-oidc)
 
 A good amount of OIDC providers support the PKCE (Proof Key for Code Exchange) flow and the implicit OAuth flow. Flipt allows for a configuration to enable PKCE for all the legs of the OIDC authentication flow.
 
-To enable this, you must set the [`use_pkce`](/configuration/overview#authentication-methods-oidc) property to `true` for each provider you would like to leverage PKCE with.
+To enable this, you must set the [`use_pkce`](/v1/configuration/overview#authentication-methods-oidc) property to `true` for each provider you would like to leverage PKCE with.
 
 #### Example: OIDC With Google
 
 <Tip>
   Checkout our [Login with
-  Google](/guides/operation/authentication/login-with-google) guide for an
+  Google](/v1/guides/operation/authentication/login-with-google) guide for an
   in-depth look into configuring Google as an OIDC provider.
 </Tip>
 
@@ -283,7 +283,7 @@ Other providers have similar mechanisms for attenuating who can leverage this au
 
 <Tip>
   Read our [Login with
-  Github](/guides/operation/authentication/login-with-github) guide for a more
+  Github](/v1/guides/operation/authentication/login-with-github) guide for a more
   in-depth walk-through.
 </Tip>
 
@@ -303,7 +303,7 @@ authentication:
         - user:email
 ```
 
-!["GitHub Login"](images/guides/login-with-github/login-with-github.png)
+!["GitHub Login"](/v1/images/guides/login-with-github/login-with-github.png)
 
 #### Allowed Organizations
 
@@ -375,7 +375,7 @@ authentication:
 
 Once enabled, client tokens can be retrieved by sending a Kubernetes pod's service account token to the `VerifyServiceAccount` operation in the API.
 
-Further explanation for using this method can be found in the [Authentication: Kubernetes](/authentication/methods#kubernetes) documentation.
+Further explanation for using this method can be found in the [Authentication: Kubernetes](/v1/authentication/methods#kubernetes) documentation.
 
 #### Troubleshooting
 

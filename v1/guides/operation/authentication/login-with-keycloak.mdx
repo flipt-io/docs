@@ -3,9 +3,9 @@ title: Login with Keycloak
 description: Configuring Flipt to enable login with Keycloak via OIDC
 ---
 
-![Flipt UI presenting login with Keycloak button](/images/guides/login-with-keycloak/login-with-keycloak.png)
+![Flipt UI presenting login with Keycloak button](/v1/images/guides/login-with-keycloak/login-with-keycloak.png)
 
-If you've read the [Login With Google guide](/guides/operation/authentication/login-with-google), you would have learned that Flipt supports many methods of authentication for users to control who has access to Flipt.
+If you've read the [Login With Google guide](/v1/guides/operation/authentication/login-with-google), you would have learned that Flipt supports many methods of authentication for users to control who has access to Flipt.
 
 [Keycloak](https://www.keycloak.org/) is an open-source identity and access management solution that supports OpenID Connect (OIDC). This guide will serve as a walk-through on how to set up Keycloak for authentication of users of Flipt in your organization.
 
@@ -23,7 +23,7 @@ By the end of this guide, we will have:
 For this guide you're going to need the following:
 
 - [Docker](https://www.docker.com/)
-- Read the [Login With Google guide](/guides/operation/authentication/login-with-google)
+- Read the [Login With Google guide](/v1/guides/operation/authentication/login-with-google)
 
 ## Setting Up Keycloak
 
@@ -56,7 +56,7 @@ Create a new realm called `flipt`:
 1. Enter `flipt` as the realm name.
 1. Click on the `Create` button.
 
-![Keycloak create realm form](/images/guides/login-with-keycloak/create-keycloak-realm.png)
+![Keycloak create realm form](/v1/images/guides/login-with-keycloak/create-keycloak-realm.png)
 
 ### 4. Create a User
 
@@ -70,7 +70,7 @@ Create a new user called `user`:
 1. Toggle `Temporary` to `OFF` so that the user does not need to change their password on the first login.
 1. Click `Save`.
 
-![Keycloak create user](/images/guides/login-with-keycloak/create-keycloak-user.png)
+![Keycloak create user](/v1/images/guides/login-with-keycloak/create-keycloak-user.png)
 
 ### 5. Create a Client
 
@@ -86,7 +86,7 @@ Create a new client called `flipt`:
 1. Ensure `Client authentication` is set to `ON`.
 1. Click on `Save`.
 
-![Keycloak create client](/images/guides/login-with-keycloak/create-keycloak-client.png)
+![Keycloak create client](/v1/images/guides/login-with-keycloak/create-keycloak-client.png)
 
 ### 6. Copy Client ID and Secret
 
@@ -104,7 +104,7 @@ http://localhost:8080/realms/flipt/.well-known/openid-configuration
 
 2. Copy the `issuer` URL from the JSON response. This will be used as the `issuer_url` in the Flipt configuration.
 
-![Keycloak OIDC configuration](/images/guides/login-with-keycloak/keycloak-oidc-configuration.png)
+![Keycloak OIDC configuration](/v1/images/guides/login-with-keycloak/keycloak-oidc-configuration.png)
 
 ## Running Flipt
 
@@ -174,16 +174,16 @@ Once Flipt has started you can to navigate your browser to the [UI](http://local
 
 When you click `Login with Keycloak` you should be navigated away to your Keycloak instance to complete the authentication flow.
 
-![Keycloak login screen](/images/guides/login-with-keycloak/keycloak-login.png)
+![Keycloak login screen](/v1/images/guides/login-with-keycloak/keycloak-login.png)
 
 Once you successfully authenticate with the username/password you created earlier, you should return to Flipt and be logged in.
 
-![Flipt dashboard](/images/guides/login-with-keycloak/flipt-dashboard.png)
+![Flipt dashboard](/v1/images/guides/login-with-keycloak/flipt-dashboard.png)
 
 ## Conclusion
 
 🎉 Congratulations, you've successfully run Flipt and enabled login with Keycloak as the OIDC provider.
 
-Many of the same production considerations from the [Login With Google guide](/guides/operation/authentication/login-with-google) apply here. You should follow the same steps to secure your Flipt instance and ensure that only authorized users can access it.
+Many of the same production considerations from the [Login With Google guide](/v1/guides/operation/authentication/login-with-google) apply here. You should follow the same steps to secure your Flipt instance and ensure that only authorized users can access it.
 
-Next, you might want to consider enabling authorization and setting up policies to control who can access what in Flipt. You can learn more about this in the [Role-Based Access Control with Keycloak guide](/guides/operation/authorization/rbac-with-keycloak).
+Next, you might want to consider enabling authorization and setting up policies to control who can access what in Flipt. You can learn more about this in the [Role-Based Access Control with Keycloak guide](/v1/guides/operation/authorization/rbac-with-keycloak).

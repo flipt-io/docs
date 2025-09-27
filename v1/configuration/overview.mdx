@@ -80,7 +80,7 @@ For authenticating with the object storage service, you can use the following en
 - `AZURE_STORAGE_ACCOUNT` and `AZURE_STORAGE_KEY` or `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_CLIENT_SECRET`
 - `GOOGLE_APPLICATION_CREDENTIALS`
 
-These environment variables are used by the underlying object storage client libraries to authenticate with the object storage service and are the same values used in our [object storage configuration](/configuration/storage#object).
+These environment variables are used by the underlying object storage client libraries to authenticate with the object storage service and are the same values used in our [object storage configuration](/v1/configuration/storage#object).
 
 ## Environment Variables
 
@@ -95,7 +95,7 @@ Environment variables **MUST** have `FLIPT_` prefix and be in `UPPER_SNAKE_CASE`
 
 <Note>
   Using environment variables to override defaults is especially helpful when
-  running with Docker as described in the [Docker](/installation/docker)
+  running with Docker as described in the [Docker](/v1/installation/docker)
   documentation.
 </Note>
 
@@ -543,4 +543,4 @@ experimental:
     enabled: true
 ```
 
-See the [Experimental](/configuration/experimental) documentation for more information on the current experimental features and how to enable them.
+See the [Experimental](/v1/configuration/experimental) documentation for more information on the current experimental features and how to enable them.

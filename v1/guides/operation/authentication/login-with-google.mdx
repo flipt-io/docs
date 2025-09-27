@@ -3,14 +3,14 @@ title: Login with Google
 description: Configuring Flipt to enable login with Google via OIDC
 ---
 
-![Flipt UI presenting login with Google button](/images/guides/login-with-google/login-with-google.png)
+![Flipt UI presenting login with Google button](/v1/images/guides/login-with-google/login-with-google.png)
 
 In a production environment it's often important to control who has access to your systems and feature flagging is no different.
 Flipt ships with built-in mechanisms and configuration for service-to-Flipt and user-to-Flipt authentication.
 
 For service-to-Flipt authentication, Flipt supports static token and Kubernetes-based authentication methods.
 However, neither of these methods is appropriate for browser sessions and the UI.
-To solve this, Flipt supports [OpenID Connect](/authentication/methods#openid-connect) (OIDC) as a session-compatible authentication method.
+To solve this, Flipt supports [OpenID Connect](/v1/authentication/methods#openid-connect) (OIDC) as a session-compatible authentication method.
 OIDC is an open standard supported by many existing platforms such as Google, Okta, Auth0, GitLab, and many more.
 
 ## What You'll Learn
@@ -87,7 +87,7 @@ Once you visit Flipt's UI, you should be greeted by a message stating that there
 As mentioned before, once authentication is required, a session-compatible method is needed to enable login.
 We're now going to do that by configuring Google as an OIDC provider for Flipt.
 
-![UI presenting a no providers error message](/images/guides/login-with-google/no-providers.png)
+![UI presenting a no providers error message](/v1/images/guides/login-with-google/no-providers.png)
 
 ## Creating a Google OAuth Client
 
@@ -135,14 +135,14 @@ This presents us with a few options for credential types:
 - OAuth client ID
 - Service Account
 
-![Google cloud create credentials popover](/images/guides/login-with-google/create-credentials-popover.png)
+![Google cloud create credentials popover](/v1/images/guides/login-with-google/create-credentials-popover.png)
 
 Select the `OAuth client ID` type and you will be taken to an input form (like the one below).
 
 Select the `Web application` option when prompted to select an `Application type`.
 Once selected you will be presented with more input options.
 
-![Google cloud create oauth client ID form](/images/guides/login-with-google/create-oauth-client-id-form.png)
+![Google cloud create oauth client ID form](/v1/images/guides/login-with-google/create-oauth-client-id-form.png)
 
 3. Configure the client's name and redirect URL.
 
@@ -169,7 +169,7 @@ In a production environment, you would replace the domain part of the URI with t
 This should create your credentials if all your inputs validate correctly.
 You should be presented with a modal containing your new client credentials.
 
-![Example modal containing Google OAuth client credentials](images/guides/login-with-google/client-credentials-created-modal.png)
+![Example modal containing Google OAuth client credentials](/v1/images/guides/login-with-google/client-credentials-created-modal.png)
 
 You will need to take note of these values, as you're going to use them in the next step.
 
@@ -302,14 +302,14 @@ authentication:
 Using browser session based authentication puts applications at risk of cross-site request forgery attacks.
 Flipt supports automatic CSRF prevention via signed token strings, using a shared signing key.
 
-Check out our [Configuration: Session](/configuration/authentication#session) documentation for details on how to configure this.
+Check out our [Configuration: Session](/v1/configuration/authentication#session) documentation for details on how to configure this.
 
 2. Move credentials to environment variables
 
 Sometimes for security purposes you don't want to be inserting your sensitive credentials (such as provider `client_secret` or your CSRF `key`) into a configuration file.
 Flipt supports defining configuration in its YAML file and as environment variables.
 
-Check out our [Configuration: Environment Variables](/configuration/overview#environment-variables) section for details on how to provide configuration as environment variables.
+Check out our [Configuration: Environment Variables](/v1/configuration/overview#environment-variables) section for details on how to provide configuration as environment variables.
 
 As a quick example, both the Google provider `client_secret` and the CSRF signing `key` can be presented to Flipt like so:
 

@@ -6,7 +6,7 @@ description: This document describes how to configure Flipt's authorization mech
 <Warning>
 Once authorization has been set to `required: true` all management API routes will require a valid authentication session as well.
 
-The UI will require a session-compatible authentication method (e.g. [OIDC](/authentication/methods#openid-connect)) to be enabled.
+The UI will require a session-compatible authentication method (e.g. [OIDC](/v1/authentication/methods#openid-connect)) to be enabled.
 
 </Warning>
 
@@ -19,7 +19,7 @@ authorization:
 
 When authorization is set to `required`, the API will ensure valid credentials are present on all management API requests.
 
-See the [Authorization: Overview](/authorization/overview) documentation for more details on Flipt's API authorization handling.
+See the [Authorization: Overview](/v1/authorization/overview) documentation for more details on Flipt's API authorization handling.
 
 ## Backends
 
@@ -56,7 +56,7 @@ The policy **must** have the following package declaration:
 package flipt.authz.v1
 ```
 
-You can learn more about policies in our [Authorization: Overview](/authorization/overview#policies) documentation.
+You can learn more about policies in our [Authorization: Overview](/v1/authorization/overview#policies) documentation.
 
 #### Polling Interval
 
@@ -89,7 +89,7 @@ authorization:
       path: "data.json"
 ```
 
-You can learn more about using data with policies in our [Authorization: Overview](/authorization/overview#external-data) documentation.
+You can learn more about using data with policies in our [Authorization: Overview](/v1/authorization/overview#external-data) documentation.
 
 #### Polling Interval
 
@@ -147,7 +147,7 @@ authorization:
 
 ## Object
 
-Similar to our [object storage](/configuration/storage#object) support for Flipt flag data, Flipt also supports loading policy and external data from object storage.
+Similar to our [object storage](/v1/configuration/storage#object) support for Flipt flag data, Flipt also supports loading policy and external data from object storage.
 
 Technically, this is a subset of the bundle backend, but it is useful for those who want to provide a simplified configuration for loading policy and data from object storage, without the need to configure the bundle service directly.
 

@@ -10,7 +10,7 @@ Flipt is designed to be able to be used in an edge computing environment. This m
 
 Because of Flipt's small footprint and single binary deployment, it's well suited for edge computing environments. Also, since the Flipt server is stateless, it can be deployed in a highly available configuration. This means that multiple Flipt servers can be deployed to the edge and requests can be load balanced across them, providing a highly available service to the end user.
 
-Our [Deployment](/operations/deployment) documentation provides more information on how to deploy Flipt in a highly available configuration.
+Our [Deployment](/v1/operations/deployment) documentation provides more information on how to deploy Flipt in a highly available configuration.
 
 ## Storage
 
@@ -20,7 +20,7 @@ Flipt supports a variety of storage backends, allowing it to be deployed to a va
 
 Flipt's pluggable data store architecture allows it to be deployed to a variety of edge computing environments without requiring traditional server-based relational databases. Specifically, Flipt's support for SQLite, [LibSQL](https://turso.tech/libsql), and [Turso](https://turso.tech/) allow it to run in environments where a traditional database is not available.
 
-See the [Database Support](/configuration/storage##relational-database) section for more information on Flipt's relational database support.
+See the [Database Support](/v1/configuration/storage##relational-database) section for more information on Flipt's relational database support.
 
 ### Declarative Storage
 
@@ -33,13 +33,13 @@ Flipt's declarative storage backends allow it to run without a database at all. 
 
 These backends allow you to deploy Flipt to the edge and evaluate feature flags close to your end user.
 
-See the [Declarative Storage](/configuration/storage#declarative) section for more information on Flipt's declarative storage backends.
+See the [Declarative Storage](/v1/configuration/storage#declarative) section for more information on Flipt's declarative storage backends.
 
 ## GRPC API
 
 GRPC is a high performance, open source, universal RPC framework. Flipt's GRPC API allows it to run in environments where HTTP isn't available or practical. This is especially useful in environments that require low latency and high throughput, such as IoT devices.
 
-See our [Architecture](/operations/architecture) section for more information on Flipt's GRPC API and overall architecture.
+See our [Architecture](/v1/operations/architecture) section for more information on Flipt's GRPC API and overall architecture.
 
 ## Client Side Evaluation
 
@@ -47,4 +47,4 @@ Flipt's client-side evaluation SDKs allow feature flag evaluation to be performe
 
 Client side evaluation has shown to be up to 1000x faster than traditional server side evaluation, and as such greatly decreases the number of network requests required. This is especially useful in environments where network bandwidth is limited (such as IoT devices), where there is sensitivity to latency (e.g. high throughput services), or on critical paths where transient failures must be avoided at all costs (e.g. during transaction processing).
 
-See our [Client Side Integration](/integration/client) documentation for more information.
+See our [Client Side Integration](/v1/integration/client) documentation for more information.

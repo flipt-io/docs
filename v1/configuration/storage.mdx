@@ -160,7 +160,7 @@ From time to time the Flipt database must be updated with new schema. To
 accomplish this, Flipt includes a `migrate` command that will run any pending
 database migrations for you.
 
-By default Flipt will run your application data migrations. You can run migrations on your [analytical](/configuration/analytics) databases by specifying the `--database=analytics` flag to the migrate command.
+By default Flipt will run your application data migrations. You can run migrations on your [analytical](/v1/configuration/analytics) databases by specifying the `--database=analytics` flag to the migrate command.
 
 If Flipt is started and there are pending migrations, you will see the following
 error in the console:
@@ -212,7 +212,7 @@ The current four declarative backend types include:
 
 ### Read Only Mode
 
-![Read Only Mode](/images/configuration/readonly.png)
+![Read Only Mode](/v1/images/configuration/readonly.png)
 
 Once enabled, all declarative backends put the Flipt API and UI into a `read-only` mode that prevents Flipt from writing to the backend. This is useful for production environments where you want to ensure that flag state is only managed via the configured backend.
 
@@ -355,7 +355,7 @@ storage:
   do `ssh-keyscan github.com >> ~/.ssh/known_hosts` on the Flipt host.
 </Warning>
 
-See our [GitOps Guide](/guides/user/get-going-with-gitops) for an example of how to set up a GitHub repository as a flag state backend.
+See our [GitOps Guide](/v1/guides/user/get-going-with-gitops) for an example of how to set up a GitHub repository as a flag state backend.
 
 #### Repository Storage
 
@@ -558,7 +558,7 @@ GOOGLE_APPLICATION_CREDENTIALS=... # path to a service account key file
 ### OCI
 
 Since `v1.31.0`, Flipt supports using any [OCI](https://opencontainers.org/) compatible registry as a declarative backend source.
-Flipt has its own custom OCI manifest format (we call them `bundles`), which can be built and managed using the [Flipt CLI](/cli/commands/bundle).
+Flipt has its own custom OCI manifest format (we call them `bundles`), which can be built and managed using the [Flipt CLI](/v1/cli/commands/bundle).
 
 <Tabs>
   <Tab title="Environment Variables">
@@ -650,7 +650,7 @@ The indexing process first matches the `include` section and then filters that a
 #### Defining Flag State
 
 Flipt flag state file format has been taken directly from Flipt's existing
-[import and export](/operations/import-export) flag state format.
+[import and export](/v1/operations/import-export) flag state format.
 
 You can run `flipt export` on your existing Flipt instance, and then
 add/commit the result to a directory, object storage, or Git repository to get started.

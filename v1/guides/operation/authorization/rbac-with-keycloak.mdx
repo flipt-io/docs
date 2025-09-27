@@ -3,7 +3,7 @@ title: Role-Based Access Control with Keycloak
 description: Configure and use role-based access control (RBAC) with Flipt, Keycloak, and OPA.
 ---
 
-As described in the [Authorization Overview](/authorization/overview), Flipt supports the ability to secure its core API routes with authorization in a flexible and extensible way.
+As described in the [Authorization Overview](/v1/authorization/overview), Flipt supports the ability to secure its core API routes with authorization in a flexible and extensible way.
 
 This guide will cover how to configure and use role-based access control (RBAC) with Flipt with a Rego policy configured for an imaginary organization using Keycloak for authentication.
 
@@ -23,7 +23,7 @@ This guide will cover how to configure and use role-based access control (RBAC) 
 For this guide, you will need:
 
 - [Docker](https://www.docker.com/)
-- Follow the [Login with Keycloak guide](/guides/operation/authentication/login-with-keycloak) to set up Keycloak for authentication
+- Follow the [Login with Keycloak guide](/v1/guides/operation/authentication/login-with-keycloak) to set up Keycloak for authentication
 
 ## Setting Up Keycloak
 
@@ -31,11 +31,11 @@ To set up Keycloak for authorization, you'll first need to create a new realm, c
 
 ### 1. Follow the Login with Keycloak Guide
 
-Follow the [Login with Keycloak guide](/guides/operation/authentication/login-with-keycloak) to set up Keycloak for authentication.
+Follow the [Login with Keycloak guide](/v1/guides/operation/authentication/login-with-keycloak) to set up Keycloak for authentication.
 
 This guide will walk you through setting up Keycloak and creating a realm, client, and user that you will use for this guide.
 
-![Flipt UI presenting login with Keycloak button](/images/guides/login-with-keycloak/login-with-keycloak.png)
+![Flipt UI presenting login with Keycloak button](/v1/images/guides/login-with-keycloak/login-with-keycloak.png)
 
 ### 2. Create a Realm Role
 
@@ -44,7 +44,7 @@ This guide will walk you through setting up Keycloak and creating a realm, clien
 1. Click `Create Role`.
 1. Enter `developer` as the role name and description and click `Save`.
 
-![Create Role](/images/guides/rbac-with-keycloak/create-keycloak-role.png)
+![Create Role](/v1/images/guides/rbac-with-keycloak/create-keycloak-role.png)
 
 ### 3. Assign the Role to a User
 
@@ -54,7 +54,7 @@ This guide will walk you through setting up Keycloak and creating a realm, clien
 1. Click `Assign Role`.
 1. Select the `developer` role and click `Assign`.
 
-![Assign Role](/images/guides/rbac-with-keycloak/assign-keycloak-role.png)
+![Assign Role](/v1/images/guides/rbac-with-keycloak/assign-keycloak-role.png)
 
 ### 4. Map Client Scopes
 
@@ -65,14 +65,14 @@ Map the `roles` scope to the `flipt` client:
 1. Click on the `Mappers` tab.
 1. Click on `realm roles` in the list of mappers.
 
-![Map Client Scopes](/images/guides/rbac-with-keycloak/map-client-scopes.png)
+![Map Client Scopes](/v1/images/guides/rbac-with-keycloak/map-client-scopes.png)
 
 5. Set the `Token Claim Name` field to something short like `roles`.
 6. Set the `Claim JSON Type` field to `String`.
 7. Toggle on `Add to ID token`.
 8. Click `Save`.
 
-![Customize Role Mapper](/images/guides/rbac-with-keycloak/customize-role-mapper.png)
+![Customize Role Mapper](/v1/images/guides/rbac-with-keycloak/customize-role-mapper.png)
 
 ## Configuring RBAC in Flipt
 
@@ -139,7 +139,7 @@ allow if {
 
 ### 2. Configure Flipt to Use the Policy
 
-Update the `flipt.yaml` configuration file from the [Login with Keycloak guide](/guides/operation/authentication/login-with-keycloak) to enable authorization and specify the path to the Rego policy file:
+Update the `flipt.yaml` configuration file from the [Login with Keycloak guide](/v1/guides/operation/authentication/login-with-keycloak) to enable authorization and specify the path to the Rego policy file:
 
 ```yaml flipt.yaml
 authentication:
@@ -184,7 +184,7 @@ You can create a new user in Keycloak that does not have the `developer` role to
 
 If the user does not have the `developer` role, they should receive an error message in the UI or API response.
 
-![Unauthorized Access](/images/guides/rbac-with-keycloak/unauthorized.png)
+![Unauthorized Access](/v1/images/guides/rbac-with-keycloak/unauthorized.png)
 
 ## Conclusion
 
@@ -192,6 +192,6 @@ In this guide, you learned how to configure and use role-based access control (R
 
 By defining a Rego policy that enforces the roles and permissions for your organization, you can secure your Flipt instance and control access to your feature data with fine-grained permissions and infinite flexibility.
 
-For more information on Flipt's authorization system and how to configure and use it, see the [Authorization Overview](/authorization/overview).
+For more information on Flipt's authorization system and how to configure and use it, see the [Authorization Overview](/v1/authorization/overview).
 
 In the future, we plan to provide more examples and best practices for using Flipt's authorization system with different authentication providers and use cases. If you have any feedback or suggestions for how we can improve this guide, please let us know!

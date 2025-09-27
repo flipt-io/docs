@@ -4,7 +4,7 @@ description: Details on various ways to deploy Flipt.
 ---
 
 Flipt is built and delivered as a single standalone binary.
-Head to the [Installation](/installation/overview) section for more details.
+Head to the [Installation](/v1/installation/overview) section for more details.
 
 Running Flipt with the default configuration is a great way to get to grips with using it.
 However, the default settings have some limitations which might make it impractical in a production environment.
@@ -16,11 +16,11 @@ By default, Flipt runs as a single instance process backed by SQLite. Additional
 
 <Frame>
 <div className="block dark:hidden">
-  ![Flipt single replica deployment](/images/operations/flipt-simple-deployment-light.svg)
+  ![Flipt single replica deployment](/v1/images/operations/flipt-simple-deployment-light.svg)
 </div>
 
 <div className="hidden dark:block">
-  ![Flipt single replica deployment](/images/operations/flipt-simple-deployment-dark.svg)
+  ![Flipt single replica deployment](/v1/images/operations/flipt-simple-deployment-dark.svg)
 </div>
 </Frame>
 
@@ -30,11 +30,11 @@ Caching can also be configured: both in-memory or shared via a distributed solut
 
 <Frame>
 <div className="block dark:hidden">
-  ![Flipt multiple instance configuration diagram](/images/operations/flipt-multi-replica-light.svg)
+  ![Flipt multiple instance configuration diagram](/v1/images/operations/flipt-multi-replica-light.svg)
 </div>
 
 <div className="hidden dark:block">
-  ![Flipt multiple instance configuration diagram](/images/operations/flipt-multi-replica-dark.svg)
+  ![Flipt multiple instance configuration diagram](/v1/images/operations/flipt-multi-replica-dark.svg)
 </div>
 </Frame>
 
@@ -45,7 +45,7 @@ Using SQLite in this way means Flipt can only be run as a single instance.
 
 In many scenarios, it's advantageous to run multiple instances of a service like Flipt. Doing so can provide redundancy during critical failures. It also allows an operator to scale the number of instances to meet throughput demands.
 
-An externally hosted relational database is required to scale Flipt horizontally (run multiple instances with a shared backend). PostgreSQL, MySQL, and CockroachDB are the currently supported relational backends. Check out [Configuration: Storage](/configuration/storage) for more details on how to configure Flipt's available storage backends.
+An externally hosted relational database is required to scale Flipt horizontally (run multiple instances with a shared backend). PostgreSQL, MySQL, and CockroachDB are the currently supported relational backends. Check out [Configuration: Storage](/v1/configuration/storage) for more details on how to configure Flipt's available storage backends.
 
 Once configured with one of these databases, you can run multiple instances safely. Flipt takes care of schema management and some state management operations (e.g. automated deletion of expired API client tokens).
 
@@ -64,7 +64,7 @@ In-memory caching can be enabled via the "caching" section of the configuration 
 
 <Info>
   Details on these configuration options can be found in the [Configuration:
-  Cache](/configuration/overview#cache) section.
+  Cache](/v1/configuration/overview#cache) section.
 </Info>
 
 However, there is a limitation when multiple instances of Flipt are run in parallel.
@@ -118,9 +118,9 @@ Read more about the [gRPC Health Checking Protocol](https://grpc.io/docs/guides/
 
 ## Kubernetes
 
-Flipt already supports running as a [Docker container](/installation/docker), so the lift to run within a Kubernetes environment proves to be quite simple.
+Flipt already supports running as a [Docker container](/v1/installation/docker), so the lift to run within a Kubernetes environment proves to be quite simple.
 
-The easiest way to get started is to use our official [Helm chart](/installation/kubernetes). The chart provisions a Kubernetes Deployment of Flipt along with a Kubernetes Service.
+The easiest way to get started is to use our official [Helm chart](/v1/installation/kubernetes). The chart provisions a Kubernetes Deployment of Flipt along with a Kubernetes Service.
 
 If you are already familiar with Kubernetes, you can get started by using the `flipt:latest` image (or pin to a specific version).
 
@@ -130,17 +130,17 @@ We published a [blog post](https://blog.flipt.io/flipt-as-a-sidecar) that explor
 
 <Frame>
 <div className="block dark:hidden">
-  ![Flipt sidecar deployment configuration](/images/operations/flipt-k8s-sidecar-light.svg)
+  ![Flipt sidecar deployment configuration](/v1/images/operations/flipt-k8s-sidecar-light.svg)
 </div>
 
 <div className="hidden dark:block">
-  ![Flipt sidecar deployment configuration](/images/operations/flipt-k8s-sidecar-dark.svg)
+  ![Flipt sidecar deployment configuration](/v1/images/operations/flipt-k8s-sidecar-dark.svg)
 </div>
 </Frame>
 
 The `Flipt (master)` is the source of truth of all feature flag state where Flipt users make edits through the UI.
 
-The `Flipt Exporter` is a [Kubernetes CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) which uses the [flipt export](/cli/commands/export) command to upload potential changed state to a S3 bucket. Several instances of Flipt can then be run using the S3 bucket as a source of truth. One such example is the `Flipt Sidecar` in the diagram which is collocated with a main process (in the same Kubernetes pod) that uses a Flipt client.
+The `Flipt Exporter` is a [Kubernetes CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) which uses the [flipt export](/v1/cli/commands/export) command to upload potential changed state to a S3 bucket. Several instances of Flipt can then be run using the S3 bucket as a source of truth. One such example is the `Flipt Sidecar` in the diagram which is collocated with a main process (in the same Kubernetes pod) that uses a Flipt client.
 
 The overall idea is for the main process to achieve faster evaluations going over "localhost" rather than through a central Flipt process which could be running anywhere in a distributed sense.
 
@@ -158,12 +158,12 @@ This has the potential for multiple benefits:
 
 <Frame>
 <div className="block dark:hidden">
-  ![Flipt separate read/write tier deployment configuration](/images/operations/flipt-complex-deployment-light.svg)
+  ![Flipt separate read/write tier deployment configuration](/v1/images/operations/flipt-complex-deployment-light.svg)
 </div>
 
 <div className="hidden dark:block">
-  ![Flipt separate read/write tier deployment configuration](/images/operations/flipt-complex-deployment-dark.svg)
+  ![Flipt separate read/write tier deployment configuration](/v1/images/operations/flipt-complex-deployment-dark.svg)
 </div>
 </Frame>
 
-Flipt ships with metrics, logging, and tracing around both behavior and system performance metrics. These pieces of telemetry can be useful for understanding the constraints within your setup of Flipt. We recommend reading the [Configuration: Observability](/configuration/observability) section to understand more about how to extract these measurements.
+Flipt ships with metrics, logging, and tracing around both behavior and system performance metrics. These pieces of telemetry can be useful for understanding the constraints within your setup of Flipt. We recommend reading the [Configuration: Observability](/v1/configuration/observability) section to understand more about how to extract these measurements.

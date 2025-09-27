@@ -3,7 +3,7 @@ title: Login with GitHub
 description: Configuring Flipt to enable login with GitHub via OAuth 2.0
 ---
 
-If you've read the [Login With Google guide](/guides/operation/authentication/login-with-google), you would have learned that Flipt supports many methods of authentication for users to control who has access to Flipt.
+If you've read the [Login With Google guide](/v1/guides/operation/authentication/login-with-google), you would have learned that Flipt supports many methods of authentication for users to control who has access to Flipt.
 
 Alongside the support for generic OIDC login, Flipt has launched support for login with GitHub in version [v1.26.0](https://github.com/flipt-io/flipt/releases/tag/v1.26.0), through their OAuth 2.0 flow. This guide will serve as a walk-through on how to set this flow up for users of Flipt in your organization.
 
@@ -16,7 +16,7 @@ Alongside the support for generic OIDC login, Flipt has launched support for log
 
 OAuth 2.0 is an authentication standard whose goal is to allow 3rd party applications to access authorized resources from a provider. It relies on the user explicitly granting access to the 3rd party application to issue a token on behalf of the OAuth 2.0 provider for authorized use.
 
-![OAuth 2.0 Flow Diagram](/images/guides/login-with-github/oauth-flow-diagram.png)
+![OAuth 2.0 Flow Diagram](/v1/images/guides/login-with-github/oauth-flow-diagram.png)
 
 Unlike OIDC, OAuth 2.0 does not have a standardized identity layer, which means the process of retrieving identity information varies between providers. Users should consult their OAuth 2.0 provider's documentation to understand the specific methods for retrieving identity information.
 
@@ -30,7 +30,7 @@ Unlike OIDC, OAuth 2.0 does not have a standardized identity layer, which means 
 
 4. You should be brought to a page that looks like the image below, and can start filling out the information:
 
-![OAuth 2.0 App Creation](/images/guides/login-with-github/oauth-registration.png)
+![OAuth 2.0 App Creation](/v1/images/guides/login-with-github/oauth-registration.png)
 
 - `Application Name`: Give your application a meaningful name
 - `Homepage URL`: Usually Flipt will be used internally by organizations, so this value depends on how you plan to expose Flipt. When in doubt you can just use the URL to your organization's home page
@@ -55,7 +55,7 @@ Flipt relies on configuration that the user provides for many bits of functional
 
 The [configuration documentation](https://www.flipt.io/docs/configuration/overview) gives a complete list of all configuration values available for how to configure Flipt.
 
-The [Authentication Methods: GitHub](/configuration/overview#authentication-methods-github) section of the configuration documentation describes the values needed to enable the Login with GitHub functionality.
+The [Authentication Methods: GitHub](/v1/configuration/overview#authentication-methods-github) section of the configuration documentation describes the values needed to enable the Login with GitHub functionality.
 
 It should look similar to the following:
 
@@ -98,11 +98,11 @@ This will mount the `config.yml` as a volume in the container, and Flipt will us
 
 Access the Flipt UI by typing in the `http://localhost:8080` URL in the address bar of a browser. You should see the following screen:
 
-![Login With GitHub](/images/guides/login-with-github/login-with-github.png)
+![Login With GitHub](/v1/images/guides/login-with-github/login-with-github.png)
 
 Click the button to Login With GitHub, and it should take you to the GitHub domain to complete the authentication flow with the following screen:
 
-![GitHub Authorization](/images/guides/login-with-github/github-authorization.png)
+![GitHub Authorization](/v1/images/guides/login-with-github/github-authorization.png)
 
 Click on the green `Authorize {username}` button to allow completion of the OAuth 2.0 flow
 
@@ -110,7 +110,7 @@ Click on the green `Authorize {username}` button to allow completion of the OAut
 
 After completion of the flow you should be taken to the normal Flipt homepage and start using Flipt normally as before. If you have a profile picture on GitHub, it should show in the top right corner.
 
-![Flipt Dashboard](/images/guides/login-with-github/flipt-dashboard.png)
+![Flipt Dashboard](/v1/images/guides/login-with-github/flipt-dashboard.png)
 
 This guide shows the basics of getting Flipt running with GitHub OAuth 2.0 authentication in a development environment.
 

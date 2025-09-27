@@ -8,7 +8,7 @@ Flipt supports the ability to secure its core API routes with authorization.
 <Info>
 Flipt authorization is **disabled** (not required) by default.
 
-Head to the [Configuration: Authorization](/configuration/authorization) section to learn how to enable it.
+Head to the [Configuration: Authorization](/v1/configuration/authorization) section to learn how to enable it.
 
 </Info>
 
@@ -24,14 +24,14 @@ Flipt embeds OPA to evaluate policies that determine whether a request should be
 
 <Tip>
   Check out our [Role-Based Access Control with Keycloak
-  guide](/guides/operation/authorization/rbac-with-keycloak) for an example on
+  guide](/v1/guides/operation/authorization/rbac-with-keycloak) for an example on
   how to configure and use role-based access control (RBAC) with Flipt and
   Keycloak using OPA.
 </Tip>
 
 ## Policies
 
-Flipt uses OPA to enforce authorization policies for the Management API. The policies are written in [Rego](https://www.openpolicyagent.org/docs/latest/policy-language/), a powerful, declarative policy language. The path to this file is provided as described in the [Configuration: Authorization](/configuration/authorization) section.
+Flipt uses OPA to enforce authorization policies for the Management API. The policies are written in [Rego](https://www.openpolicyagent.org/docs/latest/policy-language/), a powerful, declarative policy language. The path to this file is provided as described in the [Configuration: Authorization](/v1/configuration/authorization) section.
 
 Part of the power of OPA is that it's extremely flexible as it allows you to define fine-grained policies tailored to your exact needs.
 
@@ -70,7 +70,7 @@ The context provided to OPA includes the following fields:
 
 Flipt provides the raw authentication information to OPA for evaluation. This information is specific to the authentication method used to authenticate the request.
 
-For example, if you're using the [OIDC authentication method](/authentication/methods#openid-connect), the `input.authentication.metadata` field may contain the user's name and email as well as custom claims assigned to the user.
+For example, if you're using the [OIDC authentication method](/v1/authentication/methods#openid-connect), the `input.authentication.metadata` field may contain the user's name and email as well as custom claims assigned to the user.
 
 Here is an example of the `input.authentication.metadata` field for a request authenticated using an example OIDC provider:
 
@@ -184,25 +184,25 @@ Roles or groups are not a requirement for writing policies. You can write polici
 
 The `input.request` field contains information about the incoming request. This includes the `namespace`, `resource`, and `action` of the request.
 
-- `namespace`: The [namespace](/concepts#namespaces) in Flipt of the resource being accessed. If no namespace is provided, the default namespace is used, or it is not applicable as the resource is not namespace scoped (e.g. authentication)
+- `namespace`: The [namespace](/v1/concepts#namespaces) in Flipt of the resource being accessed. If no namespace is provided, the default namespace is used, or it is not applicable as the resource is not namespace scoped (e.g. authentication)
 
 - `resource`: The resource being accessed. This can be one of:
 
-  - `namespace`: Access to [namespace](/concepts#namespaces) resources (e.g., listing or creating namespaces).
-  - `flag`: Access to [flag](/concepts#flags) resources and sub-resources (e.g., listing or creating flags, variants, rules or rollouts).
-  - `segment`: Access to [segment](/concepts#segments) resources and sub-resources (e.g., listing or creating segments, constraints or distributions).
+  - `namespace`: Access to [namespace](/v1/concepts#namespaces) resources (e.g., listing or creating namespaces).
+  - `flag`: Access to [flag](/v1/concepts#flags) resources and sub-resources (e.g., listing or creating flags, variants, rules or rollouts).
+  - `segment`: Access to [segment](/v1/concepts#segments) resources and sub-resources (e.g., listing or creating segments, constraints or distributions).
   - `authentication`: Access to authentication resources (e.g., listing or creating client tokens).
 
 - `subject`: The (optional) nested subject of the request. This can be one of:
 
-  - `namespace`: Access to [namespace](/concepts#namespaces) resources.
-  - `flag`: Access to [flag](/concepts#flags) resources.
-    - `variant`: Access to flag [variant](/concepts#variant-flags) resources.
-    - `rule`: Access to flag [rule](/concepts#rules) resources.
-    - `rollout`: Access to flag [rollout](/concepts#rollouts) resources.
-  - `segment`: Access to [segment](/concepts#segments) resources.
-    - `constraint`: Access to segment [constraint](/concepts#constraints) resources.
-    - `distribution`: Access to segment [distribution](/concepts#distributions) resources.
+  - `namespace`: Access to [namespace](/v1/concepts#namespaces) resources.
+  - `flag`: Access to [flag](/v1/concepts#flags) resources.
+    - `variant`: Access to flag [variant](/v1/concepts#variant-flags) resources.
+    - `rule`: Access to flag [rule](/v1/concepts#rules) resources.
+    - `rollout`: Access to flag [rollout](/v1/concepts#rollouts) resources.
+  - `segment`: Access to [segment](/v1/concepts#segments) resources.
+    - `constraint`: Access to segment [constraint](/v1/concepts#constraints) resources.
+    - `distribution`: Access to segment [distribution](/v1/concepts#distributions) resources.
   - `token`: Access to client token resources.
 
 - `action`: The action being performed on the resource. This can be one of:
@@ -288,7 +288,7 @@ And here is an example of the external data source that maps user IDs to roles:
 }
 ```
 
-Flipt allows you to define external data sources in the configuration file. You can find more information on how to configure external data sources in the [Configuration: Authorization](/configuration/authorization) section.
+Flipt allows you to define external data sources in the configuration file. You can find more information on how to configure external data sources in the [Configuration: Authorization](/v1/configuration/authorization) section.
 
 The combination of OPA's flexible policy language and the ability to use external data sources makes it possible to define complex authorization policies that can adapt to your organization's needs.
 
@@ -298,7 +298,7 @@ While the examples provided in this document are simple, you can write policies 
 
 <Tip>
   Check out our [Role-Based Access Control with Keycloak
-  guide](/guides/operation/authorization/rbac-with-keycloak) for an example on
+  guide](/v1/guides/operation/authorization/rbac-with-keycloak) for an example on
   how to configure and use role-based access control (RBAC) with Flipt and
   Keycloak using OPA.
 </Tip>

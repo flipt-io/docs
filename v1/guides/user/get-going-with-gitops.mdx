@@ -174,7 +174,7 @@ Then we will configure Flipt to serve directly from our local directory.
 <Note>
   You don't have to call your file `features.yml` and you can spread your flag
   definitions across multiple files. Checkout our docs on [locating flag
-  state](/configuration/storage#locating-flag-state) to learn more.
+  state](/v1/configuration/storage#locating-flag-state) to learn more.
 </Note>
 
 ```diff
@@ -218,7 +218,7 @@ docker run -it --rm \
   flipt/flipt:latest
 ```
 
-![Flipt instance showing flag in disabled state](/images/guides/get-going-with-gitops/flag-defined-locally.png)
+![Flipt instance showing flag in disabled state](/v1/images/guides/get-going-with-gitops/flag-defined-locally.png)
 
 > This image demonstrates what can be seen in the Flipt UI with the configuration file we defined being served.
 
@@ -248,7 +248,7 @@ Changes will eventually propagate into our running instance of Flipt.
 
 <Info>
   Head to [Configuration: Storage: Declarative
-  Backends](/configuration/storage#declarative) to learn more about configuring
+  Backends](/v1/configuration/storage#declarative) to learn more about configuring
   these backend types for Flipt.
 </Info>
 
@@ -362,7 +362,7 @@ segments:
     type: STRING_COMPARISON_TYPE
 ```
 
-This [segment](/concepts#segments) definition matches any evaluation request where there exists a key `organization` on the context, with a value `internal`.
+This [segment](/v1/concepts#segments) definition matches any evaluation request where there exists a key `organization` on the context, with a value `internal`.
 Remember we added the key `organization` earlier when defining the flag in code.
 We used a value derived from the request (`getOrganization(r.Context())`).
 This got the organization identifier for the calling user.
@@ -380,7 +380,7 @@ flags:
       value: true
 ```
 
-Finally, we add a [rollout rule](/concepts#rollouts) to our boolean flag.
+Finally, we add a [rollout rule](/v1/concepts#rollouts) to our boolean flag.
 This rule allows us to override the `enabled` property of the flag under certain conditions.
 In this instance, we're using the `segment` type rule to say when the request matches the `internal-users` segment, return the value `true`.
 
@@ -525,7 +525,7 @@ flags:
 This threshold percentage is set to `20`, meaning roughly `20%` of entity IDs will match and cause the flag to return `enabled = true`.
 
 <Info>
-  Head to [Concepts: Bucketing](/concepts#bucketing) to learn how this mechanism
+  Head to [Concepts: Bucketing](/v1/concepts#bucketing) to learn how this mechanism
   is actually achieved.
 </Info>
 
@@ -595,4 +595,4 @@ We've thoughts on how this could change in the future, but for now, this is a li
 You always have your editor, Git and the SCMs (GitHub, Gitlab etc) for state management in the meantime.
 
 Each of these backends work by polling their sources (git, oci, local directory or object store) and the interval can be configured.
-Checkout the [Configuration: Storage: Declarative](/configuration/storage#declarative) for details on adjusting these intervals.
+Checkout the [Configuration: Storage: Declarative](/v1/configuration/storage#declarative) for details on adjusting these intervals.

@@ -8,12 +8,12 @@ first flag, segment, set of rules, and finally using the evaluation console to
 simulate an evaluation request from your applications.
 
 For more information on any of the concepts described, please see the
-[Concepts](/concepts) documentation.
+[Concepts](/v1/concepts) documentation.
 
 ## Setup
 
 Before getting started, make sure the Flipt server is up and running on your
-host on your chosen ports. See [Installation](/installation) for more.
+host on your chosen ports. See [Installation](/v1/installation) for more.
 
 <CodeGroup>
 
@@ -59,7 +59,7 @@ To create a flag:
 4. Click `Enabled` so the flag will be enabled once created.
 5. Click `Create`.
 
-!["Create Flag"](/images/getting_started/create_flag.png)
+!["Create Flag"](/v1/images/getting_started/create_flag.png)
 
 ### Create Variants
 
@@ -73,7 +73,7 @@ To create a variant:
 3. Click `Create`.
 4. Create one more variant populating the information as you wish.
 
-!["Create Variant"](/images/getting_started/create_variant.png)
+!["Create Variant"](/v1/images/getting_started/create_variant.png)
 
 Click `Flags` in the navigation menu and you should now see your newly created
 flag in the list.
@@ -94,7 +94,7 @@ To create a segment:
 3. Populate the details of the segment as shown.
 4. Click `Create`.
 
-!["Create Segment"](/images/getting_started/create_segment.png)
+!["Create Segment"](/v1/images/getting_started/create_segment.png)
 
 ### Create a Constraint
 
@@ -112,7 +112,7 @@ To create a constraint:
 2. Populate the details of the constraint as shown.
 3. Click `Create`.
 
-!["Create Constraint"](/images/getting_started/create_constraint.png)
+!["Create Constraint"](/v1/images/getting_started/create_constraint.png)
 
 Click `Segments` in the navigation menu and you should now see your newly
 created segment in the list.
@@ -136,7 +136,7 @@ To create a rule:
    of `50%` each.
 7. Click `Create`.
 
-!["Create"](/images/getting_started/create_rule.png)
+!["Create"](/v1/images/getting_started/create_rule.png)
 
 A distribution is a way of assigning a percentage for which entities evaluated
 get a specific variant. The higher the percentage assigned, the more likely it
@@ -157,7 +157,7 @@ The Flipt UI contains an Evaluation Console to allow you to experiment
 with different requests to see how they would be evaluated.
 
 The main ideas behind how evaluation works are described in more detail in the
-[Concepts](/concepts#evaluation) documentation.
+[Concepts](/v1/concepts#evaluation) documentation.
 
 To test evaluation:
 
@@ -172,7 +172,7 @@ To test evaluation:
    segment that you created earlier, and return one of the variants defined.
 6. Experiment with different values for the `Request Context` and `Entity ID` fields.
 
-!["Evaluation Console"](/images/getting_started/evaluation_console.png)
+!["Evaluation Console"](/v1/images/getting_started/evaluation_console.png)
 
 That's it! You're now ready to integrate Flipt into your applications and start
 defining your flags and segments that will enable you to seamlessly rollout

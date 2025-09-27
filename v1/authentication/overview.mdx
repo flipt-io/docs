@@ -8,7 +8,7 @@ Flipt supports the ability to secure its core API routes with authentication.
 <Info>
 Flipt authentication is **disabled** (not required) by default.
 
-Head to the [Configuration: Authentication](/configuration/authentication) section to learn how to enable it.
+Head to the [Configuration: Authentication](/v1/configuration/authentication) section to learn how to enable it.
 
 </Info>
 
@@ -36,21 +36,21 @@ For now, we recommend excluding these API prefixes from your load-balancer.
 Apart from `/auth/v1/` itself, the rest of the top-level API prefixes can be optionally excluded from authentication.
 Allowing for sections, such as the evaluations API, to be publicly accessible while still protecting the management and metadata APIs.
 
-See the [Configuration: Authentication Exclusions](/configuration/authentication#exclusions) documentation for details.
+See the [Configuration: Authentication Exclusions](/v1/configuration/authentication#exclusions) documentation for details.
 
 ## Client Tokens
 
 Client tokens are the core credential required to authenticate a request.
-Tokens themselves are acquired via [authentication methods](/authentication/methods).
+Tokens themselves are acquired via [authentication methods](/v1/authentication/methods).
 
 Flipt supports multiple authentication methods for acquiring credentials:
 
-1. [Static Token](/authentication/methods/#static-token)
-1. [OIDC](/authentication/methods/#oidc)
-1. [GitHub](/authentication/methods/#github)
-1. [Kubernetes](/authentication/methods/#kubernetes)
+1. [Static Token](/v1/authentication/methods/#static-token)
+1. [OIDC](/v1/authentication/methods/#oidc)
+1. [GitHub](/v1/authentication/methods/#github)
+1. [Kubernetes](/v1/authentication/methods/#kubernetes)
 
-Once a `client token` has been acquired, it can be supplied via request metadata dependent on the protocol. Both HTTP and gRPC examples can be found on the [Using Client Tokens](/authentication/using-tokens) page.
+Once a `client token` has been acquired, it can be supplied via request metadata dependent on the protocol. Both HTTP and gRPC examples can be found on the [Using Client Tokens](/v1/authentication/using-tokens) page.
 
 ## JSON Web Tokens
 
@@ -58,4 +58,4 @@ Flipt can also authenticate requests using externally created and signed [JSON W
 
 To enable JWT authentication, you will need to configure Flipt with the public key used to verify the JWT signature.
 
-See the [Configuration: JWT Authentication](/configuration/authentication#json-web-token) documentation for details.
+See the [Configuration: JWT Authentication](/v1/configuration/authentication#json-web-token) documentation for details.

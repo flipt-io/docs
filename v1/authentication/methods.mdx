@@ -5,7 +5,7 @@ description: This document describes the various supported authentication method
 
 <Note>
   See [Configuration: Authentication
-  Methods](/configuration/authentication#methods) for details on how to
+  Methods](/v1/configuration/authentication#methods) for details on how to
   configure the various authentication methods.
 </Note>
 
@@ -36,13 +36,13 @@ curl -X POST localhost:8080/auth/v1/method/token \
 
 The UI also supports the creation and deletion of tokens. To access this functionality, navigate to `Settings` from the main menu and see the 'Static Tokens' section.
 
-![Create Token UI](/images/authentication/create-token.png)
+![Create Token UI](/v1/images/authentication/create-token.png)
 
 ### Bootstrapping
 
 On first startup, Flipt will automatically create a random static token with the name `initial_bootstrap_token` if one doesn't already exist and if `token` authentication is enabled.
 
-![Bootstrap Token](/images/authentication/bootstrap-token.png)
+![Bootstrap Token](/v1/images/authentication/bootstrap-token.png)
 
 This token is intended to be used to create additional tokens to be then used for subsequent API requests. By default it has no expiration date, therefore it's recommended that this token be deleted once the initial bootstrapping is complete.
 
@@ -56,7 +56,7 @@ This initial bootstrap process can also be configured to use a known token by se
 
 The bootstrap token can also be configured to have an expiration date by setting the `bootstrap.expiration` value in the configuration file. This is useful if you want to ensure that the bootstrap token is only valid for a short time before automatically expiring.
 
-See the [Configuration: Method Token](/configuration/overview#authentication-methods-token) documentation for more details.
+See the [Configuration: Method Token](/v1/configuration/overview#authentication-methods-token) documentation for more details.
 
 ### Token Expiration
 
@@ -64,7 +64,7 @@ Tokens can be created with an optional expiration date. This can be used to ensu
 
 ### Namespaced Tokens
 
-Tokens can be created with an optional namespace to allow for more granular control over resource access. Namespaces allow for grouping resources such as flags, segments, etc. To learn more about namespaces, see the [Concepts: Namespaces](/concepts#namespaces) documentation.
+Tokens can be created with an optional namespace to allow for more granular control over resource access. Namespaces allow for grouping resources such as flags, segments, etc. To learn more about namespaces, see the [Concepts: Namespaces](/v1/concepts#namespaces) documentation.
 
 Namespaced tokens are useful for the scenario when you want to limit the privileges of an integration such as a CI/CD pipeline or internal service.
 
@@ -89,7 +89,7 @@ Meaning, that once enabled, the UI will support login and present each provider 
 The rest of this information is mostly academic.
 It's mainly useful if you want to build your browser application using cookie authentication or understand Flipt's OIDC flow at a lower level.
 
-See the [OIDC Configuration](/configuration/authentication#oidc) documentation to learn how to configure your provider(s).
+See the [OIDC Configuration](/v1/configuration/authentication#oidc) documentation to learn how to configure your provider(s).
 
 </Note>
 
@@ -113,7 +113,7 @@ Numerous OIDC providers are available. For example, we've tested Flipt with:
 - Keycloak
 
 Each provider has their own way of establishing clients and acquiring the relevant credentials.
-You can find further documentation on leveraging providers like these in our [OIDC Configuration](/configuration/authentication#oidc) documentation.
+You can find further documentation on leveraging providers like these in our [OIDC Configuration](/v1/configuration/authentication#oidc) documentation.
 
 For illustration purposes, let us say we've configured a single provider with `Dex` and named it `dex` (lowercase) in our provider configuration.
 
@@ -174,9 +174,9 @@ authentication:
 The `kubernetes` authentication method supports the ability to exchange [Kubernetes service account](https://kubernetes.io/docs/concepts/security/service-accounts) tokens with Flipt for client tokens.
 This allows services deployed into the same Kubernetes cluster as Flipt to automatically gain authenticated access to the Flipt API without additional management of static client tokens.
 
-![Kubernetes Authentication Flow](/images/authentication/kubernetes.svg)
+![Kubernetes Authentication Flow](/v1/images/authentication/kubernetes.svg)
 
-When enabled (see our [Configuration: Method Kubernetes](/configuration/authentication#kubernetes) documentation) a service deployed within Kubernetes can read their service account token from local disk and invoke the verify service account operation on the API.
+When enabled (see our [Configuration: Method Kubernetes](/v1/configuration/authentication#kubernetes) documentation) a service deployed within Kubernetes can read their service account token from local disk and invoke the verify service account operation on the API.
 
 Given the service account is deemed valid for the surrounding cluster this operation will return a valid Flipt client token with a matching expiration as the service account.
 If your Kubernetes environment has short-lived service account tokens, care will be needed to periodically request a new client token using a newly issued service account token.
@@ -259,7 +259,7 @@ curl -s -X POST http://flipt:8080/auth/v1/method/kubernetes/serviceaccount \
 
 </CodeGroup>
 
-The client token found in the body of the response can then be used to authenticate with Flipt as outlined in [Using Client Tokens](/authentication/using-tokens).
+The client token found in the body of the response can then be used to authenticate with Flipt as outlined in [Using Client Tokens](/v1/authentication/using-tokens).
 
 The expiration can be used to schedule when to next request a new client token.
 
@@ -274,6 +274,6 @@ JWT authentication is useful for scenarios where you want to integrate Flipt wit
   session-compatible authentication method.
 </Note>
 
-![JWT Authentication Flow](/images/authentication/jwt.svg)
+![JWT Authentication Flow](/v1/images/authentication/jwt.svg)
 
-The JWT issued by the Authorization Server can then be used to authenticate with Flipt as outlined in [Using JSON Web Tokens](/authentication/using-jwts).
+The JWT issued by the Authorization Server can then be used to authenticate with Flipt as outlined in [Using JSON Web Tokens](/v1/authentication/using-jwts).

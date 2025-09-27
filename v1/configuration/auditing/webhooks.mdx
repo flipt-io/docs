@@ -49,11 +49,11 @@ audit:
       max_backoff_duration: 15s
 ```
 
-See the [Audit Events - Webhook](/configuration/overview#audit-events-webhook) section of the configuration documentation for more details.
+See the [Audit Events - Webhook](/v1/configuration/overview#audit-events-webhook) section of the configuration documentation for more details.
 
 ## Security
 
-You may provide a signing secret for requests to your webhook. If you specify a signing secret, you will receive a request with the `X-Flipt-Webhook-Signature` header populated. This value can be set in the [Audit Events - Webhook](/configuration/overview#audit-events-webhook) section of the Flipt server configuration.
+You may provide a signing secret for requests to your webhook. If you specify a signing secret, you will receive a request with the `X-Flipt-Webhook-Signature` header populated. This value can be set in the [Audit Events - Webhook](/v1/configuration/overview#audit-events-webhook) section of the Flipt server configuration.
 
 The value in the `X-Flipt-Webhook-Signature` header is the request body HMAC SHA256 signed with the signing secret you specified. On the webhook server, you can validate the signature by using the same signing secret. It's _strongly recommended_ that you do this to prevent requests to your webhook server that are from invalid origins.
 
@@ -127,6 +127,6 @@ audit:
 
 The above configuration will send a Slack message that looks like this:
 
-![Slack Message](/images/configuration/auditing/slack-webhook.png)
+![Slack Message](/v1/images/configuration/auditing/slack-webhook.png)
 
 You can find more information about Slack webhooks [here](https://api.slack.com/messaging/webhooks). You can also use the [Slack Block Kit Builder](https://app.slack.com/block-kit-builder) to build more complex messages.

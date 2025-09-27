@@ -42,11 +42,11 @@ Flipt supports sending audit events to configured sinks. Audit events have the f
 
 Currently, we support the following sinks for audit events:
 
-- [Log](/configuration/overview#audit-events-log): the audit events are output as either `json` or `console` depending on configuration. The default output is to STDOUT, however, the log sink can also be output to a file.
+- [Log](/v1/configuration/overview#audit-events-log): the audit events are output as either `json` or `console` depending on configuration. The default output is to STDOUT, however, the log sink can also be output to a file.
 
-- [Webhook](/configuration/overview#audit-events-webhook): the audit events are sent to a URL of your choice.
+- [Webhook](/v1/configuration/overview#audit-events-webhook): the audit events are sent to a URL of your choice.
 
-- [Kafka](/configuration/overview#audit-events-kafka): the audit events are sent to a Kafka topic of your choice.
+- [Kafka](/v1/configuration/overview#audit-events-kafka): the audit events are sent to a Kafka topic of your choice.
 
 You can find [examples](https://github.com/flipt-io/flipt/tree/main/examples/audit) in the main GitHub repository on how to enable audit events and how to tune configuration for it.
 
@@ -71,6 +71,6 @@ rule:deleted
 
 ## Authentication / Authorization
 
-If [authentication](/authentication) is enabled, the actor field will contain the identity information of the source which initiated the audit event. This information may contain the user's email, IP address, and other relevant information.
+If [authentication](/v1/authentication) is enabled, the actor field will contain the identity information of the source which initiated the audit event. This information may contain the user's email, IP address, and other relevant information.
 
-If [authorization](/authorization) is enabled, the audit event will contain the result of the authorization check in the `status` field. The status field will be set to `success` if the authorization check passed, and `denied` if the check failed. This information can be used to determine if an unauthorized user attempted to perform an action.
+If [authorization](/v1/authorization) is enabled, the audit event will contain the result of the authorization check in the `status` field. The status field will be set to `success` if the authorization check passed, and `denied` if the check failed. This information can be used to determine if an unauthorized user attempted to perform an action.

@@ -8,32 +8,32 @@ If you're already a LaunchDarkly user, migrating from LaunchDarkly to Flipt is a
 
 We suggest you follow the steps one after the other, in the order they're listed. This will allow you to rollback changes easily, in case of a migration error.
 
-1. [**Migrating from LaunchDarkly SDK to OpenFeature SDK**](/guides/migration/launchdarkly/openfeature)
+1. [**Migrating from LaunchDarkly SDK to OpenFeature SDK**](/v1/guides/migration/launchdarkly/openfeature)
 
 First, we'll identify all flag instances in your codebase, and migrate them
 from the traditional LaunchDarkly SDK to the OpenFeature SDK. This will
 enable us to make as little modifications as possible to your codebase, and
 allow you to replace feature flagging vendors with ease.
 
-2. [**Adding the Flipt OpenFeature Provider**](/guides/migration/launchdarkly/flipt#adding-the-flipt-openfeature-provider)
+2. [**Adding the Flipt OpenFeature Provider**](/v1/guides/migration/launchdarkly/flipt#adding-the-flipt-openfeature-provider)
 
 Since Flipt supports OpenFeature, migrating to Flipt is as easy as changing
 the LaunchDarkly OpenFeature provider to the Flipt OpenFeature provider.
 
-3. [**Installing Flipt**](/guides/migration/launchdarkly/flipt#installing-flipt)
+3. [**Installing Flipt**](/v1/guides/migration/launchdarkly/flipt#installing-flipt)
 
 In order to use Flipt, you will need to install it in your infrastructure.
 
 If you want us to handle the running and maintenance of Flipt, you can
-leverage our [Cloud](/cloud/overview) offering.
+leverage our [Cloud](#) offering.
 
-4. [**Migrate State from LaunchDarkly to Flipt**](/guides/migration/launchdarkly/flipt#migrate-state-from-launchdarkly-to-flipt)
+4. [**Migrate State from LaunchDarkly to Flipt**](/v1/guides/migration/launchdarkly/flipt#migrate-state-from-launchdarkly-to-flipt)
 
 The last part is to migrate all of your existing flags from the LaunchDarkly
 interface to your Flipt instance.
 
 <Tip>
-  Flipt has a new [Cloud](/cloud/overview) offering that allows you to scale
+  Flipt has a new [Cloud](#) offering that allows you to scale
   your feature management platform without worrying about the underlying
   infrastructure. We'll assist you in LaunchDarkly to Flipt migration services
   for free, for all of our paying users.

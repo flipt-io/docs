@@ -3,7 +3,7 @@ title: Concepts
 description: This document describes the basic concepts of Flipt.
 ---
 
-More information on how to use Flipt is noted in the [Getting Started](/introduction) documentation.
+More information on how to use Flipt is noted in the [Getting Started](/v1/introduction) documentation.
 
 ## Namespaces
 
@@ -11,7 +11,7 @@ Namespaces are the recommended way to organize all resources such as Flags, Segm
 
 Namespaces allow you to separate all data within Flipt for use in different environments such as Development, Staging, Production, etc.
 
-![Namespaces Settings](/images/concepts/namespaces_production.png)
+![Namespaces Settings](/v1/images/concepts/namespaces_production.png)
 
 Another common use-case of Namespaces is to separate Flipt data by internal team or organization.
 
@@ -22,11 +22,11 @@ If a namespace isn't selected then the 'Default' namespace is used.
 
 </Note>
 
-![Namespaces Settings](/images/concepts/namespaces_default.png)
+![Namespaces Settings](/v1/images/concepts/namespaces_default.png)
 
 Namespaces can be managed within the `Settings` section of the Flipt UI:
 
-![Namespaces Settings](/images/concepts/settings_namespaces.png)
+![Namespaces Settings](/v1/images/concepts/settings_namespaces.png)
 
 ## Flags
 
@@ -41,7 +41,7 @@ working on when they visit your homepage.
 Flags can be used as simple on/off toggles or with variants and rules to support
 more elaborate use cases.
 
-![Flags Example](/images/concepts/flags.png)
+![Flags Example](/v1/images/concepts/flags.png)
 
 There are two types of flags:
 
@@ -67,7 +67,7 @@ The attachment size is limited to **1MB**.
 
 </Warning>
 
-![Variant Flags Example](/images/concepts/flags_variants.png)
+![Variant Flags Example](/v1/images/concepts/flags_variants.png)
 
 ### Boolean Flags
 
@@ -77,13 +77,13 @@ You can use boolean flags to determine if a feature is enabled or disabled for a
 
 Boolean flags can be configured with [rollout](#rollouts) rules to determine which entities receive `true` or `false` for a given flag.
 
-![Boolean Flags Example](/images/concepts/flags_boolean.png)
+![Boolean Flags Example](/v1/images/concepts/flags_boolean.png)
 
 ### Metadata
 
 All flags can have metadata associated with them. This metadata is stored in the Flipt backend and can be used to add additional information about a flag.
 
-Metadata is stored as a JSON object and is not used for evaluation. You can retrieve flag metadata using the [Get Flag](/reference/flags/get-flag) API.
+Metadata is stored as a JSON object and is not used for evaluation. You can retrieve flag metadata using the [Get Flag](/v1/reference/flags/get-flag) API.
 
 In the Flipt UI, metadata is displayed in the flag details section. The UI allows you to add, edit, and delete metadata and provides a more user-friendly interface for managing metadata by specifying key-value pairs and their data types.
 
@@ -92,7 +92,7 @@ Currently, the following data types are supported:
 - Primitive types: `String`, `Number`, `Boolean`
 - Complex types: `Array`, `Object`
 
-![Flag Metadata Example](/images/concepts/flags_metadata.png)
+![Flag Metadata Example](/v1/images/concepts/flags_metadata.png)
 
 ## Segments
 
@@ -102,7 +102,7 @@ a flag or variant applies to them.
 
 An example segment could be `new-users`.
 
-![Segments Example](/images/concepts/segments.png)
+![Segments Example](/v1/images/concepts/segments.png)
 
 <Note>Segments are global within a Flipt namespace.</Note>
 
@@ -122,7 +122,7 @@ Constraints allow you to determine which segment a given entity is a part of.
 For example, for a user to fall into the above `new-users` segment, you may want
 to check their `finished_onboarding` property.
 
-![Constraints Example](/images/concepts/constraints.png)
+![Constraints Example](/v1/images/concepts/constraints.png)
 
 All constraints have a _property_, _type_, _operator_ and optionally a _value_.
 
@@ -136,7 +136,7 @@ Currently 5 constraint types are available:
 - **DateTime** which allows you to check a date or datetime property of an entity such as `2020-01-01` or `2020-01-01T00:00:00Z` ([RFC3339](https://datatracker.ietf.org/doc/html/rfc3339))
 - **Entity** which allows you to check the `entityId` that was sent in the body of the `Variant` or `Boolean` request
 
-![Constraint Types](/images/concepts/constraints_types.png)
+![Constraint Types](/v1/images/concepts/constraints_types.png)
 
 <Note>
   The constraint value is represented as a string in transit and in the
@@ -154,7 +154,7 @@ richer by using distribution logic to roll out features on a percentage basis.
 Continuing our previous example, we may want to return the flag variant `dark`
 for all entities in the `new-users` segment. This would be configured like so:
 
-![Rules Example](/images/concepts/rules.png)
+![Rules Example](/v1/images/concepts/rules.png)
 
 Rules are evaluated in order per their rank from 1-N. The first rule that
 matches wins. Once created, rules can be re-ordered to change how they're
@@ -166,7 +166,7 @@ evaluated.
 
 If no rules match for a given flag, the default rule value is returned. This value is optional and can be set to any variant that exists for the flag.
 
-![Default Rule Example](/images/concepts/default_rule.png)
+![Default Rule Example](/v1/images/concepts/default_rule.png)
 
 ### Distributions
 
@@ -177,7 +177,7 @@ Let's say that instead of always showing the `dark` variant to your `new-users`
 segment, you want to show `dark` to **10%** of `new-users`, `light` to **30%**, and `auto`
 to the remaining **60%**. You would accomplish this using rules with distributions:
 
-![Distributions Example](/images/concepts/distributions.png)
+![Distributions Example](/v1/images/concepts/distributions.png)
 
 The ability to manage distributions, as illustrated in the image above, is an extremely powerful feature of Flipt that can help you seamlessly deploy new features of your applications to your users while also limiting the reach of potential bugs.
 
@@ -192,7 +192,7 @@ Current rollout types include:
 - **Threshold** which allows you to return `true` or `false` for a given percentage of entities.
 - **Segments Match** which allows you to return `true` or `false` if an entity matches a given segment.
 
-![Rollouts Example](/images/concepts/rollouts.png)
+![Rollouts Example](/v1/images/concepts/rollouts.png)
 
 Rollouts work similar to [Rules](#rules) in that they're evaluated in order per their rank from 1-N. The first rollout that matches wins. Once created, rollouts can be re-ordered to change how they're evaluated.
 
@@ -210,7 +210,7 @@ In the above example involving colors, evaluation is where you send information
 about your current user to determine if they're a `new-user`, and which color
 (`dark`, `auto`, or `light`) that they should see for their main color scheme.
 
-![Evaluation Example](/images/concepts/evaluation.png)
+![Evaluation Example](/v1/images/concepts/evaluation.png)
 
 ### Entities
 

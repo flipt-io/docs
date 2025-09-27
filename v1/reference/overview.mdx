@@ -15,20 +15,20 @@ The latest version of the REST API is fully documented using the [OpenAPI v3 spe
 <Info>
 Flipt authentication is **disabled** (not required) by default.
 
-Head to the [Configuration: Authentication](/configuration#authentication) section to enable it.
+Head to the [Configuration: Authentication](/v1/configuration#authentication) section to enable it.
 
 </Info>
 
 Flipt supports two types of authentication for the API:
 
-- **Client Token Authentication** - This method uses tokens stored by Flipt to authenticate the request. See the [Using Client Tokens](/authentication/using-tokens) section for more information.
-- **JSON Web Token (JWT) Authentication** - This method uses a JWT token, created and signed externally from Flipt to authenticate the request. See the [Using JWT Tokens](/authentication/using-jwts) section for more information.
+- **Client Token Authentication** - This method uses tokens stored by Flipt to authenticate the request. See the [Using Client Tokens](/v1/authentication/using-tokens) section for more information.
+- **JSON Web Token (JWT) Authentication** - This method uses a JWT token, created and signed externally from Flipt to authenticate the request. See the [Using JWT Tokens](/v1/authentication/using-jwts) section for more information.
 
-See the [Authentication](/authentication) documentation for more information on all supported authentication methods.
+See the [Authentication](/v1/authentication) documentation for more information on all supported authentication methods.
 
 ## SDKs
 
-We're adding new SDKs all the time. To see the current list of official REST SDKs, head to the [REST SDKs](/integration/server/rest) documentation.
+We're adding new SDKs all the time. To see the current list of official REST SDKs, head to the [REST SDKs](/v1/integration/server/rest) documentation.
 
 ## Backward Compatibility
 
@@ -42,14 +42,14 @@ We will describe any major changes in the section below.
 
 ### v1.24.0
 
-Version [v1.24.0](https://github.com/flipt-io/flipt/releases/tag/v1.24.0) of Flipt introduced the concept of [boolean flag types](/concepts#boolean-flags) as well as [Rollouts](/concepts#rollouts) to override a flag's `enabled` state via a set of rules.
+Version [v1.24.0](https://github.com/flipt-io/flipt/releases/tag/v1.24.0) of Flipt introduced the concept of [boolean flag types](/v1/concepts#boolean-flags) as well as [Rollouts](/v1/concepts#rollouts) to override a flag's `enabled` state via a set of rules.
 
 We also introduced a new `/evaluate/v1` set of API endpoints to evaluate both `boolean` and `variant` flags. The previous `/api/v1/evaluate` endpoints for evaluation are still available and will continue to work as before, however they will only work for `variant` type flags and should be considered deprecated.
 
 ### v1.20.0
 
-Version [v1.20.0](https://github.com/flipt-io/flipt/releases/tag/v1.20.0) of Flipt introduced the concept of [Namespaces](/concepts#namespaces) as root objects nested under the `/namespaces` route (i.e.: `/api/v1/namespace/{namespaceKey}/flags`).
+Version [v1.20.0](https://github.com/flipt-io/flipt/releases/tag/v1.20.0) of Flipt introduced the concept of [Namespaces](/v1/concepts#namespaces) as root objects nested under the `/namespaces` route (i.e.: `/api/v1/namespace/{namespaceKey}/flags`).
 
 All previous endpoints without the `/namespaces` prefix still work as before (i.e.: `/api/v1/flags`), they simply resolve to using the **default** namespace.
 
-See the [Concepts: Namespaces](/concepts#namespaces) section for more information.
+See the [Concepts: Namespaces](/v1/concepts#namespaces) section for more information.
