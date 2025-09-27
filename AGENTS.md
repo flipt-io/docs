@@ -2,7 +2,7 @@
 
 This file provides guidance to AI Agents when working with code in this repository.
 
-This is the **user-facing** documentation repository for Flipt, a feature flag and experimentation platform. The documentation is built using [Mintlify](https://mintlify.com/) and hosted at [flipt.io/docs](https://www.flipt.io/docs).
+This is the **user-facing** documentation repository for Flipt, a feature flag and experimentation platform. The documentation files are located in the `docs/` directory and built using [Mintlify](https://mintlify.com/) and hosted at [flipt.io/docs](https://www.flipt.io/docs).
 
 ## Working Principles
 
@@ -16,23 +16,23 @@ This is the **user-facing** documentation repository for Flipt, a feature flag a
 
 The documentation is organized into two main versions:
 
-- **`/v1`**: Legacy documentation for Flipt v1.x (open-source version)
-- **`/v2`**: Current documentation for Flipt v2.x (including Pro features)
+- **`docs/v1`**: Legacy documentation for Flipt v1.x (open-source version)
+- **`docs/v2`**: Current documentation for Flipt v2.x (including Pro features)
 
 Both versions are maintained to support users on different versions of Flipt.
 
 ### Configuration
 
 - **Format**: MDX files with YAML frontmatter
-- **Config**: docs.json for navigation, theme, settings ([docs.json schema](https://mintlify.com/docs.json))
+- **Config**: docs/docs.json for navigation, theme, settings ([docs.json schema](https://mintlify.com/docs.json))
 - **Components**: Mintlify components
 
 ### Cloudflare Worker
 
-A Cloudflare Worker (`/worker`) handles automatic redirects from old v1 documentation paths to their new locations. This ensures backward compatibility for existing links and bookmarks.
+A Cloudflare Worker (`worker/`) handles automatic redirects from old v1 documentation paths to their new locations. This ensures backward compatibility for existing links and bookmarks.
 
 - **Purpose**: Redirects old documentation URLs to new v1 or v2 paths
-- **Configuration**: See `/worker/README.md` for deployment and configuration details
+- **Configuration**: See `worker/README.md` for deployment and configuration details
 - **Testing**: Run `npm test` in the worker directory to validate redirect rules
 
 ### Required Frontmatter
@@ -91,25 +91,25 @@ A Cloudflare Worker (`/worker`) handles automatic redirects from old v1 document
 
 ### Local Development
 
-- `mint dev` - Start local development server
+- `mint dev` - Start local development server (run from docs/ directory)
 - `mint rename` - Rename file and update internal link references
 
 ### Code Quality
 
-- `npm run lint` - Run ESLint to check code quality
-- `npm run format` - Format code using Prettier
+- `npm run lint` - Run ESLint to check code quality (run from docs/ directory)
+- `npm run format` - Format code using Prettier (run from docs/ directory)
 
 ### Documentation Linting
 
-- `vale sync` - Install Vale dependencies for documentation linting
-- `vale *` - Lint all documentation files
-- `vale README.md` - Lint specific file
+- `vale sync` - Install Vale dependencies for documentation linting (run from docs/ directory)
+- `vale *` - Lint all documentation files (run from docs/ directory)
+- `vale README.md` - Lint specific file (run from docs/ directory)
 
 ### Cloudflare Worker Commands
 
-- `npm run dev` - Start worker development server
-- `npm test` - Run redirect tests
-- `npm run deploy` - Deploy worker to production
+- `npm run dev` - Start worker development server (run from worker/ directory)
+- `npm test` - Run redirect tests (run from worker/ directory)
+- `npm run deploy` - Deploy worker to production (run from worker/ directory)
 
 ### Publishing
 
@@ -126,16 +126,16 @@ Changes are automatically deployed to production when pushed to the main branch.
 
 ### Vale Configuration
 
-- Custom Flipt style rules: `.vale/styles/flipt/`
-- Spelling exceptions: `.vale/styles/Flipt/spelling-exceptions.txt` (lowercase, alphabetical)
-- Configuration: `.vale.ini`
+- Custom Flipt style rules: `docs/.vale/styles/flipt/`
+- Spelling exceptions: `docs/.vale/styles/Flipt/spelling-exceptions.txt` (lowercase, alphabetical)
+- Configuration: `docs/.vale.ini`
 
 ## Development Setup
 
 1. Install Mintlify CLI globally: `npm i mint -g`
 2. Install Vale for linting: Follow [Vale installation guide](https://vale.sh/docs/vale-cli/installation/)
-3. Run `vale sync` to install Vale packages
-4. Start development server: `mint dev`
+3. Run `vale sync` to install Vale packages (from docs/ directory)
+4. Start development server: `mint dev` (from docs/ directory)
 
 ## Do Not
 

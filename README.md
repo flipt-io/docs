@@ -1,6 +1,6 @@
 # Flipt Docs
 
-This repository powers the content behind Flipt's docs at [flipt.io/docs](https://www.flipt.io/docs)
+This repository powers the content behind Flipt's docs at [flipt.io/docs](https://www.flipt.io/docs). The documentation files are located in the `docs/` directory.
 
 ## 📝 Contributing
 
@@ -16,7 +16,7 @@ We use [Vale](https://vale.sh) to lint our documentation. Vale is a command-line
 
 To install Vale, follow the [installation instructions](https://vale.sh/docs/vale-cli/installation/).
 
-Once installed run the following in this project:
+Once installed run the following in the docs directory:
 
 ```sh
 vale sync
@@ -26,7 +26,7 @@ vale sync
 
 ### Usage
 
-To lint the documentation, run the following command at the root of the repository:
+To lint the documentation, run the following command from the docs directory:
 
 ```shell
 vale *
@@ -42,15 +42,15 @@ Vale will lint the file and output any errors or warnings to the console.
 
 ### Configuration
 
-Vale is configured using a YAML file called `.vale.ini`. This file is located in the root of the repository.
+Vale is configured using a YAML file called `.vale.ini`. This file is located in the `docs/` directory.
 
-Our configuration file uses rules from the [Microsoft Writing Style Guide](https://docs.microsoft.com/en-us/style-guide/welcome/). The full configuration can be found in the [.vale.ini](.vale.ini) file.
+Our configuration file uses rules from the [Microsoft Writing Style Guide](https://docs.microsoft.com/en-us/style-guide/welcome/). The full configuration can be found in the [docs/.vale.ini](docs/.vale.ini) file.
 
-We also use a [custom style](https://docs.errata.ai/vale/styles) to lint our documentation. The style file can be found in the (.vale/styles/flipt)[.vale/styles/flipt) directory.
+We also use a [custom style](https://docs.errata.ai/vale/styles) to lint our documentation. The style file can be found in the [docs/.vale/styles/flipt](docs/.vale/styles/flipt) directory.
 
 ### Spelling Errors
 
-If Vale detects a spelling error, it will output it as an error to the console. If you want to ignore a spelling error, you can add the word to the spelling-execeptions (`.vale/styles/Flipt/spelling-exceptions.txt`) file in our custom style.
+If Vale detects a spelling error, it will output it as an error to the console. If you want to ignore a spelling error, you can add the word to the spelling-exceptions (`docs/.vale/styles/Flipt/spelling-exceptions.txt`) file in our custom style.
 
 ℹ The words in this file are case-insensitive, please add the word in lowercase and in alphabetical order.
 
@@ -66,7 +66,7 @@ Install the [Mintlify CLI](https://mintlify.com/docs/installation) to preview th
 npm i mint -g
 ```
 
-Run the following command at the root of your documentation (where `docs.json` is)
+Run the following command from the docs directory (where `docs.json` is located)
 
 ```shell
 mint dev
