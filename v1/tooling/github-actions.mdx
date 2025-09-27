@@ -1,0 +1,31 @@
+---
+title: GitHub Actions
+description: How to use our GitHub Actions to automate your workflows.
+---
+
+## Setup Flipt
+
+![Flipt Setup Action](/v2/images/tooling/setup-action.png)
+
+The [flipt-setup-action](https://github.com/marketplace/actions/flipt-setup-action) can be used to setup Flipt v1 in your GitHub workflow. Once setup, you can then use any of the [CLI commands](/v1/cli/overview) that Flipt provides in your workflow.
+
+### Usage
+
+The following example demonstrates how to use the action in a GitHub workflow which runs the [flipt validate](/v1/cli/commands/validate) command.
+
+```yaml
+validate:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v4
+
+    - uses: flipt-io/setup-action@v0.5.0
+      with:
+        version: v1 # Installs the latest v1 release
+      # Optional, additional arguments to pass to the `flipt` command
+      # args:
+      # Optional, the directory to run Flipt against, defaults to the repository root
+      # working-directory:
+
+    - run: flipt validate
+```

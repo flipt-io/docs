@@ -1,0 +1,47 @@
+---
+title: Experimental
+description: This document describes our current experimental features and how to enable them.
+---
+
+## Introduction
+
+From time to time, we may introduce new features that are not yet ready for general availability. These features are considered experimental and may change or be removed in future releases. We encourage you to try these features and provide feedback to help us improve them.
+
+## Enabling Experimental Features
+
+These features are disabled by default. To enable them, you can set the `experimental.{feature}.enabled` configuration option to `true` in your Flipt [configuration file](/v1/configuration/overview#configuration-file).
+
+For example to enable the `foo` experimental feature:
+
+```yaml config.yaml
+experimental:
+  foo:
+    enabled: true
+```
+
+<Tip>
+  You can also enable experimental features using [environment
+  variables](/v1/configuration/overview#environment-variables). For example, to
+  enable the `foo` experimental feature, you can set the
+  `FLIPT_EXPERIMENTAL_FOO_ENABLED` environment variable to `true`.
+</Tip>
+
+## Current Experimental Features
+
+The following is a list of our current experimental features and a brief description of each.
+
+<Note>
+  Make sure you have the [latest
+  version](https://github.com/flipt-io/flipt/releases/latest) of the Flipt CLI
+  installed on your local machine.
+</Note>
+
+## Deprecations
+
+Once an experimental feature is promoted to a stable feature or is removed, it will move to a deprecated status. Depending on the feature, you may need to take action to migrate to the new stable feature or remove the deprecated feature from your configuration.
+
+If an enabled experimental feature has been deprecated, you will see a warning message in the CLI output when you start the Flipt server, such as:
+
+```bash
+Warning: 'experimental.filesystem_storage' has been deprecated and will be removed in a future release.
+```

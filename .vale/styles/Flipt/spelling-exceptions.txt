@@ -21,9 +21,12 @@ deps
 dev
 dex
 enum
+eslint
+favicon
 flagd
 flipt
 flipt's
+frontmatter
 git's
 Gitlab
 gitops
@@ -53,6 +56,7 @@ namespaces
 NATs
 nginx
 ngrok
+npm
 oauth
 oci
 oidc

@@ -3,10 +3,6 @@ title: Concepts
 description: This document describes the basic concepts of Flipt v2.
 ---
 
-import V2Beta from "/snippets/v2-beta.mdx";
-
-<V2Beta />
-
 More information on how to use Flipt is noted in the [Quickstart](/v2/quickstart) documentation.
 
 ## Environments
@@ -112,7 +108,7 @@ Boolean flags can be configured with [rollout](#rollouts) rules to determine whi
 
 All flags can have metadata associated with them. This metadata is stored in the Flipt backend and can be used to add additional information about a flag.
 
-Metadata is stored as a JSON object and is not used for evaluation. You can retrieve flag metadata using the [Get Flag](/reference/flags/get-flag) API.
+Metadata is stored as a JSON object and is not used for evaluation. You can retrieve flag metadata using the [Get Flag](/v1/reference/flags/get-flag) API.
 
 In the Flipt UI, metadata is displayed in the flag details section. The UI allows you to add, edit, and delete metadata and provides a more user-friendly interface for managing metadata by specifying key-value pairs and their data types.
 

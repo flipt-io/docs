@@ -1,0 +1,91 @@
+---
+title: "Product Updates"
+description: Recent updates to Flipt, including new SDKs and other improvements.
+mode: "wide"
+---
+
+<Update label="April 2025">
+
+## Contains Constraint Operator
+
+Added support for the `contains` and `not contains` constraint operators in v1.57.0. These can be used to check if a string or entityID contains (or not contains) a substring.
+
+## Redis Cluster Support
+
+Added support for Redis cluster mode in v1.57.0. You can now configure Flipt to use Redis in cluster mode for improved scalability and performance.
+
+The feature includes:
+
+- Support for both single and cluster modes
+- Configurable key prefixes and hash tags
+- OTEL tracing support for Redis operations
+
+See the [Caching docs](/v1/configuration/caching) for more information.
+
+</Update>
+
+<Update label="March 2025">
+
+## Consolidated JavaScript Client-Side SDK
+
+The JavaScript browser and Node.js SDKs have been consolidated into a single package.
+
+See the [Integration docs](/v1/integration/client) for more information.
+
+## Model Context Protocol (MCP)
+
+Flipt now supports the [Model Context Protocol (MCP)](/v1/tooling/model-context-protocol) which allows AI assistants and LLMs to directly interact with your feature flags, segments, and evaluations through a standardized interface.
+
+See the [Model Context Protocol docs](/v1/tooling/model-context-protocol) for more information.
+
+## Android Client-Side SDK
+
+Just released the Android SDK client for client-side flag evaluation.
+
+See the [Integration docs](/v1/integration/client) for more information.
+
+</Update>
+
+<Update label="January 2025">
+
+## OpenFeature Python Provider
+
+Just released the OpenFeature Python Provider for Flipt.
+
+See the [OpenFeature docs](/v1/integration/openfeature) for more information.
+
+## Flag Metadata
+
+Added support for metadata on flags in the Flipt UI.
+
+![Flag Metadata Example](/v1/images/concepts/flags_metadata.png)
+
+</Update>
+
+<Update label="November 2024">
+
+## Prometheus Analytics Storage
+
+Added support for Prometheus as an [analytics storage backend](/v1/configuration/analytics#prometheus).
+
+## UI Improvements
+
+Changed the UI for flags and segments list views to use a more modern look and feel.
+
+</Update>
+
+<Update label="October 2024">
+
+## Swift Client-Side SDK
+
+Just released the Swift SDK client for client-side flag evaluation.
+
+See the [Integration docs](/v1/integration/client) for more information.
+
+## C# Client-Side SDK
+
+Just released the C# SDK client for client-side flag evaluation.
+
+See the [Integration docs](/v1/integration/client) for more information.
+
+</Update>

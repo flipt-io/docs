@@ -1,0 +1,95 @@
+---
+title: Import/Export
+description: Importing and exporting data to and from Flipt
+---
+
+<Note>Importing is only supported for database backed Flipt instances.</Note>
+
+Both `flipt import` and `flipt export` support the `--address` and `--token` flags to enable transferring data to and from Flipt instances via the API instead of requiring a direct database connection.
+
+```
+flipt import --address http://flipt.my.org --token static-api-token
+
+flipt export --address grpc://flipt.my.org:9000
+```
+
+Both `HTTP` and `gRPC` are supported by the `--address` flag.
+
+## Import
+
+To import data into Flipt, use the `flipt import` command. You can either import from a file or from STDIN.
+
+To import from STDIN, Flipt requires the `--stdin` flag:
+
+```yaml
+cat flipt.yaml | flipt import --stdin
+```
+
+If not importing using `--stdin`, Flipt requires the file to be imported as an argument:
+
+```yaml
+flipt import flipt.yaml
+```
+
+<Note>
+  Namespaces are inferred from the YAML documents themselves. If a namespace
+  your document refers to doesn't exist in the database, it will be created.
+</Note>
+
+This command supports the `--drop` flag that will drop all data in your Flipt database tables before importing. This is to ensure that no data collisions occur during the import.
+
+<Warning>
+  Be careful when using the `--drop` flag as it will immediately drop all data
+  and there is no undo. It's recommended to first backup your database before
+  running this command just to be safe.
+</Warning>
+
+See the [CLI reference](/v1/cli/commands/import) for more information on the `import` command.
+
+## Export
+
+To export Flipt data, use the `flipt export` command.
+
+By default, `export` will output to STDOUT:
+
+```yaml
+$ flipt export
+
+flags:
+- key: new-contact-page
+  name: New Contact Page
+  description: Show users our Beta contact page
+  enabled: true
+  variants:
+  - key: blue
+    name: Blue
+  - key: green
+    name: Green
+```
+
+You can also export to a file using the `-o filename` or `--output filename`
+flags:
+
+```yaml
+flipt export -o flipt.yaml
+```
+
+By default, Flipt will export from the `default` namespace. Use the flag `--namespaces` to export from a different namespace or multiple namespaces.
+
+```yaml
+flipt export --namespaces production
+```
+
+<Tip>
+  The `--all-namespaces` flag is a boolean flag that tells export to export all
+  namespaces.
+</Tip>
+
+By default, Flipt exports resources in the _natural_ order of the selected storage type. While the output is typically consistent within the same storage type,
+import/export operations can yield varying results across different storage types. To enhance consistency during export, the `--sort-by-key` flag can be used.
+
+```yaml
+flipt export --sort-by-key --all-namespaces
+```
+
+See the [CLI reference](/v1/cli/commands/export) for more information on the `export` command.

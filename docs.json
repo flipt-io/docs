@@ -16,475 +16,465 @@
     }
   },
   "navigation": {
-    "versions": [
+    "tabs": [
       {
-        "version": "v1",
-        "tabs": [
+        "tab": "v2",
+        "anchors": [
           {
-            "tab": "Open Source",
-            "anchors": [
+            "anchor": "Documentation",
+            "groups": [
               {
-                "anchor": "Documentation",
-                "icon": "book-open",
-                "groups": [
+                "group": "Getting Started",
+                "icon": "rocket",
+                "pages": [
+                  "v2/introduction",
+                  "v2/quickstart",
+                  "v2/concepts",
+                  "v2/installation"
+                ]
+              },
+              {
+                "group": "Pro Features",
+                "tag": "NEW",
+                "icon": "crown",
+                "pages": ["v2/pro", "v2/licensing"]
+              },
+              {
+                "group": "Configuration",
+                "icon": "gear",
+                "pages": [
+                  "v2/configuration/overview",
+                  "v2/configuration/environments",
+                  "v2/configuration/storage",
+                  "v2/configuration/secrets",
+                  "v2/configuration/commit-signing",
+                  "v2/configuration/authentication",
+                  "v2/configuration/authorization",
+                  "v2/configuration/analytics",
+                  "v2/configuration/observability",
+                  "v2/configuration/telemetry",
+                  "v2/configuration/licensing"
+                ]
+              },
+              {
+                "group": "Integration",
+                "icon": "plug",
+                "pages": [
+                  "v2/integration/overview",
                   {
-                    "group": "Overview",
-                    "pages": ["introduction", "concepts"]
+                    "group": "Server-Side SDKs",
+                    "pages": ["v2/integration/server/rest"]
                   },
+                  "v2/integration/client",
+                  "v2/integration/openfeature"
+                ]
+              },
+              {
+                "group": "CLI",
+                "icon": "terminal",
+                "pages": [
+                  "v2/cli/overview",
                   {
-                    "group": "Use Cases",
+                    "group": "Commands",
                     "pages": [
-                      "usecases/overview",
-                      "usecases/cloudnative",
-                      "usecases/edge",
-                      "usecases/gitops"
-                    ]
-                  },
-                  {
-                    "group": "Installation",
-                    "pages": [
-                      "installation/overview",
-                      "installation/docker",
-                      "installation/kubernetes"
-                    ]
-                  },
-                  {
-                    "group": "Integration",
-                    "pages": [
-                      "integration/overview",
                       {
-                        "group": "Server-Side SDKs",
+                        "group": "config",
                         "pages": [
-                          "integration/server/rest",
-                          "integration/server/grpc"
+                          "v2/cli/commands/config/init",
+                          "v2/cli/commands/config/edit"
                         ]
                       },
-                      "integration/client",
-                      "integration/openfeature",
-                      "integration/examples"
-                    ]
-                  },
-                  {
-                    "group": "Guides",
-                    "pages": [
-                      {
-                        "group": "User Guides",
-                        "pages": [
-                          "guides/user/get-going-with-gitops",
-                          "guides/user/using-references"
-                        ]
-                      },
-                      {
-                        "group": "Operations Guides",
-                        "pages": [
-                          {
-                            "group": "Deployment",
-                            "pages": [
-                              "guides/operation/deployment/deploy-to-flyio",
-                              "guides/operation/deployment/deploy-to-kubernetes"
-                            ]
-                          },
-                          {
-                            "group": "Authentication",
-                            "pages": [
-                              "guides/operation/authentication/login-with-google",
-                              "guides/operation/authentication/login-with-github",
-                              "guides/operation/authentication/login-with-keycloak"
-                            ]
-                          },
-                          {
-                            "group": "Authorization",
-                            "pages": [
-                              "guides/operation/authorization/rbac-with-keycloak"
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "group": "Migration Guides",
-                        "pages": [
-                          "guides/migration/launchdarkly/overview",
-                          "guides/migration/launchdarkly/openfeature",
-                          "guides/migration/launchdarkly/flipt"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "group": "Configuration",
-                    "pages": [
-                      "configuration/overview",
-                      "configuration/analytics",
-                      {
-                        "group": "Auditing",
-                        "pages": [
-                          "configuration/auditing/overview",
-                          "configuration/auditing/webhooks"
-                        ]
-                      },
-                      "configuration/authentication",
-                      "configuration/authorization",
-                      "configuration/observability",
-                      "configuration/storage",
-                      "configuration/caching",
-                      "configuration/telemetry",
-                      "configuration/experimental"
-                    ]
-                  },
-                  {
-                    "group": "CLI",
-                    "pages": [
-                      "cli/overview",
-                      {
-                        "group": "Commands",
-                        "pages": [
-                          {
-                            "group": "config",
-                            "pages": [
-                              "cli/commands/config/init",
-                              "cli/commands/config/edit"
-                            ]
-                          },
-                          {
-                            "group": "bundle",
-                            "pages": [
-                              "cli/commands/bundle/build",
-                              "cli/commands/bundle/list",
-                              "cli/commands/bundle/pull",
-                              "cli/commands/bundle/push"
-                            ]
-                          },
-                          "cli/commands/evaluate",
-                          "cli/commands/export",
-                          "cli/commands/import",
-                          "cli/commands/migrate",
-                          "cli/commands/validate"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "group": "Authentication",
-                    "pages": [
-                      "authentication/overview",
-                      "authentication/methods",
-                      "authentication/using-tokens",
-                      "authentication/using-jwts"
-                    ]
-                  },
-                  {
-                    "group": "Authorization",
-                    "pages": ["authorization/overview"]
-                  },
-                  {
-                    "group": "Operations",
-                    "pages": [
-                      "operations/architecture",
-                      "operations/deployment",
-                      "operations/import-export",
-                      "operations/production",
-                      "operations/upgrading"
-                    ]
-                  },
-                  {
-                    "group": "Tooling",
-                    "pages": [
-                      "tooling/github-actions",
-                      "tooling/model-context-protocol"
+                      "v2/cli/commands/evaluate",
+                      "v2/cli/commands/migrate",
+                      "v2/cli/commands/validate",
+                      "v2/cli/commands/server",
+                      "v2/cli/commands/quickstart"
                     ]
                   }
                 ]
               },
               {
-                "anchor": "API Reference",
-                "icon": "code",
-                "groups": [
+                "group": "Guides",
+                "tag": "NEW",
+                "icon": "book",
+                "pages": [
                   {
-                    "group": "Overview",
-                    "pages": ["reference/overview"]
-                  },
-                  {
-                    "group": "Authentication",
+                    "group": "User Guides",
                     "pages": [
-                      "reference/authentication/list-tokens",
-                      "reference/authentication/get-token",
-                      "reference/authentication/delete-token",
-                      "reference/authentication/create-token",
-                      "reference/authentication/get-self",
-                      "reference/authentication/expire-self"
+                      {
+                        "group": "Environments",
+                        "pages": [
+                          "v2/guides/user/environments/branches",
+                          "v2/guides/user/environments/merge-proposals"
+                        ]
+                      }
                     ]
                   },
                   {
-                    "group": "Evaluation",
+                    "group": "Operations Guides",
                     "pages": [
-                      "reference/evaluation/boolean-evaluation",
-                      "reference/evaluation/variant-evaluation",
-                      "reference/evaluation/batch-evaluation"
+                      {
+                        "group": "Deployment",
+                        "pages": [
+                          "v2/guides/operations/deployment/deploy-to-kubernetes"
+                        ]
+                      },
+                      {
+                        "group": "Authentication",
+                        "pages": [
+                          "v2/guides/operations/authentication/login-with-github"
+                        ]
+                      },
+                      {
+                        "group": "Environments",
+                        "pages": [
+                          "v2/guides/operations/environments/git-repository-initialization",
+                          "v2/guides/operations/environments/git-sync",
+                          "v2/guides/operations/environments/git-scm",
+                          "v2/guides/operations/environments/commit-signing-setup"
+                        ]
+                      }
                     ]
                   },
                   {
-                    "group": "OpenFeature Evaluation",
-                    "pages": [
-                      "reference/openfeature/overview",
-                      "reference/openfeature/configuration",
-                      "reference/openfeature/flag-evaluation",
-                      "reference/openfeature/bulk-evaluation"
-                    ]
-                  },
-                  {
-                    "group": "Namespaces",
-                    "pages": [
-                      "reference/namespaces/list-namespaces",
-                      "reference/namespaces/create-namespace",
-                      "reference/namespaces/get-namespace",
-                      "reference/namespaces/delete-namespace",
-                      "reference/namespaces/update-namespace"
-                    ]
-                  },
-                  {
-                    "group": "Flags",
-                    "pages": [
-                      "reference/flags/list-flags",
-                      "reference/flags/create-flag",
-                      "reference/flags/get-flag",
-                      "reference/flags/delete-flag",
-                      "reference/flags/update-flag"
-                    ]
-                  },
-                  {
-                    "group": "Variants",
-                    "pages": [
-                      "reference/variants/create-variant",
-                      "reference/variants/delete-variant",
-                      "reference/variants/update-variant"
-                    ]
-                  },
-                  {
-                    "group": "Segments",
-                    "pages": [
-                      "reference/segments/list-segment",
-                      "reference/segments/create-segment",
-                      "reference/segments/get-segment",
-                      "reference/segments/delete-segment",
-                      "reference/segments/update-segment"
-                    ]
-                  },
-                  {
-                    "group": "Constraints",
-                    "pages": [
-                      "reference/constraints/create-constraint",
-                      "reference/constraints/delete-constraint",
-                      "reference/constraints/update-constraint"
-                    ]
-                  },
-                  {
-                    "group": "Rollouts",
-                    "pages": [
-                      "reference/rollouts/list-rollouts",
-                      "reference/rollouts/create-rollout",
-                      "reference/rollouts/order-rollouts",
-                      "reference/rollouts/get-rollout",
-                      "reference/rollouts/delete-rollout",
-                      "reference/rollouts/update-rollout"
-                    ]
-                  },
-                  {
-                    "group": "Rules",
-                    "pages": [
-                      "reference/rules/list-rules",
-                      "reference/rules/create-rule",
-                      "reference/rules/order-rules",
-                      "reference/rules/get-rule",
-                      "reference/rules/delete-rule",
-                      "reference/rules/update-rule"
-                    ]
-                  },
-                  {
-                    "group": "Distributions",
-                    "pages": [
-                      "reference/distributions/create-distribution",
-                      "reference/distributions/delete-distribution",
-                      "reference/distributions/update-distribution"
-                    ]
+                    "group": "Migration Guides",
+                    "pages": ["v2/guides/migration/cloud/flipt-cloud-to-v2"]
                   }
                 ]
               },
               {
-                "anchor": "Changelog",
-                "icon": "clock",
-                "pages": ["changelog/overview"]
-              },
-              {
-                "anchor": "Blog",
-                "href": "https://blog.flipt.io",
-                "icon": "newspaper"
-              },
-              {
-                "anchor": "Discord",
-                "href": "https://flipt.io/discord",
-                "icon": "discord"
-              },
-              {
-                "anchor": "GitHub",
-                "href": "https://git.new/flipt",
-                "icon": "github"
+                "group": "Tooling",
+                "icon": "hammer",
+                "tag": "NEW",
+                "pages": ["v2/tooling/github-actions"]
               }
             ]
+          },
+          {
+            "anchor": "Blog",
+            "href": "https://blog.flipt.io",
+            "icon": "newspaper"
+          },
+          {
+            "anchor": "Discord",
+            "href": "https://flipt.io/discord",
+            "icon": "discord"
+          },
+          {
+            "anchor": "GitHub",
+            "href": "https://git.new/flipt",
+            "icon": "github"
           }
         ]
       },
       {
-        "version": "v2",
-        "tabs": [
+        "tab": "v1",
+        "anchors": [
           {
-            "tab": "Open Source",
-            "anchors": [
+            "anchor": "Documentation",
+            "icon": "book-open",
+            "groups": [
               {
-                "anchor": "Documentation",
-                "groups": [
+                "group": "Overview",
+                "pages": ["v1/introduction", "v1/concepts"]
+              },
+              {
+                "group": "Use Cases",
+                "pages": [
+                  "v1/usecases/overview",
+                  "v1/usecases/cloudnative",
+                  "v1/usecases/edge",
+                  "v1/usecases/gitops"
+                ]
+              },
+              {
+                "group": "Installation",
+                "pages": [
+                  "v1/installation/overview",
+                  "v1/installation/docker",
+                  "v1/installation/kubernetes"
+                ]
+              },
+              {
+                "group": "Integration",
+                "pages": [
+                  "v1/integration/overview",
                   {
-                    "group": "Getting Started",
-                    "icon": "rocket",
+                    "group": "Server-Side SDKs",
                     "pages": [
-                      "/v2/introduction",
-                      "/v2/quickstart",
-                      "/v2/concepts",
-                      "/v2/installation"
+                      "v1/integration/server/rest",
+                      "v1/integration/server/grpc"
+                    ]
+                  },
+                  "v1/integration/client",
+                  "v1/integration/openfeature",
+                  "v1/integration/examples"
+                ]
+              },
+              {
+                "group": "Guides",
+                "pages": [
+                  {
+                    "group": "User Guides",
+                    "pages": [
+                      "v1/guides/user/get-going-with-gitops",
+                      "v1/guides/user/using-references"
                     ]
                   },
                   {
-                    "group": "Pro Features",
-                    "tag": "NEW",
-                    "icon": "crown",
-                    "pages": ["/v2/pro", "/v2/licensing"]
-                  },
-                  {
-                    "group": "Configuration",
-                    "icon": "gear",
+                    "group": "Operations Guides",
                     "pages": [
-                      "v2/configuration/overview",
-                      "v2/configuration/environments",
-                      "v2/configuration/storage",
-                      "v2/configuration/secrets",
-                      "v2/configuration/commit-signing",
-                      "v2/configuration/authentication",
-                      "v2/configuration/authorization",
-                      "v2/configuration/analytics",
-                      "v2/configuration/observability",
-                      "v2/configuration/telemetry",
-                      "v2/configuration/licensing"
-                    ]
-                  },
-                  {
-                    "group": "Integration",
-                    "icon": "plug",
-                    "pages": [
-                      "v2/integration/overview",
                       {
-                        "group": "Server-Side SDKs",
-                        "pages": ["v2/integration/server/rest"]
-                      },
-                      "v2/integration/client",
-                      "v2/integration/openfeature"
-                    ]
-                  },
-                  {
-                    "group": "CLI",
-                    "icon": "terminal",
-                    "pages": [
-                      "v2/cli/overview",
-                      {
-                        "group": "Commands",
+                        "group": "Deployment",
                         "pages": [
-                          {
-                            "group": "config",
-                            "pages": [
-                              "v2/cli/commands/config/init",
-                              "v2/cli/commands/config/edit"
-                            ]
-                          },
-                          "v2/cli/commands/evaluate",
-                          "v2/cli/commands/migrate",
-                          "v2/cli/commands/validate",
-                          "v2/cli/commands/server",
-                          "v2/cli/commands/quickstart"
+                          "v1/guides/operation/deployment/deploy-to-flyio",
+                          "v1/guides/operation/deployment/deploy-to-kubernetes"
+                        ]
+                      },
+                      {
+                        "group": "Authentication",
+                        "pages": [
+                          "v1/guides/operation/authentication/login-with-google",
+                          "v1/guides/operation/authentication/login-with-github",
+                          "v1/guides/operation/authentication/login-with-keycloak"
+                        ]
+                      },
+                      {
+                        "group": "Authorization",
+                        "pages": [
+                          "v1/guides/operation/authorization/rbac-with-keycloak"
                         ]
                       }
                     ]
                   },
                   {
-                    "group": "Guides",
-                    "tag": "NEW",
-                    "icon": "book",
+                    "group": "Migration Guides",
                     "pages": [
-                      {
-                        "group": "User Guides",
-                        "pages": [
-                          {
-                            "group": "Environments",
-                            "pages": [
-                              "v2/guides/user/environments/branches",
-                              "v2/guides/user/environments/merge-proposals"
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "group": "Operations Guides",
-                        "pages": [
-                          {
-                            "group": "Deployment",
-                            "pages": [
-                              "v2/guides/operations/deployment/deploy-to-kubernetes"
-                            ]
-                          },
-                          {
-                            "group": "Authentication",
-                            "pages": [
-                              "v2/guides/operations/authentication/login-with-github"
-                            ]
-                          },
-                          {
-                            "group": "Environments",
-                            "pages": [
-                              "v2/guides/operations/environments/git-repository-initialization",
-                              "v2/guides/operations/environments/git-sync",
-                              "v2/guides/operations/environments/git-scm",
-                              "v2/guides/operations/environments/commit-signing-setup"
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "group": "Migration Guides",
-                        "pages": ["v2/guides/migration/cloud/flipt-cloud-to-v2"]
-                      }
+                      "v1/guides/migration/launchdarkly/overview",
+                      "v1/guides/migration/launchdarkly/openfeature",
+                      "v1/guides/migration/launchdarkly/flipt"
                     ]
-                  },
-                  {
-                    "group": "Tooling",
-                    "icon": "hammer",
-                    "tag": "NEW",
-                    "pages": ["v2/tooling/github-actions"]
                   }
                 ]
               },
               {
-                "anchor": "Blog",
-                "href": "https://blog.flipt.io",
-                "icon": "newspaper"
+                "group": "Configuration",
+                "pages": [
+                  "v1/configuration/overview",
+                  "v1/configuration/analytics",
+                  {
+                    "group": "Auditing",
+                    "pages": [
+                      "v1/configuration/auditing/overview",
+                      "v1/configuration/auditing/webhooks"
+                    ]
+                  },
+                  "v1/configuration/authentication",
+                  "v1/configuration/authorization",
+                  "v1/configuration/observability",
+                  "v1/configuration/storage",
+                  "v1/configuration/caching",
+                  "v1/configuration/telemetry",
+                  "v1/configuration/experimental"
+                ]
               },
               {
-                "anchor": "Discord",
-                "href": "https://flipt.io/discord",
-                "icon": "discord"
+                "group": "CLI",
+                "pages": [
+                  "v1/cli/overview",
+                  {
+                    "group": "Commands",
+                    "pages": [
+                      {
+                        "group": "config",
+                        "pages": [
+                          "v1/cli/commands/config/init",
+                          "v1/cli/commands/config/edit"
+                        ]
+                      },
+                      {
+                        "group": "bundle",
+                        "pages": [
+                          "v1/cli/commands/bundle/build",
+                          "v1/cli/commands/bundle/list",
+                          "v1/cli/commands/bundle/pull",
+                          "v1/cli/commands/bundle/push"
+                        ]
+                      },
+                      "v1/cli/commands/evaluate",
+                      "v1/cli/commands/export",
+                      "v1/cli/commands/import",
+                      "v1/cli/commands/migrate",
+                      "v1/cli/commands/validate"
+                    ]
+                  }
+                ]
               },
               {
-                "anchor": "GitHub",
-                "href": "https://git.new/flipt",
-                "icon": "github"
+                "group": "Authentication",
+                "pages": [
+                  "v1/authentication/overview",
+                  "v1/authentication/methods",
+                  "v1/authentication/using-tokens",
+                  "v1/authentication/using-jwts"
+                ]
+              },
+              {
+                "group": "Authorization",
+                "pages": ["v1/authorization/overview"]
+              },
+              {
+                "group": "Operations",
+                "pages": [
+                  "v1/operations/architecture",
+                  "v1/operations/deployment",
+                  "v1/operations/import-export",
+                  "v1/operations/production",
+                  "v1/operations/upgrading"
+                ]
+              },
+              {
+                "group": "Tooling",
+                "pages": [
+                  "v1/tooling/github-actions",
+                  "v1/tooling/model-context-protocol"
+                ]
               }
             ]
+          },
+          {
+            "anchor": "API Reference",
+            "icon": "code",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": ["v1/reference/overview"]
+              },
+              {
+                "group": "Authentication",
+                "pages": [
+                  "v1/reference/authentication/list-tokens",
+                  "v1/reference/authentication/get-token",
+                  "v1/reference/authentication/delete-token",
+                  "v1/reference/authentication/create-token",
+                  "v1/reference/authentication/get-self",
+                  "v1/reference/authentication/expire-self"
+                ]
+              },
+              {
+                "group": "Evaluation",
+                "pages": [
+                  "v1/reference/evaluation/boolean-evaluation",
+                  "v1/reference/evaluation/variant-evaluation",
+                  "v1/reference/evaluation/batch-evaluation"
+                ]
+              },
+              {
+                "group": "OpenFeature Evaluation",
+                "pages": [
+                  "v1/reference/openfeature/overview",
+                  "v1/reference/openfeature/configuration",
+                  "v1/reference/openfeature/flag-evaluation",
+                  "v1/reference/openfeature/bulk-evaluation"
+                ]
+              },
+              {
+                "group": "Namespaces",
+                "pages": [
+                  "v1/reference/namespaces/list-namespaces",
+                  "v1/reference/namespaces/create-namespace",
+                  "v1/reference/namespaces/get-namespace",
+                  "v1/reference/namespaces/delete-namespace",
+                  "v1/reference/namespaces/update-namespace"
+                ]
+              },
+              {
+                "group": "Flags",
+                "pages": [
+                  "v1/reference/flags/list-flags",
+                  "v1/reference/flags/create-flag",
+                  "v1/reference/flags/get-flag",
+                  "v1/reference/flags/delete-flag",
+                  "v1/reference/flags/update-flag"
+                ]
+              },
+              {
+                "group": "Variants",
+                "pages": [
+                  "v1/reference/variants/create-variant",
+                  "v1/reference/variants/delete-variant",
+                  "v1/reference/variants/update-variant"
+                ]
+              },
+              {
+                "group": "Segments",
+                "pages": [
+                  "v1/reference/segments/list-segment",
+                  "v1/reference/segments/create-segment",
+                  "v1/reference/segments/get-segment",
+                  "v1/reference/segments/delete-segment",
+                  "v1/reference/segments/update-segment"
+                ]
+              },
+              {
+                "group": "Constraints",
+                "pages": [
+                  "v1/reference/constraints/create-constraint",
+                  "v1/reference/constraints/delete-constraint",
+                  "v1/reference/constraints/update-constraint"
+                ]
+              },
+              {
+                "group": "Rollouts",
+                "pages": [
+                  "v1/reference/rollouts/list-rollouts",
+                  "v1/reference/rollouts/create-rollout",
+                  "v1/reference/rollouts/order-rollouts",
+                  "v1/reference/rollouts/get-rollout",
+                  "v1/reference/rollouts/delete-rollout",
+                  "v1/reference/rollouts/update-rollout"
+                ]
+              },
+              {
+                "group": "Rules",
+                "pages": [
+                  "v1/reference/rules/list-rules",
+                  "v1/reference/rules/create-rule",
+                  "v1/reference/rules/order-rules",
+                  "v1/reference/rules/get-rule",
+                  "v1/reference/rules/delete-rule",
+                  "v1/reference/rules/update-rule"
+                ]
+              },
+              {
+                "group": "Distributions",
+                "pages": [
+                  "v1/reference/distributions/create-distribution",
+                  "v1/reference/distributions/delete-distribution",
+                  "v1/reference/distributions/update-distribution"
+                ]
+              }
+            ]
+          },
+          {
+            "anchor": "Changelog",
+            "icon": "clock",
+            "pages": ["v1/changelog/overview"]
+          },
+          {
+            "anchor": "Blog",
+            "href": "https://blog.flipt.io",
+            "icon": "newspaper"
+          },
+          {
+            "anchor": "Discord",
+            "href": "https://flipt.io/discord",
+            "icon": "discord"
+          },
+          {
+            "anchor": "GitHub",
+            "href": "https://git.new/flipt",
+            "icon": "github"
           }
         ]
       }

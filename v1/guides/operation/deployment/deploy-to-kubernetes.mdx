@@ -1,0 +1,147 @@
+---
+title: "Deploy to Kubernetes"
+description: "Deploy Flipt to Kubernetes using our Helm chart"
+---
+
+## What You'll Learn
+
+In this guide, you will learn how to deploy Flipt to a local Kubernetes cluster (via [Kind](https://kind.sigs.k8s.io/)) using our official Helm chart. You'll also learn how to override the default Flipt configuration by providing a `values.yaml` file.
+
+By the end of this guide, we will have:
+
+- 🚢 Created a Kind cluster locally using Docker
+- 📦 Installed Flipt into your cluster via Helm
+- ⚙️ Configured Flipt log level and other settings via a `values.yaml` file
+
+## Prerequisites
+
+- Docker installed ([Download](https://www.docker.com/products/docker-desktop))
+- Helm v3.x installed ([Installation guide](https://helm.sh/docs/intro/install/))
+- Kind installed ([Installation guide](https://kind.sigs.k8s.io/docs/user/quick-start/))
+
+## Deploying Flipt
+
+### 1. Create a Local Kubernetes Cluster Using Kind
+
+First, we need to create a local Kubernetes cluster. We'll use [Kind](https://kind.sigs.k8s.io/) to accomplish this.
+
+Open a terminal and run the following command:
+
+```bash
+kind create cluster --name flipt
+```
+
+This command will create a new Kubernetes cluster named `flipt`. Wait for the command to complete and ensure the cluster is correctly set up.
+
+### 2. Add the Flipt Helm Repository
+
+Next, we'll add the [Flipt Helm repository](https://helm.flipt.io/) which hosts the Flipt Helm charts. Run the following command:
+
+```bash
+helm repo add flipt https://helm.flipt.io/
+```
+
+After running this command, Helm will fetch shared information about the new repository.
+
+### 3. Update Helm Repositories
+
+To ensure that Helm has the latest information about the charts from the Flipt Helm repository, update the repositories:
+
+```bash
+helm repo update
+```
+
+### 4. Install Flipt with Custom Configuration
+
+Before installing Flipt, you should create a `values.yaml` file to customize the deployment according to your preferences. For example, to set a specific configuration value, you could add the following to your `values.yaml` file:
+
+```yaml
+flipt:
+  config:
+    log:
+      level: WARN
+    cache:
+      enabled: true
+      backend: memory
+```
+
+This example sets the Flipt server log level to 'WARN' and also enables our in-memory cache. You can adjust this file to include any configuration values you need.
+
+Once you have your `values.yaml` file, you can use it when installing Flipt with Helm by using the `-f` or `--values` flag:
+
+```bash
+helm install flipt flipt/flipt -f values.yaml
+```
+
+This command installs the Flipt Helm chart into your Kubernetes cluster using the configuration options specified in your `values.yaml` file merged with the default values from Flipt.
+
+<Note>
+  The `values.yaml` file allows you to customize many aspects of the deployment,
+  including resource limits and requests, service types, replica counts, and
+  more. Be sure to consult the [Flipt
+  documentation](https://www.flipt.io/docs/configuration/overview) and the
+  default `values.yaml` in the Flipt Helm chart for more information on what can
+  be configured.
+</Note>
+
+### 5. Forward the Port to Access Flipt
+
+After successfully installing Flipt via the Helm chart, you should see instructions on how to access Flipt in your terminal. The instructions will look something like this:
+
+```bash
+You have successfully deployed Flipt.
+
+  export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=flipt,app.kubernetes.io/instance=flipt" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
+```
+
+Execute the commands in your terminal to forward the port and access Flipt.
+
+You should now be able to access Flipt at `http://localhost:8080`.
+
+### 6. Verify the Installation and Configuration
+
+To ensure that Flipt has been correctly deployed to your Kubernetes cluster, you can check the running pods:
+
+```bash
+kubectl get pods
+```
+
+You should see the Flipt pod in the list with a status of `Running`.
+
+```console
+NAME                         READY   STATUS    RESTARTS   AGE
+flipt-6d64f856d7-4l5qn       1/1     Running   0          32m
+```
+
+To verify that your configuration changes were applied, you can `curl` Flipt's `/meta/config` endpoint:
+
+```bash
+curl --silent http://localhost:8080/meta/config | jq
+```
+
+In the output of this command, you should see the configuration values you set in your `values.yaml` file.
+
+```json
+  "log": {
+    "level": "WARN",
+    ...
+  },
+  "cache": {
+    "enabled": true,
+    "backend": "memory",
+    ...
+  },
+```
+
+## Next Steps
+
+Congratulations! You've successfully deployed Flipt to a local Kubernetes cluster using our Helm chart. You've also learned how to override the default Flipt configuration by providing a `values.yaml` file.
+
+You should be able to take the knowledge you've gained in this guide and deploy Flipt in to a real Kubernetes cluster.
+
+Please refer to the [Flipt Helm chart repository](https://github.com/flipt-io/helm-charts) for more information on how to configure Flipt using the Helm chart.
+
+Additionally, you should checkout our documentation on our native [Kubernetes authentication method](/v1/authentication/methods#kubernetes).
+This method can be leveraged to automatically authenticate clients, without the need to manually manage credentials, for applications deployed into the same Kubernetes cluster as Flipt.
