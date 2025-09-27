@@ -20,7 +20,7 @@ export default {
     const pathname = url.pathname;
 
     // Get the origin URL from environment or use a default
-    const originUrl = env.ORIGIN_URL || "http://localhost:3000";
+    const originUrl = env.ORIGIN_URL || "https://docs.flipt.io";
 
     // Remove trailing slash for consistency (except for root)
     const normalizedPath =
