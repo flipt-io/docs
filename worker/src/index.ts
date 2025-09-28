@@ -36,14 +36,15 @@ export default {
       return fetch(backendRequest);
     }
 
-    // Case 3: Excluded paths (static assets, APIs, etc.)
+    // Case 3: Excluded paths (static assets, fonts, APIs, etc.)
     const excludedPaths = [
       "/favicon.svg",
       "/favicon.ico",
+      "/favicon.png",
       "/logo/",
       "/snippets/",
       "/background.png",
-			"/mintlify_assets/",
+			"/mintlify-assets/",
       "/_next/",
       "/api/",
       ".xml",
@@ -51,6 +52,7 @@ export default {
       ".json",
       ".js",
       ".css",
+      ".woff2",
     ];
     const shouldExclude = excludedPaths.some((excluded) => {
       if (excluded.startsWith(".")) {
