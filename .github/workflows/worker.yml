@@ -1,0 +1,95 @@
+name: Test Worker Redirects
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
+
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: ./worker
+        run: npm install
+
+      # Deploy preview
+      - name: Deploy Worker Preview
+        id: deploy
+        working-directory: ./worker
+        run: |
+          # Deploy the worker to preview environment
+          OUTPUT=$(npx wrangler deploy --config wrangler.jsonc --env preview 2>&1)
+          echo "$OUTPUT"
+          
+          # Extract the deployed URL from the output
+          # Look for the worker URL pattern
+          PREVIEW_URL=$(echo "$OUTPUT" | grep -o 'https://docs-preview[^[:space:]]*' | head -1)
+          
+          # If not found, try a more general pattern
+          if [ -z "$PREVIEW_URL" ]; then
+            PREVIEW_URL=$(echo "$OUTPUT" | grep -o 'https://[^[:space:]]*workers.dev' | head -1)
+          fi
+          
+          echo "Extracted preview URL: $PREVIEW_URL"
+          echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
+
+      - name: Run redirect tests
+        id: tests
+        run: |
+          set -euo pipefail
+
+          BASE_URL="${{ steps.deploy.outputs.preview_url }}"
+          echo "Testing against preview URL: $BASE_URL"
+
+          echo "Testing root → /v2/"
+          LOCATION=$(curl -s -o /dev/null -w "%{redirect_url}" $BASE_URL/)
+          test "$LOCATION" = "$BASE_URL/v2/"
+
+          echo "Testing unversioned path → /v1/path"
+          LOCATION=$(curl -s -o /dev/null -w "%{redirect_url}" $BASE_URL/getting-started)
+          test "$LOCATION" = "$BASE_URL/v1/getting-started"
+
+          echo "Testing already versioned path (/v1) → no redirect"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-redirs 0 $BASE_URL/v1/getting-started)
+          # Should not get a redirect (301/302), might get 404 or 522 since there's no backend
+          if [ "$STATUS" -eq 301 ] || [ "$STATUS" -eq 302 ]; then
+            echo "ERROR: /v1/ path should not redirect but got status $STATUS"
+            exit 1
+          fi
+          echo "✓ Got status $STATUS (not a redirect)"
+
+          echo "Testing already versioned path (/v2) → no redirect"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-redirs 0 $BASE_URL/v2/getting-started)
+          # Should not get a redirect (301/302), might get 404 or 522 since there's no backend
+          if [ "$STATUS" -eq 301 ] || [ "$STATUS" -eq 302 ]; then
+            echo "ERROR: /v2/ path should not redirect but got status $STATUS"
+            exit 1
+          fi
+          echo "✓ Got status $STATUS (not a redirect)"
+
+          echo "Testing excluded path (.css) → no redirect"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-redirs 0 $BASE_URL/styles.css)
+          # Should not get a redirect (301/302), might get 404 or 522 since there's no backend
+          if [ "$STATUS" -eq 301 ] || [ "$STATUS" -eq 302 ]; then
+            echo "ERROR: .css path should not redirect but got status $STATUS"
+            exit 1
+          fi
+          echo "✓ Got status $STATUS (not a redirect)"
+
+          echo "✅ All redirect tests passed!"
