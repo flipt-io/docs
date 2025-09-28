@@ -10,6 +10,7 @@
 	"observability": {
 		"enabled": true
 	},
+	"preview_urls": true,
 	"env": {
 		"preview": {
 			"name": "docs-preview"
