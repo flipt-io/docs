@@ -28,7 +28,8 @@ jobs:
         working-directory: ./worker
         run: |
           # Deploy the worker to preview environment
-          OUTPUT=$(wrangler deploy --config wrangler.jsonc --env preview 2>&1 | tee /dev/tty)
+          OUTPUT=$(wrangler deploy --config wrangler.jsonc --env preview 2>&1)
+          echo "$OUTPUT"
           
           # Extract the deployed URL from the output
           # Look for the worker URL pattern
