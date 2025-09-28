@@ -10,8 +10,8 @@ export default {
     const normalizedPath =
       pathname === "/" ? pathname : pathname.replace(/\/$/, "");
 
-    // Check if the path already has a version prefix (/v1/ or /v2/)
-    const hasVersionPrefix = /^\/v[12]\//.test(normalizedPath);
+    // Check if the path already has a version prefix (/v1 or /v2)
+    const hasVersionPrefix = /^\/v[12](\/|$)/.test(normalizedPath);
 
     // Case 1: Root path → redirect to /v2
     if (normalizedPath === "/" || normalizedPath === "") {
