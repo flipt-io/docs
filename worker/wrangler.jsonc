@@ -9,6 +9,11 @@
 	"compatibility_date": "2025-09-27",
 	"observability": {
 		"enabled": true
+	},
+	"env": {
+		"preview": {
+			"name": "docs-preview"
+		}
 	}
 	/**
 	 * Smart Placement

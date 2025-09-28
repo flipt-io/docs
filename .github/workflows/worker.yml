@@ -25,8 +25,9 @@ jobs:
       # Deploy preview
       - name: Deploy Worker Preview
         id: deploy
+        working-directory: ./worker
         run: |
-          PREVIEW_URL=$(wrangler deploy --env preview --dry-run=remote --out json | jq -r '.previews[0].url')
+          PREVIEW_URL=$(wrangler deploy --config wrangler.jsonc --env preview --dry-run=remote --out json | jq -r '.previews[0].url')
           echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
 
       - name: Run redirect tests
