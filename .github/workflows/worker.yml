@@ -19,8 +19,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Wrangler
-        run: npm install -g wrangler
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: ./worker
+        run: npm install
 
       # Deploy preview
       - name: Deploy Worker Preview
@@ -28,7 +34,7 @@ jobs:
         working-directory: ./worker
         run: |
           # Deploy the worker to preview environment
-          OUTPUT=$(wrangler deploy --config wrangler.jsonc --env preview 2>&1)
+          OUTPUT=$(npx wrangler deploy --config wrangler.jsonc --env preview 2>&1)
           echo "$OUTPUT"
           
           # Extract the deployed URL from the output
