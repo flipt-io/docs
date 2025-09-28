@@ -13,15 +13,27 @@ export default {
     // Check if the path already has a version prefix (/v1/ or /v2/)
     const hasVersionPrefix = /^\/v[12]\//.test(normalizedPath);
 
-    // Case 1: Root path → redirect to /v2/
+    // Case 1: Root path → redirect to /v2
     if (normalizedPath === "/" || normalizedPath === "") {
-      url.pathname = "/v2/";
+      url.pathname = "/v2";
       return Response.redirect(url.toString(), 301);
     }
 
     // Case 2: Already versioned (/v1/* or /v2/*) → proxy through
     if (hasVersionPrefix) {
-      return fetch(request);
+      // Create a new request with the Mintlify backend URL
+      // This proxies to the actual Mintlify-hosted documentation
+      const backendUrl = new URL(request.url);
+      backendUrl.hostname = 'flipt.mintlify.app';
+      
+      const backendRequest = new Request(backendUrl.toString(), {
+        method: request.method,
+        headers: request.headers,
+        body: request.body,
+        redirect: 'manual'
+      });
+      
+      return fetch(backendRequest);
     }
 
     // Case 3: Excluded paths (static assets, APIs, etc.)
@@ -50,7 +62,18 @@ export default {
     });
 
     if (shouldExclude) {
-      return fetch(request);
+      // Proxy static assets to the Mintlify backend
+      const backendUrl = new URL(request.url);
+      backendUrl.hostname = 'flipt.mintlify.app';
+      
+      const backendRequest = new Request(backendUrl.toString(), {
+        method: request.method,
+        headers: request.headers,
+        body: request.body,
+        redirect: 'manual'
+      });
+      
+      return fetch(backendRequest);
     }
 
     // Case 4: Unversioned path → redirect to /v1/*
