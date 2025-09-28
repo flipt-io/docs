@@ -28,14 +28,39 @@ jobs:
         working-directory: ./worker
         run: npm install
 
+      - name: Debug - List worker files
+        working-directory: ./worker
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Files in worker directory:"
+          ls -la
+          echo "Node version:"
+          node --version
+          echo "NPM version:"
+          npm --version
+          echo "Wrangler version:"
+          npx wrangler --version
+
       # Deploy preview
       - name: Deploy Worker Preview
         id: deploy
         working-directory: ./worker
         run: |
           # Deploy the worker to preview environment
+          echo "Starting deployment..."
+          set +e  # Don't exit immediately on error
           OUTPUT=$(npx wrangler deploy --config wrangler.jsonc --env preview 2>&1)
+          EXIT_CODE=$?
+          set -e  # Re-enable exit on error
+          
+          echo "Deployment output:"
           echo "$OUTPUT"
+          
+          if [ $EXIT_CODE -ne 0 ]; then
+            echo "Deployment failed with exit code $EXIT_CODE"
+            exit $EXIT_CODE
+          fi
           
           # Extract the deployed URL from the output
           # Look for the worker URL pattern
