@@ -85,6 +85,13 @@
                         ]
                       },
                       "v2/cli/commands/evaluate",
+                      {
+                        "group": "license",
+                        "pages": [
+                          "v2/cli/commands/license/check",
+                          "v2/cli/commands/license/activate"
+                        ]
+                      },
                       "v2/cli/commands/migrate",
                       "v2/cli/commands/validate",
                       "v2/cli/commands/server",

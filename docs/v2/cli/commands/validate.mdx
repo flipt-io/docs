@@ -7,7 +7,11 @@ description: "Validate Flipt flag state (.yaml, .yml) files"
 flipt validate [flags]
 ```
 
-### Options
+## Synopsis
+
+Validates Flipt flag state files (`.yaml`, `.yml`) for syntax errors and schema compliance.
+
+## Options
 
 ```
   -e, --extra-schema string   path to extra schema constraints
@@ -15,4 +19,13 @@ flipt validate [flags]
   -h, --help                  help for validate
       --issue-exit-code int   exit code to use when issues are found (default 1)
   -d, --work-dir string       set the working directory (default ".")
+```
+
+## Examples
+
+```bash
+flipt validate
+flipt validate --work-dir /path/to/flags
+flipt validate --format json
+flipt validate --extra-schema /path/to/schema.json
 ```
