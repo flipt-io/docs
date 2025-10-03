@@ -78,11 +78,13 @@ The last bit of configuration is the session details. In order for the browser t
 ```bash
 docker run -it --rm \
   -p 8080:8080 \
-  -v "$(pwd)/config.yml:/config.yml" \
-  flipt/flipt:v2 ./flipt server --config /config.yml
+  -p 9000:9000 \
+  -v $HOME/flipt:/var/opt/flipt \
+  -v "$(pwd)/config.yml:/etc/flipt/config/default.yml" \
+  docker.flipt.io/flipt/flipt:v2
 ```
 
-This will mount the `config.yml` as a volume in the container, and Flipt will use that configuration as it's provided as a command line flag option.
+This will mount both the data directory for persistent storage and the `config.yml` configuration file into the container at the standard location.
 
 ### 3. Navigate to the Flipt UI
 
