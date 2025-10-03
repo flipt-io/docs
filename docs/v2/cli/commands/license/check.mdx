@@ -1,0 +1,38 @@
+---
+title: "license check"
+description: "Validate your Flipt Pro license"
+---
+
+```
+flipt license check [flags]
+```
+
+## Synopsis
+
+Validates your current license configuration and displays license status information.
+
+The `check` command:
+
+- Validates the license configuration in your Flipt config file
+- Connects to the licensing service to verify license validity
+- Displays your current license status and expiration
+- Shows which Pro features are available with your license
+- Provides guidance for unlicensed users
+
+## Options
+
+```
+      --config string   path to config file
+  -h, --help            help for check
+```
+
+## Examples
+
+```bash
+flipt license check
+flipt license check --config /path/to/config.yml
+```
+
+## More Info
+
+See the [Licensing](/v2/licensing) and [Flipt Pro](/v2/pro) documentation for more information about Pro features and licensing options.
