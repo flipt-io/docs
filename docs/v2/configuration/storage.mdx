@@ -79,6 +79,7 @@ storage:
     remote: "https://github.com/flipt-io/example.git"
     branch: "main"
     poll_interval: "30s"
+    fetch_policy: "ff_only"
     credentials: "github"
     backend:
       type: memory
@@ -97,6 +98,33 @@ When syncing flag state to and from a remote repository, Flipt will behave as fo
 - Flipt keeps track of the last commit hash for each storage backend
 - If a write is made to a flag state file that has been modified since the last commit, Flipt will refuse to push the changes to the remote repository and will instead return an error
 - If a write is made to a flag state file that has not been modified since the last commit, Flipt will push the changes to the remote repository
+
+### Fetch Policy
+
+The `fetch_policy` configuration option controls how Flipt handles Git fetch operations when syncing with remote repositories. This option allows you to specify the merge strategy used when pulling changes from the remote repository.
+
+Available fetch policies:
+
+- `ff_only` (default): Only allow fast-forward merges. This is the safest option as it will fail if there are conflicts that require a merge commit.
+- `merge`: Allow merge commits when fast-forward is not possible. This will create merge commits to resolve conflicts.
+- `rebase`: Rebase local changes on top of remote changes. This maintains a linear history but rewrites commit history.
+
+```yaml
+storage:
+  production:
+    remote: "https://github.com/flipt-io/example.git"
+    branch: "main"
+    poll_interval: "30s"
+    fetch_policy: "ff_only"  # Use fast-forward only strategy
+    credentials: "github"
+    backend:
+      type: local
+      path: "./data"
+```
+
+<Warning>
+  Using `rebase` or `merge` fetch policies may result in unexpected behavior if multiple Flipt instances are writing to the same repository branch. The `ff_only` policy is recommended for production environments to prevent conflicts.
+</Warning>
 
 ### Credentials
 
