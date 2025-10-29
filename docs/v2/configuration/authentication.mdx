@@ -116,6 +116,29 @@ authentication:
     storage:
       type: redis
       redis:
+        mode: single  # Required: either "single" or "cluster"
+        host: localhost
+        port: 6379
+        db: 0
+        password: password
+```
+
+The `mode` parameter is **required** and must be set to either:
+- `single` - For standalone Redis instances (most common)
+- `cluster` - For Redis cluster setups
+
+##### Redis Cluster Example
+
+For Redis cluster configurations, use `mode: cluster`:
+
+```yaml config.yaml
+authentication:
+  required: true
+  session:
+    storage:
+      type: redis
+      redis:
+        mode: cluster
         host: localhost
         port: 6379
         db: 0
