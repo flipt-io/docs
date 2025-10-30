@@ -192,6 +192,7 @@ Storage configuration defines where and how Flipt persists feature flag data, in
 | storage.[id].ca_cert_bytes     | The CA certificate bytes for the remote URL                         |                     | v2.0.0 |
 | storage.[id].ca_cert_path      | The CA certificate path for the remote URL                          |                     | v2.0.0 |
 | storage.[id].insecure_skip_tls | Skip verifying the server's certificate chain (avoid in production) | false               | v2.0.0 |
+| storage.[id].fetch_policy      | Policy for handling connection issues when fetching from remote Git (strict, lenient) | strict              | v2.3.0 |
 | storage.[id].credentials       | The id of the credentials to use for the remote URL                 |                     | v2.0.0 |
 
 #### Commit Signing
