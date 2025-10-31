@@ -1,0 +1,38 @@
+---
+title: "license activate"
+description: "Activate a new Flipt Pro license"
+---
+
+```
+flipt license activate [flags]
+```
+
+## Synopsis
+
+Interactive wizard for activating a new Flipt Pro license.
+
+The `activate` command provides a guided, text-based user interface that:
+
+- Supports both Pro Monthly and Pro Annual license types
+- Handles online and offline license configurations
+- Automatically updates your Flipt configuration file
+- Validates the license with the licensing service
+- Provides clear step-by-step guidance through the activation process
+
+## Options
+
+```
+      --config string   path to config file
+  -h, --help            help for activate
+```
+
+## Examples
+
+```bash
+flipt license activate
+flipt license activate --config /path/to/config.yml
+```
+
+## More Info
+
+See the [Licensing](/v2/licensing) and [Flipt Pro](/v2/pro) documentation for more information about Pro features and licensing options.
