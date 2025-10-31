@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install dependencies
         working-directory: ./worker
@@ -36,16 +36,16 @@ jobs:
           # Deploy the worker to preview environment
           OUTPUT=$(npx wrangler deploy --config wrangler.jsonc --env preview 2>&1)
           echo "$OUTPUT"
-          
+
           # Extract the deployed URL from the output
           # Look for the worker URL pattern
           PREVIEW_URL=$(echo "$OUTPUT" | grep -o 'https://docs-preview[^[:space:]]*' | head -1)
-          
+
           # If not found, try a more general pattern
           if [ -z "$PREVIEW_URL" ]; then
             PREVIEW_URL=$(echo "$OUTPUT" | grep -o 'https://[^[:space:]]*workers.dev' | head -1)
           fi
-          
+
           echo "Extracted preview URL: $PREVIEW_URL"
           echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
 

@@ -103,20 +103,23 @@ The `fetch_policy` configuration option controls how Flipt handles connection-re
 storage:
   production:
     remote: "https://github.com/company/flags.git"
-    fetch_policy: "strict"  # Fail fast on connection issues
+    fetch_policy: "strict" # Fail fast on connection issues
     backend:
       type: local
       path: "/var/lib/flipt"
-  
+
   development:
     remote: "https://github.com/company/flags.git"
-    fetch_policy: "lenient"  # Continue operation during connection issues
+    fetch_policy: "lenient" # Continue operation during connection issues
     backend:
       type: memory
 ```
 
 <Warning>
-  In production environments, consider using `strict` to ensure that connectivity issues are detected and resolved promptly, preventing potential configuration drift between your remote repository and running Flipt instances.
+  In production environments, consider using `strict` to ensure that
+  connectivity issues are detected and resolved promptly, preventing potential
+  configuration drift between your remote repository and running Flipt
+  instances.
 </Warning>
 
 ### Conflict Resolution
