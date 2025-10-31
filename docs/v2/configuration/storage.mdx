@@ -79,12 +79,48 @@ storage:
     remote: "https://github.com/flipt-io/example.git"
     branch: "main"
     poll_interval: "30s"
+    fetch_policy: "strict"
     credentials: "github"
     backend:
       type: memory
 ```
 
 This configuration will create a git storage backend with the identifier `staging` in memory and will sync flag state to and from the remote repository.
+
+### Fetch Policy
+
+The `fetch_policy` configuration option controls how Flipt handles connection-related issues when attempting to fetch from a remote Git repository.
+
+#### Available Policies
+
+- **`strict`** (default): Flipt will fail and return an error if it encounters connection issues when trying to fetch from the remote repository. This ensures that any connectivity problems are immediately visible and must be resolved.
+
+- **`lenient`**: Flipt will continue operating even if connection issues prevent fetching from the remote repository. This allows Flipt to remain functional during temporary network issues or remote repository unavailability.
+
+#### Usage Example
+
+```yaml
+storage:
+  production:
+    remote: "https://github.com/company/flags.git"
+    fetch_policy: "strict" # Fail fast on connection issues
+    backend:
+      type: local
+      path: "/var/lib/flipt"
+
+  development:
+    remote: "https://github.com/company/flags.git"
+    fetch_policy: "lenient" # Continue operation during connection issues
+    backend:
+      type: memory
+```
+
+<Warning>
+  In production environments, consider using `strict` to ensure that
+  connectivity issues are detected and resolved promptly, preventing potential
+  configuration drift between your remote repository and running Flipt
+  instances.
+</Warning>
 
 ### Conflict Resolution
 

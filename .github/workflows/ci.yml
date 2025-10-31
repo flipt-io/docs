@@ -21,4 +21,3 @@ jobs:
 
       - name: Check for Broken Links
         run: npx -y mint broken-links
-
