@@ -7,7 +7,13 @@ description: "Evaluate a flag"
 flipt evaluate [flagKey] [flags]
 ```
 
-### Options
+## Synopsis
+
+Evaluates a feature flag against the Flipt instance and returns the evaluation result.
+
+Supports watch mode for continuous evaluation.
+
+## Options
 
 ```
   -a, --address string        address of Flipt instance. (default "http://localhost:8080")
@@ -22,14 +28,14 @@ flipt evaluate [flagKey] [flags]
   -w, --watch                 enable watch mode.
 ```
 
-### Examples
+## Examples
 
-```
-$ flipt evaluate chat-enabled --context test=foo
+```bash
+flipt evaluate chat-enabled --context test=foo
 
 {"flag_key":"chat-enabled","enabled":true,"reason":"DEFAULT_EVALUATION_REASON","request_id":"73d12ea1-65d7-401d-b0c7-f7a6b3d41dd6","request_duration_millis":0.894792,"timestamp":"2024-01-23T17:37:13.484716964Z"}
 ```
 
-### More Info
+## More Info
 
 See the [Evaluation](/v2/concepts#evaluation) concepts section of the documentation for more information.

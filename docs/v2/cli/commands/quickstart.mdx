@@ -4,32 +4,34 @@ description: "Interactive setup wizard for Flipt Git storage"
 ---
 
 ```
-flipt quickstart  [flags]
+flipt quickstart [flags]
 ```
 
-### Synopsis
+## Synopsis
 
-The setup wizard helps you configure Flipt v2 with Git storage.
+The `quickstart` command provides an interactive, text-based user interface wizard to help you configure Flipt v2 with Git storage and SCM integration.
 
-The wizard will guide you through:
+The wizard guides you through:
 
-- Configuring Git repository storage with SCM integration
+- Selecting your SCM provider (GitHub, GitLab, Bitbucket, Azure DevOps, Gitea)
+- Configuring Git repository storage settings
 - Setting up authentication (Personal Access Token)
+- Automatically updating your Flipt configuration file
 
-### Examples
-
-```
-$ flipt quickstart
-$ flipt quickstart --config /path/to/config.yml
-```
-
-### Options
+## Options
 
 ```
       --config string   path to config file
   -h, --help            help for quickstart
 ```
 
-### More Info
+## Examples
 
-See the [Quickstart](/v2/quickstart) section of the documentation for more information.
+```bash
+flipt quickstart
+flipt quickstart --config /path/to/config.yml
+```
+
+## More Info
+
+See the [Quickstart](/v2/quickstart) section of the documentation for more information about getting started with Flipt v2.

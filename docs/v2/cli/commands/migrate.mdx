@@ -3,23 +3,32 @@ title: "migrate"
 description: "Run pending analytics database migrations"
 ---
 
-This is automatically run when the server starts.
+```
+flipt migrate [flags]
+```
+
+## Synopsis
 
 <Note>
   This currently only supports Clickhouse analytics database migrations.
 </Note>
 
-```
-flipt migrate [flags]
-```
+Runs pending analytics database migrations.
 
-### Options
+## Options
 
 ```
       --config string   path to config file
   -h, --help            help for migrate
 ```
 
-### More Info
+## Examples
+
+```bash
+flipt migrate
+flipt migrate --config /path/to/config.yml
+```
+
+## More Info
 
 See the [Analytics](/v2/configuration/analytics) section of the documentation for more information.
