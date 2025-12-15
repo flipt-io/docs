@@ -103,15 +103,32 @@ application.
 
 ### Configuration
 
-A default configuration file is included within the image. To supply a custom configuration, update the `docker run` command to mount your local configuration into the container:
+A default configuration file is included within the image. To supply a custom configuration, update the `docker run` command to mount your local configuration into the container.
+
+The example below shows how to configure Flipt v2 with both persistent storage and a custom configuration file:
 
 ```console
 docker run -d \
     -p 8080:8080 \
     -p 9000:9000 \
     -v $HOME/flipt:/var/opt/flipt \
-    -v $HOME/flipt/config.yaml:/etc/flipt/config.yaml \
+    -v $HOME/flipt/config.yaml:/etc/flipt/config/default.yml \
     docker.flipt.io/flipt/flipt:v2
+```
+
+In this configuration:
+
+- `$HOME/flipt:/var/opt/flipt` mounts the host directory for persistent data storage
+- `$HOME/flipt/config.yaml:/etc/flipt/config/default.yml` mounts your custom configuration file
+
+Your `config.yaml` should specify the full path for storage:
+
+```yaml
+storage:
+  default:
+    backend:
+      type: local
+      path: /var/opt/flipt
 ```
 
 ## Homebrew

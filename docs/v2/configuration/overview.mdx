@@ -181,18 +181,19 @@ Server configuration controls how Flipt listens for and serves HTTP, HTTPS, and 
 
 Storage configuration defines where and how Flipt persists feature flag data, including local and remote Git repositories.
 
-| Property                       | Description                                                         | Default             | Since  |
-| ------------------------------ | ------------------------------------------------------------------- | ------------------- | ------ |
-| storage.[id].name              | The canonical name of the storage instance                          | default             | v2.0.0 |
-| storage.[id].backend.type      | The type of backend to use (options: memory, local)                 | memory              | v2.0.0 |
-| storage.[id].backend.path      | The path to the local storage directory for git backend             | temporary directory | v2.0.0 |
-| storage.[id].remote            | The remote URL to sync storage to/from                              |                     | v2.0.0 |
-| storage.[id].branch            | The branch to use for git backend                                   | main                | v2.0.0 |
-| storage.[id].poll_interval     | The interval to poll the git repository and ref for changes         | 30s                 | v2.0.0 |
-| storage.[id].ca_cert_bytes     | The CA certificate bytes for the remote URL                         |                     | v2.0.0 |
-| storage.[id].ca_cert_path      | The CA certificate path for the remote URL                          |                     | v2.0.0 |
-| storage.[id].insecure_skip_tls | Skip verifying the server's certificate chain (avoid in production) | false               | v2.0.0 |
-| storage.[id].credentials       | The id of the credentials to use for the remote URL                 |                     | v2.0.0 |
+| Property                       | Description                                                                           | Default             | Since  |
+| ------------------------------ | ------------------------------------------------------------------------------------- | ------------------- | ------ |
+| storage.[id].name              | The canonical name of the storage instance                                            | default             | v2.0.0 |
+| storage.[id].backend.type      | The type of backend to use (options: memory, local)                                   | memory              | v2.0.0 |
+| storage.[id].backend.path      | The path to the local storage directory for git backend                               | temporary directory | v2.0.0 |
+| storage.[id].remote            | The remote URL to sync storage to/from                                                |                     | v2.0.0 |
+| storage.[id].branch            | The branch to use for git backend                                                     | main                | v2.0.0 |
+| storage.[id].poll_interval     | The interval to poll the git repository and ref for changes                           | 30s                 | v2.0.0 |
+| storage.[id].ca_cert_bytes     | The CA certificate bytes for the remote URL                                           |                     | v2.0.0 |
+| storage.[id].ca_cert_path      | The CA certificate path for the remote URL                                            |                     | v2.0.0 |
+| storage.[id].insecure_skip_tls | Skip verifying the server's certificate chain (avoid in production)                   | false               | v2.0.0 |
+| storage.[id].fetch_policy      | Policy for handling connection issues when fetching from remote Git (strict, lenient) | strict              | v2.3.0 |
+| storage.[id].credentials       | The id of the credentials to use for the remote URL                                   |                     | v2.0.0 |
 
 #### Commit Signing
 
@@ -314,6 +315,7 @@ Authentication configuration controls how users and systems authenticate with Fl
 
 | Property                                                | Description                                                         | Default   | Since  |
 | ------------------------------------------------------- | ------------------------------------------------------------------- | --------- | ------ |
+| authentication.session.storage.redis.mode               | **Required** Redis mode: `single` or `cluster`                      | single    | v2.0.0 |
 | authentication.session.storage.redis.host               | Host to access the Redis database                                   | localhost | v2.0.0 |
 | authentication.session.storage.redis.port               | Port to access the Redis database                                   | 6379      | v2.0.0 |
 | authentication.session.storage.redis.db                 | Redis database to use                                               | 0         | v2.0.0 |
