@@ -341,16 +341,18 @@ Authentication configuration controls how users and systems authenticate with Fl
 
 #### Authentication Methods: OIDC
 
-| Property                                                          | Description                                                      | Default | Since  |
-| ----------------------------------------------------------------- | ---------------------------------------------------------------- | ------- | ------ |
-| authentication.methods.oidc.enabled                               | Enable OIDC authentication                                       | false   | v2.0.0 |
-| authentication.methods.oidc.providers.[provider].issuer_url       | Provider specific OIDC issuer URL (see your providers docs)      |         | v2.0.0 |
-| authentication.methods.oidc.providers.[provider].client_id        | Provider specific OIDC client ID (see your providers docs)       |         | v2.0.0 |
-| authentication.methods.oidc.providers.[provider].client_secret    | Provider specific OIDC client secret (see your providers docs)   |         | v2.0.0 |
-| authentication.methods.oidc.providers.[provider].redirect_address | Public URL on which this Flipt instance is reachable             |         | v2.0.0 |
-| authentication.methods.oidc.providers.[provider].scopes           | Scopes to request from the provider                              |         | v2.0.0 |
-| authentication.methods.oidc.providers.[provider].use_pkce         | Option for enabling PKCE for OIDC authentication flow            | false   | v2.0.0 |
-| authentication.methods.oidc.email_matches                         | List of email addresses (regex) of users allowed to authenticate |         | v2.0.0 |
+| Property                                                               | Description                                                      | Default   | Since  |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------- | --------- | ------ |
+| authentication.methods.oidc.enabled                                    | Enable OIDC authentication                                       | false     | v2.0.0 |
+| authentication.methods.oidc.providers.[provider].issuer_url            | Provider specific OIDC issuer URL (see your providers docs)      |           | v2.0.0 |
+| authentication.methods.oidc.providers.[provider].client_id             | Provider specific OIDC client ID (see your providers docs)       |           | v2.0.0 |
+| authentication.methods.oidc.providers.[provider].client_secret         | Provider specific OIDC client secret (see your providers docs)   |           | v2.0.0 |
+| authentication.methods.oidc.providers.[provider].redirect_address      | Public URL on which this Flipt instance is reachable             |           | v2.0.0 |
+| authentication.methods.oidc.providers.[provider].scopes                | Scopes to request from the provider                              |           | v2.0.0 |
+| authentication.methods.oidc.providers.[provider].use_pkce              | Option for enabling PKCE for OIDC authentication flow            | false     | v2.0.0 |
+| authentication.methods.oidc.providers.[provider].algorithms            | List of accepted ID token signing algorithms                     | ["RS256"] | v2.6.0 |
+| authentication.methods.oidc.providers.[provider].fetch_extra_user_info | Fetch additional claims from the provider's UserInfo endpoint    | false     | v2.6.0 |
+| authentication.methods.oidc.email_matches                              | List of email addresses (regex) of users allowed to authenticate |           | v2.0.0 |
 
 #### Authentication Methods: GitHub
 
@@ -407,17 +409,42 @@ Authorization configuration enforces fine-grained access control policies to res
 
 Credentials configuration manages authentication details for accessing remote Git repositories and SCM providers.
 
-| Property                                      | Description                                                        | Default | Since  |
-| --------------------------------------------- | ------------------------------------------------------------------ | ------- | ------ |
-| credentials.[id].type                         | The type of credentials to use (options: basic, ssh, access_token) | basic   | v2.0.0 |
-| credentials.[id].basic.username               | The username to use for basic authentication                       |         | v2.0.0 |
-| credentials.[id].basic.password               | The password to use for basic authentication                       |         | v2.0.0 |
-| credentials.[id].ssh.user                     | The username to use for SSH authentication                         | git     | v2.0.0 |
-| credentials.[id].ssh.password                 | Password used to generate the SSH key pair                         |         | v2.0.0 |
-| credentials.[id].ssh.private_key_path         | Path to private key on the filesystem                              |         | v2.0.0 |
-| credentials.[id].ssh.private_key_bytes        | (Alternative) Raw private key bytes                                |         | v2.0.0 |
-| credentials.[id].ssh.insecure_ignore_host_key | Skip verifying the known hosts key (avoid in production)           | false   | v2.0.0 |
-| credentials.[id].access_token                 | The token to use for authentication                                |         | v2.0.0 |
+| Property              | Description                                                                    | Default | Since  |
+| --------------------- | ------------------------------------------------------------------------------ | ------- | ------ |
+| credentials.[id].type | The type of credentials to use (options: basic, ssh, access_token, github_app) | basic   | v2.0.0 |
+
+#### Credentials: Basic
+
+| Property                        | Description                                  | Default | Since  |
+| ------------------------------- | -------------------------------------------- | ------- | ------ |
+| credentials.[id].basic.username | The username to use for basic authentication |         | v2.0.0 |
+| credentials.[id].basic.password | The password to use for basic authentication |         | v2.0.0 |
+
+#### Credentials: SSH
+
+| Property                                      | Description                                              | Default | Since  |
+| --------------------------------------------- | -------------------------------------------------------- | ------- | ------ |
+| credentials.[id].ssh.user                     | The username to use for SSH authentication               | git     | v2.0.0 |
+| credentials.[id].ssh.password                 | Password used to generate the SSH key pair               |         | v2.0.0 |
+| credentials.[id].ssh.private_key_path         | Path to private key on the filesystem                    |         | v2.0.0 |
+| credentials.[id].ssh.private_key_bytes        | (Alternative) Raw private key bytes                      |         | v2.0.0 |
+| credentials.[id].ssh.insecure_ignore_host_key | Skip verifying the known hosts key (avoid in production) | false   | v2.0.0 |
+
+#### Credentials: Access Token
+
+| Property                      | Description                         | Default | Since  |
+| ----------------------------- | ----------------------------------- | ------- | ------ |
+| credentials.[id].access_token | The token to use for authentication |         | v2.0.0 |
+
+#### Credentials: GitHub App
+
+| Property                                      | Description                                          | Default | Since  |
+| --------------------------------------------- | ---------------------------------------------------- | ------- | ------ |
+| credentials.[id].github_app.client_id         | The GitHub App client ID                             |         | v2.6.0 |
+| credentials.[id].github_app.installation_id   | The GitHub App installation ID                       |         | v2.6.0 |
+| credentials.[id].github_app.private_key_path  | Path to the GitHub App private key on the filesystem |         | v2.6.0 |
+| credentials.[id].github_app.private_key_bytes | (Alternative) Raw GitHub App private key bytes       |         | v2.6.0 |
+| credentials.[id].github_app.api_url           | Custom GitHub API URL (for GitHub Enterprise Server) |         | v2.6.0 |
 
 ### Secrets
 

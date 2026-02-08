@@ -117,6 +117,22 @@ Changes are automatically deployed to production when pushed to the main branch.
 
 ## Quality Assurance
 
+### Visual Verification
+
+After making any documentation changes, you MUST use the Playwright MCP browser tools to verify the changes render correctly in the local dev server (`mint dev`, typically running on port 3000):
+
+1. Get browser context with `tabs_context_mcp` (create tab group if needed)
+2. Create a new tab with `tabs_create_mcp`
+3. Navigate to each changed page at `http://localhost:3000/...`
+4. Scroll to each modified section (use `find` + `scroll_to` to locate headings)
+5. Take screenshots to verify:
+   - Content renders correctly (no broken markdown, missing sections, or layout issues)
+   - Code blocks display with proper syntax highlighting
+   - Tables are well-formatted with correct columns and alignment
+   - Callout components (`<Note>`, `<Warning>`, `<Tip>`) render properly
+   - "On this page" navigation includes new sections
+   - Links are functional
+
 ### Automated Checks
 
 - ESLint with MDX support for linting
