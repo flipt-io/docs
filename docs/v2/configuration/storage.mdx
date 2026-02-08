@@ -143,6 +143,7 @@ Supported authentication schemes are:
 - `basic`
 - `ssh`
 - `access_token`
+- `github_app`
 
 Credentials are configured using the `credentials` configuration section and use identifiers to reference the credentials in the configuration.
 
@@ -216,4 +217,52 @@ credentials:
   github:
     type: access_token
     access_token: < github-access-token >
+```
+
+#### GitHub App
+
+GitHub App authentication provides a more secure alternative to personal access tokens (PATs) for authenticating with GitHub repositories. GitHub App tokens are short-lived, offer higher rate limits, and provide more granular permissions.
+
+To use this credential type, you need to [create a GitHub App](https://docs.github.com/en/apps/creating-github-apps) and install it on your repository or organization.
+
+You can provide the private key either as a file path or as raw bytes inline:
+
+```yaml
+credentials:
+  github:
+    type: github_app
+    github_app:
+      client_id: < github-app-client-id >
+      installation_id: < github-app-installation-id >
+      private_key_path: /path/to/private-key.pem
+```
+
+Alternatively, you can pass the private key bytes inline:
+
+```yaml
+credentials:
+  github:
+    type: github_app
+    github_app:
+      client_id: < github-app-client-id >
+      installation_id: < github-app-installation-id >
+      private_key_bytes: < raw-private-key-bytes >
+```
+
+<Note>
+  You must provide either `private_key_path` or `private_key_bytes`, but not
+  both.
+</Note>
+
+For GitHub Enterprise Server, you can optionally specify a custom API URL:
+
+```yaml
+credentials:
+  github:
+    type: github_app
+    github_app:
+      client_id: < github-app-client-id >
+      installation_id: < github-app-installation-id >
+      private_key_path: /path/to/private-key.pem
+      api_url: "https://github.example.com/api/v3"
 ```

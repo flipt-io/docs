@@ -291,6 +291,53 @@ Since OIDC has the ability to retrieve email addresses, Flipt also provides a co
 
 You can see an example of that above in the [sample configuration](#method-oidc).
 
+#### Algorithms
+
+By default, Flipt expects OIDC ID tokens to be signed with the `RS256` algorithm. Some identity providers sign tokens with other algorithms (for example, `ES256` or `PS256`). You can configure the accepted signing algorithms per provider using the `algorithms` field.
+
+Supported algorithms: `RS256`, `RS384`, `RS512`, `ES256`, `ES384`, `ES512`, `PS256`, `PS384`, `PS512`.
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    oidc:
+      enabled: true
+      providers:
+        some_provider:
+          issuer_url: "https://some.oidc.issuer.com"
+          client_id: "some_client_identifier"
+          client_secret: "some_client_secret_credential"
+          redirect_address: "https://your.flipt.instance.url.com"
+          algorithms:
+            - ES256
+```
+
+If not specified, the default is `["RS256"]`.
+
+#### UserInfo Claims
+
+Some OIDC providers keep ID token claims minimal and require calling the UserInfo endpoint to obtain additional attributes such as email, display name, or group membership. This is especially common for providers that omit or truncate group claims in the ID token.
+
+You can enable fetching additional claims from the provider's UserInfo endpoint by setting `fetch_extra_user_info` to `true`. When enabled, Flipt calls the UserInfo endpoint during the login callback and merges the returned claims into the session.
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    oidc:
+      enabled: true
+      providers:
+        some_provider:
+          issuer_url: "https://some.oidc.issuer.com"
+          client_id: "some_client_identifier"
+          client_secret: "some_client_secret_credential"
+          redirect_address: "https://your.flipt.instance.url.com"
+          fetch_extra_user_info: true
+```
+
+If not specified, the default is `false`.
+
 #### PKCE
 
 A good amount of OIDC providers support the PKCE (Proof Key for Code Exchange) flow and the implicit OAuth flow. Flipt allows for a configuration to enable PKCE for all the legs of the OIDC authentication flow.
