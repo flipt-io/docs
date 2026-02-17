@@ -115,3 +115,59 @@ analytics:
       headers:
         "Authorization": "Bearer <token>"
 ```
+
+### AWS SigV4 Authentication
+
+If you are using [Amazon Managed Service for Prometheus (AMP)](https://aws.amazon.com/prometheus/), you can configure Flipt to authenticate requests using [AWS Signature Version 4 (SigV4)](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html).
+
+<Tabs>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    analytics:
+      storage:
+        prometheus:
+          enabled: true
+          url: https://aps-workspaces.us-east-1.amazonaws.com/workspaces/<workspace-id>
+          sigv4:
+            region: us-east-1
+            access_key: <aws-access-key-id>
+            secret_key: <aws-secret-access-key>
+    ```
+
+  </Tab>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_ANALYTICS_STORAGE_PROMETHEUS_ENABLED=true
+    FLIPT_ANALYTICS_STORAGE_PROMETHEUS_URL=https://aps-workspaces.us-east-1.amazonaws.com/workspaces/<workspace-id>
+    FLIPT_ANALYTICS_STORAGE_PROMETHEUS_SIGV4_REGION=us-east-1
+    FLIPT_ANALYTICS_STORAGE_PROMETHEUS_SIGV4_ACCESS_KEY=<aws-access-key-id>
+    FLIPT_ANALYTICS_STORAGE_PROMETHEUS_SIGV4_SECRET_KEY=<aws-secret-access-key>
+    ```
+
+  </Tab>
+</Tabs>
+
+If `access_key` and `secret_key` are not provided, Flipt falls back to the [default AWS credential chain](https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials) (environment variables, shared credentials file, IAM instance profile, etc.).
+
+You can also assume an IAM role by specifying `role_arn`:
+
+```yaml
+analytics:
+  storage:
+    prometheus:
+      enabled: true
+      url: https://aps-workspaces.us-east-1.amazonaws.com/workspaces/<workspace-id>
+      sigv4:
+        region: us-east-1
+        role_arn: arn:aws:iam::<account-id>:role/<role-name>
+```
+
+| Property                                        | Description                                                      | Default |
+| ----------------------------------------------- | ---------------------------------------------------------------- | ------- |
+| analytics.storage.prometheus.sigv4.region        | AWS region for SigV4 signing                                     |         |
+| analytics.storage.prometheus.sigv4.access_key    | AWS access key ID                                                |         |
+| analytics.storage.prometheus.sigv4.secret_key    | AWS secret access key                                            |         |
+| analytics.storage.prometheus.sigv4.profile       | AWS credentials profile name                                     |         |
+| analytics.storage.prometheus.sigv4.role_arn      | ARN of an IAM role to assume for authentication                  |         |

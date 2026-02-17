@@ -578,9 +578,14 @@ Analytics configuration enables collection and export of feature flag evaluation
 
 | Property                             | Description                                                             | Default | Since  |
 | ------------------------------------ | ----------------------------------------------------------------------- | ------- | ------ |
-| analytics.storage.prometheus.enabled | Enable Prometheus support                                               | false   | v2.0.0 |
-| analytics.storage.prometheus.url     | URL to connect to prometheus server                                     |         | v2.0.0 |
-| analytics.storage.prometheus.headers | Additional headers to send with Prometheus requests (map[string]string) |         | v2.0.0 |
+| analytics.storage.prometheus.enabled          | Enable Prometheus support                                               | false   | v2.0.0 |
+| analytics.storage.prometheus.url              | URL to connect to prometheus server                                     |         | v2.0.0 |
+| analytics.storage.prometheus.headers          | Additional headers to send with Prometheus requests (map[string]string) |         | v2.0.0 |
+| analytics.storage.prometheus.sigv4.region     | AWS region for SigV4 signing (for Amazon Managed Service for Prometheus) |         | v2.6.0 |
+| analytics.storage.prometheus.sigv4.access_key | AWS access key ID                                                       |         | v2.6.0 |
+| analytics.storage.prometheus.sigv4.secret_key | AWS secret access key                                                   |         | v2.6.0 |
+| analytics.storage.prometheus.sigv4.profile    | AWS credentials profile name                                            |         | v2.6.0 |
+| analytics.storage.prometheus.sigv4.role_arn   | ARN of an IAM role to assume for authentication                         |         | v2.6.0 |
 
 ## Additional Settings
 
