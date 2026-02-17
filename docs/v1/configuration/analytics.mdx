@@ -115,3 +115,69 @@ analytics:
       headers:
         "Authorization": "Bearer <token>"
 ```
+
+### AWS SigV4 Authentication
+
+Flipt supports [AWS Signature Version 4 (SigV4)](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) authentication for Prometheus, which is required when using [Amazon Managed Service for Prometheus (AMP)](https://aws.amazon.com/prometheus/).
+
+To enable SigV4 authentication, add the `sigv4` section under your Prometheus analytics configuration:
+
+<Tabs>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_ANALYTICS_STORAGE_PROMETHEUS_ENABLED=true
+    FLIPT_ANALYTICS_STORAGE_PROMETHEUS_URL=https://aps-workspaces.<region>.amazonaws.com/workspaces/<workspace-id>
+    FLIPT_ANALYTICS_STORAGE_PROMETHEUS_SIGV4_REGION=<region>
+    FLIPT_ANALYTICS_STORAGE_PROMETHEUS_SIGV4_ACCESS_KEY=<access-key-id>
+    FLIPT_ANALYTICS_STORAGE_PROMETHEUS_SIGV4_SECRET_KEY=<secret-access-key>
+    ```
+
+  </Tab>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    analytics:
+      storage:
+        prometheus:
+          enabled: true
+          url: https://aps-workspaces.<region>.amazonaws.com/workspaces/<workspace-id>
+          sigv4:
+            region: <region>
+            access_key: <access-key-id>
+            secret_key: <secret-access-key>
+    ```
+
+  </Tab>
+</Tabs>
+
+#### SigV4 Configuration Options
+
+| Property                                              | Description                                                                  | Default |
+| ----------------------------------------------------- | ---------------------------------------------------------------------------- | ------- |
+| analytics.storage.prometheus.sigv4.region             | AWS region where your Prometheus workspace is located                        |         |
+| analytics.storage.prometheus.sigv4.access_key         | AWS access key ID for authentication                                         |         |
+| analytics.storage.prometheus.sigv4.secret_key         | AWS secret access key for authentication                                     |         |
+| analytics.storage.prometheus.sigv4.profile            | AWS profile to use from the credentials file                                 |         |
+| analytics.storage.prometheus.sigv4.role_arn           | AWS IAM role ARN to assume for authentication                                |         |
+
+<Note>
+  If `access_key` and `secret_key` are not provided, Flipt will fall back to the
+  [default AWS credential chain](https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials)
+  (environment variables, shared credentials file, IAM instance profile, etc.).
+</Note>
+
+#### Using IAM Roles
+
+For production deployments, we recommend using IAM roles instead of static credentials. You can use the `role_arn` field to specify a role to assume, or rely on the instance profile attached to your EC2 instance or ECS task:
+
+```yaml
+analytics:
+  storage:
+    prometheus:
+      enabled: true
+      url: https://aps-workspaces.<region>.amazonaws.com/workspaces/<workspace-id>
+      sigv4:
+        region: <region>
+        role_arn: arn:aws:iam::<account-id>:role/<role-name>
+```

@@ -576,11 +576,16 @@ Analytics configuration enables collection and export of feature flag evaluation
 
 #### Analytics: Prometheus
 
-| Property                             | Description                                                             | Default | Since  |
-| ------------------------------------ | ----------------------------------------------------------------------- | ------- | ------ |
-| analytics.storage.prometheus.enabled | Enable Prometheus support                                               | false   | v2.0.0 |
-| analytics.storage.prometheus.url     | URL to connect to prometheus server                                     |         | v2.0.0 |
-| analytics.storage.prometheus.headers | Additional headers to send with Prometheus requests (map[string]string) |         | v2.0.0 |
+| Property                                              | Description                                                             | Default | Since  |
+| ----------------------------------------------------- | ----------------------------------------------------------------------- | ------- | ------ |
+| analytics.storage.prometheus.enabled                  | Enable Prometheus support                                               | false   | v2.0.0 |
+| analytics.storage.prometheus.url                      | URL to connect to prometheus server                                     |         | v2.0.0 |
+| analytics.storage.prometheus.headers                  | Additional headers to send with Prometheus requests (map[string]string) |         | v2.0.0 |
+| analytics.storage.prometheus.sigv4.region             | AWS region for SigV4 authentication (required for Amazon Managed Prometheus) |    | v2.0.0 |
+| analytics.storage.prometheus.sigv4.access_key         | AWS access key ID for SigV4 authentication                              |         | v2.0.0 |
+| analytics.storage.prometheus.sigv4.secret_key         | AWS secret access key for SigV4 authentication                          |         | v2.0.0 |
+| analytics.storage.prometheus.sigv4.profile            | AWS credentials profile to use for SigV4 authentication                 |         | v2.0.0 |
+| analytics.storage.prometheus.sigv4.role_arn           | AWS IAM role ARN to assume for SigV4 authentication                     |         | v2.0.0 |
 
 ## Additional Settings
 
