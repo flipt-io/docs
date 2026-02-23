@@ -404,11 +404,10 @@ spec:
 ```
 
 <Tip>
-  You can verify that the certificates are trusted by running:
-  ```bash
-  echo | openssl s_client -brief -connect your-oidc-provider:443 -verify_hostname your-oidc-provider 2>&1 | grep Verification
-  ```
-  You should see `Verification: OK` if the CA is properly trusted.
+  You can verify that the certificates are trusted by running: ```bash echo |
+  openssl s_client -brief -connect your-oidc-provider:443 -verify_hostname
+  your-oidc-provider 2>&1 | grep Verification ``` You should see `Verification:
+  OK` if the CA is properly trusted.
 </Tip>
 
 #### PKCE
