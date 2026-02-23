@@ -338,6 +338,79 @@ authentication:
 
 If not specified, the default is `false`.
 
+#### Self-Signed Certificates
+
+If your OIDC provider uses self-signed or internal CA certificates (common with self-hosted Keycloak, Dex, or corporate identity providers), Flipt will reject the TLS connection with an error like:
+
+```
+tls: failed to verify certificate: x509: certificate signed by unknown authority
+```
+
+Flipt relies on the system trust store for TLS validation. To trust your internal CA, you need to add your CA certificate(s) to the container's trust store.
+
+**Dockerfile example:**
+
+```dockerfile
+FROM flipt/flipt:latest
+
+# Install CA certificates tooling
+RUN apk add --no-cache ca-certificates
+
+# Copy your internal CA certificate(s)
+COPY certs/Internal_Root_CA.crt /usr/local/share/ca-certificates/
+COPY certs/Internal_Intermediate_CA.crt /usr/local/share/ca-certificates/
+
+# Update the system trust store
+RUN update-ca-certificates
+```
+
+**Kubernetes example (mount CA cert as a Secret):**
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flipt
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: update-ca-certs
+          image: flipt/flipt:latest
+          command: ["sh", "-c"]
+          args:
+            - |
+              cp /certs/*.crt /usr/local/share/ca-certificates/ &&
+              update-ca-certificates &&
+              cp -r /etc/ssl/certs/* /shared-certs/
+          volumeMounts:
+            - name: ca-certs
+              mountPath: /certs
+            - name: shared-certs
+              mountPath: /shared-certs
+      containers:
+        - name: flipt
+          image: flipt/flipt:latest
+          volumeMounts:
+            - name: shared-certs
+              mountPath: /etc/ssl/certs
+              readOnly: true
+      volumes:
+        - name: ca-certs
+          secret:
+            secretName: internal-ca-certs
+        - name: shared-certs
+          emptyDir: {}
+```
+
+<Tip>
+  You can verify that the certificates are trusted by running:
+  ```bash
+  echo | openssl s_client -brief -connect your-oidc-provider:443 -verify_hostname your-oidc-provider 2>&1 | grep Verification
+  ```
+  You should see `Verification: OK` if the CA is properly trusted.
+</Tip>
+
 #### PKCE
 
 A good amount of OIDC providers support the PKCE (Proof Key for Code Exchange) flow and the implicit OAuth flow. Flipt allows for a configuration to enable PKCE for all the legs of the OIDC authentication flow.
