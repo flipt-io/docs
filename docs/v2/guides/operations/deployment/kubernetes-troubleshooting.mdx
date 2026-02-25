@@ -9,7 +9,7 @@ This guide covers common issues encountered when deploying Flipt v2 to Kubernete
 
 When installing or upgrading the Flipt Helm chart, you may encounter schema validation errors like:
 
-```
+```text
 helm install flipt flipt/flipt-v2 -f values.yaml
 Error: INSTALLATION FAILED: values don't meet the specifications of the schema(s) in the following chart(s):
 flipt-v2:
@@ -20,7 +20,7 @@ flipt-v2:
 - resources: Additional property requests is not allowed
 ```
 
-This happens when the chart's JSON schema doesn't cover all valid configuration options. To work around this, skip schema validation:
+This happens when the chart's JSON schema doesn't cover all valid configuration options. To work around this, skip schema validation (requires Helm 3.13+):
 
 ```bash
 helm install flipt flipt/flipt-v2 -f values.yaml --skip-schema-validation
@@ -33,16 +33,16 @@ helm upgrade flipt flipt/flipt-v2 -f values.yaml --skip-schema-validation
 ```
 
 <Note>
-  The Helm chart schema is being updated to cover all valid configurations. In
-  the meantime, `--skip-schema-validation` is safe to use and does not affect
-  functionality.
+  The `--skip-schema-validation` flag is safe to use and does not affect
+  functionality. Track schema updates in
+  [flipt-io/helm-charts](https://github.com/flipt-io/helm-charts).
 </Note>
 
 ## Machine ID Not Found (License Validation)
 
 When running Flipt Pro on containerd-based Kubernetes clusters (such as GKE or modern EKS), you may see:
 
-```
+```text
 license is invalid; additional features are disabled.
 {"error": "machineid: machineid: no machine-id found"}
 ```
@@ -92,7 +92,7 @@ This mounts the host node's machine ID into the container, allowing the license 
 - Amazon EKS with containerd runtime
 - Any Kubernetes cluster using containerd instead of Docker
 - Rootless container environments
-- Serverless container runtimes (AWS Fargate, Google Cloud Run)
+- Amazon EKS with AWS Fargate node groups
 
 ## Persistent Volume Configuration
 
@@ -212,7 +212,7 @@ flipt:
           key: access-token
 ```
 
-## flipt license check and Helm Values
+## `flipt license check` and Helm Values
 
 The `flipt license check` command validates your license using a **Flipt configuration file**, not a Helm `values.yaml` file.
 
