@@ -128,7 +128,8 @@
                       {
                         "group": "Deployment",
                         "pages": [
-                          "v2/guides/operations/deployment/deploy-to-kubernetes"
+                          "v2/guides/operations/deployment/deploy-to-kubernetes",
+                          "v2/guides/operations/deployment/kubernetes-troubleshooting"
                         ]
                       },
                       {

@@ -1,0 +1,251 @@
+---
+title: "Kubernetes Troubleshooting"
+description: "Common issues and solutions when deploying Flipt v2 to Kubernetes"
+---
+
+This guide covers common issues encountered when deploying Flipt v2 to Kubernetes using the official Helm chart, along with their solutions.
+
+## Helm Schema Validation Errors
+
+When installing or upgrading the Flipt Helm chart, you may encounter schema validation errors like:
+
+```
+helm install flipt flipt/flipt-v2 -f values.yaml
+Error: INSTALLATION FAILED: values don't meet the specifications of the schema(s) in the following chart(s):
+flipt-v2:
+- (root): Additional property pgb is not allowed
+- flipt.config.storage.bitbucket.backend: Additional property local is not allowed
+- autoscaling: Additional property targetMemoryUtilizationPercentage is not allowed
+- resources: Additional property limits is not allowed
+- resources: Additional property requests is not allowed
+```
+
+This happens when the chart's JSON schema doesn't cover all valid configuration options. To work around this, skip schema validation:
+
+```bash
+helm install flipt flipt/flipt-v2 -f values.yaml --skip-schema-validation
+```
+
+Or for upgrades:
+
+```bash
+helm upgrade flipt flipt/flipt-v2 -f values.yaml --skip-schema-validation
+```
+
+<Note>
+  The Helm chart schema is being updated to cover all valid configurations. In
+  the meantime, `--skip-schema-validation` is safe to use and does not affect
+  functionality.
+</Note>
+
+## Machine ID Not Found (License Validation)
+
+When running Flipt Pro on containerd-based Kubernetes clusters (such as GKE or modern EKS), you may see:
+
+```
+license is invalid; additional features are disabled.
+{"error": "machineid: machineid: no machine-id found"}
+```
+
+### Why This Happens
+
+Flipt uses a machine fingerprint for license validation. The fingerprinting library reads from:
+
+1. `/var/lib/dbus/machine-id`
+2. `/etc/machine-id`
+3. Docker-specific paths in `/proc/self/cgroup` and `/proc/self/mountinfo`
+
+In containerd-based environments (GKE, EKS with containerd, etc.), none of these files exist inside the container because:
+
+- The Flipt container image is Alpine-based and doesn't include dbus
+- `/etc/machine-id` is not present in minimal container images
+- The Docker-specific fallback paths don't match containerd's format
+
+### Solution: Mount the Host Machine ID
+
+Mount the Kubernetes node's `/etc/machine-id` into the Flipt container by adding these values to your `values.yaml`:
+
+```yaml
+extraVolumeMounts:
+  - name: machine-id
+    mountPath: /etc/machine-id
+    readOnly: true
+
+extraVolumes:
+  - name: machine-id
+    hostPath:
+      path: /etc/machine-id
+```
+
+This mounts the host node's machine ID into the container, allowing the license system to identify the machine.
+
+<Warning>
+  If your cluster's security policy restricts `hostPath` volumes, you may need
+  to request an exception for this read-only mount, or wait for the configurable
+  machine fingerprint feature
+  ([flipt-io/flipt#5426](https://github.com/flipt-io/flipt/issues/5426)).
+</Warning>
+
+### Affected Environments
+
+- Google Kubernetes Engine (GKE)
+- Amazon EKS with containerd runtime
+- Any Kubernetes cluster using containerd instead of Docker
+- Rootless container environments
+- Serverless container runtimes (AWS Fargate, Google Cloud Run)
+
+## Persistent Volume Configuration
+
+Flipt needs a writable directory for local state. If you see read-only filesystem errors or Flipt fails to start with write permission errors, you likely need to configure persistence.
+
+### Enable Persistence
+
+Add the following to your `values.yaml`:
+
+```yaml
+persistence:
+  enabled: true
+  storageClass: "standard" # Use your cluster's storage class
+  size: 10Gi
+```
+
+<Tip>
+  On GKE, the default storage class is `standard`. On EKS, it's typically `gp2`
+  or `gp3`. Run `kubectl get storageclass` to see available options.
+</Tip>
+
+### Match the Storage Backend Path
+
+The `path` in your Flipt storage backend configuration refers to the path **inside the container**, not on the host. It must match where the PersistentVolumeClaim is mounted.
+
+The Helm chart mounts the PVC at `/var/opt/flipt` by default. Your storage backend configuration should use this path:
+
+```yaml
+flipt:
+  config:
+    storage:
+      my-storage:
+        backend:
+          type: local
+          local:
+            path: /var/opt/flipt
+```
+
+<Warning>
+  Do not use a relative path like `"."` for the backend path. This writes to the
+  container's working directory, which may be read-only. Always use the absolute
+  path where the PVC is mounted.
+</Warning>
+
+## Secrets Management with GitOps
+
+When deploying Flipt via ArgoCD, FluxCD, or other GitOps tools, you should not commit sensitive values (license keys, Git access tokens) to your Git repository inside `values.yaml`.
+
+### Using Kubernetes Secrets with Environment Variable Substitution
+
+Flipt supports [environment variable substitution](/v2/configuration/overview#environment-substitution-and-secret-references) in configuration values using the `${env:VAR_NAME}` syntax. Combined with the Helm chart's `envFrom` support, this lets you keep secrets out of your values file.
+
+**Step 1:** Create a Kubernetes Secret containing your sensitive values:
+
+```bash
+kubectl create secret generic flipt-secrets \
+  --from-literal=FLIPT_LICENSE_KEY=your-license-key \
+  --from-literal=FLIPT_GIT_ACCESS_TOKEN=your-access-token
+```
+
+Or use [External Secrets Operator](https://external-secrets.io/) to sync from your cloud provider's secret manager (GCP Secret Manager, AWS Secrets Manager, Azure Key Vault, HashiCorp Vault).
+
+**Step 2:** Reference the Secret in your `values.yaml`:
+
+```yaml
+flipt:
+  envFrom:
+    - secretRef:
+        name: flipt-secrets
+```
+
+**Step 3:** Use environment variable references in your Flipt configuration:
+
+```yaml
+flipt:
+  config:
+    license:
+      key: ${env:FLIPT_LICENSE_KEY}
+    credentials:
+      my-git:
+        type: access_token
+        access_token: ${env:FLIPT_GIT_ACCESS_TOKEN}
+    storage:
+      my-storage:
+        remote: "https://github.com/your-org/flipt-config.git"
+        branch: main
+        credentials: "my-git"
+```
+
+This approach keeps your `values.yaml` free of secrets and safe to commit to Git.
+
+### Compatible Secret Management Tools
+
+This pattern works with any tool that creates Kubernetes Secrets:
+
+- **[External Secrets Operator](https://external-secrets.io/)** — syncs secrets from GCP Secret Manager, AWS Secrets Manager, Azure Key Vault, HashiCorp Vault
+- **[Sealed Secrets](https://sealed-secrets.netlify.app/)** — encrypt secrets client-side, commit encrypted `SealedSecret` resources to Git
+- **[ArgoCD Vault Plugin](https://argocd-vault-plugin.readthedocs.io/)** — inject secrets from Vault at deploy time
+- **`kubectl create secret`** — create secrets manually for simpler setups
+
+### Using Individual Environment Variables
+
+If you prefer to inject secrets as individual environment variables rather than from a Secret reference, use `extraEnvVars`:
+
+```yaml
+flipt:
+  extraEnvVars:
+    - name: FLIPT_LICENSE_KEY
+      valueFrom:
+        secretKeyRef:
+          name: flipt-license
+          key: license-key
+    - name: FLIPT_GIT_ACCESS_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: flipt-git-creds
+          key: access-token
+```
+
+## flipt license check and Helm Values
+
+The `flipt license check` command validates your license using a **Flipt configuration file**, not a Helm `values.yaml` file.
+
+If you run:
+
+```bash
+flipt license check --config values.yaml
+```
+
+It will not work correctly because the Helm values file wraps the Flipt configuration under `flipt.config`, while `flipt license check` expects the raw Flipt configuration format.
+
+### Check License Locally
+
+To check your license locally, create a standalone Flipt configuration file:
+
+```yaml
+# flipt-config.yaml
+license:
+  key: "your-license-key"
+```
+
+Then run:
+
+```bash
+flipt license check --config flipt-config.yaml
+```
+
+### Check License in a Running Pod
+
+To verify the license in your deployed Flipt instance:
+
+```bash
+kubectl exec -it deploy/flipt-v2 -- flipt license check
+```
+
+This runs the check inside the container where the full configuration and environment variables are available.
