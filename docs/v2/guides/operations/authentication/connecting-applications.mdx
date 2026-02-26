@@ -1,6 +1,6 @@
 ---
 title: "Connecting Applications to Flipt"
-description: "Learn how to authenticate your applications with Flipt using client tokens or JWT authentication"
+description: "Learn how to authenticate your applications with Flipt using client tokens, JWT, or Kubernetes service account tokens"
 ---
 
 This guide explains how to connect your applications to Flipt for production use. You'll learn how to create authentication credentials and use them with Flipt's SDKs, REST API, and gRPC.
@@ -193,7 +193,8 @@ Kubernetes service account tokens are not used directly as Flipt client tokens. 
 
 ```bash
 # assumes curl (and optionally jq) is installed in the pod
-curl -s -X POST http://flipt:8080/auth/v1/method/kubernetes/serviceaccount \
+curl --request POST http://flipt:8080/auth/v1/method/kubernetes/serviceaccount \
+  --header 'Content-Type: application/json' \
   --data "{\"service_account_token\":\"$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)\"}"
 ```
 
