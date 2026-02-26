@@ -270,6 +270,7 @@ authentication:
   methods:
     kubernetes:
       enabled: true
+      # Path where Kubernetes mounts the service account token
       service_account_token_path: /var/run/secrets/kubernetes.io/serviceaccount/token
 ```
 
