@@ -135,8 +135,7 @@
                       {
                         "group": "Authentication",
                         "pages": [
-                          "v2/guides/operations/authentication/login-with-github",
-                          "v2/guides/operations/authentication/connecting-applications"
+                          "v2/guides/operations/authentication/login-with-github"
                         ]
                       },
                       {
