@@ -1,0 +1,320 @@
+---
+title: "Connecting Applications to Flipt"
+description: "Learn how to authenticate your applications with Flipt using client tokens or JWT authentication"
+---
+
+This guide explains how to connect your applications to Flipt for production use. You'll learn how to create authentication credentials and use them with Flipt's SDKs, REST API, and gRPC.
+
+## Overview
+
+Flipt supports two main authentication methods for applications:
+
+1. **Static Client Tokens** — generate a secure token and configure it in Flipt
+2. **JWT Authentication** — use JWTs from your existing identity provider
+
+Both methods work with all Flipt SDKs (Python, Node.js, Go, Java, etc.) and the REST/gRPC APIs.
+
+## Method 1: Static Client Tokens
+
+Static tokens are the simplest way to authenticate. You generate a secure random token, add it to your Flipt configuration, and then use that token in your applications.
+
+### Step 1: Generate a Secure Token
+
+Generate a cryptographically secure random token:
+
+```bash
+# Using openssl (recommended)
+openssl rand -hex 32
+
+# Using python
+python3 -c "import secrets; print(secrets.token_hex(32))"
+```
+
+This produces a 64-character hex string (e.g., `7f3a8b2c1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a`).
+
+### Step 2: Configure Flipt with Your Token
+
+Add the token to your Flipt configuration:
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    token:
+      enabled: true
+      storage:
+        tokens:
+          "my-app-token":
+            credential: "7f3a8b2c1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a"
+            metadata:
+              app: "production-api"
+              environment: "production"
+```
+
+<Tip>
+  Use environment variable substitution to avoid committing secrets to config files:
+
+```yaml
+authentication:
+  methods:
+    token:
+      storage:
+        tokens:
+          "my-app-token":
+            credential: "${env:FLIPT_CLIENT_TOKEN}"
+```
+
+Then set `FLIPT_CLIENT_TOKEN` in your environment or Kubernetes Secret.
+
+</Tip>
+
+### Step 3: Restart Flipt
+
+Restart your Flipt instance to pick up the new configuration.
+
+### Step 4: Use the Token in Your Application
+
+Once configured, use the token in your application code:
+
+<CodeGroup>
+<CodeGroupItem title="Python">
+
+```python
+from flipt import FliptClient
+from flipt.authentication import ClientTokenAuthentication
+
+# Create client with token authentication
+flipt = FliptClient(
+    url="http://localhost:8080",
+    authentication=ClientTokenAuthentication("7f3a8b2c1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a")
+)
+
+# Evaluate a flag
+result = flipt.evaluation.variant(
+    flag_key="dark-mode",
+    entity_id="user-123",
+    context={"theme": "dark"}
+)
+```
+
+</CodeGroupItem>
+<CodeGroupItem title="Node.js">
+
+```typescript
+import { Flipt, ClientTokenAuthentication } from "@flipt-io/flipt-node";
+
+const flipt = new Flipt({
+  url: "http://localhost:8080",
+  authentication: new ClientTokenAuthentication(
+    "7f3a8b2c1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a"
+  ),
+});
+
+const result = await flipt.evaluate("dark-mode", "user-123", {
+  theme: "dark",
+});
+```
+
+</CodeGroupItem>
+<CodeGroupItem title="Go">
+
+```go
+import (
+    flipt "github.com/flipt-io/flipt/sdk/go"
+    "github.com/flipt-io/flipt/sdk/go/authentication"
+)
+
+opts := []flipt.Option{
+    flipt.WithURL("http://localhost:8080"),
+    flipt.WithAuth(authentication.NewClientTokenAuthentication("7f3a8b2c1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a")),
+}
+
+client, _ := flipt.New(opts...)
+```
+
+</CodeGroupItem>
+<CodeGroupItem title="Java">
+
+```java
+import io.flipt.api.FliptClient;
+import io.flipt.api.authentication.ClientTokenAuthenticationStrategy;
+
+FliptClient flipt = FliptClient.builder()
+    .url("http://localhost:8080")
+    .authenticationStrategy(new ClientTokenAuthenticationStrategy("7f3a8b2c1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a"))
+    .build();
+```
+
+</CodeGroupItem>
+<CodeGroupItem title="REST">
+
+```bash
+curl -X GET http://localhost:8080/v1/flags/dark-mode/evaluations \
+  -H "Authorization: Bearer 7f3a8b2c1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a" \
+  -H "Content-Type: application/json" \
+  -d '{"flag_key": "dark-mode", "entity_id": "user-123", "context": {"theme": "dark"}}'
+```
+
+</CodeGroupItem>
+</CodeGroup>
+
+### Using Tokens with Kubernetes Secrets
+
+For Kubernetes deployments, store the token in a Secret and reference it via environment variables:
+
+```yaml
+# Create secret
+apiVersion: v1
+kind: Secret
+metadata:
+  name: flipt-client-token
+type: Opaque
+stringData:
+  token: "7f3a8b2c1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a"
+
+---
+# In your application deployment
+env:
+  - name: FLIPT_CLIENT_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: flipt-client-token
+        key: token
+```
+
+---
+
+## Method 2: JWT Authentication
+
+If you already have an identity provider (Auth0, Okta, Keycloak, etc.) that issues JWTs, you can use those with Flipt without creating static tokens.
+
+### Step 1: Configure Flipt for JWT
+
+Add JWT authentication to your Flipt configuration:
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    jwt:
+      enabled: true
+      # Configure your JWKS endpoint
+      jwks:
+        url: "https://your-idp.com/.well-known/jwks.json"
+```
+
+### Step 2: Use JWTs in Your Application
+
+Your application obtains a JWT from your identity provider, then passes it to Flipt:
+
+<CodeGroup>
+<CodeGroupItem title="Python">
+
+```python
+from flipt import FliptClient
+from flipt.authentication import JWTAuthentication
+
+# Your app gets a JWT from your IdP (Auth0, Okta, etc.)
+jwt_token = get_jwt_from_your_idp()
+
+flipt = FliptClient(
+    url="http://localhost:8080",
+    authentication=JWTAuthentication(jwt_token)
+)
+```
+
+</CodeGroupItem>
+<CodeGroupItem title="Node.js">
+
+```typescript
+import { Flipt, JWTAuthentication } from "@flipt-io/flipt-node";
+
+// Your app gets a JWT from your IdP
+const jwtToken = await getJWTToken();
+
+const flipt = new Flipt({
+  url: "http://localhost:8080",
+  authentication: new JWTAuthentication(jwtToken),
+});
+```
+
+</CodeGroupItem>
+<CodeGroupItem title="REST">
+
+```bash
+curl -X GET http://localhost:8080/v1/flags/dark-mode/evaluations \
+  -H "Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
+  -H "Content-Type: application/json" \
+  -d '{"flag_key": "dark-mode", "entity_id": "user-123", "context": {}}'
+```
+
+</CodeGroupItem>
+</CodeGroup>
+
+JWT authentication is useful when:
+
+- You already have SSO set up
+- You want to avoid managing static tokens
+- You need per-user authentication and audit trails
+
+---
+
+## Method 3: Kubernetes Service Account Tokens
+
+If you're running Flipt in Kubernetes, you can authenticate using service account tokens — no static tokens required.
+
+### Step 1: Enable Kubernetes Authentication
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    kubernetes:
+      enabled: true
+      # Path where Kubernetes mounts the service account token
+      service_account_token_path: /var/run/secrets/kubernetes.io/serviceaccount/token
+```
+
+### Step 2: Use in Your Applications
+
+Your Kubernetes pods already have service account tokens mounted. Use them directly:
+
+```python
+import os
+from flipt import FliptClient
+from flipt.authentication import ClientTokenAuthentication
+
+# Read the in-cluster service account token
+with open("/var/run/secrets/kubernetes.io/serviceaccount/token", "r") as f:
+    k8s_token = f.read()
+
+flipt = FliptClient(
+    url="http://localhost:8080",
+    authentication=ClientTokenAuthentication(k8s_token)
+)
+```
+
+This approach:
+
+- Requires no manual token management
+- Works seamlessly with pod rotation
+- Is the most Kubernetes-native option
+
+---
+
+## Choosing an Authentication Method
+
+| Method            | Best For                                        | Complexity |
+| ----------------- | ----------------------------------------------- | ---------- |
+| **Static Token**  | Simple deployments, CI/CD, single application   | Low        |
+| **JWT**           | Teams with existing IdP (Auth0, Okta, Keycloak) | Medium     |
+| **Kubernetes SA** | Running in Kubernetes with multiple services    | Low        |
+
+---
+
+## Related
+
+- [Authentication Configuration](/v2/configuration/authentication) — Full reference for all auth options
+- [REST API Reference](/v2/integration/server/rest) — REST API authentication details
+- [Server SDKs](/v2/integration/server/rest) — SDK documentation
+- [Client SDKs](/v2/integration/client) — Client-side evaluation SDKs
