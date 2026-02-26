@@ -13,8 +13,6 @@ When installing or upgrading the Flipt Helm chart, you may encounter schema vali
 helm install flipt flipt/flipt-v2 -f values.yaml
 Error: INSTALLATION FAILED: values don't meet the specifications of the schema(s) in the following chart(s):
 flipt-v2:
-- (root): Additional property pgb is not allowed
-- flipt.config.storage.bitbucket.backend: Additional property local is not allowed
 - autoscaling: Additional property targetMemoryUtilizationPercentage is not allowed
 - resources: Additional property limits is not allowed
 - resources: Additional property requests is not allowed
@@ -129,8 +127,7 @@ flipt:
       my-storage:
         backend:
           type: local
-          local:
-            path: /var/opt/flipt
+          path: /var/opt/flipt
 ```
 
 <Warning>
