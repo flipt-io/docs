@@ -79,6 +79,12 @@ extraVolumes:
 
 This mounts the host node's machine ID into the container, allowing the license system to identify the machine.
 
+<Note>
+  This workaround depends on `hostPath` volumes and a node filesystem. It won't
+  work in environments that don't allow `hostPath` (for example, many managed
+  serverless node offerings such as EKS Fargate).
+</Note>
+
 <Warning>
   If your cluster's security policy restricts `hostPath` volumes, you may need
   to request an exception for this read-only mount, or wait for the
@@ -92,7 +98,6 @@ This mounts the host node's machine ID into the container, allowing the license 
 - Amazon EKS with containerd runtime
 - Any Kubernetes cluster using containerd instead of Docker
 - Rootless container environments
-- Amazon EKS with AWS Fargate node groups
 
 ## Persistent Volume Configuration
 
@@ -157,10 +162,9 @@ Or use [External Secrets Operator](https://external-secrets.io/) to sync from yo
 **Step 2:** Reference the Secret in your `values.yaml`:
 
 ```yaml
-flipt:
-  envFrom:
-    - secretRef:
-        name: flipt-secrets
+envFrom:
+  - secretRef:
+      name: flipt-secrets
 ```
 
 **Step 3:** Use environment variable references in your Flipt configuration:
@@ -197,16 +201,15 @@ This pattern works with any tool that creates Kubernetes Secrets:
 If you prefer to inject secrets as individual environment variables rather than from a Secret reference, use `extraEnvVars`:
 
 ```yaml
-flipt:
-  extraEnvVars:
-    - name: FLIPT_LICENSE_KEY
-      valueFrom:
-        secretKeyRef:
-          name: flipt-license
-          key: license-key
-    - name: FLIPT_GIT_ACCESS_TOKEN
-      valueFrom:
-        secretKeyRef:
-          name: flipt-git-creds
-          key: access-token
+extraEnvVars:
+  - name: FLIPT_LICENSE_KEY
+    valueFrom:
+      secretKeyRef:
+        name: flipt-license
+        key: license-key
+  - name: FLIPT_GIT_ACCESS_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: flipt-git-creds
+        key: access-token
 ```
