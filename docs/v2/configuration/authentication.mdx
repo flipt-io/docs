@@ -342,13 +342,19 @@ If not specified, the default is `false`.
 
 If your OIDC provider uses self-signed or internal CA certificates (common with self-hosted Keycloak, Dex, or corporate identity providers), Flipt will reject the TLS connection with an error like:
 
+```text
+x509: certificate signed by unknown authority
 ```
-tls: failed to verify certificate: x509: certificate signed by unknown authority
-```
+
+The full error may also appear as `tls: failed to verify certificate: x509: certificate signed by unknown authority` depending on the log context.
 
 Flipt relies on the system trust store for TLS validation. To trust your internal CA, you need to add your CA certificate(s) to the container's trust store.
 
-**Dockerfile example:**
+<Note>
+  Unlike the [`kubernetes` auth method](/v2/configuration/authentication#kubernetes), OIDC does not expose a `ca_path` configuration option. You must add your CA certificate(s) to the container's system trust store instead.
+</Note>
+
+##### Dockerfile Example
 
 ```dockerfile
 FROM flipt/flipt:latest
@@ -364,7 +370,16 @@ COPY certs/Internal_Intermediate_CA.crt /usr/local/share/ca-certificates/
 RUN update-ca-certificates
 ```
 
-**Kubernetes example (mount CA cert as a Secret):**
+##### Kubernetes Example
+
+First, create a Secret containing your CA certificate:
+
+```bash
+kubectl create secret generic internal-ca-certs \
+  --from-file=ca.crt=/path/to/your/ca.crt
+```
+
+Then deploy Flipt with an init container that updates the trust store:
 
 ```yaml
 apiVersion: apps/v1
@@ -372,14 +387,22 @@ kind: Deployment
 metadata:
   name: flipt
 spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flipt
   template:
+    metadata:
+      labels:
+        app: flipt
     spec:
       initContainers:
         - name: update-ca-certs
-          image: flipt/flipt:latest
+          image: alpine:latest
           command: ["sh", "-c"]
           args:
             - |
+              apk add --no-cache ca-certificates &&
               cp /certs/*.crt /usr/local/share/ca-certificates/ &&
               update-ca-certificates &&
               cp -r /etc/ssl/certs/* /shared-certs/
@@ -404,10 +427,13 @@ spec:
 ```
 
 <Tip>
-  You can verify that the certificates are trusted by running: ```bash echo |
-  openssl s_client -brief -connect your-oidc-provider:443 -verify_hostname
-  your-oidc-provider 2>&1 | grep Verification ``` You should see `Verification:
-  OK` if the CA is properly trusted.
+  You can verify that the certificates are trusted by running:
+
+  ```bash
+  echo | openssl s_client -connect your-oidc-provider:443 2>&1 | grep "Verification"
+  ```
+
+  You should see `Verification: OK` if the CA is properly trusted.
 </Tip>
 
 #### PKCE
