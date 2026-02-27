@@ -128,13 +128,15 @@
                       {
                         "group": "Deployment",
                         "pages": [
-                          "v2/guides/operations/deployment/deploy-to-kubernetes"
+                          "v2/guides/operations/deployment/deploy-to-kubernetes",
+                          "v2/guides/operations/deployment/kubernetes-troubleshooting"
                         ]
                       },
                       {
                         "group": "Authentication",
                         "pages": [
-                          "v2/guides/operations/authentication/login-with-github"
+                          "v2/guides/operations/authentication/login-with-github",
+                          "v2/guides/operations/authentication/connecting-applications"
                         ]
                       },
                       {

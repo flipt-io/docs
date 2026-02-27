@@ -1,0 +1,231 @@
+---
+title: "Connecting Applications to Flipt"
+description: "Learn how to authenticate your applications with Flipt using client tokens, JWT, or Kubernetes service account tokens"
+---
+
+This guide explains how to connect your applications to Flipt for production use. You'll learn how to create authentication credentials and use them with Flipt's SDKs, REST API, and gRPC.
+
+## Overview
+
+Flipt supports these application authentication patterns:
+
+1. **Static Client Tokens** — generate a secure token and configure it in Flipt
+2. **JWT Authentication** — use JWTs from your existing identity provider
+3. **Kubernetes Service Account Exchange** — exchange a pod service account token for a Flipt client token
+
+Static client tokens and JWTs work with Flipt's SDKs and HTTP APIs. Kubernetes service account authentication is a token exchange flow that returns a Flipt client token (or is handled automatically by supported SDKs).
+
+## Method 1: Static Client Tokens
+
+Static tokens are the simplest way to authenticate. You generate a secure random token, add it to your Flipt configuration, and then use that token in your applications.
+
+### Step 1: Generate a Secure Token
+
+Generate a cryptographically secure random token:
+
+```bash
+# Using openssl (recommended)
+openssl rand -hex 32
+
+# Using python
+python3 -c "import secrets; print(secrets.token_hex(32))"
+```
+
+This produces a 64-character hex string (e.g., `7f3a8b2c1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a`).
+
+### Step 2: Configure Flipt with Your Token
+
+Add the token to your Flipt configuration:
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    token:
+      enabled: true
+      storage:
+        tokens:
+          "my-app-token":
+            credential: "7f3a8b2c1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a"
+            metadata:
+              app: "production-api"
+              environment: "production"
+```
+
+<Tip>
+  Use environment variable substitution to avoid committing secrets to config files:
+
+```yaml
+authentication:
+  methods:
+    token:
+      storage:
+        tokens:
+          "my-app-token":
+            credential: "${env:FLIPT_CLIENT_TOKEN}"
+```
+
+Then set `FLIPT_CLIENT_TOKEN` in your environment or Kubernetes Secret.
+
+</Tip>
+
+### Step 3: Restart Flipt
+
+Restart your Flipt instance to pick up the new configuration.
+
+### Step 4: Use the Token in Your Application
+
+Once configured, pass the client token to your SDK or send it in the HTTP `Authorization` header.
+
+<Note>
+  SDK authentication class names and initialization options vary by language and
+  SDK version. Use the auth strategy/client token option documented in the SDK
+  README for your language from the [Server SDKs](/v2/integration/server/rest)
+  and [Client SDKs](/v2/integration/client) pages.
+</Note>
+
+Example HTTP request using a client token:
+
+```bash
+curl --request POST http://localhost:8080/evaluate/v1/variant \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer <client-token>' \
+  --data '{
+    "flagKey": "dark-mode",
+    "entityId": "user-123",
+    "namespaceKey": "default",
+    "context": {
+      "theme": "dark"
+    }
+  }'
+```
+
+### Using Tokens with Kubernetes Secrets
+
+For Kubernetes deployments, store the token in a Secret and reference it via environment variables:
+
+```yaml
+# Create secret
+apiVersion: v1
+kind: Secret
+metadata:
+  name: flipt-client-token
+type: Opaque
+stringData:
+  token: "7f3a8b2c1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a"
+
+---
+# In your application deployment
+env:
+  - name: FLIPT_CLIENT_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: flipt-client-token
+        key: token
+```
+
+---
+
+## Method 2: JWT Authentication
+
+If you already have an identity provider (Auth0, Okta, Keycloak, etc.) that issues JWTs, you can use those with Flipt without creating static tokens.
+
+### Step 1: Configure Flipt for JWT
+
+Add JWT authentication to your Flipt configuration:
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    jwt:
+      enabled: true
+      jwks_url: "https://your-idp.com/.well-known/jwks.json"
+```
+
+### Step 2: Use JWTs in Your Application
+
+Your application obtains a JWT from your identity provider, then passes it to Flipt using the JWT authorization header format:
+
+```bash
+curl --request POST http://localhost:8080/evaluate/v1/variant \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: JWT <jwt>' \
+  --data '{
+    "flagKey": "dark-mode",
+    "entityId": "user-123",
+    "namespaceKey": "default",
+    "context": {}
+  }'
+```
+
+For SDK usage, configure the SDK's JWT authentication strategy/option for your language and pass the token returned by your identity provider.
+
+JWT authentication is useful when:
+
+- You already have SSO set up
+- You want to avoid managing static tokens
+- You need per-user authentication and audit trails
+
+---
+
+## Method 3: Kubernetes Service Account Tokens
+
+If you're running Flipt in Kubernetes, you can use the Kubernetes authentication method to exchange a pod service account token for a Flipt client token.
+
+### Step 1: Enable Kubernetes Authentication
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    kubernetes:
+      enabled: true
+      # Path where Kubernetes mounts the service account token
+      service_account_token_path: /var/run/secrets/kubernetes.io/serviceaccount/token
+```
+
+### Step 2: Exchange the Service Account Token for a Flipt Client Token
+
+Kubernetes service account tokens are not used directly as Flipt client tokens. Instead, send the pod token to Flipt's Kubernetes auth endpoint to obtain a Flipt client token:
+
+```bash
+# assumes curl (and optionally jq) is installed in the pod
+curl --request POST http://flipt:8080/auth/v1/method/kubernetes/serviceaccount \
+  --header 'Content-Type: application/json' \
+  --data "{\"service_account_token\":\"$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)\"}"
+```
+
+Use the returned `clientToken` value as a normal Flipt client token (`Authorization: Bearer <client-token>`).
+
+<Tip>
+  Some SDKs can perform this Kubernetes token exchange and refresh flow
+  automatically. See the SDK documentation for your language.
+</Tip>
+
+This approach:
+
+- Avoids provisioning static tokens per workload
+- Aligns Flipt credentials to Kubernetes service account token expiration
+- Works well for in-cluster service-to-service authentication
+
+---
+
+## Choosing an Authentication Method
+
+| Method            | Best For                                        | Complexity |
+| ----------------- | ----------------------------------------------- | ---------- |
+| **Static Token**  | Simple deployments, CI/CD, single application   | Low        |
+| **JWT**           | Teams with existing IdP (Auth0, Okta, Keycloak) | Medium     |
+| **Kubernetes SA** | Running in Kubernetes with multiple services    | Low        |
+
+---
+
+## Related
+
+- [Authentication Configuration](/v2/configuration/authentication) — Full reference for all auth options
+- [REST API Reference](/v2/integration/server/rest) — REST API authentication details
+- [Server SDKs](/v2/integration/server/rest) — SDK documentation
+- [Client SDKs](/v2/integration/client) — Client-side evaluation SDKs
