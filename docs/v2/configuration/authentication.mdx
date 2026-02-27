@@ -351,7 +351,10 @@ The full error may also appear as `tls: failed to verify certificate: x509: cert
 Flipt relies on the system trust store for TLS validation. To trust your internal CA, you need to add your CA certificate(s) to the container's trust store.
 
 <Note>
-  Unlike the [`kubernetes` auth method](/v2/configuration/authentication#kubernetes), OIDC does not expose a `ca_path` configuration option. You must add your CA certificate(s) to the container's system trust store instead.
+  Unlike the [`kubernetes` auth
+  method](/v2/configuration/authentication#kubernetes), OIDC does not expose a
+  `ca_path` configuration option. You must add your CA certificate(s) to the
+  container's system trust store instead.
 </Note>
 
 ##### Dockerfile Example
@@ -427,13 +430,14 @@ spec:
 ```
 
 <Tip>
-  You can verify that the certificates are trusted by running:
+You can verify that the certificates are trusted by running:
 
-  ```bash
-  echo | openssl s_client -connect your-oidc-provider:443 2>&1 | grep "Verification"
-  ```
+```bash
+echo | openssl s_client -connect your-oidc-provider:443 2>&1 | grep "Verification"
+```
 
-  You should see `Verification: OK` if the CA is properly trusted.
+You should see `Verification: OK` if the CA is properly trusted.
+
 </Tip>
 
 #### PKCE
