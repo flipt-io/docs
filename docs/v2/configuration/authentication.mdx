@@ -196,6 +196,51 @@ authentication:
               some_key: "some_value"
 ```
 
+#### Using Secret References
+
+To avoid storing token values directly in your configuration file, you can use [secret references](/v2/configuration/overview#secret-references) with a configured [secret provider](/v2/configuration/secrets).
+
+Using the [file provider](/v2/configuration/secrets#file-provider):
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    token:
+      enabled: true
+      storage:
+        tokens:
+          "ci_token":
+            credential: "${secret:file:ci-token}"
+            metadata:
+              name: "CI Pipeline Token"
+          "dev_token":
+            credential: "${secret:file:dev-token}"
+            metadata:
+              name: "Development Token"
+```
+
+Using the [HashiCorp Vault provider](/v2/configuration/secrets#hashicorp-vault-provider):
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    token:
+      enabled: true
+      storage:
+        tokens:
+          "ci_token":
+            credential: "${secret:vault:flipt/tokens:ci-token}"
+            metadata:
+              name: "CI Pipeline Token"
+```
+
+<Tip>
+  See [Secrets](/v2/configuration/secrets) for details on configuring secret
+  providers.
+</Tip>
+
 ### OIDC
 
 <Note>The `OIDC` method is a `session compatible` authentication method.</Note>
