@@ -211,11 +211,11 @@ authentication:
       storage:
         tokens:
           "ci_token":
-            credential: "${secret:file:ci-token}"
+            credential: "${secret:file:ci-token}" # References /etc/flipt/secrets/ci-token
             metadata:
               name: "CI Pipeline Token"
           "dev_token":
-            credential: "${secret:file:dev-token}"
+            credential: "${secret:file:dev-token}" # References /etc/flipt/secrets/dev-token
             metadata:
               name: "Development Token"
 ```
@@ -231,9 +231,13 @@ authentication:
       storage:
         tokens:
           "ci_token":
-            credential: "${secret:vault:flipt/tokens:ci-token}"
+            credential: "${secret:vault:flipt/tokens:ci-token}" # References flipt/tokens secret, key: ci-token
             metadata:
               name: "CI Pipeline Token"
+          "dev_token":
+            credential: "${secret:vault:flipt/tokens:dev-token}" # References flipt/tokens secret, key: dev-token
+            metadata:
+              name: "Development Token"
 ```
 
 <Tip>
