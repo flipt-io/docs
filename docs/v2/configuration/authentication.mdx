@@ -416,7 +416,7 @@ spec:
               mountPath: /shared-certs
       containers:
         - name: flipt
-          image: flipt/flipt:latest
+          image: flipt/flipt:v2
           volumeMounts:
             - name: shared-certs
               mountPath: /etc/ssl/certs
