@@ -448,7 +448,7 @@ Credentials configuration manages authentication details for accessing remote Gi
 
 ### Secrets
 
-Secrets configuration enables integration with external secret management systems like Vault for secure credential storage.
+Secrets configuration enables integration with external secret management systems for secure credential storage. See the [Secrets](/v2/configuration/secrets) documentation for detailed provider setup and usage.
 
 | Property                       | Description                            | Default | Since  |
 | ------------------------------ | -------------------------------------- | ------- | ------ |
@@ -470,6 +470,26 @@ Secrets configuration enables integration with external secret management system
 | secrets.providers.vault.role        | Role name for authentication                     |         | v2.0.0 |
 | secrets.providers.vault.mount       | Vault mount path for secrets                     | secret  | v2.0.0 |
 | secrets.providers.vault.namespace   | Vault namespace for enterprise Vault deployments |         | v2.0.0 |
+
+#### Secrets Provider: AWS Secrets Manager
+
+| Property                           | Description                                                     | Default | Since  |
+| ---------------------------------- | --------------------------------------------------------------- | ------- | ------ |
+| secrets.providers.aws.endpoint_url | Custom endpoint URL (for LocalStack or AWS-compatible services) |         | v2.0.0 |
+
+#### Secrets Provider: GCP Secret Manager
+
+| Property                          | Description                                   | Default | Since  |
+| --------------------------------- | --------------------------------------------- | ------- | ------ |
+| secrets.providers.gcp.project     | GCP project ID                                |         | v2.0.0 |
+| secrets.providers.gcp.location    | GCP region for regional secrets               |         | v2.0.0 |
+| secrets.providers.gcp.credentials | Path to service account credentials JSON file |         | v2.0.0 |
+
+#### Secrets Provider: Azure Key Vault
+
+| Property                          | Description                                                     | Default | Since  |
+| --------------------------------- | --------------------------------------------------------------- | ------- | ------ |
+| secrets.providers.azure.vault_url | Azure Key Vault URL (e.g., `https://my-vault.vault.azure.net/`) |         | v2.0.0 |
 
 ## Observability & Operations
 
