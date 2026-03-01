@@ -149,11 +149,11 @@ In the LaunchDarkly SDK, here's how you fetch the value of a boolean flag:
 const booleanFlagValue = await ldClient.boolVariation(
   featureFlags.booleanFlag.key,
   context,
-  false
+  false,
 );
 doSomethingDependingOnFeatureFlagValue(
   featureFlags.booleanFlag.key,
-  booleanFlagValue
+  booleanFlagValue,
 );
 ```
 
@@ -165,8 +165,8 @@ ldClient
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.booleanFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -180,8 +180,8 @@ ldClient
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.booleanFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -193,8 +193,8 @@ ldClient
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.booleanFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -210,8 +210,8 @@ ldClient
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.booleanFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -223,8 +223,8 @@ client
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.booleanFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -236,8 +236,8 @@ ldClient
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.booleanFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -249,8 +249,8 @@ client
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.booleanFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -262,8 +262,8 @@ ldClient
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.booleanFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -275,8 +275,8 @@ client
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.booleanFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -295,8 +295,8 @@ ldClient
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.stringFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -306,11 +306,11 @@ or, using the async/await syntax:
 const stringFlagValue = await ldClient.stringVariation(
   featureFlags.stringFlag.key,
   context,
-  "red"
+  "red",
 );
 doSomethingDependingOnFeatureFlagValue(
   featureFlags.stringFlag.key,
-  stringFlagValue
+  stringFlagValue,
 );
 ```
 
@@ -324,8 +324,8 @@ ldClient
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.stringFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -337,8 +337,8 @@ client
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.stringFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -350,8 +350,8 @@ ldClient
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.stringFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -363,8 +363,8 @@ client
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.stringFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -376,8 +376,8 @@ ldClient
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.stringFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -389,8 +389,8 @@ client
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.stringFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -404,8 +404,8 @@ ldClient
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.numberFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -415,11 +415,11 @@ or using the async/await syntax:
 const numberFlagValue = await ldClient.numberVariation(
   featureFlags.numberFlag.key,
   context,
-  50
+  50,
 );
 doSomethingDependingOnFeatureFlagValue(
   featureFlags.numberFlag.key,
-  numberFlagValue
+  numberFlagValue,
 );
 ```
 
@@ -433,8 +433,8 @@ ldClient
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.numberFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -446,8 +446,8 @@ client
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.numberFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -459,8 +459,8 @@ ldClient
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.numberFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -472,8 +472,8 @@ client
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.numberFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -485,8 +485,8 @@ ldClient
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.numberFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -498,8 +498,8 @@ client
   .then((flagValue) =>
     doSomethingDependingOnFeatureFlagValue(
       featureFlags.numberFlag.key,
-      flagValue
-    )
+      flagValue,
+    ),
   );
 ```
 
@@ -517,7 +517,10 @@ You can call each of these functions with a promise call chain:
 ldClient
   .jsonVariation(featureFlags.jsonFlag.key, context, {})
   .then((flagValue) =>
-    doSomethingDependingOnFeatureFlagValue(featureFlags.jsonFlag.key, flagValue)
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.jsonFlag.key,
+      flagValue,
+    ),
   );
 ```
 
@@ -527,11 +530,11 @@ or using the async/await syntax:
 const jsonFlagValue = await ldClient.jsonVariation(
   featureFlags.jsonFlag.key,
   context,
-  {}
+  {},
 );
 doSomethingDependingOnFeatureFlagValue(
   featureFlags.jsonFlag.key,
-  jsonFlagValue
+  jsonFlagValue,
 );
 ```
 
@@ -541,7 +544,10 @@ When migrating a `jsonVariation()` call to the OpenFeature SDK,
 ldClient
   .jsonVariation(featureFlags.jsonFlag.key, context, {})
   .then((flagValue) =>
-    doSomethingDependingOnFeatureFlagValue(featureFlags.jsonFlag.key, flagValue)
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.jsonFlag.key,
+      flagValue,
+    ),
   );
 ```
 
@@ -551,7 +557,10 @@ becomes
 client
   .getObjectValue(featureFlags.jsonFlag.key, {}, context)
   .then((flagValue) =>
-    doSomethingDependingOnFeatureFlagValue(featureFlags.jsonFlag.key, flagValue)
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.jsonFlag.key,
+      flagValue,
+    ),
   );
 ```
 
@@ -561,7 +570,10 @@ When migrating a `variation()` call,
 ldClient
   .variation(featureFlags.jsonFlag.key, context, {})
   .then((flagValue) =>
-    doSomethingDependingOnFeatureFlagValue(featureFlags.jsonFlag.key, flagValue)
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.jsonFlag.key,
+      flagValue,
+    ),
   );
 ```
 
@@ -571,7 +583,10 @@ also becomes
 client
   .getObjectValue(featureFlags.jsonFlag.key, {}, context)
   .then((flagValue) =>
-    doSomethingDependingOnFeatureFlagValue(featureFlags.jsonFlag.key, flagValue)
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.jsonFlag.key,
+      flagValue,
+    ),
   );
 ```
 
@@ -581,7 +596,10 @@ Finally, when migrating a `jsonVariationDetail()` call,
 ldClient
   .jsonVariationDetail(featureFlags.jsonFlag.key, context, {})
   .then((flagValue) =>
-    doSomethingDependingOnFeatureFlagValue(featureFlags.jsonFlag.key, flagValue)
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.jsonFlag.key,
+      flagValue,
+    ),
   );
 ```
 
@@ -591,7 +609,10 @@ becomes
 client
   .getObjectDetails(featureFlags.jsonFlag.key, {}, context)
   .then((flagValue) =>
-    doSomethingDependingOnFeatureFlagValue(featureFlags.jsonFlag.key, flagValue)
+    doSomethingDependingOnFeatureFlagValue(
+      featureFlags.jsonFlag.key,
+      flagValue,
+    ),
   );
 ```
 
@@ -649,8 +670,8 @@ try {
 } catch (error) {
   console.log(
     `Failed to connect to LaunchDarkly :( Here's what the error says: ${JSON.stringify(
-      error
-    )}`
+      error,
+    )}`,
   );
 }
 ```
@@ -661,8 +682,8 @@ LaunchDarkly also allows listening to the `error` event that signals an abnormal
 ldClient.on("error", (error) => {
   console.log(
     `The LaunchDarkly client has encountered an error. Here are the details: ${JSON.stringify(
-      error
-    )}`
+      error,
+    )}`,
   );
 });
 ```
@@ -673,8 +694,8 @@ In OpenFeature SDK terms, the equivalent listener looks like this:
 OpenFeature.addHandler(ProviderEvents.Error, (error) => {
   console.log(
     `The OpenFeature client for LaunchDarkly has encountered an error. Here are the details: ${JSON.stringify(
-      error
-    )}`
+      error,
+    )}`,
   );
 });
 ```
@@ -689,7 +710,7 @@ ldClient.on("update", (keyObject) => {
   ldClient
     .variation(keyObject.key, context, false)
     .then((flagValue) =>
-      doSomethingDependingOnFeatureFlagValue(keyObject.key, flagValue)
+      doSomethingDependingOnFeatureFlagValue(keyObject.key, flagValue),
     );
 });
 ```
@@ -699,15 +720,15 @@ The `update:key` listener is more specific and serves to receive configuration u
 ```javascript
 ldClient.on(`update:${featureFlags.booleanFlag.key}`, () => {
   console.log(
-    `Configuration of flag ${featureFlags.booleanFlag.key} has changed`
+    `Configuration of flag ${featureFlags.booleanFlag.key} has changed`,
   );
   ldClient
     .variation(featureFlags.booleanFlag.key, context, false)
     .then((flagValue) =>
       doSomethingDependingOnFeatureFlagValue(
         featureFlags.booleanFlag.key,
-        flagValue
-      )
+        flagValue,
+      ),
     );
 });
 ```
@@ -719,7 +740,7 @@ OpenFeature.addHandler(
   ProviderEvents.ConfigurationChanged,
   async (_eventDetails) => {
     // your event handling code
-  }
+  },
 );
 ```
 
@@ -732,7 +753,7 @@ OpenFeature.addHandler(
     const changedFlag = _eventDetails.flagsChanged[0];
     console.log(`Configuration of flag ${changedFlag} has changed`);
     const flagType = Object.values(featureFlags).find(
-      (x) => x.key === changedFlag
+      (x) => x.key === changedFlag,
     ).type;
 
     let flagValue;
@@ -746,11 +767,11 @@ OpenFeature.addHandler(
       flagValue = await client.getObjectValue(changedFlag, null, context);
     } else {
       console.log(
-        "Something went awry: we don't know the type of the updated flag"
+        "Something went awry: we don't know the type of the updated flag",
       );
     }
     doSomethingDependingOnFeatureFlagValue(changedFlag, flagValue);
-  }
+  },
 );
 ```
 
