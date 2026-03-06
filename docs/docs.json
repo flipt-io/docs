@@ -519,7 +519,7 @@
     "dark": "/logo/dark-logo.svg"
   },
   "banner": {
-    "content": "🎉 **Flipt v2 is now available!** Experience the next generation of feature management with [Pro features](https://docs.flipt.io/v2/pro) and enhanced GitOps workflow.",
+    "content": "🎉 **New in Flipt Pro:** Integrated secrets management with HashiCorp Vault, AWS Secrets Manager, GCP Secret Manager, and Azure Key Vault. [Learn more](https://docs.flipt.io/v2/pro).",
     "dismissible": true
   },
   "api": {
