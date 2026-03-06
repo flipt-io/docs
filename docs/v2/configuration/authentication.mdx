@@ -240,6 +240,26 @@ authentication:
               name: "Development Token"
 ```
 
+Using a cloud provider ([AWS](/v2/configuration/secrets#aws-secrets-manager-provider), [GCP](/v2/configuration/secrets#gcp-secret-manager-provider), or [Azure](/v2/configuration/secrets#azure-key-vault-provider)):
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    token:
+      enabled: true
+      storage:
+        tokens:
+          "ci_token":
+            credential: "${secret:aws:ci-token}" # AWS Secrets Manager
+            metadata:
+              name: "CI Pipeline Token"
+          "dev_token":
+            credential: "${secret:gcp:dev-token}" # GCP Secret Manager
+            metadata:
+              name: "Development Token"
+```
+
 <Tip>
   See [Secrets](/v2/configuration/secrets) for details on configuring secret
   providers.
