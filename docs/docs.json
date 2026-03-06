@@ -15,6 +15,13 @@
       "og:site_name": "Flipt Docs"
     }
   },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "mcp"
+    ]
+  },
   "navigation": {
     "tabs": [
       {
