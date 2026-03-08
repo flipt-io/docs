@@ -27,14 +27,6 @@ Both versions are maintained to support users on different versions of Flipt.
 - **Config**: docs/docs.json for navigation, theme, settings ([docs.json schema](https://mintlify.com/docs.json))
 - **Components**: Mintlify components
 
-### Cloudflare Worker
-
-A Cloudflare Worker (`worker/`) handles automatic redirects from old v1 documentation paths to their new locations. This ensures backward compatibility for existing links and bookmarks.
-
-- **Purpose**: Redirects old documentation URLs to new v1 or v2 paths
-- **Configuration**: See `worker/README.md` for deployment and configuration details
-- **Testing**: Run `npm test` in the worker directory to validate redirect rules
-
 ### Required Frontmatter
 
 - `title`: Clear, descriptive page title
@@ -104,12 +96,6 @@ A Cloudflare Worker (`worker/`) handles automatic redirects from old v1 document
 - `vale sync` - Install Vale dependencies for documentation linting (run from docs/ directory)
 - `vale *` - Lint all documentation files (run from docs/ directory)
 - `vale README.md` - Lint specific file (run from docs/ directory)
-
-### Cloudflare Worker Commands
-
-- `npm run dev` - Start worker development server (run from worker/ directory)
-- `npm test` - Run redirect tests (run from worker/ directory)
-- `npm run deploy` - Deploy worker to production (run from worker/ directory)
 
 ### Publishing
 
