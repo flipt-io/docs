@@ -176,6 +176,19 @@
             ]
           },
           {
+            "anchor": "API Reference",
+            "icon": "code",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "v2/reference/overview"
+                ]
+              }
+
+            ]
+          },
+          {
             "anchor": "Blog",
             "href": "https://blog.flipt.io",
             "icon": "newspaper"
