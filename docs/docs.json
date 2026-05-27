@@ -132,7 +132,7 @@
                   {
                     "group": "Operations Guides",
                     "pages": [
-                      "v2/guides/operations/deployment/production",
+                      "v2/guides/operations/production",
                       {
                         "group": "Deployment",
                         "pages": [
