@@ -1,0 +1,215 @@
+---
+title: "Production Readiness"
+description: "Reviewing configuration options for operating Flipt v2 in production"
+---
+
+Flipt v2's default configuration is designed for local development and quick starts. To run Flipt v2 reliably in production, you should review and adjust the following configuration options.
+
+## Logging
+
+Debug logging is useful during development or troubleshooting, but under load it consumes CPU and produces excessive noise that can bury important signals.
+
+Set the log level to `info` in production:
+
+<Tabs>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_LOG_LEVEL=info
+    ```
+
+  </Tab>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    log:
+      level: info
+    ```
+
+  </Tab>
+</Tabs>
+
+For structured log output suitable for log aggregation systems, you can also set the encoding to `json`:
+
+<Tabs>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_LOG_ENCODING=json
+    ```
+
+  </Tab>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    log:
+      encoding: json
+    ```
+
+  </Tab>
+</Tabs>
+
+See the [Observability documentation](/v2/configuration/observability) for more logging configuration options.
+
+## Profiling Endpoints
+
+Flipt exposes [pprof](https://pkg.go.dev/net/http/pprof) profiling endpoints at `/debug/pprof`. These are invaluable for debugging performance issues but can expose sensitive runtime information if publicly accessible.
+
+Disable profiling in production unless you actively need it:
+
+<Tabs>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_DIAGNOSTICS_PROFILING_ENABLED=false
+    ```
+
+  </Tab>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    diagnostics:
+      profiling:
+        enabled: false
+    ```
+
+  </Tab>
+</Tabs>
+
+If you need profiling in production, restrict access to internal networks only.
+
+## Update Checks
+
+By default, Flipt v2 checks for newer versions on startup. This can be disabled in air-gapped or security-sensitive environments:
+
+<Tabs>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_META_CHECK_FOR_UPDATES=false
+    ```
+
+  </Tab>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    meta:
+      check_for_updates: false
+    ```
+
+  </Tab>
+</Tabs>
+
+## Prometheus Metrics
+
+Flipt v2 exposes Prometheus metrics at the `/metrics` HTTP endpoint by default. Ensure this endpoint is not publicly accessible - restrict it via network policies, reverse proxy rules, or your ingress configuration.
+
+If you do not require metrics, you can disable them:
+
+<Tabs>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_METRICS_ENABLED=false
+    ```
+
+  </Tab>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    metrics:
+      enabled: false
+    ```
+
+  </Tab>
+</Tabs>
+
+For production, Flipt also supports exporting metrics to an [OTLP](https://opentelemetry.io/docs/concepts/data-collection/) collector for integration with observability platforms such as Datadog, Honeycomb, or New Relic. See the [Observability documentation](/v2/configuration/observability) for more details.
+
+## CORS Configuration
+
+If you are running Flipt v2 with a browser-based frontend (e.g. a React, Vue, or Angular app), you must enable and configure CORS to match your frontend domain. Restrict `allowed_origins` to your known frontend URLs rather than using the wildcard `*` default:
+
+<Tabs>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_CORS_ENABLED=true
+    FLIPT_CORS_ALLOWED_ORIGINS=https://app.example.com
+    ```
+
+  </Tab>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    cors:
+      enabled: true
+      allowed_origins:
+        - "https://app.example.com"
+    ```
+
+  </Tab>
+</Tabs>
+
+## Storage Configuration
+
+Flipt v2 supports two storage backend types:
+
+- **`memory`** (default): In-memory store. Data is lost on restart.
+- **`local`**: Persists data to the local filesystem. Data survives restarts.
+
+Both backends can be paired with a git remote to sync flag state to and from a remote Git repository for persistence, history, and collaboration across deployments.
+
+For production, use the `local` backend with a git remote:
+
+```yaml
+storage:
+  default:
+    backend:
+      type: local
+      path: /var/lib/flipt
+    remote: https://github.com/your-org/flags.git
+    branch: main
+```
+
+See the [Storage documentation](/v2/configuration/storage) and [Git Sync guide](/v2/guides/operations/environments/git-sync) for more details.
+
+## Authentication and Authorization
+
+In production, you should enable authentication to control access to Flipt v2:
+
+<Tabs>
+  <Tab title="Environment Variables">
+
+    ```bash
+    FLIPT_AUTHENTICATION_REQUIRED=true
+    ```
+
+  </Tab>
+  <Tab title="Configuration YAML">
+
+    ```yaml
+    authentication:
+      required: true
+    ```
+
+  </Tab>
+</Tabs>
+
+Flipt v2 supports multiple authentication methods including GitHub OAuth and OIDC. See the [Authentication documentation](/v2/configuration/authentication) for configuration details.
+
+For fine-grained access control, configure RBAC policies to restrict what authenticated users can do.
+
+## Backup Strategy
+
+Flipt v2's Git-native storage means your feature flag data is already version-controlled in a Git repository. Ensure your backup strategy covers:
+
+- **Git repository**: The source Git repository should be backed up by your Git provider (e.g. GitHub, GitLab). Consider mirroring to a secondary repository for additional redundancy.
+- **Analytics data**: If using ClickHouse, ensure that data is backed up according to your organizational policies.
+
+## Next Steps
+
+- [Deploy to Kubernetes](/v2/guides/operations/deployment/deploy-to-kubernetes) — Deploy with our official Helm chart
+- [Git Sync](/v2/guides/operations/environments/git-sync) — Configure Git-backed storage
+- [Observability](/v2/configuration/observability) — Metrics, logging, and tracing
+- [Authentication](/v2/configuration/authentication) — Secure your Flipt instance
