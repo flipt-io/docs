@@ -1,6 +1,6 @@
 ---
 title: "Production Readiness"
-description: "Reviewing configuration options for operating Flipt v2 in production"
+description: "Key configuration options for operating Flipt v2 in production"
 ---
 
 Flipt v2's default configuration is designed for local development and quick start. To run Flipt v2 reliably in production, you should review and adjust the following configuration options.
@@ -128,7 +128,7 @@ For production, Flipt also supports exporting metrics to an [OTLP](https://opent
 
 ## CORS Configuration
 
-If you are running Flipt v2 with a browser-based frontend (e.g. a React, Vue, or Angular app), you must enable and configure CORS to match your frontend domain. Restrict `allowed_origins` to your known frontend URLs rather than using the wildcard `*` default:
+If you are running Flipt v2 with a browser-based frontend (e.g. a React, Vue, or Angular app), you must enable and configure CORS to match your frontend domain. Restrict `allowed_origins` to your known frontend URLs rather than relying on the wildcard `*`:
 
 <Tabs>
   <Tab title="Environment Variables">
@@ -172,7 +172,7 @@ storage:
     branch: main
 ```
 
-See the [Storage documentation](/v2/configuration/storage) and [Git Sync guide](/v2/guides/operations/environments/git-sync) for more details.
+For private repositories, you'll also need to configure credentials. See the [Storage documentation](/v2/configuration/storage) and [Git Sync guide](/v2/guides/operations/environments/git-sync) for more details.
 
 ## Authentication and Authorization
 
@@ -198,7 +198,7 @@ In production, you should enable authentication to control access to Flipt v2:
 
 Flipt v2 supports multiple authentication methods including GitHub OAuth and OIDC. See the [Authentication documentation](/v2/configuration/authentication) for configuration details.
 
-For fine-grained access control, configure RBAC policies to restrict what authenticated users can do.
+For fine-grained access control, [configure RBAC policies using OPA-based authorization](/v2/configuration/authorization) to restrict what authenticated users can do.
 
 ## Backup Strategy
 
@@ -213,3 +213,4 @@ Flipt v2's Git-native storage means your feature flag data is already version-co
 - [Git Sync](/v2/guides/operations/environments/git-sync) — Configure Git-backed storage
 - [Observability](/v2/configuration/observability) — Metrics, logging, and tracing
 - [Authentication](/v2/configuration/authentication) — Secure your Flipt instance
+- [Authorization](/v2/configuration/authorization) — Configure RBAC policies for fine-grained access control
