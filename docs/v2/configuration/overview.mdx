@@ -349,7 +349,7 @@ Authentication configuration controls how users and systems authenticate with Fl
 | authentication.methods.oidc.providers.[provider].client_secret         | Provider specific OIDC client secret (see your providers docs)   |           | v2.0.0 |
 | authentication.methods.oidc.providers.[provider].redirect_address      | Public URL on which this Flipt instance is reachable             |           | v2.0.0 |
 | authentication.methods.oidc.providers.[provider].scopes                | Scopes to request from the provider                              |           | v2.0.0 |
-| authentication.methods.oidc.providers.[provider].use_pkce              | Option for enabling PKCE for OIDC authentication flow            | false     | v2.0.0 |
+| authentication.methods.oidc.providers.[provider].use_pkce              | Enable PKCE with a cryptographic nonce for OIDC authentication   | false     | v2.0.0 |
 | authentication.methods.oidc.providers.[provider].algorithms            | List of accepted ID token signing algorithms                     | ["RS256"] | v2.6.0 |
 | authentication.methods.oidc.providers.[provider].fetch_extra_user_info | Fetch additional claims from the provider's UserInfo endpoint    | false     | v2.6.0 |
 | authentication.methods.oidc.email_matches                              | List of email addresses (regex) of users allowed to authenticate |           | v2.0.0 |
@@ -367,6 +367,7 @@ Authentication configuration controls how users and systems authenticate with Fl
 | authentication.methods.github.allowed_teams         | Map of GitHub organizations to teams that users must be members of |                          | v2.0.0 |
 | authentication.methods.github.server_url            | GitHub Server URL (to support GHES)                                | `https://github.com`     | v2.0.0 |
 | authentication.methods.github.api_url               | GitHub API URL (to support GHES)                                   | `https://api.github.com` | v2.0.0 |
+| authentication.methods.github.use_pkce              | Enable PKCE for GitHub OAuth flow                                  | false                    | v2.9.0 |
 
 #### Authentication Methods: Kubernetes
 
