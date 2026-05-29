@@ -128,7 +128,7 @@ For production, Flipt also supports exporting metrics to an [OTLP](https://opent
 
 ## CORS Configuration
 
-If you are running Flipt v2 with a browser-based frontend (e.g. a React, Vue, or Angular app), you must enable and configure CORS to match your frontend domain. Restrict `allowed_origins` to your known frontend URLs rather than relying on the wildcard `*`:
+If you are integrating Flipt v2 with a client-side application (for example, a browser-based frontend built with React, Vue, Angular, or similar frameworks), you must enable and properly configure CORS to allow requests from your frontend domain. For security reasons, restrict `allowed_origins` to your known frontend URLs instead of using the wildcard `*`.
 
 <Tabs>
   <Tab title="Environment Variables">
