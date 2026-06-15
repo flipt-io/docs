@@ -53,6 +53,23 @@ Finally, search for references of the LaunchDarkly client instance: in our examp
 If you're using VS Code, this is what you'd see after calling _Go to References_ on `ldClient`:
 ![Searching for usages of LaunchDarkly client instance in VS Code](/v1/images/guides/migration/launchdarkly/usages_vscode.png)
 
+### Optional: Use FlagLint
+
+For larger JavaScript and TypeScript codebases, you can use [FlagLint](https://flaglint.dev/) to analyze supported direct LaunchDarkly Node.js SDK usages with AST analysis:
+
+```bash
+# List detected call sites
+npx flaglint scan ./src
+
+# Summarize migration risk and readiness
+npx flaglint audit ./src
+
+# Preview safe OpenFeature call-site rewrites without changing files
+npx flaglint migrate ./src --dry-run
+```
+
+The migration preview skips usages that FlagLint cannot safely rewrite. FlagLint analyzes application call sites but does not migrate flag definitions, targeting rules, environment configuration, backend state, or provider setup.
+
 ## Installing and Importing OpenFeature Packages
 
 When you're using LaunchDarkly's own SDK, your application declares this package as a dependency:
