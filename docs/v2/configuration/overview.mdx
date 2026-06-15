@@ -633,7 +633,13 @@ Meta configuration controls Flipt's internal behavior including update checks, t
 | meta.check_for_updates        | Enable check for newer versions of Flipt on startup                            | true                | v2.0.0 |
 | meta.telemetry_enabled        | Enable anonymous telemetry data (see [Telemetry](/v2/configuration/telemetry)) | true                | v2.0.0 |
 | meta.state_directory          | Directory on the host to store local state                                     | $HOME/.config/flipt | v2.0.0 |
-| diagnostics.profiling.enabled | Enable profiling endpoints for pprof                                           | true                | v2.0.0 |
+| diagnostics.profiling.enabled | Enable profiling endpoints for pprof                                           | false               | v2.0.0 |
+
+<Note>
+  Changed in **v2.10.0**: diagnostics.profiling.enabled now defaults to false.
+  If you rely on pprof endpoints, explicitly set it to true in your
+  configuration.
+</Note>
 
 ## Deprecations
 
