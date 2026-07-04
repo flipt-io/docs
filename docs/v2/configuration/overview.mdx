@@ -626,6 +626,34 @@ Analytics configuration enables collection and export of feature flag evaluation
 
 ## Additional Settings
 
+### Templates
+
+Templates configuration customizes the generated commit messages and merge proposal content that Flipt creates for Git-backed workflows. Template values use Go [`text/template`](https://pkg.go.dev/text/template) syntax.
+
+| Property                 | Description                                    | Default | Since  |
+| ------------------------ | ---------------------------------------------- | ------- | ------ |
+| templates.commit_message | Commit message template for UI-created changes |         | v2.5.0 |
+| templates.proposal_title | Merge proposal title template                  |         | v2.5.0 |
+| templates.proposal_body  | Merge proposal body template                   |         | v2.5.0 |
+
+```yaml config.yaml
+templates:
+  commit_message: "{{ (index .Changes 0) }} [skip ci]"
+  proposal_title: "Flipt: Update {{.Base.Ref}} from {{.Branch.Ref}}"
+  proposal_body: |
+    This proposal updates Flipt resources.
+
+    Source branch: {{.Branch.Ref}}
+    Target branch: {{.Base.Ref}}
+```
+
+Server-wide templates override Flipt's built-in defaults. Repository-level templates in `flipt.yaml` or `flipt.yml` override server-wide templates for that repository.
+
+<Note>
+  Flipt validates configured templates when it loads the configuration. Invalid
+  server-wide templates prevent the configuration from loading.
+</Note>
+
 ### License
 
 License configuration enables Pro features by providing a valid license key.

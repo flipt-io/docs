@@ -56,6 +56,49 @@ Refresh the page and click the branch info label again to see the merge proposal
 
 Click the `View open merge proposal` button to view the merge proposal in the SCM provider.
 
+### Customizing Generated Titles and Descriptions
+
+Flipt generates merge proposal titles and descriptions from Go [`text/template`](https://pkg.go.dev/text/template) templates. You can configure server-wide defaults in your Flipt configuration:
+
+```yaml config.yaml
+templates:
+  proposal_title: "Flipt: Update {{.Base.Ref}} from {{.Branch.Ref}}"
+  proposal_body: |
+    This proposal updates Flipt resources.
+
+    Source branch: {{.Branch.Ref}}
+    Target branch: {{.Base.Ref}}
+```
+
+The template context includes:
+
+| Field               | Description                                  |
+| ------------------- | -------------------------------------------- |
+| `.Base`             | The target environment configuration         |
+| `.Branch`           | The source branch environment configuration  |
+| `.Base.Ref`         | The target Git reference, such as `main`     |
+| `.Branch.Ref`       | The source Git reference for the branch      |
+| `.Base.Directory`   | The target directory, when one is configured |
+| `.Branch.Directory` | The branch directory, when one is configured |
+
+Repository-level templates in `flipt.yaml` or `flipt.yml` override the server-wide templates for that repository:
+
+```yaml flipt.yaml
+version: "2.0"
+templates:
+  proposal_title: "Flags: {{.Branch.Ref}} into {{.Base.Ref}}"
+  proposal_body: |
+    Review changes from {{.Branch.Ref}} before merging into {{.Base.Ref}}.
+```
+
+<Note>
+  These templates configure the generated defaults. If a merge proposal request
+  provides a title or description, Flipt uses the provided value instead of the
+  template. The Flipt UI can provide a one-off description, but it does not yet
+  let you edit the configured template text or override the generated title
+  directly.
+</Note>
+
 ### Review and Merge a Merge Proposal
 
 Reviewing and merging a merge proposal is the same as reviewing and merging a code pull request in your SCM provider.
