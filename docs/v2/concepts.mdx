@@ -110,6 +110,8 @@ All flags can have metadata associated with them. This metadata is stored in the
 
 Metadata is stored as a JSON object and is not used for evaluation. You can retrieve flag metadata using the [Get Flag](/v1/reference/flags/get-flag) API.
 
+By default, ListFlags responses omit flag metadata. To include metadata in ListFlags responses, set [`evaluation.include_flag_metadata`](/v2/configuration/overview#evaluation) to `true`.
+
 In the Flipt UI, metadata is displayed in the flag details section. The UI allows you to add, edit, and delete metadata and provides a more user-friendly interface for managing metadata by specifying key-value pairs and their data types.
 
 Currently, the following data types are supported:

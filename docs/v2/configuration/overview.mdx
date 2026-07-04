@@ -581,6 +581,20 @@ To configure the OTLP headers, you can set the `OTEL_EXPORTER_OTLP_TRACES_HEADER
 export OTEL_EXPORTER_OTLP_TRACES_HEADERS="Authorization=Bearer <token>"
 ```
 
+### Evaluation
+
+Evaluation configuration controls feature flag evaluation behavior and related API response data.
+
+| Property                         | Description                                             | Default | Since  |
+| -------------------------------- | ------------------------------------------------------- | ------- | ------ |
+| evaluation.include_flag_metadata | Include flag metadata in ListFlags API response objects | false   | v2.3.0 |
+
+<Note>
+  Flag metadata can contain operator-defined data. Keep
+  `evaluation.include_flag_metadata` disabled unless clients that call ListFlags
+  should receive that metadata.
+</Note>
+
 ### Analytics
 
 Analytics configuration enables collection and export of feature flag evaluation metrics to external analytics systems.
