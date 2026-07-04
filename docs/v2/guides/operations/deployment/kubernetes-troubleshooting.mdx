@@ -61,9 +61,26 @@ In containerd-based environments (GKE, EKS with containerd, etc.), none of these
 - `/etc/machine-id` is not present in minimal container images
 - The Docker-specific fallback paths don't match containerd's format
 
-### Solution: Mount the Host Machine ID
+### Solution: Configure a Stable Machine ID
 
-Mount the Kubernetes node's `/etc/machine-id` into the Flipt container by adding these values to your `values.yaml`:
+Set `license.machine_id` or the `FLIPT_LICENSE_MACHINE_ID` environment variable to a stable value for the deployment. Use the same value across restarts for the same licensed deployment.
+
+For Helm deployments, set the environment variable from a Kubernetes Secret:
+
+```yaml
+extraEnvVars:
+  - name: FLIPT_LICENSE_MACHINE_ID
+    valueFrom:
+      secretKeyRef:
+        name: flipt-license
+        key: machine-id
+```
+
+See [Licensing](/v2/configuration/licensing#machine-id-in-container-environments) for more details.
+
+### Legacy Workaround: Mount the Host Machine ID
+
+If you cannot configure `FLIPT_LICENSE_MACHINE_ID`, you can mount the Kubernetes node's `/etc/machine-id` into the Flipt container by adding these values to your `values.yaml`:
 
 ```yaml
 extraVolumeMounts:
@@ -79,17 +96,11 @@ extraVolumes:
 
 This mounts the host node's machine ID into the container, allowing the license system to identify the machine.
 
-<Note>
+<Warning>
   This workaround depends on `hostPath` volumes and a node filesystem. It won't
   work in environments that don't allow `hostPath` (for example, many managed
-  serverless node offerings such as EKS Fargate).
-</Note>
-
-<Warning>
-  If your cluster's security policy restricts `hostPath` volumes, you may need
-  to request an exception for this read-only mount, or wait for the
-  [configurable machine fingerprint
-  feature](https://github.com/flipt-io/flipt/issues/5426) to ship.
+  serverless node offerings such as EKS Fargate). Prefer
+  `FLIPT_LICENSE_MACHINE_ID` when possible.
 </Warning>
 
 ### Affected Environments

@@ -22,6 +22,8 @@ You can configure the license key in the Flipt v2 configuration file or via envi
       key: "your-license-key"
       # Optional: Path to offline license file for annual licenses
       file: "/path/to/license.lic"
+      # Optional: Stable machine fingerprint for container environments
+      machine_id: "your-stable-machine-id"
     ```
 
   </Tab>
@@ -31,14 +33,68 @@ You can configure the license key in the Flipt v2 configuration file or via envi
     FLIPT_LICENSE_KEY="your-license-key"
     # Optional: Path to offline license file for annual licenses
     FLIPT_LICENSE_FILE="/path/to/license.lic"
+    # Optional: Stable machine fingerprint for container environments
+    FLIPT_LICENSE_MACHINE_ID="your-stable-machine-id"
     ```
 
   </Tab>
 </Tabs>
 
 <Note>
-  You'll need to restart your Flipt v2 instance for the license key to take
-  effect.
+  You'll need to restart your Flipt v2 instance for the license configuration to
+  take effect.
+</Note>
+
+## Machine ID in Container Environments
+
+Flipt identifies the host machine during license validation. In containerd-based Kubernetes clusters and serverless container runtimes, automatic machine ID detection can fail because files such as `/etc/machine-id` or Docker-specific cgroup paths might not be available.
+
+If this happens, Flipt starts with Pro features disabled and logs an error similar to:
+
+```text
+license is invalid; additional features are disabled. {"error": "machineid: machineid: no machine-id found"}
+```
+
+Set `license.machine_id` or `FLIPT_LICENSE_MACHINE_ID` to a stable value for the deployment. Use the same value across restarts for the same licensed deployment, and use a different value for separate deployments that should count as different machines.
+
+```yaml config.yaml
+license:
+  key: "your-license-key"
+  machine_id: "flipt-production-us-east-1"
+```
+
+For Kubernetes, store the value in a Secret and expose it as an environment variable:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: flipt-license
+type: Opaque
+stringData:
+  machine-id: "flipt-production-us-east-1"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flipt
+spec:
+  # ...
+  template:
+    spec:
+      containers:
+        - name: flipt
+          env:
+            - name: FLIPT_LICENSE_MACHINE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: flipt-license
+                  key: machine-id
+```
+
+<Note>
+  `license.machine_id` overrides automatic machine ID detection. It does not
+  change the license key or bypass license validation.
 </Note>
 
 ## Acquiring a License
