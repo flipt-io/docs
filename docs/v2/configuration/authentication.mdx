@@ -407,6 +407,32 @@ authentication:
 
 If not specified, the default is `false`.
 
+#### Custom Authorize Parameters
+
+Some OIDC providers require extra query parameters on the authorization request. For example, Auth0 can use an `audience` parameter to request API access, and some providers use parameters such as `domain_hint`, `connection`, or `idp` to route users to the correct identity provider.
+
+Configure these values with the `authorize_parameters` map on the provider. Flipt appends each key-value pair to the OIDC authorize URL during login.
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    oidc:
+      enabled: true
+      providers:
+        some_provider:
+          issuer_url: "https://some.oidc.issuer.com"
+          client_id: "some_client_identifier"
+          client_secret: "some_client_secret_credential"
+          redirect_address: "https://your.flipt.instance.url.com"
+          authorize_parameters:
+            audience: "https://api.example.com"
+            prompt: "login"
+            domain_hint: "example.com"
+```
+
+If not specified, the default is an empty map.
+
 #### Self-Signed Certificates
 
 If your OIDC provider uses self-signed or internal CA certificates (common with self-hosted Keycloak, Dex, or corporate identity providers), Flipt will reject the TLS connection with an error like:
