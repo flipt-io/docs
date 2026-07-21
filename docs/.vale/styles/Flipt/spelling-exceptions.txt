@@ -4,6 +4,7 @@ approvers
 auditable
 avro
 azblob
+b2c
 backoff
 boolean
 caddy
@@ -33,6 +34,7 @@ gitops
 googlecloud
 grafana
 grpc
+guid
 hostname
 http
 httplug
