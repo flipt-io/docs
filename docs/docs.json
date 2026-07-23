@@ -171,7 +171,8 @@
                 "icon": "hammer",
                 "tag": "NEW",
                 "pages": [
-                  "v2/tooling/github-actions"
+                  "v2/tooling/github-actions",
+                  "v2/tooling/model-context-protocol"
                 ]
               }
             ]
