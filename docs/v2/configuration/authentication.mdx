@@ -279,7 +279,7 @@ authentication:
     oidc:
       enabled: true
       email_matches:
-        - ^.*@flipt.io$
+        - ^.*@flipt\.io$
       providers:
         some_provider: # insert your provider name
           issuer_url: "https://some.oidc.issuer.com"
@@ -493,6 +493,100 @@ authentication:
 </Note>
 
 This is particularly important when using [`email_matches`](#email-matches) with a provider that doesn't emit a string `email` claim: without mapping the email onto the `email` attribute, Flipt has no email to match against and rejects the request.
+
+#### Single Logout (SLO)
+
+Single Logout (SLO) allows you to terminate a user's session across Flipt and the OIDC provider simultaneously. When a user logs out from one service, the session is invalidated everywhere. Flipt supports both back-channel and front-channel logout as defined by the [OIDC Front-Channel Logout](https://openid.net/specs/openid-connect-frontchannel-1_0.html) and [OIDC Back-Channel Logout](https://openid.net/specs/openid-connect-backchannel-1_0.html) specifications.
+
+##### Back-Channel Logout
+
+Back-channel logout is the most common approach. The OIDC provider sends a signed `logout_token` to Flipt via a server-to-server POST request at `/auth/v1/method/oidc/{provider}/revoke`. Flipt verifies the token and removes the matching session.
+
+No additional configuration is required to enable back-channel logout — it is available whenever an OIDC provider is configured.
+
+To use back-channel logout, register the Flipt revoke endpoint as the provider's **Back-Channel Logout URL**:
+
+```text
+https://your.flipt.instance.url.com/auth/v1/method/oidc/{provider}/revoke
+```
+
+When the provider initiates a logout, it sends a form-encoded POST request with a `logout_token` parameter. Flipt verifies the token's signature, issuer, and audience, then uses the `sid` (session ID) or `sub` (subject) claim to locate and delete the corresponding authentication record.
+
+##### Front-Channel Logout
+
+Front-channel logout uses browser redirects instead of server-to-server calls. When the OIDC provider initiates logout, it embeds an invisible iframe pointing to Flipt's front-channel logout endpoint. The browser makes a GET request to:
+
+```text
+https://your.flipt.instance.url.com/auth/v1/method/oidc/{provider}/revoke?iss={issuer}&sid={session_id}
+```
+
+To enable front-channel logout, set `allow_front_channel_logout` to `true` on the provider:
+
+```yaml config.yaml
+authentication:
+  required: true
+  session:
+    domain: "flipt.yourorg.com"
+    secure: true
+  methods:
+    oidc:
+      enabled: true
+      providers:
+        some_provider:
+          issuer_url: "https://some.oidc.issuer.com"
+          client_id: "some_client_identifier"
+          client_secret: "some_client_secret_credential"
+          redirect_address: "https://your.flipt.instance.url.com"
+          allow_front_channel_logout: true
+```
+
+<Warning>
+  Front-channel logout requires `session.secure: true`. The logout flow sets
+  `SameSite=None` on session cookies so the browser can discard them in a
+  cross-origin iframe context. Browsers reject `SameSite=None` cookies unless
+  the `Secure` flag is set, so enabling front-channel logout without a secure
+  session will result in a configuration error.
+</Warning>
+
+To use front-channel logout, register the Flipt revoke endpoint as the provider's **Front-Channel Logout URL**:
+
+```text
+https://your.flipt.instance.url.com/auth/v1/method/oidc/{provider}/revoke
+```
+
+The provider includes `iss` and `sid` query parameters so Flipt can identify the session to terminate.
+
+##### End-Session Endpoint
+
+Flipt can also redirect users to the OIDC provider's end-session endpoint when they log out from the UI. This ensures the provider terminates its own session as well.
+
+To enable this, set `use_end_session_endpoint` to `true` on the provider:
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    oidc:
+      enabled: true
+      providers:
+        some_provider:
+          issuer_url: "https://some.oidc.issuer.com"
+          client_id: "some_client_identifier"
+          client_secret: "some_client_secret_credential"
+          redirect_address: "https://your.flipt.instance.url.com"
+          use_end_session_endpoint: true
+```
+
+When enabled, Flipt constructs a redirect URL using the provider's `end_session_endpoint` (discovered from the OIDC well-known configuration) with the following query parameters:
+
+- `id_token_hint` — the user's ID token
+- `post_logout_redirect_uri` — the provider's configured `redirect_address`
+
+<Note>
+  The `use_end_session_endpoint` option requires the provider to expose an
+  `end_session_endpoint` in its OIDC discovery document. If the provider does
+  not, Flipt logs an error and skips the redirect.
+</Note>
 
 #### Self-Signed Certificates
 

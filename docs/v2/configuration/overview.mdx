@@ -341,21 +341,23 @@ Authentication configuration controls how users and systems authenticate with Fl
 
 #### Authentication Methods: OIDC
 
-| Property                                                               | Description                                                      | Default   | Since   |
-| ---------------------------------------------------------------------- | ---------------------------------------------------------------- | --------- | ------- |
-| authentication.methods.oidc.enabled                                    | Enable OIDC authentication                                       | false     | v2.0.0  |
-| authentication.methods.oidc.providers.[provider].issuer_url            | Provider specific OIDC issuer URL (see your providers docs)      |           | v2.0.0  |
-| authentication.methods.oidc.providers.[provider].client_id             | Provider specific OIDC client ID (see your providers docs)       |           | v2.0.0  |
-| authentication.methods.oidc.providers.[provider].client_secret         | Provider specific OIDC client secret (see your providers docs)   |           | v2.0.0  |
-| authentication.methods.oidc.providers.[provider].redirect_address      | Public URL on which this Flipt instance is reachable             |           | v2.0.0  |
-| authentication.methods.oidc.providers.[provider].scopes                | Scopes to request from the provider                              |           | v2.0.0  |
-| authentication.methods.oidc.providers.[provider].use_pkce              | Enable PKCE with a cryptographic nonce for OIDC authentication   | false     | v2.0.0  |
-| authentication.methods.oidc.providers.[provider].algorithms            | List of accepted ID token signing algorithms                     | ["RS256"] | v2.6.0  |
-| authentication.methods.oidc.providers.[provider].fetch_extra_user_info | Fetch additional claims from the provider's UserInfo endpoint    | false     | v2.6.0  |
-| authentication.methods.oidc.providers.[provider].authorize_parameters  | Extra query parameters to append to the provider authorize URL   | {}        | v2.11.0 |
-| authentication.methods.oidc.providers.[provider].discovery_url         | Override URL for the OIDC discovery document (e.g. Azure AD B2C) |           | v2.12.0 |
-| authentication.methods.oidc.providers.[provider].claims_mapping        | JSON Pointer map for extracting user attributes from claims      | {}        | v2.12.0 |
-| authentication.methods.oidc.email_matches                              | List of email addresses (regex) of users allowed to authenticate |           | v2.0.0  |
+| Property                                                                    | Description                                                      | Default   | Since   |
+| --------------------------------------------------------------------------- | ---------------------------------------------------------------- | --------- | ------- |
+| authentication.methods.oidc.enabled                                         | Enable OIDC authentication                                       | false     | v2.0.0  |
+| authentication.methods.oidc.providers.[provider].issuer_url                 | Provider specific OIDC issuer URL (see your providers docs)      |           | v2.0.0  |
+| authentication.methods.oidc.providers.[provider].client_id                  | Provider specific OIDC client ID (see your providers docs)       |           | v2.0.0  |
+| authentication.methods.oidc.providers.[provider].client_secret              | Provider specific OIDC client secret (see your providers docs)   |           | v2.0.0  |
+| authentication.methods.oidc.providers.[provider].redirect_address           | Public URL on which this Flipt instance is reachable             |           | v2.0.0  |
+| authentication.methods.oidc.providers.[provider].scopes                     | Scopes to request from the provider                              |           | v2.0.0  |
+| authentication.methods.oidc.providers.[provider].use_pkce                   | Enable PKCE with a cryptographic nonce for OIDC authentication   | false     | v2.0.0  |
+| authentication.methods.oidc.providers.[provider].algorithms                 | List of accepted ID token signing algorithms                     | ["RS256"] | v2.6.0  |
+| authentication.methods.oidc.providers.[provider].fetch_extra_user_info      | Fetch additional claims from the provider's UserInfo endpoint    | false     | v2.6.0  |
+| authentication.methods.oidc.providers.[provider].authorize_parameters       | Extra query parameters to append to the provider authorize URL   | {}        | v2.11.0 |
+| authentication.methods.oidc.providers.[provider].use_end_session_endpoint   | Redirect to the provider's end-session endpoint on logout        | false     | v2.11.0 |
+| authentication.methods.oidc.providers.[provider].allow_front_channel_logout | Enable OIDC front-channel logout support                         | false     | v2.12.0 |
+| authentication.methods.oidc.providers.[provider].discovery_url              | Override URL for the OIDC discovery document (e.g. Azure AD B2C) |           | v2.12.0 |
+| authentication.methods.oidc.providers.[provider].claims_mapping             | JSON Pointer map for extracting user attributes from claims      | {}        | v2.12.0 |
+| authentication.methods.oidc.email_matches                                   | List of email addresses (regex) of users allowed to authenticate |           | v2.0.0  |
 
 #### Authentication Methods: GitHub
 
