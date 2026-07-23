@@ -171,7 +171,8 @@
                 "icon": "hammer",
                 "tag": "NEW",
                 "pages": [
-                  "v2/tooling/github-actions"
+                  "v2/tooling/github-actions",
+                  "v2/tooling/model-context-protocol"
                 ]
               }
             ]
@@ -533,7 +534,7 @@
     "dark": "/logo/dark-logo.svg"
   },
   "banner": {
-    "content": "🎉 **New in Flipt Pro:** Integrated secrets management with HashiCorp Vault, AWS Secrets Manager, GCP Secret Manager, and Azure Key Vault. [Learn more](https://docs.flipt.io/v2/pro).",
+    "content": "🎉 **New:** MCP server for Flipt v2. Let AI assistants manage and evaluate your feature flags. [Learn more](https://docs.flipt.io/v2/tooling/model-context-protocol).",
     "dismissible": true
   },
   "api": {

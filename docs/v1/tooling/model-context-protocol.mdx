@@ -7,7 +7,12 @@ description: Use Flipt's MCP server to enable AI assistants to interact with you
 
 The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) is an open protocol that standardizes how applications provide context to Large Language Models (LLMs). Think of MCP like a USB-C port for AI applications - it provides a standardized way to connect AI models to different data sources and tools.
 
-[Flipt's MCP server](https://github.com/flipt-io/mcp-server-flipt) allows AI assistants and LLMs to directly interact with your feature flags, segments, and evaluations through a standardized interface. This enables powerful AI-driven workflows and integrations with tools that support the MCP protocol.
+[Flipt's MCP server](https://github.com/flipt-io/mcp-server-flipt/tree/main/packages/mcp-server-flipt) allows AI assistants and LLMs to directly interact with your feature flags, segments, and evaluations through a standardized interface. This enables powerful AI-driven workflows and integrations with tools that support the MCP protocol.
+
+<Note>
+  Using Flipt v2? See the [v2 MCP server
+  documentation](/v2/tooling/model-context-protocol) instead.
+</Note>
 
 ![MCP Server](/v1/images/tooling/mcp.png)
 
@@ -40,7 +45,7 @@ The Flipt MCP server can be integrated into broader AI agent workflows to:
 
 ## Getting Started
 
-Check out the [Flipt MCP server repository](https://github.com/flipt-io/mcp-server-flipt) for the most up to date information on how to use the MCP server.
+Check out the [Flipt MCP server repository](https://github.com/flipt-io/mcp-server-flipt/tree/main/packages/mcp-server-flipt) for the most up to date information on how to use the MCP server.
 
 ### Cursor
 
@@ -67,7 +72,7 @@ The server can be configured using environment variables:
 
 ```bash
 # The URL of your Flipt instance
-FLIPT_API_URL=http://localhost:8080
+FLIPT_URL=http://localhost:8080
 
 # Optional API key for authentication
 FLIPT_API_KEY=<your-api-key>
