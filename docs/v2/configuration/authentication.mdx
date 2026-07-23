@@ -301,6 +301,7 @@ Flipt v2 has been tested with each of the following providers:
 - [Dex](https://dexidp.io/docs/openid-connect/)
 - [Okta](https://developer.okta.com/docs/concepts/oauth-openid/#oauth-2-0)
 - [AzureAD](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc)
+- [Azure AD B2C](https://learn.microsoft.com/en-us/azure/active-directory-b2c/openid-connect) (see the [Login with Azure AD B2C](/v2/guides/operations/authentication/login-with-azure-ad-b2c) guide)
 - [Keycloak](https://www.keycloak.org/docs/latest/server_admin/index.html#_identity_broker_oidc)
 
 Though the intention is that it should work with all OIDC providers, these are just the handful the Flipt team has validated.
@@ -432,6 +433,66 @@ authentication:
 ```
 
 If not specified, the default is an empty map.
+
+#### Discovery URL
+
+By default, Flipt fetches the OIDC discovery document (`.well-known/openid-configuration`) from the `issuer_url`, and, as required by the OIDC specification, verifies that the `issuer` reported in that document matches the `issuer_url`.
+
+Some providers serve their discovery document from a URL that differs from the issuer they report in that document and in issued tokens. The most common example is [Azure AD B2C](/v2/guides/operations/authentication/login-with-azure-ad-b2c), whose discovery document is served from a policy-specific URL (using the tenant domain) while the `issuer` it reports is the tenant GUID.
+
+For these providers, set `discovery_url` to the URL Flipt should fetch the discovery document from, and set `issuer_url` to the issuer reported in that document (which matches the `iss` claim in issued tokens). When `discovery_url` is set, Flipt fetches discovery from it while still verifying tokens against `issuer_url`.
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    oidc:
+      enabled: true
+      providers:
+        some_provider:
+          issuer_url: "https://tenant.b2clogin.com/<tenant-guid>/v2.0/"
+          discovery_url: "https://tenant.b2clogin.com/tenant.onmicrosoft.com/<policy>/v2.0"
+          client_id: "some_client_identifier"
+          client_secret: "some_client_secret_credential"
+          redirect_address: "https://your.flipt.instance.url.com"
+```
+
+<Note>
+  `issuer_url` is **required** when `discovery_url` is set, because token
+  verification is pinned to `issuer_url`.
+</Note>
+
+If not specified, `discovery_url` defaults to `issuer_url` and the standard OIDC issuer check applies.
+
+#### Claims Mapping
+
+By default, Flipt reads user attributes from the standard OIDC claim names in the ID token (`email`, `name`, `picture`, and `sub`). Some providers return these attributes under different claim names. For example, [Azure AD B2C](/v2/guides/operations/authentication/login-with-azure-ad-b2c) returns the email address in an `emails` array rather than a string `email` claim.
+
+Use the `claims_mapping` option to map Flipt's user attributes to [JSON Pointer](https://datatracker.ietf.org/doc/html/rfc6901) expressions that locate those values within the token claims. Mapped values take precedence over the standard claims.
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    oidc:
+      enabled: true
+      providers:
+        some_provider:
+          issuer_url: "https://some.oidc.issuer.com"
+          client_id: "some_client_identifier"
+          client_secret: "some_client_secret_credential"
+          redirect_address: "https://your.flipt.instance.url.com"
+          claims_mapping:
+            email: "/emails/0" # e.g. Azure AD B2C returns email in an array
+```
+
+<Note>
+  Only the attribute names `email`, `name`, `picture`, and `sub` are supported.
+  Invalid JSON Pointer expressions or paths that don't exist in the claims are
+  silently ignored.
+</Note>
+
+This is particularly important when using [`email_matches`](#email-matches) with a provider that doesn't emit a string `email` claim: without mapping the email onto the `email` attribute, Flipt has no email to match against and rejects the request.
 
 #### Single Logout (SLO)
 

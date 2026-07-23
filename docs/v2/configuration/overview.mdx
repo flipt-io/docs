@@ -355,6 +355,8 @@ Authentication configuration controls how users and systems authenticate with Fl
 | authentication.methods.oidc.providers.[provider].authorize_parameters       | Extra query parameters to append to the provider authorize URL   | {}        | v2.11.0 |
 | authentication.methods.oidc.providers.[provider].use_end_session_endpoint   | Redirect to the provider's end-session endpoint on logout        | false     | v2.11.0 |
 | authentication.methods.oidc.providers.[provider].allow_front_channel_logout | Enable OIDC front-channel logout support                         | false     | v2.12.0 |
+| authentication.methods.oidc.providers.[provider].discovery_url              | Override URL for the OIDC discovery document (e.g. Azure AD B2C) |           | v2.12.0 |
+| authentication.methods.oidc.providers.[provider].claims_mapping             | JSON Pointer map for extracting user attributes from claims      | {}        | v2.12.0 |
 | authentication.methods.oidc.email_matches                                   | List of email addresses (regex) of users allowed to authenticate |           | v2.0.0  |
 
 #### Authentication Methods: GitHub
