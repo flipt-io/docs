@@ -121,6 +121,7 @@ authentication:
         port: 6379
         db: 0
         password: password
+        prefix: "flipt" # Optional: prefix added to all session keys, e.g. "flipt:auth:...". Default: "auth:..."
 ```
 
 The `mode` parameter is **required** and must be set to either:
