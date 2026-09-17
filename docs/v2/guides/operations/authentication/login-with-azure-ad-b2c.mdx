@@ -1,0 +1,137 @@
+---
+title: Login with Azure AD B2C
+description: Configuring Flipt v2 to enable login with Azure Active Directory B2C via OIDC
+---
+
+This guide walks through configuring Flipt v2 to enable login with [Azure Active Directory B2C](https://learn.microsoft.com/en-us/azure/active-directory-b2c/) (Azure AD B2C) using the [OIDC authentication method](/v2/configuration/authentication#oidc).
+
+Azure AD B2C is a standards-compliant OpenID Connect provider, so Flipt talks to it through the generic `oidc` method. However, B2C has two behaviors that require extra configuration compared to most providers:
+
+- Its OIDC discovery document is served from a **policy-specific URL** (using your tenant domain), while the `issuer` it reports is the **tenant GUID**. This requires the [`discovery_url`](/v2/configuration/authentication#discovery-url) option.
+- It returns the email address in an **`emails` array** rather than a string `email` claim. This requires the [`claims_mapping`](/v2/configuration/authentication#claims-mapping) option.
+
+## Prerequisites
+
+- [Docker](https://www.docker.com/)
+- An [Azure AD B2C tenant](https://learn.microsoft.com/en-us/azure/active-directory-b2c/tutorial-create-tenant)
+- A B2C user flow or custom policy (for example, a sign-up/sign-in flow such as `B2C_1_signupsignin`)
+
+## Register an application in Azure AD B2C
+
+1. In the [Azure portal](https://portal.azure.com/), switch to your Azure AD B2C tenant and open **App registrations**.
+
+2. Select **New registration** and give the application a meaningful name, such as "Flipt".
+
+3. Under **Redirect URI**, select **Web** and enter your Flipt callback URL:
+
+   `https://your.flipt.instance.url.com/auth/v1/method/oidc/azure/callback`
+
+   <Note>
+     The `azure` segment must match the provider name you use in your Flipt
+     configuration. This guide uses `azure`.
+   </Note>
+
+4. After creating the registration, open **Certificates & secrets**, select **New client secret**, and copy the generated value. You'll use this as the `client_secret`.
+
+5. Copy the **Application (client) ID** from the app's **Overview** page. You'll use this as the `client_id`.
+
+## Find your issuer and discovery URLs
+
+Flipt needs two related URLs that B2C keeps separate.
+
+Fetch your policy's discovery document. The metadata path uses your tenant domain and policy name, and does **not** include the `oauth2` segment:
+
+```bash
+curl https://yourtenant.b2clogin.com/yourtenant.onmicrosoft.com/B2C_1_signupsignin/v2.0/.well-known/openid-configuration
+```
+
+From the JSON response:
+
+- The value of the `issuer` field is your **`issuer_url`**. It uses the tenant GUID, for example `https://yourtenant.b2clogin.com/00000000-0000-0000-0000-000000000000/v2.0/`. Copy it exactly, including the trailing slash.
+- The URL you fetched, without the `.well-known/openid-configuration` suffix, is your **`discovery_url`**, for example `https://yourtenant.b2clogin.com/yourtenant.onmicrosoft.com/B2C_1_signupsignin/v2.0`.
+
+<Warning>
+  Don't use the `oauth2/v2.0/authorize` or `oauth2/v2.0/token` endpoints as your
+  `issuer_url` or `discovery_url`. Those are the authorize and token endpoints;
+  the discovery document lives at the `/v2.0/.well-known/openid-configuration`
+  path **without** the `oauth2` segment.
+</Warning>
+
+## Running Flipt
+
+### 1. Define a Flipt `config.yml`
+
+Configure the `oidc` method with a provider named `azure`. Set `issuer_url` and `discovery_url` from the previous step, and map the email claim from the B2C `emails` array.
+
+```yaml config.yml
+authentication:
+  required: true
+  session:
+    domain: "your.flipt.instance.url.com"
+    secure: true
+  methods:
+    oidc:
+      enabled: true
+      email_matches:
+        - ^.*@yourorg.com$
+      providers:
+        azure:
+          issuer_url: "https://yourtenant.b2clogin.com/00000000-0000-0000-0000-000000000000/v2.0/"
+          discovery_url: "https://yourtenant.b2clogin.com/yourtenant.onmicrosoft.com/B2C_1_signupsignin/v2.0"
+          client_id: ${env:FLIPT_AZURE_CLIENT_ID}
+          client_secret: ${env:FLIPT_AZURE_CLIENT_SECRET}
+          redirect_address: "https://your.flipt.instance.url.com"
+          use_pkce: true
+          claims_mapping:
+            email: "/emails/0"
+```
+
+A few notes specific to Azure AD B2C:
+
+- `claims_mapping` maps Flipt's `email` attribute to the first entry of the B2C `emails` array. This is required for [`email_matches`](/v2/configuration/authentication#email-matches) to work, since B2C doesn't emit a string `email` claim.
+- Don't request `email` or `profile` in `scopes`. B2C only advertises the `openid` scope (which Flipt requests automatically); requesting others can cause the authorize request to fail. Email and name claims are delivered through your user flow's application-claims configuration.
+- Don't enable `fetch_extra_user_info`. B2C doesn't expose a UserInfo endpoint, so enabling it causes the login callback to fail. All claims are already present in the ID token.
+
+### 2. Run Flipt as a Docker container
+
+```bash
+docker run -it --rm \
+  -p 8080:8080 \
+  -p 9000:9000 \
+  -e FLIPT_AZURE_CLIENT_ID=your-client-id \
+  -e FLIPT_AZURE_CLIENT_SECRET=your-client-secret \
+  -v $HOME/flipt:/var/opt/flipt \
+  -v "$(pwd)/config.yml:/etc/flipt/config/default.yml" \
+  docker.flipt.io/flipt/flipt:v2
+```
+
+### 3. Navigate to the Flipt UI
+
+Open your Flipt instance in a browser. A "Login with Azure" option is presented. Selecting it redirects you to your B2C sign-up/sign-in experience, and after authenticating you're returned to the Flipt dashboard.
+
+## Troubleshooting
+
+**`NewProvider: unable to create provider: 404 Not Found`**
+
+Flipt couldn't fetch the discovery document. This usually means the URL includes the `oauth2` segment, or the policy name is wrong. The discovery document is at `.../<policy>/v2.0/.well-known/openid-configuration` (no `oauth2`). Verify the URL with `curl` as shown [above](#find-your-issuer-and-discovery-urls).
+
+**`oidc: issuer did not match the issuer returned by provider`**
+
+The `issuer_url` doesn't match the `issuer` reported by the discovery document. Set `discovery_url` to the policy URL you fetch discovery from, and set `issuer_url` to the exact `issuer` value from that document (the tenant-GUID form, including the trailing slash).
+
+**Login succeeds but every request is rejected**
+
+If you use `email_matches` but haven't mapped the email claim, Flipt has no email to match and rejects requests. Add `claims_mapping` with `email: "/emails/0"` as shown above.
+
+## Conclusion
+
+This guide showed how to configure Flipt v2 to authenticate with Azure AD B2C, including the `discovery_url` and `claims_mapping` options that B2C requires.
+
+If you have any questions or feedback, please reach out to the Flipt team on [Discord](https://discord.gg/flipt) or [GitHub Discussions](https://github.com/flipt-io/flipt/discussions).
+
+---
+
+**References:**
+
+- [Flipt v2 Authentication Configuration](/v2/configuration/authentication)
+- [Azure AD B2C OpenID Connect overview](https://learn.microsoft.com/en-us/azure/active-directory-b2c/openid-connect)
