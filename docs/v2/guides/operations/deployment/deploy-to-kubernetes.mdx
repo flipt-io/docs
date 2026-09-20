@@ -198,10 +198,10 @@ The generic check with no service name tells you the process is running. Use it 
 
 Flipt reports two service names:
 
-| Service      | Value        | Meaning                                                              |
-| ------------ | ------------ | -------------------------------------------------------------------- |
-| `management` | `management` | The environment store is constructed, including its initial fetch.   |
-| `evaluation` | `evaluation` | Every static environment has a parsed evaluation snapshot available. |
+| Service      | Meaning                                                              |
+| ------------ | -------------------------------------------------------------------- |
+| `management` | The environment store is constructed, including its initial fetch.   |
+| `evaluation` | Every static environment has a parsed evaluation snapshot available. |
 
 Branched (ephemeral) environments are excluded from the `evaluation` check. The `evaluation` status is sticky: once it becomes `SERVING`, later rebuild failures keep serving the last-good snapshot instead of flapping back.
 
