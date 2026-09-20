@@ -190,6 +190,77 @@ The v2 Helm chart supports all v2 configuration options, including:
 - **Authentication**: GitHub, OIDC, and other authentication methods
 - **Authorization**: RBAC and policy-based access control
 
+## Health and Readiness Probes
+
+Flipt v2 exposes health checks using the standard [gRPC Health Checking Protocol](https://grpc.io/docs/guides/health-checking/). You can check them over gRPC or over HTTP via the grpc-gateway.
+
+The generic check with no service name tells you the process is running. Use it as a liveness signal. The per-service checks tell you the pod is ready to serve a specific kind of traffic. Use them for readiness.
+
+Flipt reports two service names:
+
+| Service      | Value        | Meaning                                                              |
+| ------------ | ------------ | -------------------------------------------------------------------- |
+| `management` | `management` | The environment store is constructed, including its initial fetch.   |
+| `evaluation` | `evaluation` | Every static environment has a parsed evaluation snapshot available. |
+
+Branched (ephemeral) environments are excluded from the `evaluation` check. The `evaluation` status is sticky: once it becomes `SERVING`, later rebuild failures keep serving the last-good snapshot instead of flapping back.
+
+Possible statuses are `UNKNOWN` (starting), `SERVING`, and `NOT_SERVING` (snapshots are not ready yet, or the server is shutting down).
+
+### Check via gRPC
+
+```bash
+# Liveness: is the process running?
+grpcurl -plaintext localhost:9000 grpc.health.v1.Health/Check
+# Readiness: is this kind of traffic ready to serve?
+grpcurl -plaintext -d '{"service": "evaluation"}' localhost:9000 grpc.health.v1.Health/Check
+grpcurl -plaintext -d '{"service": "management"}' localhost:9000 grpc.health.v1.Health/Check
+```
+
+A ready instance returns:
+
+```json
+{
+  "status": "SERVING"
+}
+```
+
+### Check via HTTP
+
+```bash
+# Liveness
+curl -i 'http://localhost:8080/health'
+# Readiness
+curl -i 'http://localhost:8080/health?service=evaluation'
+curl -i 'http://localhost:8080/health?service=management'
+```
+
+### Use in Kubernetes
+
+When a Flipt pod starts, it must clone or fetch your Git remotes and build an evaluation snapshot for every static environment (for example, `production` plus `staging`). With large repositories or slow networks, this takes longer than it takes for the container to start listening on its ports.
+
+Without a gate, Kubernetes sends evaluation traffic to the pod too early. Those requests may return incorrect evaluation results during rollouts, scale-up, and restarts, even though the pod looks `Running`.
+
+Add a `readinessProbe` on the `evaluation` service so Kubernetes removes the pod from Service endpoints until all static environments are ready to evaluate. You want a readiness probe here, not a liveness probe: readiness temporarily withholds traffic, while liveness restarts the container. Because `evaluation` stays `SERVING` once it is ready, transient Git or poll failures later do not flap your endpoints.
+
+```yaml
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 8080
+  periodSeconds: 10
+readinessProbe:
+  httpGet:
+    path: /health?service=evaluation
+    port: 8080
+  periodSeconds: 5
+  failureThreshold: 12
+```
+
+The generous `failureThreshold` on the readiness probe gives Flipt time for the initial Git clone on first start. Tune it for your repository size. The liveness probe uses the generic `/health` check on purpose, so you do not restart a healthy pod that is still serving its last-good snapshot during a transient Git outage.
+
+See [Git Sync](/v2/guides/operations/environments/git-sync) for how the initial fetch works and [Production Readiness](/v2/guides/operations/production) for other production settings.
+
 ## Next Steps
 
 Congratulations! You've successfully deployed Flipt v2 to a local Kubernetes cluster using our Helm chart. You've also learned about v2's Git-native capabilities and configuration options.
