@@ -1,0 +1,43 @@
+---
+title: "Create Segment"
+description: "Create a new segment in a namespace."
+openapi: "https://raw.githubusercontent.com/flipt-io/flipt/refs/heads/v2/rpc/v2/environments/openapi.yaml POST /api/v2/environments/{environmentKey}/namespaces/{namespaceKey}/resources"
+---
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url http://localhost:8080/api/v2/environments/production/namespaces/default/resources \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{
+  "key": "<key>",
+  "payload": {
+    "@type": "flipt.core.Segment",
+    "key": "<key>",
+    "name": "<name>"
+  }
+}'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "resource": {
+    "namespaceKey": "default",
+    "key": "<key>",
+    "payload": {
+      "@type": "flipt.core.Segment",
+      "key": "<key>",
+      "name": "<name>"
+    }
+  },
+  "revision": "<revision>"
+}
+```
+
+</ResponseExample>

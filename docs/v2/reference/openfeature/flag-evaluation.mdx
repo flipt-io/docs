@@ -1,0 +1,22 @@
+---
+title: "Flag Evaluation"
+description: "Evaluate a single flag via OFREP."
+openapi: "https://raw.githubusercontent.com/flipt-io/flipt/refs/heads/v2/rpc/flipt/openapi.yaml POST /ofrep/v1/evaluate/flags/{key}"
+---
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url http://localhost:8080/ofrep/v1/evaluate/flags/<flagKey> \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --header 'X-Flipt-Namespace: <namespaceKey>' \
+  --data '{
+  "context": {
+    "targetingKey": "targetingKey1"
+  }
+}'
+```
+
+</RequestExample>

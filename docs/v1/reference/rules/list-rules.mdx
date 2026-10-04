@@ -1,13 +1,13 @@
 ---
 title: "List Rules"
-openapi: "GET /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/rules"
+openapi: "https://raw.githubusercontent.com/flipt-io/flipt/main/openapi.yaml GET /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/rules"
 ---
 
 <RequestExample>
 
 ```bash cURL
 curl --request GET \
-  --url https://try.flipt.io/api/v1/namespaces/default/flags/{flagKey}/rules \
+  --url http://localhost:8080/api/v1/namespaces/default/flags/{flagKey}/rules \
   --header 'Accept: application/json'
 ```
 

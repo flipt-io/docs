@@ -1,13 +1,13 @@
 ---
 title: "Create Variant"
-openapi: "POST /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/variants"
+openapi: "https://raw.githubusercontent.com/flipt-io/flipt/main/openapi.yaml POST /api/v1/namespaces/{namespaceKey}/flags/{flagKey}/variants"
 ---
 
 <RequestExample>
 
 ```bash cURL
 curl --request POST \
-  --url https://try.flipt.io/api/v1/namespaces/default/flags/{flagKey}/variants \
+  --url http://localhost:8080/api/v1/namespaces/default/flags/{flagKey}/variants \
   --header 'Content-Type: application/json' \
   --header 'Accept: application/json' \
   --data '{

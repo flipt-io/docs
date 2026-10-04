@@ -1,13 +1,13 @@
 ---
 title: "Variant Evaluation"
-openapi: "POST /evaluate/v1/variant"
+openapi: "https://raw.githubusercontent.com/flipt-io/flipt/main/openapi.yaml POST /evaluate/v1/variant"
 ---
 
 <RequestExample>
 
 ```bash cURL
 curl --request POST \
-  --url https://try.flipt.io/evaluate/v1/variant \
+  --url http://localhost:8080/evaluate/v1/variant \
   --header 'Content-Type: application/json' \
   --header 'Accept: application/json' \
   --data '{

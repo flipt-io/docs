@@ -187,8 +187,79 @@
                 "pages": [
                   "v2/reference/overview"
                 ]
+              },
+              {
+                "group": "Authentication",
+                "pages": [
+                  "v2/reference/authentication/list-tokens",
+                  "v2/reference/authentication/get-token",
+                  "v2/reference/authentication/get-self",
+                  "v2/reference/authentication/revoke-self"
+                ]
+              },
+              {
+                "group": "Environments",
+                "pages": [
+                  "v2/reference/environments/list-environments"
+                ]
+              },
+              {
+                "group": "Branches",
+                "pages": [
+                  "v2/reference/branches/list-branches",
+                  "v2/reference/branches/create-branch",
+                  "v2/reference/branches/list-changes",
+                  "v2/reference/branches/propose-branch",
+                  "v2/reference/branches/delete-branch"
+                ]
+              },
+              {
+                "group": "Namespaces",
+                "pages": [
+                  "v2/reference/namespaces/list-namespaces",
+                  "v2/reference/namespaces/create-namespace",
+                  "v2/reference/namespaces/get-namespace",
+                  "v2/reference/namespaces/update-namespace",
+                  "v2/reference/namespaces/delete-namespace"
+                ]
+              },
+              {
+                "group": "Flags",
+                "pages": [
+                  "v2/reference/flags/list-flags",
+                  "v2/reference/flags/create-flag",
+                  "v2/reference/flags/get-flag",
+                  "v2/reference/flags/update-flag",
+                  "v2/reference/flags/delete-flag"
+                ]
+              },
+              {
+                "group": "Segments",
+                "pages": [
+                  "v2/reference/segments/list-segments",
+                  "v2/reference/segments/create-segment",
+                  "v2/reference/segments/get-segment",
+                  "v2/reference/segments/update-segment",
+                  "v2/reference/segments/delete-segment"
+                ]
+              },
+              {
+                "group": "Evaluation",
+                "pages": [
+                  "v2/reference/evaluation/snapshot",
+                  "v2/reference/evaluation/stream",
+                  "v2/reference/evaluation/boolean-evaluation",
+                  "v2/reference/evaluation/variant-evaluation",
+                  "v2/reference/evaluation/batch-evaluation"
+                ]
+              },
+              {
+                "group": "OpenFeature Evaluation [OFREP]",
+                "pages": [
+                  "v2/reference/openfeature/flag-evaluation",
+                  "v2/reference/openfeature/bulk-evaluation"
+                ]
               }
-
             ]
           },
           {
@@ -539,12 +610,17 @@
     "dismissible": true
   },
   "api": {
-    "openapi": "https://raw.githubusercontent.com/flipt-io/flipt/main/openapi.yaml",
+    "openapi": [
+      "https://raw.githubusercontent.com/flipt-io/flipt/main/openapi.yaml",
+      "https://raw.githubusercontent.com/flipt-io/flipt/refs/heads/v2/rpc/flipt/openapi.yaml",
+      "https://raw.githubusercontent.com/flipt-io/flipt/refs/heads/v2/rpc/v2/environments/openapi.yaml",
+      "https://raw.githubusercontent.com/flipt-io/flipt/refs/heads/v2/rpc/v2/evaluation/openapi.yaml"
+    ],
     "playground": {
       "display": "simple"
     },
     "mdx": {
-      "server": "https://try.flipt.io",
+      "server": "http://localhost:8080",
       "auth": {
         "method": "bearer"
       }

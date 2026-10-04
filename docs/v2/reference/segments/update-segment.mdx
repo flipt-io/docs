@@ -1,0 +1,43 @@
+---
+title: "Update Segment"
+description: "Update an existing segment in a namespace."
+openapi: "https://raw.githubusercontent.com/flipt-io/flipt/refs/heads/v2/rpc/v2/environments/openapi.yaml PUT /api/v2/environments/{environmentKey}/namespaces/{namespaceKey}/resources"
+---
+
+<RequestExample>
+
+```bash cURL
+curl --request PUT \
+  --url http://localhost:8080/api/v2/environments/production/namespaces/default/resources \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{
+  "key": "my-segment",
+  "payload": {
+    "@type": "flipt.core.Segment",
+    "key": "my-segment",
+    "name": "<name>"
+  }
+}'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "resource": {
+    "namespaceKey": "default",
+    "key": "my-segment",
+    "payload": {
+      "@type": "flipt.core.Segment",
+      "key": "my-segment",
+      "name": "<name>"
+    }
+  },
+  "revision": "<revision>"
+}
+```
+
+</ResponseExample>

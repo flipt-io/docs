@@ -1,13 +1,13 @@
 ---
 title: "Create Constraint"
-openapi: "POST /api/v1/namespaces/{namespaceKey}/segments/{segmentKey}/constraints"
+openapi: "https://raw.githubusercontent.com/flipt-io/flipt/main/openapi.yaml POST /api/v1/namespaces/{namespaceKey}/segments/{segmentKey}/constraints"
 ---
 
 <RequestExample>
 
 ```bash cURL
 curl --request POST \
-  --url https://try.flipt.io/api/v1/namespaces/default/segments/{segmentKey}/constraints \
+  --url http://localhost:8080/api/v1/namespaces/default/segments/{segmentKey}/constraints \
   --header 'Content-Type: application/json' \
   --header 'Accept: application/json' \
   --data '{
