@@ -1,0 +1,34 @@
+---
+title: "Get Segment"
+description: "Get a segment by key."
+openapi: "https://raw.githubusercontent.com/flipt-io/flipt/refs/heads/v2/rpc/v2/environments/openapi.yaml GET /api/v2/environments/{environmentKey}/namespaces/{namespaceKey}/resources/{typeUrl}/{key}"
+---
+
+<RequestExample>
+
+```bash cURL
+curl --url http://localhost:8080/api/v2/environments/production/namespaces/default/resources/flipt.core.Segment/my-segment \
+  --header 'Accept: application/json'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "resource": {
+    "namespaceKey": "default",
+    "key": "my-segment",
+    "payload": {
+      "@type": "flipt.core.Segment",
+      "key": "my-segment",
+      "name": "My segment",
+      "matchType": "ALL_MATCH_TYPE"
+    }
+  },
+  "revision": "<revision>"
+}
+```
+
+</ResponseExample>

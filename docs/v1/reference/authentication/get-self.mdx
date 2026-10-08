@@ -1,13 +1,13 @@
 ---
 title: "Get Self"
-openapi: GET /auth/v1/self
+openapi: "https://raw.githubusercontent.com/flipt-io/flipt/main/openapi.yaml GET /auth/v1/self"
 ---
 
 <RequestExample>
 
 ```bash cURL
 curl --request GET \
-  --url https://try.flipt.io/auth/v1/self \
+  --url http://localhost:8080/auth/v1/self \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer <token>'
 ```

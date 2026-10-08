@@ -1,0 +1,22 @@
+---
+title: "Variant Evaluation"
+description: "Evaluate a variant flag for an entity."
+openapi: "https://raw.githubusercontent.com/flipt-io/flipt/refs/heads/v2/rpc/flipt/openapi.yaml POST /evaluate/v1/variant"
+---
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url http://localhost:8080/evaluate/v1/variant \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{
+  "context": {},
+  "entityId": "<entityid>",
+  "flagKey": "<flagkey>",
+  "namespaceKey": "<namespacekey>"
+}'
+```
+
+</RequestExample>

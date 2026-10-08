@@ -1,0 +1,25 @@
+---
+title: "Update Flag"
+description: "Update an existing flag in a namespace."
+openapi: "https://raw.githubusercontent.com/flipt-io/flipt/refs/heads/v2/rpc/v2/environments/openapi.yaml PUT /api/v2/environments/{environmentKey}/namespaces/{namespaceKey}/resources"
+---
+
+<RequestExample>
+
+```bash cURL
+curl --request PUT \
+  --url http://localhost:8080/api/v2/environments/production/namespaces/default/resources \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{
+  "key": "my-flag",
+  "payload": {
+    "@type": "flipt.core.Flag",
+    "key": "my-flag",
+    "name": "<name>",
+    "enabled": true
+  }
+}'
+```
+
+</RequestExample>

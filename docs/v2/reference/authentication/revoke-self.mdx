@@ -1,0 +1,31 @@
+---
+title: "Revoke Self"
+description: "Revoke the authentication token used for the current request."
+openapi: "https://raw.githubusercontent.com/flipt-io/flipt/refs/heads/v2/rpc/flipt/openapi.yaml DELETE /auth/v1/self/revoke"
+---
+
+<RequestExample>
+
+```bash cURL
+curl --request DELETE \
+  --url http://localhost:8080/auth/v1/self/revoke \
+  --header 'Authorization: Bearer <token>'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Common (200)
+{
+  "nextUri": ""
+}
+```
+
+```json OIDC (200)
+{
+  "nextUri": "https://idp.example.com/logout?..."
+}
+```
+
+</ResponseExample>

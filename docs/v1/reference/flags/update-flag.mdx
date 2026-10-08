@@ -1,13 +1,13 @@
 ---
 title: "Update Flag"
-openapi: "PUT /api/v1/namespaces/{namespaceKey}/flags/{key}"
+openapi: "https://raw.githubusercontent.com/flipt-io/flipt/main/openapi.yaml PUT /api/v1/namespaces/{namespaceKey}/flags/{key}"
 ---
 
 <RequestExample>
 
 ```bash cURL
 curl --request PUT \
-  --url https://try.flipt.io/api/v1/namespaces/default/flags/{key} \
+  --url http://localhost:8080/api/v1/namespaces/default/flags/{key} \
   --header 'Content-Type: application/json' \
   --header 'Accept: application/json' \
   --data '{

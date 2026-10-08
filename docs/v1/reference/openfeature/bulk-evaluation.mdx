@@ -1,13 +1,13 @@
 ---
 title: "Bulk Evaluation"
-openapi: "POST /ofrep/v1/evaluate/flags"
+openapi: "https://raw.githubusercontent.com/flipt-io/flipt/main/openapi.yaml POST /ofrep/v1/evaluate/flags"
 ---
 
 <RequestExample>
 
 ```bash cURL
 curl --request POST \
-  --url https://try.flipt.io/ofrep/v1/evaluate/flags \
+  --url http://localhost:8080/ofrep/v1/evaluate/flags \
   --header 'Content-Type: application/json' \
   --header 'Accept: application/json' \
   --header 'X-Flipt-Namespace: <namespaceKey>' \

@@ -1,13 +1,13 @@
 ---
 title: "Create Token"
-openapi: POST /auth/v1/method/token
+openapi: "https://raw.githubusercontent.com/flipt-io/flipt/main/openapi.yaml POST /auth/v1/method/token"
 ---
 
 <RequestExample>
 
 ```bash cURL
 curl --request POST \
-  --url https://try.flipt.io/auth/v1/method/token \
+  --url http://localhost:8080/auth/v1/method/token \
   --header 'Content-Type: application/json' \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer <token>' \
