@@ -290,7 +290,7 @@ Authentication configuration controls how users and systems authenticate with Fl
 | Property                          | Description                                             | Default | Since  |
 | --------------------------------- | ------------------------------------------------------- | ------- | ------ |
 | authentication.required           | Enable or disable authentication validation on requests | false   | v2.0.0 |
-| authentication.exclude.evaluation | Exclude authentication for /evaluation/v1 API prefix    | false   | v2.0.0 |
+| authentication.exclude.evaluation | Exclude authentication for /evaluate/v1 API prefix      | false   | v2.0.0 |
 | authentication.exclude.ofrep      | Exclude authentication for /ofrep API prefix            | false   | v2.0.0 |
 
 #### Authentication Session
@@ -399,9 +399,42 @@ Authentication configuration controls how users and systems authenticate with Fl
 
 Authorization configuration enforces fine-grained access control policies to restrict operations based on user roles and permissions.
 
-| Property               | Description                                            | Default | Since  |
-| ---------------------- | ------------------------------------------------------ | ------- | ------ |
-| authorization.required | Enable or disable authorization validation on requests | false   | v2.0.0 |
+| Property                         | Description                                                                                     | Default | Since   |
+| -------------------------------- | ----------------------------------------------------------------------------------------------- | ------- | ------- |
+| authorization.required           | Enable or disable authorization validation on requests                                          | false   | v2.0.0  |
+| authorization.exclude.evaluation | Exclude evaluation APIs (/evaluate/v1 and /client/v2 snapshot/stream) from authorization checks | true    | v2.14.0 |
+| authorization.exclude.ofrep      | Exclude OFREP API (/ofrep) from authorization checks                                            | true    | v2.14.0 |
+
+#### Authorization Exclusions for Evaluation
+
+By default, evaluation and OFREP endpoints bypass authorization checks even when `authorization.required` is set to `true`. This preserves backward compatibility.
+
+To enforce authorization on evaluation or OFREP, set the corresponding exclusion option to `false`:
+
+```yaml
+authorization:
+  required: true
+  exclude:
+    evaluation: false
+    ofrep: false
+```
+
+You can also use environment variables:
+
+```console
+export FLIPT_AUTHORIZATION_EXCLUDE_EVALUATION=false
+export FLIPT_AUTHORIZATION_EXCLUDE_OFREP=false
+```
+
+<Note>
+  Sections of the API excluded from authentication always skip authorization as
+  well, since there is no identity to evaluate policy against. To enforce
+  authorization on evaluation or OFREP, you must also require authentication for
+  those sections by setting `authentication.exclude.evaluation` and
+  `authentication.exclude.ofrep` to `false`.
+</Note>
+
+When enforced, evaluation requests carry the `evaluate` action (instead of `read`), so you can grant evaluation without granting management reads. See [Authorization](/v2/configuration/authorization) for example policies.
 
 #### Authorization Backend: Local
 
