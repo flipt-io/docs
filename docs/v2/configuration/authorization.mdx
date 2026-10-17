@@ -12,7 +12,7 @@ authorization:
   required: true
 ```
 
-When authorization is set to `required`, the API will ensure valid credentials are present on all management API requests.
+When authorization is set to `required`, the API will ensure valid credentials are present on management API requests. Evaluation and OFREP endpoints are excluded by default. See [Evaluation and OFREP Exclusions](#evaluation-and-ofrep-exclusions) to opt in to enforcement.
 
 <Info>
 Once authorization has been set to `required: true` all management API routes will require a valid authentication session as well.
@@ -20,6 +20,41 @@ Once authorization has been set to `required: true` all management API routes wi
 The UI will require a session-compatible authentication method (e.g. OIDC) to be enabled.
 
 </Info>
+
+## Evaluation and OFREP Exclusions
+
+Evaluation (`/evaluate/v1` and `/client/v2` snapshot/stream) and OFREP (`/ofrep`) endpoints bypass authorization by default, even when `authorization.required` is `true`.
+
+To enforce authorization on evaluation or OFREP, set the corresponding exclusion option to `false`:
+
+```yaml
+authorization:
+  required: true
+  exclude:
+    evaluation: false
+    ofrep: false
+```
+
+<Note>
+  Sections of the API excluded from authentication always skip authorization as
+  well, since there is no identity to evaluate policy against. To enforce
+  authorization on evaluation or OFREP, you must also require authentication for
+  those sections by setting `authentication.exclude.evaluation` and
+  `authentication.exclude.ofrep` to `false`.
+</Note>
+
+When enforced, evaluation requests use the `evaluate` action instead of `read`. This lets you grant evaluation without granting management reads, for example with namespace-scoped tokens:
+
+```rego
+allow if {
+  input.request.action == "evaluate"
+  input.request.scope == "namespace"
+  input.request.environment == "production"
+  input.request.namespace == "frontend"
+}
+```
+
+See [Configuration Overview](/v2/configuration/overview#authorization) for the full list of options.
 
 ## Backends
 
@@ -101,6 +136,30 @@ authorization:
       poll_interval: "1m"
 ```
 
+### Helper Functions
+
+To make it easier to write policies, Flipt provides a set of helper functions that are available to be used for the `input` field.
+
+`flipt.is_auth_method(input, method)`
+
+The helper function `flipt.is_auth_method(input, method)` can be used to check if the request was authenticated using the specified method.
+
+The `method` parameter is the authentication method name as it is registered in Flipt, e.g. `oidc`, `token`, `kubernetes`, `github`, `jwt` (`k8s` is accepted as an alias for `kubernetes`).
+
+Example:
+
+```rego policy.rego
+package flipt.authz.v2
+
+import rego.v1
+
+default allow := false
+
+allow if {
+	flipt.is_auth_method(input, "jwt")
+}
+```
+
 ## Key Differences from v1
 
 Flipt v2 authorization introduces several important changes:
@@ -145,10 +204,12 @@ v2 uses a simplified request structure with `scope` field:
     "scope": "namespace", // or "environment"
     "environment": "production",
     "namespace": "frontend",
-    "action": "update"
+    "action": "update" // create, read, update, delete, or evaluate
   }
 }
 ```
+
+The `evaluate` action is used for evaluation, snapshot, and OFREP requests when those endpoints are not excluded from authorization. Use it to grant evaluation without granting management reads.
 
 ## Example Policies
 
