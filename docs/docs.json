@@ -54,6 +54,7 @@
                 "pages": [
                   "v2/configuration/overview",
                   "v2/configuration/environments",
+                  "v2/webhooks/overview",
                   "v2/configuration/storage",
                   "v2/configuration/secrets",
                   "v2/configuration/commit-signing",
@@ -63,14 +64,6 @@
                   "v2/configuration/observability",
                   "v2/configuration/telemetry",
                   "v2/configuration/licensing"
-                ]
-              },
-              {
-                "group": "Webhooks",
-                "tag": "NEW",
-                "icon": "webhook",
-                "pages": [
-                  "v2/webhooks/overview"
                 ]
               },
               {
