@@ -42,7 +42,6 @@
               },
               {
                 "group": "Pro Features",
-                "tag": "NEW",
                 "icon": "crown",
                 "pages": [
                   "v2/pro",
@@ -68,6 +67,7 @@
               },
               {
                 "group": "Webhooks",
+                "tag": "NEW",
                 "icon": "webhook",
                 "pages": [
                   "v2/webhooks/overview"
