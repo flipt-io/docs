@@ -227,6 +227,18 @@ Environments configuration allows you to create isolated feature flag namespaces
 | environments.[id].scm.api_url     | The API URL of the SCM provider to use (optional)                                  |         | v2.0.0 |
 | environments.[id].scm.credentials | The id of the credentials to use for the SCM provider                              |         | v2.0.0 |
 
+#### Incoming Webhooks
+
+Incoming webhooks require Flipt Pro and an environment with a Git remote and SCM configuration. Add a `webhook` block under the environment's `scm` block to fetch changes after a push or merge to a tracked branch. Polling continues as a fallback.
+
+| Property                             | Description                                                                                        | Default | Since   |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------- | ------- | ------- |
+| environments.[id].scm.webhook.secret | Shared secret for authenticating incoming webhooks. Required when the webhook block is configured. | None    | v2.14.0 |
+
+The secret accepts a literal value, an [environment substitution](#environment-substitution-and-secret-references), or a [secret reference](/v2/configuration/secrets#secret-reference-syntax). Flipt refuses to start if the secret resolves to an empty value.
+
+See [Webhooks](/v2/webhooks/overview) for configuration examples and endpoint details, or follow the [webhook setup guide](/v2/guides/operations/environments/webhooks) for provider instructions.
+
 ### User Interface
 
 User interface configuration customizes the appearance and behavior of the Flipt web UI.
