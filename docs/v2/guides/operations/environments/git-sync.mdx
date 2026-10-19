@@ -122,6 +122,10 @@ Start or restart your Flipt server with the updated configuration. Flipt will no
 - Make sure the local path is writable by the Flipt process.
 - Check Flipt logs for any sync or authentication errors.
 
+## Sync Changes with Webhooks
+
+With Flipt Pro, you can use [incoming webhooks](/v2/webhooks/overview) to fetch changes after a push or merge without waiting for the next poll. Follow the [webhook setup guide](/v2/guides/operations/environments/webhooks) to connect your Git provider. Polling remains the fallback for missed deliveries.
+
 ## Conclusion
 
 This guide showed how to configure Flipt to sync your flag state to a GitHub repository using a Personal Access Token (PAT) for authentication.

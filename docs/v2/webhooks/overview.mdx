@@ -1,0 +1,106 @@
+---
+title: Webhooks
+description: Sync flag changes from your Git provider without waiting for the next poll.
+---
+
+import V2Pro from "/snippets/v2-pro.mdx";
+
+<V2Pro />
+
+A webhook is an HTTP notification from your Git provider. When you push or merge changes to a tracked branch, Flipt fetches the repository without waiting for the next poll.
+
+Use webhooks when you need changes from Git to reach Flipt quickly, such as when you disable a flag during an incident.
+
+To configure your provider, follow the [webhook setup guide](/v2/guides/operations/environments/webhooks).
+
+## How synchronization works
+
+Your Git provider sends a push event to `POST /api/v2/webhooks/{environment}`. Flipt authenticates the request and makes sure that the event affects a branch tracked by the environment's storage.
+
+For a matching event, Flipt schedules a Git fetch and returns `202 Accepted`. The fetch updates all environments that share that repository within the Flipt instance. Flipt combines overlapping requests for the same repository to avoid concurrent webhook fetches.
+
+Flipt reads flag state from Git. The webhook payload only triggers the fetch. A merge triggers synchronization through the resulting push event on the target branch. You do not need to subscribe to pull request or merge request events.
+
+<Note>
+  A `202` response means that Flipt scheduled a fetch. It does not mean that
+  synchronization completed. Polling continues at the configured `poll_interval`
+  and remains the fallback for missed deliveries or failed fetches.
+</Note>
+
+Webhooks update the Flipt server's flag state. Your application's update timing also depends on its SDK polling or streaming configuration.
+
+## Configuration
+
+Configure `webhook.secret` under an environment's `scm` block. The environment must already use storage with a Git remote. This example assumes that the `github` storage and credentials are configured through [Git sync](/v2/guides/operations/environments/git-sync).
+
+```yaml
+environments:
+  production:
+    storage: github
+    scm:
+      type: github
+      credentials: github
+      webhook:
+        secret: ${env:FLIPT_WEBHOOK_SECRET}
+```
+
+The endpoint for this example is `/api/v2/webhooks/production`. The path uses the configured environment `name`, which defaults to the `production` key. If you explicitly set `name: live`, use `/api/v2/webhooks/live` instead.
+
+The secret is required and must match the value in your Git provider's webhook configuration. Use a separate random secret for webhook authentication, rather than your Git access token.
+
+You can supply a literal value, an [environment substitution](/v2/configuration/overview#environment-substitution-and-secret-references), or a [secret reference](/v2/configuration/secrets#secret-reference-syntax):
+
+```yaml
+webhook:
+  secret: ${secret:file:github-webhook}
+```
+
+Flipt resolves the secret at startup. If the resolved value is empty, Flipt refuses to start. Restart Flipt after you change the secret.
+
+Without a Pro license, Flipt does not register the webhook endpoint and logs a warning.
+
+## Supported providers
+
+The environment's `scm.type` selects how Flipt authenticates and parses deliveries.
+
+| Provider                              | `scm.type`  | Event               | Authentication                                            |
+| ------------------------------------- | ----------- | ------------------- | --------------------------------------------------------- |
+| GitHub, including GitHub Enterprise   | `github`    | `push`              | HMAC-SHA256 in `X-Hub-Signature-256`                      |
+| GitLab, including GitLab Self-Managed | `gitlab`    | `Push Hook`         | Secret token in `X-Gitlab-Token`                          |
+| Gitea                                 | `gitea`     | `push`              | HMAC-SHA256 in `X-Gitea-Signature`                        |
+| Bitbucket Cloud                       | `bitbucket` | `repo:push`         | HMAC-SHA256 in `X-Hub-Signature`                          |
+| Bitbucket Server/Data Center          | `bitbucket` | `repo:refs_changed` | HMAC-SHA256 in `X-Hub-Signature`                          |
+| Azure DevOps                          | `azure`     | `git.push`          | HTTP Basic authentication with the secret as the password |
+
+HMAC-SHA256 signatures let Flipt authenticate the request body with the shared secret. Your provider generates the signature automatically.
+
+The endpoint uses provider authentication instead of a Flipt API token. Use HTTPS and allow your Git provider to reach the endpoint through your firewall or reverse proxy. Preserve the request body and authentication headers when forwarding deliveries.
+
+## Responses
+
+Flipt accepts request bodies up to 5 MiB.
+
+| Status                         | Meaning                                                                                                             |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `202 Accepted`                 | Flipt scheduled a fetch for a tracked branch.                                                                       |
+| `200 OK`                       | Flipt authenticated the delivery but ignored it, such as a ping, an unrelated event, a tag, or an untracked branch. |
+| `401 Unauthorized`             | Authentication failed, or the environment does not exist or has no webhook configured.                              |
+| `400 Bad Request`              | The event payload is malformed.                                                                                     |
+| `413 Request Entity Too Large` | The request body exceeds 5 MiB.                                                                                     |
+| `503 Service Unavailable`      | Flipt is shutting down and cannot accept the fetch.                                                                 |
+
+Only a `202` response schedules a fetch. Unknown environments and environments without webhook configuration return the same `401` response as invalid authentication.
+
+## Monitoring
+
+Flipt exposes these Prometheus metrics through its [metrics endpoint](/v2/configuration/observability#metrics):
+
+| Metric                                         | Description                                          |
+| ---------------------------------------------- | ---------------------------------------------------- |
+| `flipt_incoming_webhook_requests_total`        | Requests by `environment`, `scm`, and `result`.      |
+| `flipt_incoming_webhook_fetch_errors_total`    | Failed fetches by `environment` and `scm`.           |
+| `flipt_incoming_webhook_sync_duration_seconds` | Fetch duration histogram by `environment` and `scm`. |
+
+Request results are `accepted`, `ignored`, `unauthorized`, `not_found`, or `invalid`. Unknown environments use `environment="unknown"` and `scm="unknown"` to avoid creating labels for arbitrary request paths.
+
+If a delivery receives `202` but flag state does not update, inspect Flipt's logs and the fetch error counter. A successful delivery can still be followed by a Git authentication or network failure.

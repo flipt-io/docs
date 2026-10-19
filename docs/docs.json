@@ -67,6 +67,13 @@
                 ]
               },
               {
+                "group": "Webhooks",
+                "icon": "webhook",
+                "pages": [
+                  "v2/webhooks/overview"
+                ]
+              },
+              {
                 "group": "Integration",
                 "icon": "plug",
                 "pages": [
@@ -154,6 +161,7 @@
                           "v2/guides/operations/environments/git-repository-initialization",
                           "v2/guides/operations/environments/git-sync",
                           "v2/guides/operations/environments/git-scm",
+                          "v2/guides/operations/environments/webhooks",
                           "v2/guides/operations/environments/commit-signing-setup"
                         ]
                       }
