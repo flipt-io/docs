@@ -1,0 +1,161 @@
+---
+title: Set Up Webhooks
+description: Configure your Git provider to trigger Flipt synchronization after a push or merge.
+---
+
+import V2Pro from "/snippets/v2-pro.mdx";
+
+<V2Pro />
+
+This guide connects your Git provider to Flipt's incoming webhook endpoint. After setup, a push or merge to a tracked branch triggers a Git fetch without waiting for the next poll.
+
+## Prerequisites
+
+- A running Flipt v2 server with an active [Pro or trial license](/v2/licensing) and webhook support.
+- An environment configured with [Git sync](/v2/guides/operations/environments/git-sync) and [SCM integration](/v2/guides/operations/environments/git-scm).
+- Permission to manage webhooks or service hooks for your Git repository.
+- An HTTPS URL for Flipt that your Git provider can reach.
+
+## 1. Create a webhook secret
+
+Generate a random secret with OpenSSL:
+
+```bash
+openssl rand -hex 32
+```
+
+Store the result securely. Set `FLIPT_WEBHOOK_SECRET` to this value in the environment of the Flipt server process. You also need this value when you configure your Git provider.
+
+Use a separate value from the access token that Flipt uses to read and write your repository.
+
+## 2. Configure Flipt
+
+Add the `webhook` block to your existing environment's `scm` configuration. This example uses the `production` environment and GitHub:
+
+```yaml highlight={8-9}
+environments:
+  production:
+    storage: github
+    default: true
+    scm:
+      type: github
+      credentials: github
+      webhook:
+        secret: ${env:FLIPT_WEBHOOK_SECRET}
+```
+
+Keep your existing storage identifier and SCM credentials. For another provider, use its [SCM type](/v2/webhooks/overview#supported-providers). You can also use a [secret reference](/v2/webhooks/overview#configuration) instead of an environment variable.
+
+Restart your Flipt server with the updated configuration. Make sure that `FLIPT_WEBHOOK_SECRET` is available to the server process. Flipt refuses to start if the webhook secret resolves to an empty value.
+
+The webhook endpoint for this example is `https://flipt.example.com/api/v2/webhooks/production`. Replace `flipt.example.com` with your Flipt host. The final path segment must match the environment's configured `name`, which defaults to its YAML key. If your existing environment sets `name: Production`, use `/api/v2/webhooks/Production`, with the same capitalization.
+
+## 3. Configure your Git provider
+
+Use the endpoint URL from the previous step and the same secret that you configured in Flipt. Keep TLS certificate verification enabled.
+
+<Tabs>
+<Tab title="GitHub">
+
+1. Open your repository's **Settings > Webhooks** and select **Add webhook**.
+2. Set **Payload URL** to your Flipt webhook endpoint.
+3. Set **Content type** to `application/json`.
+4. Set **Secret** to your webhook secret.
+5. Select **Just the push event** and keep **Active** selected.
+6. Select **Add webhook**.
+
+GitHub sends a `ping` event after creation. Flipt returns `200 OK` for an authenticated ping without fetching the repository.
+
+See [GitHub's webhook documentation](https://docs.github.com/en/webhooks/using-webhooks/creating-webhooks) for details.
+
+</Tab>
+<Tab title="GitLab">
+
+1. Open your project's **Settings > Webhooks** and add a webhook.
+2. Set **URL** to your Flipt webhook endpoint.
+3. Set **Secret token** to your webhook secret.
+4. Select **Push events**. If you filter branches, include the branches that Flipt tracks.
+5. Save the webhook.
+
+<Note>
+  Flipt authenticates GitLab deliveries through `X-Gitlab-Token`. Configure the
+  **Secret token** field even if your GitLab version also offers a signing
+  token. A signing token alone does not authenticate deliveries to Flipt.
+</Note>
+
+See [GitLab's webhook documentation](https://docs.gitlab.com/user/project/integrations/webhooks/) for details.
+
+</Tab>
+<Tab title="Gitea">
+
+1. Open your repository's **Settings > Webhooks** and add a **Gitea** webhook.
+2. Set **Target URL** to your Flipt webhook endpoint.
+3. Select `POST` and the `application/json` content type.
+4. Set **Secret** to your webhook secret.
+5. Select push events, keep the webhook active, and save it.
+
+Use the native Gitea webhook type so that Gitea sends the signature and event headers that Flipt expects.
+
+See [Gitea's webhook documentation](https://docs.gitea.com/usage/webhooks) for details.
+
+</Tab>
+<Tab title="Bitbucket">
+
+For Bitbucket Cloud:
+
+1. Open your repository's settings and select **Webhooks > Add webhook**.
+2. Enter a title and set **URL** to your Flipt webhook endpoint.
+3. Set **Secret** to your webhook secret.
+4. Select **Repository push**, keep the webhook active, and save it.
+
+For Bitbucket Server/Data Center, add a repository webhook with the same endpoint and secret. Select the repository push event that sends `repo:refs_changed` deliveries.
+
+Both variants use `scm.type: bitbucket` in Flipt. Make sure that your Bitbucket version supports webhook secrets and sends an HMAC-SHA256 signature in `X-Hub-Signature`.
+
+See [Bitbucket Cloud's webhook documentation](https://support.atlassian.com/bitbucket-cloud/docs/manage-webhooks/) for details.
+
+</Tab>
+<Tab title="Azure DevOps">
+
+1. Open **Project settings > Service hooks** and create a subscription.
+2. Select **Web Hooks** as the service.
+3. Select **Code pushed** as the trigger and choose your repository.
+4. If you filter branches, include the branches that Flipt tracks.
+5. Set **URL** to your Flipt webhook endpoint.
+6. Configure Basic authentication with a username, such as `flipt`, and your webhook secret as the password.
+7. Finish creating the subscription.
+
+Flipt checks the Basic authentication password against `webhook.secret`. Flipt does not require a particular username. Use `scm.type: azure` in your Flipt configuration.
+
+See [Azure DevOps' webhook documentation](https://learn.microsoft.com/en-us/azure/devops/service-hooks/services/webhooks?view=azure-devops) for details.
+
+</Tab>
+</Tabs>
+
+## 4. Test synchronization
+
+Make a flag change in your Git repository and push it to the branch that Flipt tracks. You can also merge a pull request or merge request that changes a flag on that branch.
+
+Open your provider's webhook delivery history and inspect the push delivery. A matching push returns `202 Accepted`. Make sure that the changed flag state appears in Flipt.
+
+A `200 OK` response means that Flipt authenticated the delivery but did not schedule a fetch. Provider test buttons can send pings, unrelated events, or a branch that Flipt does not track. Use a real push to test synchronization.
+
+<Note>
+  Keep `poll_interval` configured as a fallback. In a deployment with multiple
+  replicas, a webhook updates the instance that receives it. Deliver to each
+  replica for prompt updates across the deployment. A load balancer that sends
+  each request to one replica does not broadcast the update to the others.
+</Note>
+
+## Troubleshooting
+
+| Symptom                      | Action                                                                                                                                                                     |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No delivery reaches Flipt    | Make sure that your provider can reach the HTTPS endpoint and that your proxy forwards the path and authentication headers.                                                |
+| `404 Not Found`              | Make sure that the URL is correct, your Flipt build includes webhook support, and a Pro license and webhook configuration are active.                                      |
+| `401 Unauthorized`           | Make sure that the configured environment name and secrets match. For GitLab, use **Secret token**. For Azure DevOps, use the secret as the Basic authentication password. |
+| `200 OK` but no update       | Make sure that the delivery is a push event for a tracked branch, rather than a ping or tag event.                                                                         |
+| `202 Accepted` but no update | Inspect Flipt's logs and [webhook metrics](/v2/webhooks/overview#monitoring) for Git fetch failures. Make sure that repository credentials still work.                     |
+| Flipt fails to start         | Make sure that the webhook secret is nonempty after environment or secret resolution.                                                                                      |
+
+For payload limits, authentication headers, and all response codes, see the [webhook reference](/v2/webhooks/overview).

@@ -42,7 +42,6 @@
               },
               {
                 "group": "Pro Features",
-                "tag": "NEW",
                 "icon": "crown",
                 "pages": [
                   "v2/pro",
@@ -55,6 +54,7 @@
                 "pages": [
                   "v2/configuration/overview",
                   "v2/configuration/environments",
+                  "v2/webhooks/overview",
                   "v2/configuration/storage",
                   "v2/configuration/secrets",
                   "v2/configuration/commit-signing",
@@ -154,6 +154,7 @@
                           "v2/guides/operations/environments/git-repository-initialization",
                           "v2/guides/operations/environments/git-sync",
                           "v2/guides/operations/environments/git-scm",
+                          "v2/guides/operations/environments/webhooks",
                           "v2/guides/operations/environments/commit-signing-setup"
                         ]
                       }
