@@ -164,18 +164,20 @@ The following sections group related configuration options for easier navigation
 
 Server configuration controls how Flipt listens for and serves HTTP, HTTPS, and gRPC connections.
 
-| Property                       | Description                                                                                                | Default   | Since  |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------- | --------- | ------ |
-| server.protocol                | http or https                                                                                              | http      | v2.0.0 |
-| server.host                    | The host address on which to serve the Flipt application                                                   | 0.0.0.0   | v2.0.0 |
-| server.http_port               | The HTTP port on which to serve the Flipt REST API and UI                                                  | 8080      | v2.0.0 |
-| server.https_port              | The HTTPS port on which to serve the Flipt REST API and UI                                                 | 443       | v2.0.0 |
-| server.grpc_port               | The port on which to serve the Flipt GRPC server                                                           | 9000      | v2.0.0 |
-| server.grpc_conn_max_idle_time | Maximum amount of time a GRPC connection can be idle                                                       | unlimited | v2.0.0 |
-| server.grpc_conn_max_age       | Maximum amount of time a GRPC connection can live                                                          | unlimited | v2.0.0 |
-| server.grpc_conn_max_age_grace | Maximum amount of time a GRPC connection can live for outstanding RPCs after exceeding `grpc_conn_max_age` | unlimited | v2.0.0 |
-| server.cert_file               | Path to the certificate file (if protocol is set to https)                                                 |           | v2.0.0 |
-| server.cert_key                | Path to the certificate key file (if protocol is set to https)                                             |           | v2.0.0 |
+| Property                       | Description                                                                                                | Default   | Since   |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------- | --------- | ------- |
+| server.protocol                | http or https                                                                                              | http      | v2.0.0  |
+| server.host                    | The host address on which to serve the Flipt application                                                   | 0.0.0.0   | v2.0.0  |
+| server.http_port               | The HTTP port on which to serve the Flipt REST API and UI                                                  | 8080      | v2.0.0  |
+| server.https_port              | The HTTPS port on which to serve the Flipt REST API and UI                                                 | 443       | v2.0.0  |
+| server.http_read_timeout       | Maximum time to read an HTTP request, including the body. `0s` disables the timeout                        | 10s       | v2.15.0 |
+| server.http_idle_timeout       | Maximum time to keep an idle HTTP keep-alive connection open. `0s` inherits `http_read_timeout`            | 0s        | v2.15.0 |
+| server.grpc_port               | The port on which to serve the Flipt GRPC server                                                           | 9000      | v2.0.0  |
+| server.grpc_conn_max_idle_time | Maximum amount of time a GRPC connection can be idle                                                       | unlimited | v2.0.0  |
+| server.grpc_conn_max_age       | Maximum amount of time a GRPC connection can live                                                          | unlimited | v2.0.0  |
+| server.grpc_conn_max_age_grace | Maximum amount of time a GRPC connection can live for outstanding RPCs after exceeding `grpc_conn_max_age` | unlimited | v2.0.0  |
+| server.cert_file               | Path to the certificate file (if protocol is set to https)                                                 |           | v2.0.0  |
+| server.cert_key                | Path to the certificate key file (if protocol is set to https)                                             |           | v2.0.0  |
 
 ### Storage
 
