@@ -400,14 +400,15 @@ Authentication configuration controls how users and systems authenticate with Fl
 
 #### Authentication Methods: JWT
 
-| Property                                             | Description                                         | Default | Since  |
-| ---------------------------------------------------- | --------------------------------------------------- | ------- | ------ |
-| authentication.methods.jwt.enabled                   | Enable JWT authentication                           | false   | v2.0.0 |
-| authentication.methods.jwt.jwks_url                  | URL to retrieve JWKS for JWT validation             |         | v2.0.0 |
-| authentication.methods.jwt.public_key_file           | Path to public key file for JWT validation          |         | v2.0.0 |
-| authentication.methods.jwt.validate_claims.issuer    | The issuer claim to validate on JWT tokens          |         | v2.0.0 |
-| authentication.methods.jwt.validate_claims.audiences | The audience claim (list) to validate on JWT tokens |         | v2.0.0 |
-| authentication.methods.jwt.validate_claims.subject   | The subject claim to validate on JWT tokens         |         | v2.0.0 |
+| Property                                             | Description                                                                 | Default | Since   |
+| ---------------------------------------------------- | --------------------------------------------------------------------------- | ------- | ------- |
+| authentication.methods.jwt.enabled                   | Enable JWT authentication                                                   | false   | v2.0.0  |
+| authentication.methods.jwt.jwks_url                  | URL to retrieve JWKS for JWT validation                                     |         | v2.0.0  |
+| authentication.methods.jwt.public_key_file           | Path to public key file for JWT validation                                  |         | v2.0.0  |
+| authentication.methods.jwt.validate_claims.issuer    | The issuer claim to validate on JWT tokens                                  |         | v2.0.0  |
+| authentication.methods.jwt.validate_claims.audiences | The audience claim (list) to validate on JWT tokens                         |         | v2.0.0  |
+| authentication.methods.jwt.validate_claims.subject   | The subject claim to validate on JWT tokens                                 |         | v2.0.0  |
+| authentication.methods.jwt.validate_claims.custom    | Additional claims (list of `claim` and `values`) that JWT tokens must carry |         | v2.15.0 |
 
 ### Authorization
 
