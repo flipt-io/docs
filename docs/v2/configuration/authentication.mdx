@@ -957,6 +957,39 @@ authentication:
         audiences: https://flipt.io/, https://flipt.com/ # at least one audience must match
 ```
 
+##### Custom Claims
+
+Use `validate_claims.custom` to require claims other than `iss`, `aud`, and `sub`, such as a role or a tenant identifier. Each entry names a top-level claim in the JWT payload and lists the values it accepts.
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    jwt:
+      enabled: true
+      validate_claims:
+        issuer: https://auth0.com/
+        custom:
+          - claim: https://example.com/roles
+            values: [flipt-admin, flipt-editor]
+          - claim: email_verified
+            values: ["true"]
+```
+
+A token is accepted only if it satisfies every entry:
+
+- The claim must be present, and its value must equal one of `values`. Names and values are case-sensitive.
+- If the claim in the token is an array, one matching element is enough.
+- String, boolean, and number claims are supported. Booleans and numbers are compared as text, so write them as `"true"` or `"42"`.
+
+Custom claims are checked after the token's signature and standard claims have been verified. Flipt fails to start if an entry has no `claim` or no non-empty `values`.
+
+<Note>
+  `custom` is a list rather than a map so that claim names keep their case and
+  can contain `.` or `/`, as namespaced claims such as
+  `https://example.com/roles` often do.
+</Note>
+
 #### Claims Mapping
 
 By default, Flipt extracts user attributes from JWT claims using predefined paths within the JWT payload. The default mappings are:
