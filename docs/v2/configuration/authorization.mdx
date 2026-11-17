@@ -160,6 +160,99 @@ allow if {
 }
 ```
 
+## Policy Input
+
+For every request that requires authorization, Flipt evaluates the policy against an `input` document with two fields: `request` describes what the caller is trying to do, and `authentication` describes who the caller is.
+
+```json
+{
+  "request": {
+    "scope": "namespace",
+    "environment": "production",
+    "namespace": "frontend",
+    "action": "update"
+  },
+  "authentication": {
+    "id": "2c2b8a1e-0f1d-4c8e-9a43-6f0b3c1d2e4f",
+    "method": 2,
+    "metadata": {
+      "io.flipt.auth.oidc.provider": "keycloak",
+      "io.flipt.auth.email": "dev@company.com",
+      "io.flipt.auth.name": "Jane Developer",
+      "io.flipt.auth.claims": "{\"email\":\"dev@company.com\",\"groups\":[\"developers\"],\"sub\":\"8f2a6c\"}"
+    },
+    "created_at": { "seconds": 1767225600 },
+    "expires_at": { "seconds": 1767312000 }
+  }
+}
+```
+
+### Request
+
+`input.request` contains the following fields:
+
+- `scope`: The level at which the action is performed:
+  - `environment`: operations on environments and on namespaces themselves, such as listing environments, creating a branch, or reading, updating and deleting a namespace.
+  - `namespace`: operations on a namespace and the resources (flags, segments, etc.) within it.
+  - `authentication`: listing, reading or deleting other authentication sessions and tokens. Requests with this scope have no `environment` or `namespace`.
+- `action`: One of `create`, `read`, `update`, `delete` or `evaluate`. See [Evaluation and OFREP Exclusions](#evaluation-and-ofrep-exclusions) for when `evaluate` is used.
+- `environment`: The key of the environment the request targets. Omitted when the request is not bound to an environment.
+- `namespace`: The key of the namespace the request targets. Omitted when the request is not bound to a namespace.
+
+<Note>
+  The `authentication` scope was added in v2.14.1. Because these requests have
+  no environment, rules that match on `input.request.environment` never allow
+  them. Only callers allowed by a rule that doesn't check the environment, such
+  as a global admin rule, can manage other authentications.
+</Note>
+
+### Authentication
+
+`input.authentication` contains the following fields:
+
+- `id`: The unique ID of the authentication. For static tokens, this is the token's name in the configuration. Requests authenticated with a JWT have no ID.
+- `method`: The authentication method as a number (`1` = `token`, `2` = `oidc`, `3` = `kubernetes`, `4` = `github`, `5` = `jwt`). Use the [`flipt.is_auth_method`](#helper-functions) helper instead of comparing numbers.
+- `metadata`: A map of metadata set by the authentication method. All values are strings.
+- `created_at`, `updated_at` and `expires_at`: Timestamps with `seconds` and `nanos` fields. Omitted when unset. For example, static tokens have no `expires_at`, and requests authenticated with a JWT have no timestamps.
+
+#### Metadata Keys
+
+The metadata keys depend on the authentication method used for the request:
+
+| Method                                                            | Metadata keys                                                                                                                                                                                                                                                                                                 |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [OIDC](/v2/configuration/authentication#oidc)                     | `io.flipt.auth.email`, `io.flipt.auth.name`, `io.flipt.auth.picture`, `io.flipt.auth.claims`, `io.flipt.auth.oidc.provider`, `io.flipt.auth.oidc.email`, `io.flipt.auth.oidc.email_verified`, `io.flipt.auth.oidc.name`, `io.flipt.auth.oidc.profile`, `io.flipt.auth.oidc.picture`, `io.flipt.auth.oidc.sub` |
+| [GitHub](/v2/configuration/authentication#github)                 | `io.flipt.auth.email`, `io.flipt.auth.name`, `io.flipt.auth.picture`, `io.flipt.auth.github.email`, `io.flipt.auth.github.name`, `io.flipt.auth.github.picture`, `io.flipt.auth.github.sub`, `io.flipt.auth.github.preferred_username`, `io.flipt.auth.github.organizations`, `io.flipt.auth.github.teams`    |
+| [JSON Web Token](/v2/configuration/authentication#json-web-token) | `io.flipt.auth.claims`, `io.flipt.auth.jwt.issuer`, `io.flipt.auth.jwt.email`, `io.flipt.auth.jwt.name`, `io.flipt.auth.jwt.sub`, `io.flipt.auth.jwt.picture`, `io.flipt.auth.jwt.role`                                                                                                                       |
+| [Kubernetes](/v2/configuration/authentication#kubernetes)         | `io.flipt.auth.k8s.namespace`, `io.flipt.auth.k8s.pod.name`, `io.flipt.auth.k8s.pod.uid`, `io.flipt.auth.k8s.serviceaccount.name`, `io.flipt.auth.k8s.serviceaccount.uid`                                                                                                                                     |
+| [Static Token](/v2/configuration/authentication#static-token)     | The `metadata` configured for the token.                                                                                                                                                                                                                                                                      |
+
+A key is only present when the authentication method has a value for it. For example, `io.flipt.auth.email` is missing if the OIDC provider does not return an email address. Keep the following in mind when writing policies:
+
+- `io.flipt.auth.claims` holds **all** claims of the OIDC ID token (including the [UserInfo claims](/v2/configuration/authentication#userinfo-claims) when `fetch_extra_user_info` is enabled) or of the JWT, encoded as a JSON string. Use `json.unmarshal` to read claims that Flipt does not map to their own key, such as groups, roles or scopes.
+- `io.flipt.auth.github.organizations` and `io.flipt.auth.github.teams` are only set when the `read:org` scope is configured. They are JSON strings: a list of organizations, and a map of organization to a list of teams, respectively.
+- The `io.flipt.auth.jwt.*` attributes follow the [JWT claims mapping](/v2/configuration/authentication#json-web-token). JWT claims whose names start with `io.flipt.auth` are also copied into the metadata as is, so a JWT can set keys such as `io.flipt.auth.email` directly. Use `flipt.is_auth_method` when a rule should only apply to one authentication method.
+
+For example, the following rule allows requests from any OIDC user who has `flipt-admins` in the `groups` claim of their ID token:
+
+```rego policy.rego
+allow if {
+	flipt.is_auth_method(input, "oidc")
+	claims := json.unmarshal(input.authentication.metadata["io.flipt.auth.claims"])
+	"flipt-admins" in claims.groups
+}
+```
+
+And this rule allows members of the `platform` team in the `my-org` GitHub organization:
+
+```rego policy.rego
+allow if {
+	flipt.is_auth_method(input, "github")
+	teams := json.unmarshal(input.authentication.metadata["io.flipt.auth.github.teams"])
+	"platform" in teams["my-org"]
+}
+```
+
 ## Key Differences from v1
 
 Flipt v2 authorization introduces several important changes:
@@ -201,7 +294,7 @@ v2 uses a simplified request structure with `scope` field:
 ```json
 {
   "request": {
-    "scope": "namespace", // or "environment"
+    "scope": "namespace", // "environment" or "authentication"
     "environment": "production",
     "namespace": "frontend",
     "action": "update" // create, read, update, delete, or evaluate
@@ -215,7 +308,7 @@ The `evaluate` action is used for evaluation, snapshot, and OFREP requests when 
 
 ### Basic RBAC Policy
 
-Here's a complete example of a v2 RBAC policy:
+Here's a complete example of a v2 RBAC policy. It identifies users by their email address (`io.flipt.auth.email`) and groups by the `groups` claim of their ID token, which works for OIDC providers that include a `groups` claim. If you use a different authentication method, adjust `subject_ids` to the [metadata keys](#metadata-keys) your method sets.
 
 ```rego policy.rego
 package flipt.authz.v2
@@ -228,13 +321,14 @@ default viewable_environments := []
 
 # Helper to get user/group identifiers
 subject_ids contains id if {
-    user := input.authentication.metadata["io.flipt.auth.user"]
-    id := sprintf("user:%s", [user])
+    email := input.authentication.metadata["io.flipt.auth.email"]
+    id := sprintf("user:%s", [email])
 }
 
 subject_ids contains id if {
-    groups := input.authentication.metadata["io.flipt.auth.groups"]
-    id := sprintf("group:%s", [groups[_]])
+    claims := json.unmarshal(input.authentication.metadata["io.flipt.auth.claims"])
+    some group in claims.groups
+    id := sprintf("group:%s", [group])
 }
 
 # Check for global admin access
@@ -306,11 +400,13 @@ allow if {
     some b in binding.scope.bindings
     b.environment == env
 
-    # Check namespace access
-    ns in b.namespaces
+    # Check namespace access ("*" matches any namespace)
+    some n in b.namespaces
+    n in {ns, "*"}
 
-    # Check action permission
-    action in b.permissions
+    # Check action permission ("*" matches any action)
+    some p in b.permissions
+    p in {action, "*"}
 }
 ```
 
