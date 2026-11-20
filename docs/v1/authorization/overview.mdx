@@ -330,6 +330,55 @@ Flipt allows you to define external data sources in the configuration file. You 
 
 The combination of OPA's flexible policy language and the ability to use external data sources makes it possible to define complex authorization policies that can adapt to your organization's needs.
 
+## Filtering Namespaces
+
+<Info>Namespace filtering is available since v1.54.0 of Flipt.</Info>
+
+Listing namespaces is a single request that isn't scoped to a namespace, so a policy can only allow or deny it as a whole. This means that users who can access only some namespaces either see every namespace in the UI or can't list namespaces at all.
+
+To return only the namespaces a user can access, define a `viewable_namespaces` rule in your policy. The rule must produce a set or array of namespace keys. When Flipt lists namespaces, it evaluates `viewable_namespaces` with the same `input` as `allow`:
+
+- If `viewable_namespaces` contains at least one namespace key, Flipt returns only those namespaces. The `allow` decision isn't used for this request.
+- If `viewable_namespaces` is undefined or empty, Flipt uses the `allow` decision. If the request is allowed, Flipt returns every namespace. Otherwise, the request is denied. Before v1.62.0, Flipt returned every namespace in this case, even if `allow` denied the request.
+
+Here's an example policy that maps groups to the namespaces they can access, using an [external data](#external-data) file:
+
+```rego policy.rego
+package flipt.authz.v1
+
+import rego.v1
+
+claims := json.unmarshal(input.authentication.metadata["io.flipt.auth.claims"])
+
+viewable_namespaces contains namespace if {
+    some group in claims.groups
+    some namespace in data.groups_to_namespaces[group]
+}
+
+default allow := false
+
+allow if {
+    input.request.namespace in viewable_namespaces
+}
+```
+
+```json data.json
+{
+  "groups_to_namespaces": {
+    "devs": ["local", "staging"],
+    "ops": ["staging", "production"]
+  }
+}
+```
+
+With this policy, a user in the `devs` group sees only the `local` and `staging` namespaces, and can only access resources in those namespaces.
+
+<Note>
+  `viewable_namespaces` only filters the list of namespaces. The `allow` rule
+  still decides every other request, so make sure it grants access to the same
+  namespaces.
+</Note>
+
 ## Authoring Policies
 
 While the examples provided in this document are simple, you can write policies that are as complex as you need. OPA provides a rich set of built-in functions that can be used to write complex policies.
