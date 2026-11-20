@@ -16,6 +16,44 @@ Once enabled, all routes beneath the Management API prefix will require a [polic
 
 - `/api/v1/`
 
+## Flag Evaluation
+
+Flipt doesn't check policies for flag evaluation requests to the following API routes. If [authentication](/v1/authentication/overview) is required, these requests must still be authenticated:
+
+- `/evaluate/v1/`: The [Evaluation API](/v1/reference/evaluation/boolean-evaluation)
+- `/ofrep/v1/`: The [OpenFeature Remote Evaluation Protocol (OFREP) API](/v1/reference/openfeature/overview)
+
+To limit an application to evaluating flags in a single namespace, use a [namespaced token](/v1/authentication/methods#namespaced-tokens).
+
+[Client-side SDKs](/v1/integration/client) fetch flag state for a namespace from `/internal/v1/evaluation/snapshot/namespace/{namespace}`. Flipt authorizes this request as reading both the `flag` and `segment` resources in that namespace, so your policy must allow both. For example:
+
+```rego policy.rego
+package flipt.authz.v1
+
+import rego.v1
+
+default allow := false
+
+allow if {
+    input.request.namespace == "production"
+    input.request.resource in {"flag", "segment"}
+    input.request.action == "read"
+}
+```
+
+<Warning>
+  When authorization is required, Flipt denies all requests to the deprecated
+  `/api/v1/evaluate` and `/api/v1/batch-evaluate` endpoints, including their
+  `/api/v1/namespaces/{namespace}/` variants. Use the `/evaluate/v1/` endpoints
+  instead.
+</Warning>
+
+<Note>
+  If you exclude evaluation from authentication with
+  `authentication.exclude.evaluation`, client-side SDK requests aren't
+  authenticated, so Flipt denies them when authorization is required.
+</Note>
+
 ## Open Policy Agent (OPA)
 
 [Open Policy Agent (OPA)](https://www.openpolicyagent.org/) is a general-purpose policy engine that can be used to configure and enforce authorization policies. OPA provides a unified toolset and framework for policy across the cloud native stack. Open Policy Agent is a [CNCF](https://www.cncf.io/) project and is used by many organizations to enforce policies across their cloud-native environments.
