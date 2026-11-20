@@ -289,6 +289,8 @@ cors:
   headers your application sends.
 </Note>
 
+If your CORS settings are correct but browser requests still fail with `403 Forbidden`, check whether `authentication.session.csrf.key` is set. See [Cross-Origin Protection](/v2/configuration/authentication#cross-origin-protection) for how to allow requests from other origins.
+
 ## Security & Access Control
 
 ### Authentication
@@ -309,14 +311,15 @@ Authentication configuration controls how users and systems authenticate with Fl
 
 #### Authentication Session
 
-| Property                              | Description                                                   | Default | Since  |
-| ------------------------------------- | ------------------------------------------------------------- | ------- | ------ |
-| authentication.session.domain         | Public domain on which Flipt instance is hosted               |         | v2.0.0 |
-| authentication.session.secure         | Configures the `Secure` property on created session cookies   | false   | v2.0.0 |
-| authentication.session.token_lifetime | Configures the lifetime of the session token (login duration) | 24h     | v2.0.0 |
-| authentication.session.state_lifetime | Configures the lifetime of state parameters during OAuth flow | 10m     | v2.0.0 |
-| authentication.session.csrf.key       | Secret credential used to sign CSRF prevention tokens         |         | v2.0.0 |
-| authentication.session.csrf.secure    | Enable secure CSRF token enforcement                          | false   | v2.0.0 |
+| Property                                    | Description                                                   | Default | Since  |
+| ------------------------------------------- | ------------------------------------------------------------- | ------- | ------ |
+| authentication.session.domain               | Public domain on which Flipt instance is hosted               |         | v2.0.0 |
+| authentication.session.secure               | Configures the `Secure` property on created session cookies   | false   | v2.0.0 |
+| authentication.session.token_lifetime       | Configures the lifetime of the session token (login duration) | 24h     | v2.0.0 |
+| authentication.session.state_lifetime       | Configures the lifetime of state parameters during OAuth flow | 10m     | v2.0.0 |
+| authentication.session.csrf.key             | Enables cross-origin (CSRF) protection when set               |         | v2.0.0 |
+| authentication.session.csrf.trusted_origins | Origins allowed to send cross-origin state-changing requests  |         | v2.0.0 |
+| authentication.session.csrf.secure          | No effect since v2.0.1                                        | true    | v2.0.0 |
 
 #### Authentication Session Storage
 

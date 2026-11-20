@@ -74,15 +74,46 @@ The other properties aren't required to be explicitly configured.
 
 To best secure your instance of Flipt, we advise that you run Flipt with `secure: true`.
 This will require you to expose Flipt over HTTPS.
-Additionally, we advise that you configure a `csrf.key` with a 32 or 64-byte random string of data.
+Additionally, we advise that you configure a `csrf.key` to enable [cross-origin protection](#cross-origin-protection).
 
-<Card title="Using openssl to generate a 64-byte CSRF key" icon="lightbulb">
+### Cross-Origin Protection
 
+Configuring `csrf.key` enables cross-origin protection for the Flipt HTTP API, which defends browser sessions against cross-site request forgery (CSRF).
+Flipt uses the browser-provided `Sec-Fetch-Site` and `Origin` request headers to decide whether a request comes from the same origin as Flipt.
+Flipt doesn't issue CSRF tokens, so any non-empty `csrf.key` value enables the protection.
+
+When the protection is enabled, Flipt rejects state-changing requests (for example `POST`, `PUT`, and `DELETE`) that a browser sends from a different origin with a `403 Forbidden` response.
+`GET`, `HEAD`, and `OPTIONS` requests are always allowed.
+Requests from non-browser clients, such as server-side SDKs or `curl`, don't send these headers and aren't affected.
+
+If you have browser applications on other origins that need to send requests to Flipt, add their origins to `csrf.trusted_origins`:
+
+```yaml config.yaml
+authentication:
+  session:
+    csrf:
+      key: "some_secret_string"
+      trusted_origins:
+        - "https://admin.yourorg.com"
+        - "http://localhost:3000"
 ```
-openssl rand -base64 64
-```
 
-</Card>
+Each trusted origin must have the form `scheme://host[:port]`, without a path, query, or trailing slash.
+Flipt logs an error at startup and ignores any trusted origin it can't parse.
+
+Cross-origin protection doesn't apply to the following endpoints:
+
+- `POST` requests to the `/evaluate/v1` and `/ofrep/v1` APIs when you exclude them from authentication with `authentication.exclude.evaluation` or `authentication.exclude.ofrep` (since v2.13.1). Anyone can already call these endpoints without credentials, so browser applications on any origin can evaluate flags without being added to `trusted_origins`.
+- [Incoming webhooks](/v2/webhooks/overview), which authenticate each request with the webhook secret instead.
+
+<Note>
+  Cross-origin protection is separate from
+  [CORS](/v2/configuration/overview#cors). CORS controls which origins a browser
+  lets read Flipt's responses, while cross-origin protection controls which
+  origins Flipt accepts state-changing requests from. A browser application on
+  another origin that sends state-changing requests to Flipt usually needs both
+  an `allowed_origins` entry and a `trusted_origins` entry.
+</Note>
 
 ### Session Storage
 
