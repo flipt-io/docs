@@ -99,6 +99,72 @@ We currently provide the following OpenFeature providers:
   </Card>
 </CardGroup>
 
+### Environments
+
+Flipt v2 stores flags in [environments](/v2/concepts#environments). A provider evaluates flags in the default environment unless you select a different one. Depending on the provider, you select an environment with a provider option or by sending the `X-Flipt-Environment` header with each request.
+
+| Provider | How to select an environment                                                    |
+| -------- | ------------------------------------------------------------------------------- |
+| Node     | Set the `X-Flipt-Environment` header in the `headers` option (v0.1.4 and later) |
+| Browser  | Set the `environment` option (v0.1.6 and later)                                 |
+| Go       | Use the `flipt.ForEnvironment` option (v0.1.6 and later)                        |
+| Java     | Set the `X-Flipt-Environment` header on the `FliptClient` builder               |
+| Python   | Return the `X-Flipt-Environment` header from `headers_factory`                  |
+| C#       | Not supported. Use an [OFREP provider](#remote-evaluation-protocol) instead     |
+| Ruby     | Not supported. Use an [OFREP provider](#remote-evaluation-protocol) instead     |
+
+<CodeGroup>
+
+```ts Node
+import { FliptProvider } from "@openfeature/flipt-provider";
+
+const provider = new FliptProvider("default", {
+  url: "http://localhost:8080",
+  headers: { "X-Flipt-Environment": "staging" },
+});
+```
+
+```ts Browser
+import { FliptWebProvider } from "@openfeature/flipt-web-provider";
+
+const provider = new FliptWebProvider("default", {
+  url: "http://localhost:8080",
+  environment: "staging",
+});
+```
+
+```go Go
+provider := flipt.NewProvider(
+    flipt.WithAddress("http://localhost:8080"),
+    flipt.ForNamespace("default"),
+    flipt.ForEnvironment("staging"),
+)
+```
+
+```java Java
+FliptClientBuilder fliptClientBuilder = FliptClient.builder()
+    .url("http://localhost:8080")
+    .headers(Map.of("X-Flipt-Environment", "staging"));
+
+FliptProviderConfig fliptProviderConfig = FliptProviderConfig.builder()
+    .fliptClientBuilder(fliptClientBuilder)
+    .build();
+
+FeatureProvider provider = new FliptProvider(fliptProviderConfig);
+```
+
+```python Python
+from openfeature.contrib.provider.flipt import FliptProvider
+
+provider = FliptProvider(
+    base_url="http://localhost:8080",
+    namespace="default",
+    headers_factory=lambda: {"X-Flipt-Environment": "staging"},
+)
+```
+
+</CodeGroup>
+
 ## Remote Evaluation Protocol
 
 The OpenFeature Remote Evaluation Protocol (OFREP) is an API specification for feature flagging that allows the use of generic providers to connect to any feature flag management systems that support the protocol.
@@ -107,6 +173,15 @@ Flipt is one of the early adopters of the OFREP protocol and has implemented the
 
 The OFREP protocol is still in the early stages of development, so the specification is subject to change.
 
-The API documentation for the OFREP protocol implementation in Flipt is available in the [OpenFeature Remote Evaluation](/v1/reference/openfeature/overview) API documentation.
+You can use any OpenFeature OFREP provider with Flipt by pointing its base URL at your Flipt server. OFREP providers don't know about Flipt namespaces or environments, so configure the provider to send these headers with each request:
+
+| Header                | Description                                                                |
+| --------------------- | -------------------------------------------------------------------------- |
+| `X-Flipt-Namespace`   | The namespace to evaluate flags in. Defaults to the `default` namespace.   |
+| `X-Flipt-Environment` | The environment to evaluate flags in. Defaults to the default environment. |
+
+If Flipt requires authentication, also send an `Authorization` header as described in [Connecting Applications](/v2/guides/operations/authentication/connecting-applications).
+
+The API documentation for the OFREP protocol implementation in Flipt is available in the [Flag Evaluation](/v2/reference/openfeature/flag-evaluation) and [Bulk Evaluation](/v2/reference/openfeature/bulk-evaluation) API documentation.
 
 For more information on the OFREP protocol, see the [OpenFeature Remote Evaluation Protocol](https://github.com/open-feature/protocol) repository on GitHub.
