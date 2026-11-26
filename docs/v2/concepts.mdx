@@ -202,6 +202,9 @@ to the remaining **60%**. You would accomplish this using rules with distributio
 
 The ability to manage distributions, as illustrated in the image above, is an extremely powerful feature of Flipt that can help you seamlessly deploy new features of your applications to your users while also limiting the reach of potential bugs.
 
+
+Distributions in a rule do not have to sum to 100. Any remaining share is redistributed across the rule's distributions in proportion to their rollout values; it does not fall through to the flag's default variant. To send a share to the default variant, include it as an explicit distribution.
+
 ## Rollouts
 
 Rollouts allow you to potentially change the result of a boolean flag value at request time.
