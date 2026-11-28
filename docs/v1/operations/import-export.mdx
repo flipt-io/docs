@@ -36,6 +36,8 @@ flipt import flipt.yaml
   your document refers to doesn't exist in the database, it will be created.
 </Note>
 
+When Flipt creates a namespace during an import, it uses the `name` and `description` from the document's `namespace` object. If `namespace` is only a key, Flipt uses the key as the name. See [Defining Flag State](/v1/configuration/storage#defining-flag-state) for both forms. Importing doesn't change the name or description of a namespace that already exists, including the `default` namespace.
+
 This command supports the `--drop` flag that will drop all data in your Flipt database tables before importing. This is to ensure that no data collisions occur during the import.
 
 <Warning>
@@ -55,9 +57,15 @@ By default, `export` will output to STDOUT:
 ```yaml
 $ flipt export
 
+version: "1.4"
+namespace:
+  key: default
+  name: Default
+  description: Default namespace
 flags:
 - key: new-contact-page
   name: New Contact Page
+  type: VARIANT_FLAG_TYPE
   description: Show users our Beta contact page
   enabled: true
   variants:
@@ -66,6 +74,8 @@ flags:
   - key: green
     name: Green
 ```
+
+Each exported namespace starts with a `namespace` object that holds its key, name, and description, so importing the file into another Flipt instance creates any missing namespace with the same name and description. When you export several namespaces, each one is written as a separate YAML document in the same output.
 
 You can also export to a file using the `-o filename` or `--output filename`
 flags:

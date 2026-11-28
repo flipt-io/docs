@@ -720,3 +720,24 @@ namespace: default # string identifying the resources collective namespace
 flags: [] # [Flag] list of Flag definitions
 segments: [] # [Segment] list of Segment definitions
 ```
+
+The `namespace` key can be either the namespace key as a string, as shown above, or an object that also sets the namespace's display name and description:
+
+```yaml features.yaml
+namespace:
+  key: backend
+  name: Backend
+  description: Feature flags for the backend services
+flags: []
+segments: []
+```
+
+| Field         | Description                                                                             |
+| ------------- | --------------------------------------------------------------------------------------- |
+| `key`         | The namespace key. Flags and segments in the file belong to the namespace with this key |
+| `name`        | The display name of the namespace, shown in the UI and returned by the API              |
+| `description` | An optional description of the namespace                                                |
+
+When you use the object form, set both `key` and `name`. When `namespace` is a string, Flipt uses the key as the namespace's name. If a file omits `namespace`, its contents belong to the `default` namespace.
+
+<Note>The object form of `namespace` requires Flipt v1.48.0 or later.</Note>
