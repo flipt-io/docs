@@ -239,6 +239,7 @@ export FLIPT_CORS_ALLOWED_ORIGINS="http://localhost:3000 http://localhost:3001"
 | authentication.methods.kubernetes.discovery_url              | Kubernetes API server URL for OIDC configuration discovery     | https://kubernetes.default.svc.cluster.local         | v1.19.0 |
 | authentication.methods.kubernetes.ca_path                    | Kubernetes API CA certification path                           | /var/run/secrets/kubernetes.io/serviceaccount/ca.crt | v1.19.0 |
 | authentication.methods.kubernetes.service_account_token_path | Path to Flipt service account token                            | /var/run/secrets/kubernetes.io/serviceaccount/token  | v1.19.0 |
+| authentication.methods.kubernetes.audiences                  | Accepted audiences (list) for service account tokens           |                                                      | v1.62.0 |
 
 #### Authentication Methods: JWT
 

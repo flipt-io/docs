@@ -377,6 +377,54 @@ Once enabled, client tokens can be retrieved by sending a Kubernetes pod's servi
 
 Further explanation for using this method can be found in the [Authentication: Kubernetes](/v1/authentication/methods#kubernetes) documentation.
 
+#### Audiences
+
+By default, Flipt exchanges every service account token issued by the cluster for a client token. Use `audiences` to accept only service account tokens that were issued for Flipt. A token is accepted if its `aud` claim contains at least one of the listed values. Values must match exactly and are case-sensitive.
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    kubernetes:
+      enabled: true
+      audiences:
+        - flipt
+```
+
+The service account token that Kubernetes mounts into pods by default is issued for the Kubernetes API server, so Flipt rejects it once `audiences` is set. Instead, mount a [projected service account token](https://kubernetes.io/docs/concepts/storage/projected-volumes/#serviceaccounttoken) with a matching `audience` into each application that authenticates with Flipt:
+
+```yaml deployment.yaml
+spec:
+  template:
+    spec:
+      serviceAccountName: booking
+      containers:
+        - name: booking
+          volumeMounts:
+            - name: flipt-token
+              mountPath: /var/run/secrets/flipt
+              readOnly: true
+      volumes:
+        - name: flipt-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  path: token
+                  audience: flipt
+                  expirationSeconds: 3600
+```
+
+The application then exchanges the token from `/var/run/secrets/flipt/token` instead of the default token. With the Go SDK, pass this path to `sdk.WithKubernetesServiceAccountTokenPath`. Service account tokens issued for other audiences, such as the tokens your workloads use to authenticate with Vault, are rejected.
+
+<Note>
+  Keep Flipt's own `service_account_token_path` on the default token. Flipt
+  sends that token to the Kubernetes API server to fetch the keys that sign
+  service account tokens, and the API server only accepts tokens issued for
+  itself.
+</Note>
+
+Without `audiences`, Flipt accepts tokens issued for any audience and logs a warning at startup.
+
 #### Troubleshooting
 
 **verifying service account: failed to verify signature: fetching keys oidc**

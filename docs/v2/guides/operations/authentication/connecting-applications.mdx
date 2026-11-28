@@ -183,13 +183,15 @@ authentication:
   methods:
     kubernetes:
       enabled: true
-      # Path where Kubernetes mounts the service account token
+      # Path where Kubernetes mounts Flipt's own service account token
       service_account_token_path: /var/run/secrets/kubernetes.io/serviceaccount/token
 ```
 
+By default, Flipt accepts a token from any service account in the cluster. To accept only tokens issued for Flipt, or only tokens from specific namespaces and service accounts, see [Audiences](/v2/configuration/authentication#audiences) and [Allowed Namespaces and Service Accounts](/v2/configuration/authentication#allowed-namespaces-and-service-accounts).
+
 ### Step 2: Exchange the Service Account Token for a Flipt Client Token
 
-Kubernetes service account tokens are not used directly as Flipt client tokens. Instead, send the pod token to Flipt's Kubernetes auth endpoint to obtain a Flipt client token:
+Send the pod's service account token to Flipt's Kubernetes auth endpoint:
 
 ```bash
 # assumes curl (and optionally jq) is installed in the pod
@@ -198,7 +200,28 @@ curl --request POST http://flipt:8080/auth/v1/method/kubernetes/serviceaccount \
   --data "{\"service_account_token\":\"$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)\"}"
 ```
 
-Use the returned `clientToken` value as a normal Flipt client token (`Authorization: Bearer <client-token>`).
+Flipt verifies the token with the cluster and returns it as `clientToken`, along with its expiration in `authentication.expiresAt`. Send the `clientToken` value using the JWT authorization header format:
+
+```bash
+curl --request POST http://flipt:8080/evaluate/v1/variant \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: JWT <client-token>' \
+  --data '{
+    "flagKey": "dark-mode",
+    "entityId": "user-123",
+    "namespaceKey": "default",
+    "context": {}
+  }'
+```
+
+<Note>
+  The `clientToken` is your service account token, and Flipt verifies it again
+  on every request. Requests that send it with the `Bearer` scheme, as used for
+  [static client tokens](#method-1-static-client-tokens), are rejected.
+</Note>
+
+The token stops working when it expires. Kubernetes refreshes the token file before then, so read the file again and repeat the exchange to get a new client token.
 
 <Tip>
   Some SDKs can perform this Kubernetes token exchange and refresh flow
