@@ -877,7 +877,82 @@ authentication:
 
 Once enabled, client tokens can be retrieved by sending a Kubernetes pod's service account token to the `VerifyServiceAccount` operation in the API.
 
-Further explanation for using this method can be found in the [Authentication: Kubernetes](/v1/authentication/methods#kubernetes) documentation.
+See [Connecting Applications to Flipt](/v2/guides/operations/authentication/connecting-applications#method-3-kubernetes-service-account-tokens) for how applications exchange their service account token and use the result.
+
+By default, Flipt accepts every service account token issued by the cluster. Use `audiences`, `allowed_namespaces`, and `allowed_service_accounts` to accept only the tokens of the workloads you trust.
+
+#### Audiences
+
+Use `audiences` to accept only service account tokens that were issued for Flipt. A token is accepted if its `aud` claim contains at least one of the listed values. Values must match exactly and are case-sensitive.
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    kubernetes:
+      enabled: true
+      audiences:
+        - flipt
+```
+
+The service account token that Kubernetes mounts into pods by default is issued for the Kubernetes API server, so Flipt rejects it once `audiences` is set. Instead, mount a [projected service account token](https://kubernetes.io/docs/concepts/storage/projected-volumes/#serviceaccounttoken) with a matching `audience` into each application that authenticates with Flipt:
+
+```yaml deployment.yaml
+spec:
+  template:
+    spec:
+      serviceAccountName: booking
+      containers:
+        - name: booking
+          volumeMounts:
+            - name: flipt-token
+              mountPath: /var/run/secrets/flipt
+              readOnly: true
+      volumes:
+        - name: flipt-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  path: token
+                  audience: flipt
+                  expirationSeconds: 3600
+```
+
+The application then sends the token from `/var/run/secrets/flipt/token` to Flipt instead of the default token. Service account tokens issued for other audiences, such as the tokens your workloads use to authenticate with Vault, are rejected.
+
+<Note>
+  Keep Flipt's own `service_account_token_path` on the default token. Flipt
+  sends that token to the Kubernetes API server to fetch the keys that sign
+  service account tokens, and the API server only accepts tokens issued for
+  itself.
+</Note>
+
+Without `audiences`, Flipt accepts tokens issued for any audience and logs a warning at startup.
+
+#### Allowed Namespaces and Service Accounts
+
+Use `allowed_namespaces` and `allowed_service_accounts` to accept tokens only from specific workloads:
+
+```yaml config.yaml
+authentication:
+  required: true
+  methods:
+    kubernetes:
+      enabled: true
+      allowed_namespaces:
+        - production
+      allowed_service_accounts:
+        - applications/booking
+```
+
+- `allowed_namespaces` accepts tokens issued to any service account in one of the listed Kubernetes namespaces.
+- `allowed_service_accounts` accepts tokens issued to one of the listed service accounts. Write each service account as `<namespace>/<name>`. The namespace is required because service account names are only unique within a namespace. Without it, a service account with the same name in any other namespace would also be accepted.
+
+When either list is set, a token is accepted if its service account matches **either** list. In the example above, Flipt accepts every service account in the `production` namespace and the `booking` service account in the `applications` namespace. It rejects tokens from any other service account, and tokens that don't identify a namespace and service account. Names are case-sensitive. When neither list is set, every service account is accepted.
+
+These lists work together with `audiences`: when you set both, a token must carry an accepted audience **and** come from an allowed namespace or service account. Flipt applies these checks when an application exchanges its service account token, and again on every request that is authenticated with that token.
+
+Flipt fails to start if `allowed_namespaces` contains an empty value, or if an entry in `allowed_service_accounts` isn't in the `<namespace>/<name>` form.
 
 #### Troubleshooting
 
