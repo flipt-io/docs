@@ -89,13 +89,26 @@ This configuration will create a git storage backend with the identifier `stagin
 
 ### Fetch Policy
 
-The `fetch_policy` configuration option controls how Flipt handles connection-related issues when attempting to fetch from a remote Git repository.
+The `fetch_policy` configuration option controls what Flipt does when it can't fetch from the remote Git repository while it starts.
+
+Flipt fetches from the remote when it starts and then every `poll_interval`. A fetch that fails after startup never stops Flipt, whatever the policy: Flipt logs the error, keeps serving the flag state it already has, and tries again at the next poll.
 
 #### Available Policies
 
-- **`strict`** (default): Flipt will fail and return an error if it encounters connection issues when trying to fetch from the remote repository. This ensures that any connectivity problems are immediately visible and must be resolved.
+- **`strict`** (default): Flipt fails to start if the initial fetch fails. This makes connectivity and configuration problems visible as soon as Flipt starts.
 
-- **`lenient`**: Flipt will continue operating even if connection issues prevent fetching from the remote repository. This allows Flipt to remain functional during temporary network issues or remote repository unavailability.
+- **`lenient`**: Flipt starts with the commits it already has locally when the remote is temporarily unavailable. This allows Flipt to restart and keep serving flags during network issues or remote repository downtime.
+
+With the `lenient` policy, Flipt only starts after a failed initial fetch when both of the following are true:
+
+- The remote couldn't be reached or couldn't serve the request. This covers refused or timed out connections, unreachable hosts or networks, host names that can't be resolved, and HTTP `5xx` or `429` responses. Other errors, such as rejected credentials (`401` or `403`) or a repository that doesn't exist (`404`), still stop Flipt from starting, because they point to a problem with the configuration.
+- The local repository already has commits, for example from an earlier successful fetch. This requires the [`local`](#local) backend with a `path` that persists across restarts, such as a persistent volume in Kubernetes. The [`memory`](#memory) backend starts empty every time, so with it a failed initial fetch stops Flipt from starting under either policy.
+
+<Note>
+  Flipt v2.15.0 and later also treat HTTP `5xx` and `429` responses as the
+  remote being temporarily unavailable. Earlier versions only cover network
+  errors.
+</Note>
 
 #### Usage Example
 
@@ -103,16 +116,17 @@ The `fetch_policy` configuration option controls how Flipt handles connection-re
 storage:
   production:
     remote: "https://github.com/company/flags.git"
-    fetch_policy: "strict" # Fail fast on connection issues
+    fetch_policy: "strict" # Fail to start if the remote can't be fetched
     backend:
       type: local
-      path: "/var/lib/flipt"
+      path: "/var/lib/flipt/production"
 
   development:
     remote: "https://github.com/company/flags.git"
-    fetch_policy: "lenient" # Continue operation during connection issues
+    fetch_policy: "lenient" # Start from local commits if the remote is unavailable
     backend:
-      type: memory
+      type: local
+      path: "/var/lib/flipt/development"
 ```
 
 <Warning>
